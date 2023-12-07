@@ -76,7 +76,7 @@ if($grp_academic_year == $academic_year && $grp_medium == $medium && $grp_studen
 		if(mysqli_num_rows($feeMasterrowcnt) > 0){
 			$fee_master_last_id = $feeMasterrowcnt->fetch_assoc()['fees_id'];
 
-			$UpdQry=$con->query("UPDATE `fees_master` SET `grp_status`='1',`update_login_id`='$user_id',`updated_date`='$curdate' WHERE `fees_id`='$fee_master_last_id' ");
+			$insertClass=$con->query("UPDATE `fees_master` SET `grp_status`='1',`update_login_id`='$user_id',`updated_date`='$curdate' WHERE `fees_id`='$fee_master_last_id' ");
 			
 		}else{
 			$insertClass=$con->query("INSERT INTO fees_master(academic_year,medium,student_type,standard,grp_status,insert_login_id,school_id) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."', '".strip_tags($student_type)."','".strip_tags($standard)."','1','".strip_tags($user_id)."', '".strip_tags($school_id)."')");
