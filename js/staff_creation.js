@@ -41,10 +41,10 @@ $('input[type="checkbox"]').change(function() {
 $(function(){
     getstaffCode();//Autocall for request code
 
-    var idupd = $('#idupd').val();
-    if(idupd >'0'){
+    // var idupd = $('#idupd').val();
+    // if(idupd >'0'){
         checkbox(); //To show area field.
-    }
+    // }
 })
 
 function staffSubmit(){
