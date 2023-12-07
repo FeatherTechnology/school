@@ -11,7 +11,7 @@
     border-right: 10px solid #1B6AAA;
   }
   .tabtitle{
-    width: 100%
+    width: 100%;
     font-weight: bold;
     color: white;
     padding: 15px 5px 5px 10px;

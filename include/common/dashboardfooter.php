@@ -668,6 +668,10 @@
 		student_rollback_info.draw();
 		
     });
+
+	setTimeout(function() {
+		$('.alert').fadeOut('slow');
+	}, 2000);
 });	
 </script>
 

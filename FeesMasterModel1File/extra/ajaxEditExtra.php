@@ -1,17 +1,16 @@
 <?php
 include '../../ajaxconfig.php';
-if(isset($_POST["fees_id"])){
-	$fees_id  = $_POST["fees_id"];
+if(isset($_POST["extra_fee_id"])){
+	$extra_fee_id  = $_POST["extra_fee_id"];
 }
 
-$getct = "SELECT * FROM fees_master WHERE fees_id = '".$fees_id."' AND status=0 AND extra_status = 1";
+$feeDetails = array();
+$getct = "SELECT * FROM extra_curricular_activities_fee WHERE extra_fee_id = '".$extra_fee_id."' AND status = 1"; //Status = 1 - true.
 $result = $con->query($getct);
-while($row=$result->fetch_assoc())
-{
+$row=$result->fetch_assoc();
     $extra_particulars = $row['extra_particulars'];
     $extra_amount = $row['extra_amount'];
     $extra_date= $row['extra_date'];
-}
 
 $feeDetails['extra_particulars'] = $extra_particulars;
 $feeDetails['extra_amount'] = $extra_amount;

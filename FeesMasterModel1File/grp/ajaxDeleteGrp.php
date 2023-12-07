@@ -1,23 +1,21 @@
 <?php
 include '../../ajaxconfig.php';
 
-if(isset($_POST["fees_id"])){
-	$fees_id  = $_POST["fees_id"];
+if(isset($_POST["grp_course_id"])){
+	$grp_course_id  = $_POST["grp_course_id"];
 }
 $isdel = '';
 
-$ctqry=$con->query("SELECT * FROM fees_master WHERE grp_particulars = '".$fees_id."' ");
-while($row=$ctqry->fetch_assoc()){
-
-	$isdel=$row["grp_particulars"];
+$ctqry=$con->query("SELECT grp_id_used FROM `group_course_fee` WHERE grp_course_id = '".$grp_course_id."' ");
+if(mysqli_num_rows($ctqry)>0){
+	$isdel = $ctqry->fetch_assoc()["grp_id_used"];
 }
 
-if($isdel != ''){ 
+if($isdel != '0'){ 
 	$message="You Don't Have Rights To Delete This Fees";
-}
-else
-{ 
-	$delct=$con->query("UPDATE fees_master SET status = 1 WHERE fees_id = '".$fees_id."' ");
+
+}else{ 
+	$delct=$con->query("UPDATE group_course_fee SET status = 0 WHERE grp_course_id = '".$grp_course_id."' "); //status = 0 - False - InActive
 	if($delct){
 		$message="Fees Inactivated Successfully";
 	}

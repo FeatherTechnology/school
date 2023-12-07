@@ -4,6 +4,6 @@ date_default_timezone_set('Asia/Calcutta');
 include("api/iedit-config.php");
 
 session_destroy();   
-echo "<script>location.href='http://featherdemo-001-site6.dtempurl.com/'</script>"; 
+echo "<script>location.href='https://localhost/school/'</script>"; 
 
 ?>

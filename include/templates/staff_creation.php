@@ -1,10 +1,8 @@
 <?php
 @session_start();
 if(isset($_SESSION["userid"])){
-
     $userid = $_SESSION["userid"];
     $school_id = $_SESSION["school_id"];
-
 }
 
 $id = 0;
@@ -20,9 +18,9 @@ if (isset($_POST['SubmitStaffCreation']) && $_POST['SubmitStaffCreation'] != '')
             location.href = '<?php echo $HOSTPATH; ?>edit_staff_creation&msc=2';
         </script>
     <?php } else {
-         $school_id = $_SESSION["school_id"];
-         $year_id = $_SESSION["academic_year"];
-     
+        $school_id = $_SESSION["school_id"];
+        $year_id = $_SESSION["academic_year"];
+    
         $addStaffCreation = $userObj->addStaffCreation($mysqli, $userid,$school_id,$year_id );
     ?>
         <script>
@@ -56,67 +54,47 @@ if ($idupd > 0) {
 
     if (sizeof($getStaffCreation) > 0) {
         for ($ibranch = 0; $ibranch < sizeof($getStaffCreation); $ibranch++) {
-         $staff_id =    $getStaffCreation['staff_id'] ;   
-         $first_name =    $getStaffCreation['first_name']  ;
-         $last_name =   $getStaffCreation['last_name']   ;
-         $employee_no =   $getStaffCreation['employee_no'] ;
-         $designation =   $getStaffCreation['designation']   ;  	
-         $gender =   $getStaffCreation['gender'];
-         $blood_group =    $getStaffCreation['blood_group']  ;
-         $qualification =   $getStaffCreation['qualification'] ;
-         $pan =   $getStaffCreation['pan']  ;
-         $aadhar_no =    $getStaffCreation['aadhar_no']  ;
-          $pf_no =  $getStaffCreation['pf_no']  ;
-          $contact_no =  $getStaffCreation['contact_no']  ;
-         $doj =   $getStaffCreation['doj']  ;
-         $appointment_lt =    $getStaffCreation['appointment_lt'] ;
-         $emg_contact_person =    $getStaffCreation['emg_contact_person'] ;
-        $emg_contact_no =  $getStaffCreation['emg_contact_no']   ;
-        $transport_details =     $getStaffCreation['transport_details']  ;
-         $flat_no =   $getStaffCreation['flat_no'] ;
-          $street =  $getStaffCreation['street']  ;
-          $area =  $getStaffCreation['area']  ;
-        $district = $getStaffCreation['district'] ;
-         $bank_name =   $getStaffCreation['bank_name']  ;
-         $bank_acc_no =   $getStaffCreation['bank_acc_no']   ;
-         $branch =    $getStaffCreation['branch']   ;
-         $ifsc_code =    $getStaffCreation['ifsc_code']   ;
-         $staff_pic =   $getStaffCreation['staff_pic']  ;
-         $title =   $getStaffCreation['title']   ;
-         $certificate =   $getStaffCreation['certificate']  ;
-         $title1 =   $getStaffCreation['title1']    ;
-         $certificate1 =   $getStaffCreation['certificate1']  ;
-         $title2  =  $getStaffCreation['title2'] ;
-         $certificate2 =   $getStaffCreation['certificate2']   ;
-        $title3 =    $getStaffCreation['title3']  ;
-          $certificate3 =  $getStaffCreation['certificate3']     ;
-          $title4 =  $getStaffCreation['title4'] ;
-           $certificate4 =  $getStaffCreation['certificate4']  ;
-           $area_id =  $getStaffCreation['area_id']  ;
-           
+            $staff_id =    $getStaffCreation['staff_id'] ;   
+            $first_name =    $getStaffCreation['first_name']  ;
+            $last_name =   $getStaffCreation['last_name']   ;
+            $employee_no =   $getStaffCreation['employee_no'] ;
+            $designation =   $getStaffCreation['designation']   ;  	
+            $gender =   $getStaffCreation['gender'];
+            $blood_group =    $getStaffCreation['blood_group']  ;
+            $qualification =   $getStaffCreation['qualification'] ;
+            $pan =   $getStaffCreation['pan']  ;
+            $aadhar_no =    $getStaffCreation['aadhar_no']  ;
+            $pf_no =  $getStaffCreation['pf_no']  ;
+            $contact_no =  $getStaffCreation['contact_no']  ;
+            $doj =   $getStaffCreation['doj']  ;
+            $appointment_lt =    $getStaffCreation['appointment_lt'] ;
+            $emg_contact_person =    $getStaffCreation['emg_contact_person'] ;
+            $emg_contact_no =  $getStaffCreation['emg_contact_no']   ;
+            $transport_details =     $getStaffCreation['transport_details']  ;
+            $flat_no =   $getStaffCreation['flat_no'] ;
+            $street =  $getStaffCreation['street']  ;
+            $area =  $getStaffCreation['area']  ;
+            $district = $getStaffCreation['district'] ;
+            $bank_name =   $getStaffCreation['bank_name']  ;
+            $bank_acc_no =   $getStaffCreation['bank_acc_no']   ;
+            $branch =    $getStaffCreation['branch']   ;
+            $ifsc_code =    $getStaffCreation['ifsc_code']   ;
+            $staff_pic =   $getStaffCreation['staff_pic']  ;
+            $title =   $getStaffCreation['title']   ;
+            $certificate =   $getStaffCreation['certificate']  ;
+            $title1 =   $getStaffCreation['title1']    ;
+            $certificate1 =   $getStaffCreation['certificate1']  ;
+            $title2  =  $getStaffCreation['title2'] ;
+            $certificate2 =   $getStaffCreation['certificate2']   ;
+            $title3 =    $getStaffCreation['title3']  ;
+            $certificate3 =  $getStaffCreation['certificate3']     ;
+            $title4 =  $getStaffCreation['title4'] ;
+            $certificate4 =  $getStaffCreation['certificate4']  ;
+            $area_id =  $getStaffCreation['area_id']  ;
         }
     }
 }
 ?>
-
-<style>
-    -container -selection--single {
-        height: 34px !important;
-    }
-
-    -container--default -selection--single {
-        border: 1px solid #ccc !important;
-        border-radius: 0px !important;
-    }
-</style>
-<link rel="stylesheet" href="css.min.css" />
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/4.0.6-rc.0/js.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<!-- Page header start -->
 <div class="page-header">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Staff Creation </li>
@@ -133,6 +111,7 @@ if ($idupd > 0) {
         <input type="hidden" class="form-control"  id="id" name="id" aria-describedby="id" value="<?php if(isset($staff_id)) echo $staff_id; ?>">
         <input type="hidden" class="form-control"  id="school_id" name="school_id" value="<?php  print_r($_SESSION["school_id"]); ?>">
         <input type="hidden" class="form-control"  id="year_id" name="year_id"  value="<?php print_r($_SESSION["year_id"]); ?>">
+        <input type="hidden" class="form-control"  id="idupd" name="idupd"  value="<?php if(isset($idupd)) echo $idupd; ?>">
         <!-- Row start -->
         <div class="row gutters">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -148,7 +127,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> First Name </label> <span class="required">*</span>
+                                            <label for="staff_first_name"> First Name </label> <span class="required">*</span>
                                             <input type="text" id="staff_first_name" tabindex="1" name="staff_first_name" class="form-control"  placeholder="Enter First Name" onkeydown="return /[a-z ]/i.test(event.key)" value="<?php if(isset($first_name)) echo $first_name; ?>">
                                             <span id="firstnameCheck" class="text-danger">Enter First Name </span>
                                         </div>
@@ -156,7 +135,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Last Name</label> <span class="required">*</span>
+                                            <label for="staff_last_name">Last Name</label> <span class="required">*</span>
                                             <input type="text" id="staff_last_name" tabindex="2" name="staff_last_name" class="form-control" placeholder="Enter Last Name" onkeydown="return /[a-z ]/i.test(event.key)" value="<?php if(isset($last_name)) echo $last_name; ?>">
                                             <span id="lastnameCheck" class="text-danger">Enter Last Name </span>
                                         </div>
@@ -164,7 +143,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="inputReadOnly"> Employee No </label>
+                                            <label for="employee_no"> Employee No </label>
                                             <input type="text" class="form-control" tabindex="3" id="employee_no" name="employee_no" value="<?php if(isset($employee_no)) echo $employee_no?>" readonly>
                                         </div>
                                     </div>
@@ -172,7 +151,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12"> 
                                         <div class="form-group">
-                                            <label for="inputReadOnly"> Designation </label> <span class="required">*</span>
+                                            <label for="staff_designation"> Designation </label> <span class="required">*</span>
                                             <input type="text" class="form-control" tabindex="4" id="staff_designation" name="staff_designation"  placeholder="Enter Designation" onkeydown="return /[a-z ]/i.test(event.key)" value="<?php if(isset($designation)) echo $designation; ?>">
                                             <span id="dsgnCheck" class="text-danger">Enter Designation </span>
                                         </div>
@@ -181,19 +160,16 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Gender</label><br>
-                                            <input type="radio" tabindex="5" name="gender" id="male" value="Male" <?php if (isset($gender))
-                                                                                                                        echo ($gender == 'Male') ? 'checked' : '' ?>> &nbsp;&nbsp; <label for="male">Male </label> &nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input type="radio" tabindex="6" name="gender" id="female" value="Female" <?php if (isset($gender))
-                                                                                                                            echo ($gender == 'Female') ? 'checked' : '' ?>> &nbsp;&nbsp; <label for="female">Female </label> &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>Gender</label><br>
+                                            <input type="radio" tabindex="5" name="gender" id="male" value="Male" <?php if (isset($gender)) echo ($gender == 'Male') ? 'checked' : '' ?>> &nbsp;&nbsp; <label>Male </label> &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="radio" tabindex="6" name="gender" id="female" value="Female" <?php if (isset($gender))echo ($gender == 'Female') ? 'checked' : '' ?>> &nbsp;&nbsp; <label>Female </label> &nbsp;&nbsp;&nbsp;&nbsp;
                                             <span id="genderCheck" class="text-danger">| Please Select Gender</span>
                                         </div>
                                     </div>
 
-
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Blood Group</label>
+                                            <label for="blood_group">Blood Group</label>
                                             <select class="form-control" id="blood_group" name="blood_group" tabindex="7">
                                                 <option value=" ">Select Your Blood Group...</option>
                                                 <option value="A1+" <?php if (isset($blood_group)) {
@@ -256,7 +232,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Qualification </label> <span class="required">*</span>
+                                            <label for="qualification"> Qualification </label> <span class="required">*</span>
                                             <input name="qualification" tabindex="8" placeholder="Enter Qualification" id="qualification" class="form-control"  type="text" onkeydown="if(event.keyCode === 110 || event.keyCode === 190 || /[a-z ]/i.test(event.key)) {return true;} else {return false;}" value="<?php if(isset($qualification)) echo $qualification; ?>">
                                             <span id="qualificationCheck" class="text-danger">Enter Qualification </span>
                                         </div>
@@ -264,7 +240,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> PAN </label> <span class="required">*</span>
+                                            <label for="staff_pan"> PAN </label> <span class="required">*</span>
                                             <input name="staff_pan" tabindex="9"  placeholder="Enter PAN" id="staff_pan" class="form-control" maxLength="10" type="text"  value="<?php if(isset($pan)) echo $pan; ?>">
                                             <span id="panCheck" class="text-danger"></span>
                                         </div>
@@ -272,7 +248,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Aadhar Number</label> <span class="required">*</span>
+                                            <label for="aadhar_number">Aadhar Number</label> <span class="required">*</span>
                                             <input name="aadhar_number" tabindex="10" placeholder="Aadhar Number" id="aadhar_number" class="form-control" data-type="adhaar-number" maxLength="14" type="text" value="<?php if(isset($aadhar_no)) echo $aadhar_no; ?>">
                                             <span id="adharnoCheck" class="text-danger">Enter Aadhar Number </span>
                                         </div>
@@ -280,14 +256,14 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">PF Account No</label>
+                                            <label for="pf_acc_no">PF Account No</label>
                                             <input name="pf_acc_no" tabindex="11" placeholder="Enter PF Account No" id="pf_acc_no" class="form-control"  type="number" value="<?php if(isset($pf_no)) echo $pf_no; ?>">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Contact Number</label> <span class="required">*</span>
+                                            <label for="contact_number">Contact Number</label> <span class="required">*</span>
                                             <input name="contact_number" tabindex="12" placeholder="Enter Contact Number" id="contact_number" class="form-control"  type="number" onkeypress="if(this.value.length==10) return false;" value="<?php if(isset($contact_no)) echo $contact_no; ?>">
                                             <span id="contactCheck" class="text-danger">Enter Contact Number </span>
                                         </div>
@@ -295,7 +271,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Date Of Joining </label> <span class="required">*</span>
+                                            <label for="staff_doj"> Date Of Joining </label> <span class="required">*</span>
                                             <input name="staff_doj" tabindex="13" id="staff_doj" class="form-control"  type="date" value="<?php if(isset($doj)) echo $doj; ?>">
                                             <span id="dojCheck" class="text-danger">Enter Date Of Joining </span>
                                         </div>
@@ -303,14 +279,14 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Appointment Lt </label>
+                                            <label for="appointment_lt">Appointment Lt </label>
                                             <input name="appointment_lt" tabindex="14" id="appointment_lt" class="form-control"  type="date" value="<?php if(isset($appointment_lt)) echo $appointment_lt; ?>">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Emergency Contact Person </label> 
+                                            <label for="emg_contact_person"> Emergency Contact Person </label> 
                                             <input name="emg_contact_person" tabindex="15" placeholder="Enter Emergency Contact Person" id="emg_contact_person" class="form-control"  type="text" onkeydown="return /[a-z ]/i.test(event.key)" value="<?php if(isset($emg_contact_person)) echo $emg_contact_person; ?>">
                                             <span id="emgcontactpersonCheck" class="text-danger">Enter Emergency Contact Person </span>
                                         </div>
@@ -318,7 +294,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Emergency Contact No </label> 
+                                            <label for="emg_contact_no"> Emergency Contact No </label> 
                                             <input name="emg_contact_no" tabindex="16" placeholder="Enter Emergency Contact No" id="emg_contact_no" class="form-control"  type="number" onkeypress="if(this.value.length==10) return false;" value="<?php if(isset($emg_contact_no)) echo $emg_contact_no; ?>">
                                             <span id="emgcontactnoCheck" class="text-danger">Enter Emergency Contact No </span>
                                         </div>
@@ -326,14 +302,14 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Transport Details </label>
+                                            <label for="transport_details"> Transport Details </label>
                                             <input name="transport_details" tabindex="17" placeholder="Enter Transport Details" id="transport_details" type="checkbox" value="YES"  <?php if (isset($transport_details)) echo ($transport_details == 'YES') ? 'checked' : '' ?> >
                                         </div>
                                     </div>
                                   
-                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12" id="areaname"  style="">
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12" id="areaname">
                                         <div class="form-group">
-                                            <label for="disabledInput">Area Name</label>
+                                            <label for="area_name">Area Name</label>
                                             <select class="form-control" tabindex="18" id="area_name" name="area_name" tabindex="7">
                                             <option></option>
                                             </select>
@@ -349,40 +325,40 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Address for Communication </label>
+                                            <label> Address for Communication </label>
                                         </div>
                                     </div>
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Bank Details </label>
+                                            <label> Bank Details </label>
                                         </div>
                                     </div>
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Flat No </label>
+                                            <label for="flat_no"> Flat No </label>
                                             <input type="text" class="form-control" name="flat_no" id="flat_no" tabindex="19" value="<?php if(isset($flat_no)) echo $flat_no; ?>">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Bank Name </label>
+                                            <label for="bank_name"> Bank Name </label>
                                             <input type="text" class="form-control" tabindex="20" name="bank_name" id="bank_name" onkeydown="return /[a-z ]/i.test(event.key)"  value="<?php if(isset($bank_name)) echo $bank_name; ?>">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Street </label>
+                                            <label for="street"> Street </label>
                                             <input type="text" class="form-control" name="street" tabindex="21" id="street" value="<?php if(isset($street)) echo $street; ?>">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Bank Account No </label>
+                                            <label for="bank_acc_no"> Bank Account No </label>
                                             <input type="text" class="form-control" name="bank_acc_no"  id="bank_acc_no"   value="<?php if(isset($bank_acc_no)) echo $bank_acc_no; ?>" tabindex="22">
                                             <!-- onkeydown="if(event.keyCode === 8 || /[0-9 ]/i.test(event.key)) {return true;} else {return false;}" -->
                                         </div>
@@ -390,28 +366,28 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Area </label>
+                                            <label for="area"> Area </label>
                                             <input type="text" class="form-control" name="area" id="area" tabindex="23" value="<?php if(isset($area)) echo $area; ?>">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Branch </label>
+                                            <label for="branch"> Branch </label>
                                             <input type="text" class="form-control" name="branch" id="branch" onkeydown="return /[a-z ]/i.test(event.key)" tabindex="24" value="<?php if(isset($branch)) echo $branch; ?>">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> District </label>
+                                            <label for="district"> District </label>
                                             <input type="text" class="form-control" name="district" id="district" onkeydown="return /[a-z ]/i.test(event.key)" tabindex="25" value="<?php if(isset($district)) echo $district; ?>">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> IFSC Code </label>
+                                            <label for="ifsc_code"> IFSC Code </label>
                                             <input type="text" class="form-control" name="ifsc_code" id="ifsc_code"  onkeydown="if(/^[a-zA-Z0-9]$/.test(event.key)) {this.value += event.key.toUpperCase(); return false;} else {return true;}" value="<?php if(isset($ifsc_code)) echo $ifsc_code; ?>" tabindex="26">
                                         </div>
                                     </div>
@@ -421,7 +397,7 @@ if ($idupd > 0) {
                             <!-- Field Finished -->
                             <div class="col-md-4"><br />
                                 <div class="col-xl-12 col-lg-4 col-md-6 col-sm-6 col-12 mx-auto">
-                                    <label for="disabledInput">Staff Photo</label>
+                                    <label for="staff_image">Staff Photo</label>
 
                                     <?php if(isset($_GET['upd'])<=0){ ?>
                                         <div class="form-group" style="margin: auto;"> 
@@ -474,110 +450,109 @@ if ($idupd > 0) {
  
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Basic Pay </label>
+                                            <label> Basic Pay </label>
                                             <input type="text" id="basic_pay" tabindex="25" name="basic_pay" class="form-control"  placeholder="0.00" onkeydown="if(event.keyCode === 8 || /[0-9 ]/i.test(event.key)) {return true;} else {return false;}">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Deduction (If any) </label>
+                                            <label> Deduction (If any) </label>
                                             <input type="text" id="deduction" tabindex="26" name="deduction" class="form-control"  >
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Deduction Amount </label>
+                                            <label> Deduction Amount </label>
                                             <input type="text" id="deduction_amnt" tabindex="27" name="deduction_amnt" class="form-control"  placeholder="0.00" onkeydown="if(event.keyCode === 8 || /[0-9 ]/i.test(event.key)) {return true;} else {return false;}">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> HRA </label>
+                                            <label> HRA </label>
                                             <input type="text" id="hra" tabindex="28" name="hra" class="form-control"  placeholder="0.00" onkeydown="if(event.keyCode === 8 || /[0-9 ]/i.test(event.key)) {return true;} else {return false;}" >
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                        <label for="disabledInput"></label>
+                                        <label></label>
                                             <input type="text" id="hra1" tabindex="29" name="hra1" class="form-control" onkeydown="if(event.keyCode === 8 || /[0-9 ]/i.test(event.key)) {return true;} else {return false;}">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                        <label for="disabledInput"></label>
+                                        <label></label>
                                             <input type="text" id="hra2" tabindex="30" name="hra2" class="form-control"  placeholder="0.00" onkeydown="if(event.keyCode === 8 || /[0-9 ]/i.test(event.key)) {return true;} else {return false;}">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Transport Allowance </label>
+                                            <label> Transport Allowance </label>
                                             <input type="text" id="transport_allowance" tabindex="31" name="transport_allowance" class="form-control"  placeholder="0.00" onkeydown="if(event.keyCode === 8 || /[0-9 ]/i.test(event.key)) {return true;} else {return false;}" >
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                        <label for="disabledInput"></label>
+                                        <label></label>
                                             <input type="text" id="transport_allowance1" tabindex="32" name="transport_allowance1" class="form-control" onkeydown="if(event.keyCode === 8 || /[0-9 ]/i.test(event.key)) {return true;} else {return false;}">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                        <label for="disabledInput"></label>
+                                        <label></label>
                                             <input type="text" id="transport_allowance2" tabindex="33" name="transport_allowance2" class="form-control"  placeholder="0.00" onkeydown="if(event.keyCode === 8 || /[0-9 ]/i.test(event.key)) {return true;} else {return false;}" >
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Medical Allowance </label>
+                                            <label> Medical Allowance </label>
                                             <input type="text" id="medical_allowance" tabindex="34" name="medical_allowance" class="form-control"  placeholder="0.00" onkeydown="if(event.keyCode === 8 || /[0-9 ]/i.test(event.key)) {return true;} else {return false;}">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                        <label for="disabledInput"></label>
+                                        <label></label>
                                             <input type="text" id="medical_allowance1" tabindex="35" name="medical_allowance1" class="form-control" onkeydown="if(event.keyCode === 8 || /[0-9 ]/i.test(event.key)) {return true;} else {return false;}">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                        <label for="disabledInput"></label>
+                                        <label></label>
                                             <input type="text" id="medical_allowance2" tabindex="36" name="medical_allowance2" class="form-control"  placeholder="0.00" onkeydown="if(event.keyCode === 8 || /[0-9 ]/i.test(event.key)) {return true;} else {return false;}">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput"> Special Pay </label>
+                                            <label> Special Pay </label>
                                             <input type="text" id="spl_pay" tabindex="37" name="spl_pay" class="form-control"  placeholder="0.00" onkeydown="if(event.keyCode === 8 || /[0-9 ]/i.test(event.key)) {return true;} else {return false;}">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                        <label for="disabledInput"> Gross Pay </label>
+                                        <label> Gross Pay </label>
                                             <input type="text" id="gross_pay" tabindex="38" name="gross_pay" class="form-control" placeholder="0.00"  readonly>
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                        <label for="disabledInput"> Net Pay </label>
+                                        <label> Net Pay </label>
                                             <input type="text" id="net_pay" tabindex="39" name="net_pay" class="form-control"  placeholder="0.00"  readonly>
                                         </div>
                                     </div>
 
-                                  
                                 </div>
                             </div>
                         </div>
@@ -602,7 +577,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Title</label>&nbsp;&nbsp;
+                                            <label for="title">Title</label>&nbsp;&nbsp;
                                             <input type="text" id="title" class="form-control" tabindex="28" name="title"  placeholder="Enter Certificate Name" value="<?php if(isset($title)) echo $title; ?>">
                                         </div>
                                     </div>
@@ -634,7 +609,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Title</label>&nbsp;&nbsp;
+                                            <label for="title1">Title</label>&nbsp;&nbsp;
                                             <input type="text" id="title1" class="form-control" tabindex="30" name="title1"  placeholder="Enter Certificate Name" value="<?php if(isset($title1)) echo $title1; ?>">
                                         </div>
                                     </div>
@@ -667,7 +642,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Title</label>&nbsp;&nbsp;
+                                            <label for="title2">Title</label>&nbsp;&nbsp;
                                             <input type="text" id="title2" class="form-control" tabindex="32" name="title2"  placeholder="Enter Certificate Name" value="<?php if(isset($title2)) echo $title2; ?>">
                                         </div>
                                     </div>
@@ -700,7 +675,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Title</label>&nbsp;&nbsp;
+                                            <label for="title3">Title</label>&nbsp;&nbsp;
                                             <input type="text" id="title3" class="form-control" tabindex="34" name="title3"  placeholder="Enter Certificate Name" value="<?php if(isset($title3)) echo $title3; ?>">
                                         </div>
                                     </div>
@@ -733,7 +708,7 @@ if ($idupd > 0) {
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Title</label>&nbsp;&nbsp;
+                                            <label for="title4">Title</label>&nbsp;&nbsp;
                                             <input type="text" id="title4" class="form-control" tabindex="36" name="title4"  placeholder="Enter Certificate Name" value="<?php if(isset($title4)) echo $title4; ?>">
                                         </div>
                                     </div>
@@ -787,108 +762,3 @@ if ($idupd > 0) {
         
     </form>
 </div>
-<div class="modal fade addDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content" style="background-color: white">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myLargeModalLabel">Add Department</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="DropDownStock()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- alert messages -->
-                <div id="departmentInsertNotOk" class="unsuccessalert">Department Already Exists, Please Enter a Different Name!
-                    <span class="custclosebtn" onclick="this.parentElement.style.display='none';"><span class="icon-squared-cross"></span></span>
-                </div>
-
-                <div id="departmentInsertOk" class="successalert">Department Added Succesfully!<span class="custclosebtn" onclick="this.parentElement.style.display='none';"><span class="icon-squared-cross"></span></span>
-                </div>
-
-                <div id="departmentUpdateOk" class="successalert">Department Updated Succesfully!<span class="custclosebtn" onclick="this.parentElement.style.display='none';"><span class="icon-squared-cross"></span></span>
-                </div>
-
-                <div id="departmentDeleteNotOk" class="unsuccessalert">You Don't Have Rights To Delete This Department!
-                    <span class="custclosebtn" onclick="this.parentElement.style.display='none';"><span class="icon-squared-cross"></span></span>
-                </div>
-
-                <div id="departmentDeleteOk" class="successalert">Department Has been Inactivated!<span class="custclosebtn" onclick="this.parentElement.style.display='none';"><span class="icon-squared-cross"></span></span>
-                </div>
-
-                <br />
-                <div class="row">
-                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12"></div>
-                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
-                        <div class="form-group">
-                            <label class="label">Enter Department</label>
-                            <input type="hidden" name="department_id" id="department_id">
-                            <input type="text" name="department_name" id="department_name" class="form-control" placeholder="Enter Department">
-                            <span class="text-danger" tabindex="1" id="departmentnameCheck">Enter Department</span>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-2 col-md-6 col-sm-4 col-12">
-                        <label class="label" style="visibility: hidden;">Department</label>
-                        <button type="button" tabindex="" name="submitDepartmentBtn" id="submitDepartmentBtn" class="btn btn-primary">Submit</button>
-                    </div>
-                </div>
-
-
-
-                <div id="updateddepartmentTable">
-                    <table class="table custom-table" id="departmentTable">
-                        <thead>
-                            <tr>
-                                <th>S. No</th>
-                                <th>Department</th>
-                                <th>ACTION</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (sizeof($departmentList) > 0) {
-                                for ($j = 0; $j < count($departmentList); $j++) { ?>
-                                    <tr>
-                                        <td class="col-md-2 col-xl-2"><?php echo $j + 1; ?></td>
-                                        <td><?php echo $departmentList[$j]['department_name']; ?></td>
-                                        <td>
-                                            <a id="edit_department" value="<?php echo $departmentList[$j]['department_id'] ?>"><span class="icon-border_color"></span></a> &nbsp;
-                                            <a id="delete_department" value="<?php echo $departmentList[$j]['department_id'] ?>"><span class='icon-trash-2'></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                            <?php }
-                            } ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="DropDownDesig()">Close</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-<script>
-    var loadFile = function(event) {
-        var image = document.getElementById("viewimage");
-        image.src = URL.createObjectURL(event.target.files[0]);
-    };
-</script>
-<script>
-    $('[data-type="adhaar-number"]').keyup(function() {
-        var value = $(this).val();
-        value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
-        $(this).val(value);
-    });
-
-    $('[data-type="adhaar-number"]').on("change, blur", function() {
-        var value = $(this).val();
-        var maxLength = $(this).attr("maxLength");
-        if (value.length != maxLength) {
-            $(this).addClass("highlight-error");
-        } else {
-            $(this).removeClass("highlight-error");
-        }
-    });
-</script>
