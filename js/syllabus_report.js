@@ -1,20 +1,25 @@
 // Document is ready
 $(document).ready(function () {	
     
-  $("#stockinfotable").hide();
+  // $("#allocationReport").hide();
     $('#table_view').click(function () {
         resetstockinfotable();   
-        $("#stockinfotable").show();           
+        $("#allocationReport").show();           
     });     
 
 });
 
+$(function(){
+  getStandardList(); //Get Standard List.
+})
+
 function resetstockinfotable(){
   var class_id=$("#class_id").val();
+  var class_name=$("#class_id :selected").text();
     $.ajax({
     url: 'ajaxSyllabusReportFetch.php',
     type: 'POST',
-    data: {"class_id":class_id},
+    data: {"class_id":class_id, "class_name": class_name},
     cache: false,
     success:function(html){
         $("#updatedstockinfotable").empty();
@@ -58,3 +63,20 @@ function resetstockinfotable(){
 //       ]
 //   });
 // }
+
+function getStandardList(){ //Getting standard list from database.
+  $.ajax({
+      type: 'POST',
+      data: {},
+      url: 'ajaxFiles/getStandardList.php',
+      dataType: 'json',
+      success:function(response){
+          $('#class_id').empty();
+          $('#class_id').append("<option value=''>Select Standard</option>");
+          for(var i=0; i <response.length; i++){
+              
+              $('#class_id').append("<option value='" +response[i]['std_id']+ "'>" +response[i]['std']+ "</option>");
+          }
+      }
+  })
+}

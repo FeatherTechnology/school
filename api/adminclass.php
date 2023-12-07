@@ -21,52 +21,6 @@
 			return $detailrecords;
 		}
 
-
-		// // Add school
-		// public function addSchoolCreation($mysqli, $userid){
-
-		// 	if(isset($_POST['school_name'])){
-		// 		$school_name = $_POST['school_name'];
-		// 	}
-		// 	if(isset($_POST['contact_number'])){
-		// 		$contact_number = $_POST['contact_number'];
-		// 	}
-		// 	if(isset($_POST['email_id'])){
-		// 		$email_id = $_POST['email_id'];
-		// 	}
-		// 	if(isset($_POST['address1'])){
-		// 		$address1 = $_POST['address1'];
-		// 	}
-		// 	if(isset($_POST['address2'])){
-		// 		$address2 = $_POST['address2'];
-		// 	}
-		// 	if(isset($_POST['school_login_name'])){
-		// 		$school_login_name = $_POST['school_login_name'];
-		// 	}
-		// 	if(isset($_POST['district'])){
-		// 		$district = $_POST['district'];
-		// 	}
-		// 	if(isset($_POST['state'])){
-		// 		$state = $_POST['state'];
-		// 	}
-		// 	if(isset($_POST['userid'])){
-		// 		$userid = $_POST['userid'];
-		// 	} 
-		// 	$school_logo = '';
-		// 	if(!empty($_FILES['school_logo']['name']))		
-		// 	{
-		// 		$school_logo = $_FILES['school_logo']['name'];
-		// 		$student_image_tmp = $_FILES['school_logo']['tmp_name'];
-		// 		$student_imagefolder="uploads/school_creation/".$school_logo ;
-		// 		move_uploaded_file($student_image_tmp, $student_imagefolder);
-		// 	} 
-		
-		// 	$schoolInsert="INSERT INTO school_creation(school_name, contact_number, email_id, address1, address2, school_login_name, district, state, school_logo, insert_login_id) 
-		// 	VALUES('".strip_tags($school_name)."','".strip_tags($contact_number)."', '".strip_tags($email_id)."', '".strip_tags($address1)."', '".strip_tags($address2)."', 
-		// 	'".strip_tags($school_login_name)."', '".strip_tags($district)."', '".strip_tags($state)."', '".strip_tags($school_logo)."', '".strip_tags($userid)."' )";
-
-		// 	$insresult=$mysqli->query($schoolInsert) or die("Error ".$mysqli->error);
-		// }
 		// Add school
 		public function addSchoolCreation($mysqli, $userid,$academic_year){
 
@@ -94,6 +48,9 @@
 			if(isset($_POST['state'])){
 				$state = $_POST['state'];
 			}
+			if(isset($_POST['pincode'])){
+				$pincode = $_POST['pincode'];
+			}
 			if(isset($_POST['website'])){
 				$web_url = $_POST['website'];
 			} 
@@ -111,98 +68,17 @@
 			if(isset($_POST['academic_year'])){
 				$academic_year = $_POST['academic_year'];
 			} 
-			$schoolInsert="INSERT INTO school_creation(school_name, contact_number, email_id,web_url, address1, address2, school_login_name, district, state, school_logo, insert_login_id,year_id) 
+			$schoolInsert="INSERT INTO school_creation(school_name, contact_number, email_id,web_url, address1, address2, school_login_name, district, state, pincode, school_logo, insert_login_id,year_id) 
 			VALUES('".strip_tags($school_name)."','".strip_tags($contact_number)."', '".strip_tags($email_id)."', '".strip_tags($web_url)."', '".strip_tags($address1)."', '".strip_tags($address2)."', 
-			'".strip_tags($school_login_name)."', '".strip_tags($district)."', '".strip_tags($state)."', '".strip_tags($school_logo)."', '".strip_tags($userid)."','".strip_tags($academic_year)."')";
+			'".strip_tags($school_login_name)."', '".strip_tags($district)."', '".strip_tags($state)."', '".strip_tags($pincode)."', '".strip_tags($school_logo)."', '".strip_tags($userid)."','".strip_tags($academic_year)."')";
 
 			$insresult=$mysqli->query($schoolInsert) or die("Error ".$mysqli->error);
 		}
 
-		// // Get school
-		// public function getSchoolCreation($mysqli, $id){
-
-		// 	$schoolSelect = "SELECT * FROM school_creation WHERE school_id='".mysqli_real_escape_string($mysqli, $id)."' "; 
-		// 	$res = $mysqli->query($schoolSelect) or die("Error in Get All Records".$mysqli->error);
-		// 	$detailrecords = array();
-		// 	if ($mysqli->affected_rows>0)
-		// 	{
-		// 		$row = $res->fetch_object();	
-		// 		$detailrecords['school_id']      = $row->school_id; 
-		// 		$detailrecords['school_name']    = $row->school_name;
-		// 		$detailrecords['contact_number']    = $row->contact_number; 
-		// 		$detailrecords['email_id']        = $row->email_id; 
-		// 		$detailrecords['address1']      = $row->address1;
-		// 		$detailrecords['address2']      = $row->address2;  	
-		// 		$detailrecords['school_login_name']       = $row->school_login_name;
-		// 		$detailrecords['district']         = $row->district;
-		// 		$detailrecords['state']       = $row->state;
-		// 		$detailrecords['school_logo']       = $row->school_logo;
-		// 	}
-			
-		// 	return $detailrecords;
-		// }
-
-		// // Update school
-		// public function updateSchoolCreation($mysqli, $id, $userid){
-
-		// 	if(isset($_POST['school_name'])){
-		// 		$school_name = $_POST['school_name'];
-		// 	}
-		// 	if(isset($_POST['contact_number'])){
-		// 		$contact_number = $_POST['contact_number'];
-		// 	}
-		// 	if(isset($_POST['email_id'])){
-		// 		$email_id = $_POST['email_id'];
-		// 	}
-		// 	if(isset($_POST['address1'])){
-		// 		$address1 = $_POST['address1'];
-		// 	}
-		// 	if(isset($_POST['address2'])){
-		// 		$address2 = $_POST['address2'];
-		// 	}
-		// 	if(isset($_POST['school_login_name'])){
-		// 		$school_login_name = $_POST['school_login_name'];
-		// 	}
-		// 	if(isset($_POST['district'])){
-		// 		$district = $_POST['district'];
-		// 	}
-		// 	if(isset($_POST['state'])){
-		// 		$state = $_POST['state'];
-		// 	}
-		// 	if(isset($_POST['userid'])){
-		// 		$userid = $_POST['userid'];
-		// 	} 
-
-		// 	//insert new file
-		// 	$school_logo = '';
-		// 	if(!empty($_FILES['school_logo']['name']))
-		// 	{
-		// 		//delete old file
-		// 		$path='uploads/school_creation/'.$media_file_old;
-		// 		if (file_exists($path)) {
-		// 			unlink($path);
-		// 		}
-		// 		//insert new file
-		// 		$school_logo = $_FILES['school_logo']['name'];
-		// 		$media_file_temp = $_FILES['school_logo']['tmp_name'];
-		// 		$mediaimage_folder="uploads/school_creation/".$school_logo ;
-		// 		move_uploaded_file($media_file_temp, $mediaimage_folder);
-		// 	}
-		// 	//check old file name if new is not set
-		// 	if($school_logo == '' && isset($_POST["edit_school_logo"])){
-		// 		$school_logo = $_POST["edit_school_logo"];
-		// 	}
-
-		//    $schoolUpdaet = "UPDATE school_creation SET school_name = '".strip_tags($school_name)."', contact_number='".strip_tags($contact_number)."', 
-		//    email_id='".strip_tags($email_id)."', address1='".strip_tags($address1)."', address2='".strip_tags($address2)."', school_login_name='".strip_tags($school_login_name)."', 
-		//    district='".strip_tags($district)."', state='".strip_tags($state)."', school_logo='".strip_tags($school_logo)."', update_login_id='".strip_tags($userid)."', status = '0' WHERE school_id= '".strip_tags($id)."' ";
-		//    $updresult = $mysqli->query($schoolUpdaet )or die ("Error in in update Query!.".$mysqli->error);
-		
-	 	// }
 		// Get school
 		public function getSchoolCreation($mysqli, $id){
 
-			$schoolSelect = "SELECT sc.school_id,sc.school_name,sc.school_login_name,sc.district,sc.address1,sc.address2,sc.address3,sc.state,st.state AS state_name,sc.contact_number,sc.email_id,sc.web_url,sc.school_logo,sc.year_id FROM school_creation sc LEFT JOIN state_creation st ON st.id = sc.state  WHERE school_id='".mysqli_real_escape_string($mysqli, $id)."' "; 
+			$schoolSelect = "SELECT sc.school_id,sc.school_name,sc.school_login_name,sc.district,sc.address1,sc.address2,sc.address3,sc.state,st.state AS state_name,sc.contact_number,sc.email_id,sc.web_url,sc.school_logo,sc.year_id, sc.pincode FROM school_creation sc LEFT JOIN state_creation st ON st.id = sc.state  WHERE school_id='".mysqli_real_escape_string($mysqli, $id)."' "; 
 			$res = $mysqli->query($schoolSelect) or die("Error in Get All Records".$mysqli->error);
 			$detailrecords = array();
 			if ($mysqli->affected_rows>0)
@@ -220,6 +96,7 @@
 				$detailrecords['state']       = $row->state;
 				$detailrecords['state_name']       = $row->state_name;
 				$detailrecords['school_logo']       = $row->school_logo;
+				$detailrecords['pincode']       = $row->pincode;
 			}
 			
 			return $detailrecords;
@@ -254,6 +131,9 @@
 			if(isset($_POST['state'])){
 				$state = $_POST['state'];
 			}
+			if(isset($_POST['pincode'])){
+				$pincode = $_POST['pincode'];
+			}
 			if(isset($_POST['userid'])){
 				$userid = $_POST['userid'];
 			} 
@@ -280,7 +160,7 @@
 
 		   $schoolUpdaet = "UPDATE school_creation SET school_name = '".strip_tags($school_name)."', contact_number='".strip_tags($contact_number)."', 
 		   email_id='".strip_tags($email_id)."',web_url='".strip_tags($web_url)."', address1='".strip_tags($address1)."', address2='".strip_tags($address2)."', school_login_name='".strip_tags($school_login_name)."', 
-		   district='".strip_tags($district)."', state='".strip_tags($state)."', school_logo='".strip_tags($school_logo)."', update_login_id='".strip_tags($userid)."', status = '0' WHERE school_id= '".strip_tags($id)."' ";
+		   district='".strip_tags($district)."', state='".strip_tags($state)."', pincode = '".strip_tags($pincode)."', school_logo='".strip_tags($school_logo)."', update_login_id='".strip_tags($userid)."', status = '0' WHERE school_id= '".strip_tags($id)."' ";
 		   $updresult = $mysqli->query($schoolUpdaet )or die ("Error in in update Query!.".$mysqli->error);
 		
 	 	}
@@ -2563,8 +2443,8 @@
 
 // // Get Subject Details
 public function getSubjectDetails($mysqli){
-
-	$holidaySelect = "SELECT * FROM subject_details WHERE subject_id='".mysqli_real_escape_string($mysqli)."' "; 
+	
+	$holidaySelect = "SELECT * FROM subject_details  "; //WHERE subject_id='".$mysqli."'
 	$res = $mysqli->query($holidaySelect) or die("Error in Get All Records".$mysqli->error);
 	$detailrecords = array();
 	if ($mysqli->affected_rows>0)
@@ -2929,83 +2809,11 @@ public function deleteTrustCreation($mysqli, $id, $userid){
 // 	return $detailrecords;
 // }
 
-		// // Add Area creation
-		// public function addAreaCreation($mysqli,$userid){
-
-		// 	if(isset($_POST['area_name'])){
-		// 		$area_name = $_POST['area_name'];
-		// 	}
-		// 	if(isset($_POST['item_details'])){
-		// 		$item_detailsstr = $_POST['item_details'];
-		// 		$item_details = implode(",",$item_detailsstr);
-		// 	}
-		// 	if(isset($_POST['due_amount'])){
-		// 		$due_amountstr = $_POST['due_amount'];
-		// 		$due_amount = implode(",",$due_amountstr);
-		// 	}
-		// 	if(isset($_POST['due_date'])){
-		// 		$due_datestr = $_POST['due_date'];
-		// 		$due_date = implode(",",$due_datestr);
-		// 	}
-		// 	if(isset($_POST['no_of_terms'])){
-		// 		$no_of_terms = $_POST['no_of_terms'];
-		// 	}
-		// 	if(isset($_POST['transport_amount'])){
-		// 		$transport_amount = $_POST['transport_amount'];
-		// 	}
-			
-		// 	if(isset($_POST['userid'])){
-		// 		$userid = $_POST['userid'];
-		// 	}
-
-			
-		// 	$inserttrustQry="INSERT INTO area_creation(area_name, no_of_terms, transport_amount, item_details, due_amount, due_date, insert_login_id) 
-		// 	VALUES('".strip_tags($area_name)."', '".strip_tags($no_of_terms)."', '".strip_tags($transport_amount)."', '".strip_tags($item_details)."', 
-		// 	'".strip_tags($due_amount)."', '".strip_tags($due_date)."','".strip_tags($userid)."')"; 
-		// 	$inserttrust = $mysqli->query($inserttrustQry);
-			
-		// 	return true;
-		// }
-
-		// // get Area Creation
-		// public function getAreaCreation($mysqli, $id){
-
-		// 	$selectAreaCreation = "SELECT * FROM area_creation WHERE area_id='".mysqli_real_escape_string($mysqli, $id)."' "; 
-		// 	$res = $mysqli->query($selectAreaCreation) or die("Error in Get All Records".$mysqli->error);
-		// 	$detailrecords = array();
-		// 	if ($mysqli->affected_rows>0)
-		// 	{
-		// 		$row = $res->fetch_object();	
-		// 		$detailrecords['area_id']      = $row->area_id;
-		// 		$detailrecords['userid'] 		=$row->userid;
-		// 		$detailrecords['area_name']    = $row->area_name;
-		// 		$detailrecords['no_of_terms']    = $row->no_of_terms; 
-		// 		$detailrecords['transport_amount']      = $row->transport_amount;
-		// 		$detailrecords['item_details']      = $row->item_details;  	
-		// 		$detailrecords['due_amount']       = $row->due_amount;
-		// 		$detailrecords['due_date']         = $row->due_date;
-		// 	}
-			
-		// 	return $detailrecords;
-		// }
-
 		// Add Area creation
 		public function addAreaCreation($mysqli,$userid,$school_id,$log_year){
 
 			if(isset($_POST['area_name'])){
 				$area_name = $_POST['area_name'];
-			}
-			if(isset($_POST['item_details'])){
-				$item_detailsstr = $_POST['item_details'];
-				$item_details = implode(",",$item_detailsstr);
-			}
-			if(isset($_POST['due_amount'])){
-				$due_amountstr = $_POST['due_amount'];
-				$due_amount = implode(",",$due_amountstr);
-			}
-			if(isset($_POST['due_date'])){
-				$due_datestr = $_POST['due_date'];
-				$due_date = implode(",",$due_datestr);
 			}
 			if(isset($_POST['no_of_terms'])){
 				$no_of_terms = $_POST['no_of_terms'];
@@ -3014,15 +2822,26 @@ public function deleteTrustCreation($mysqli, $id, $userid){
 				$transport_amount = $_POST['transport_amount'];
 			}
 			
-			if(isset($_POST['userid'])){
-				$userid = $_POST['userid'];
+			if(isset($_POST['item_details'])){
+				$item_detailsstr = $_POST['item_details'];
+			}
+			if(isset($_POST['due_amount'])){
+				$due_amountstr = $_POST['due_amount'];
+			}
+			if(isset($_POST['due_date'])){
+				$due_datestr = $_POST['due_date'];
 			}
 			
-			
-			$inserttrustQry="INSERT INTO area_creation(area_name, no_of_terms, transport_amount, item_details, due_amount, due_date, insert_login_id ,school_id,year_id) 
-			VALUES('".strip_tags($area_name)."', '".strip_tags($no_of_terms)."', '".strip_tags($transport_amount)."', '".strip_tags($item_details)."', 
-			'".strip_tags($due_amount)."', '".strip_tags($due_date)."','".strip_tags($userid)."','".strip_tags($school_id)."','".strip_tags($log_year)."')"; 
+			$inserttrustQry="INSERT INTO area_creation(area_name, no_of_terms, transport_amount, school_id, year_id, insert_login_id ) 
+			VALUES('".strip_tags($area_name)."', '".strip_tags($no_of_terms)."', '".strip_tags($transport_amount)."', '".strip_tags($school_id)."', '".strip_tags($log_year)."', '".strip_tags($userid)."')"; 
 			$inserttrust = $mysqli->query($inserttrustQry);
+
+			$last_id = $mysqli->insert_id;
+
+			for($i=0; $i< $no_of_terms; $i++){
+				$insertacp = $mysqli->query("INSERT INTO `area_creation_particulars`( `area_creation_id`, `particulars`, `due_amount`, `due_date`) VALUES ('$last_id','$item_detailsstr[$i]','$due_amountstr[$i]','$due_datestr[$i]')");
+				
+			}
 			
 			return true;
 		}
@@ -3030,20 +2849,22 @@ public function deleteTrustCreation($mysqli, $id, $userid){
 		// get Area Creation
 		public function getAreaCreation($mysqli,$id,$school_id,$academic_year){
 			
-			$selectAreaCreation = "SELECT * FROM area_creation WHERE area_id='$id' AND school_id='$school_id' AND year_id='$academic_year' "; 
+			$selectAreaCreation = "SELECT ac.area_id, ac.area_name, ac.no_of_terms, ac.transport_amount, acp.particulars, acp.due_amount, acp.due_date, acp.particulars_id  FROM area_creation ac JOIN area_creation_particulars acp ON ac.area_id = acp.area_creation_id WHERE ac.area_id='$id' AND ac.school_id='$school_id' AND ac.year_id='$academic_year' "; 
 			$res = $mysqli->query($selectAreaCreation) or die("Error in Get All Records".$mysqli->error);
 			$detailrecords = array();
 			if ($mysqli->affected_rows>0)
 			{
-				$row = $res->fetch_object();	
-				$detailrecords['area_id']      = $row->area_id;
-				// $detailrecords['userid'] 		=$row->userid;
-				$detailrecords['area_name']    = $row->area_name;
-				$detailrecords['no_of_terms']    = $row->no_of_terms; 
-				$detailrecords['transport_amount']      = $row->transport_amount;
-				$detailrecords['item_details']      = $row->item_details;  	
-				$detailrecords['due_amount']       = $row->due_amount;
-				$detailrecords['due_date']         = $row->due_date;
+				$i=0;
+				while($row = $res->fetch_object()){	
+				$detailrecords[$i]['area_id']      = $row->area_id;
+				$detailrecords[$i]['area_name']    = $row->area_name;
+				$detailrecords[$i]['no_of_terms']    = $row->no_of_terms; 
+				$detailrecords[$i]['transport_amount']      = $row->transport_amount;
+				$detailrecords[$i]['particulars']      = $row->particulars;  	
+				$detailrecords[$i]['due_amount']       = $row->due_amount;
+				$detailrecords[$i]['due_date']         = $row->due_date;
+				$i++;
+				}
 			}
 			
 			return $detailrecords;
@@ -3051,21 +2872,11 @@ public function deleteTrustCreation($mysqli, $id, $userid){
 
 		// Update Area Creation
 		public function updateAreaCreation($mysqli,$id,$userid,$school_id,$log_year){
+			date_default_timezone_set('Asia/Calcutta');
+			$current_date = date('Y-m-d');
 
 			if(isset($_POST['area_name'])){
 				$area_name = $_POST['area_name'];
-			}
-			if(isset($_POST['item_details'])){
-				$item_detailsstr = $_POST['item_details'];
-				$item_details = implode(",",$item_detailsstr);
-			}
-			if(isset($_POST['due_amount'])){
-				$due_amountstr = $_POST['due_amount'];
-				$due_amount = implode(",",$due_amountstr);
-			}
-			if(isset($_POST['due_date'])){
-				$due_datestr = $_POST['due_date'];
-				$due_date = implode(",",$due_datestr);
 			}
 			if(isset($_POST['no_of_terms'])){
 				$no_of_terms = $_POST['no_of_terms']; 
@@ -3073,61 +2884,31 @@ public function deleteTrustCreation($mysqli, $id, $userid){
 			if(isset($_POST['transport_amount'])){
 				$transport_amount = $_POST['transport_amount'];
 			}
-			
-			if(isset($_POST['userid'])){
-				$userid = $_POST['userid'];
-			}
-			// if(isset($_POST['school_id'])){
-			// 	$school_id = $_POST['school_id'];
-			// }
-			// if(isset($_POST['year_id'])){
-			// 	$year_id = $_POST['year_id'];
-			// }
-			$updateAreaCreation = "UPDATE area_creation SET area_name = '".strip_tags($area_name)."', no_of_terms='".strip_tags($no_of_terms)."', transport_amount='".strip_tags($transport_amount)."', item_details='".strip_tags($item_details)."', 
-			due_amount='".strip_tags($due_amount)."', due_date='".strip_tags($due_date)."', update_login_id='".strip_tags($userid)."',school_id='".strip_tags($school_id)."',year_id='".strip_tags($log_year)."', status = '0'
-			WHERE area_id= '".strip_tags($id)."' AND school_id='".strip_tags($school_id)."' AND year_id='".strip_tags($log_year)."'"; 
-			$updresult = $mysqli->query($updateAreaCreation)or die ("Error in in update Query!.".$mysqli->error);
-			} 
-		// // Update Area Creation
-		// public function updateAreaCreation($mysqli, $id, $userid){
 
-		// 	if(isset($_POST['area_name'])){
-		// 		$area_name = $_POST['area_name'];
-		// 	}
-		// 	if(isset($_POST['item_details'])){
-		// 		$item_detailsstr = $_POST['item_details'];
-		// 		$item_details = implode(",",$item_detailsstr);
-		// 	}
-		// 	if(isset($_POST['due_amount'])){
-		// 		$due_amountstr = $_POST['due_amount'];
-		// 		$due_amount = implode(",",$due_amountstr);
-		// 	}
-		// 	if(isset($_POST['due_date'])){
-		// 		$due_datestr = $_POST['due_date'];
-		// 		$due_date = implode(",",$due_datestr);
-		// 	}
-		// 	if(isset($_POST['no_of_terms'])){
-		// 		$no_of_terms = $_POST['no_of_terms']; 
-		// 	}
-		// 	if(isset($_POST['transport_amount'])){
-		// 		$transport_amount = $_POST['transport_amount'];
-		// 	}
+			if(isset($_POST['item_details'])){
+				$item_detailsstr = $_POST['item_details'];
+			}
+			if(isset($_POST['due_amount'])){
+				$due_amountstr = $_POST['due_amount'];
+			}
+			if(isset($_POST['due_date'])){
+				$due_datestr = $_POST['due_date'];
+			}
 			
-		// 	if(isset($_POST['userid'])){
-		// 		$userid = $_POST['userid'];
-		// 	}
-		
-		// 	$updateAreaCreation = "UPDATE area_creation SET area_name = '".strip_tags($area_name)."', no_of_terms='".strip_tags($no_of_terms)."', transport_amount='".strip_tags($transport_amount)."', item_details='".strip_tags($item_details)."', 
-		// 	due_amount='".strip_tags($due_amount)."', due_date='".strip_tags($due_date)."', update_login_id='".strip_tags($userid)."', 	status = '0' 
-		// 	WHERE area_id= '".strip_tags($id)."' "; 
-		// 	$updresult = $mysqli->query($updateAreaCreation)or die ("Error in in update Query!.".$mysqli->error);
-		// 	} 
+			$updateAreaCreation = "UPDATE area_creation SET area_name = '".strip_tags($area_name)."', no_of_terms = '".strip_tags($no_of_terms)."', transport_amount = '".strip_tags($transport_amount)."', status = '0', school_id='".strip_tags($school_id)."', year_id='".strip_tags($log_year)."', update_login_id='".strip_tags($userid)."', updated_date = '$current_date' WHERE area_id= '".strip_tags($id)."' "; 
+			$updresult = $mysqli->query($updateAreaCreation)or die ("Error in in update Query!.".$mysqli->error);
 			
+			$deleteacp = $mysqli->query("DELETE FROM `area_creation_particulars` WHERE `area_creation_id` = '$id' ");
+
+			for($i=0; $i< $no_of_terms; $i++){
+				$insertacp = $mysqli->query("INSERT INTO `area_creation_particulars`( `area_creation_id`, `particulars`, `due_amount`, `due_date`) VALUES ('$id','$item_detailsstr[$i]','$due_amountstr[$i]','$due_datestr[$i]')");
+			}
+
+			}			
 
 		//  Delete Area Creation
 		public function deleteAreaCreation($mysqli, $id, $userid){
 
-			$date  = date('Y-m-d'); 
 			$deleteAreaCreation = "UPDATE area_creation set status='1', delete_login_id='".strip_tags($userid)."'  WHERE area_id = '".strip_tags($id)."'  ";
 			$runQry = $mysqli->query($deleteAreaCreation) or die("Error in delete query".$mysqli->error);
 		}

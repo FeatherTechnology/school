@@ -1,12 +1,26 @@
+<!--In extra_curricular_activities_fee table extra_id_used = 0 - the value is not used in anyother table. 1 -the value is used in another table. -->
 <?php
-@session_start();
-
 include '../../ajaxconfig.php';
+
+@session_start();
 if(isset($_SESSION["userid"])){
     $user_id = $_SESSION["userid"];
-    $year_id = $_SESSION["year_id"];
     $school_id = $_SESSION["school_id"];
+	$curdate = $_SESSION['curdateFromIndexPage']; 
 } 
+
+if(isset($_POST['academic_year'])){
+	$academic_year = $_POST['academic_year']; 
+}
+if(isset($_POST['medium'])){
+	$medium = $_POST['medium']; 
+}
+if(isset($_POST['student_type'])){
+	$student_type = $_POST['student_type']; 
+}
+if(isset($_POST['standard'])){
+	$standard = $_POST['standard']; 
+}
 if(isset($_POST['particulars'])){
 	$extra_particulars = $_POST['particulars']; 
 } 
@@ -16,40 +30,22 @@ if(isset($_POST['amount'])){
 if(isset($_POST['date'])){
 	$extra_date = $_POST['date']; 
 }
-if(isset($_POST['academic_year'])){
-	$academic_year = $_POST['academic_year']; 
-}
-if(isset($_POST['medium'])){
-	$medium = $_POST['medium']; 
-}
-if(isset($_POST['standard'])){
-	$standard = $_POST['standard']; 
-}
-if(isset($_POST['student_type'])){
-	$student_type = $_POST['student_type']; 
-}
-if(isset($_POST['insert_login_id'])){
-	$insert_login_id = $_POST['insert_login_id']; 
-}
- 
 if(isset($_POST['fees_id'])){
-	$fees_id = $_POST['fees_id']; 
+	$extra_fee_id = $_POST['fees_id']; 
 } 
 
 $extra_academic_year='';
 $extra_medium='';
-$extra_Status='';
-$extra_standard = '';
 $extra_student_type = '';
-
+$extra_standard = '';
 $extrac_particulars = '';
 $extrac_amount = '' ;
 $extrac_date = '' ;
+$extra_Status='';
 
-$selectClass=$con->query("SELECT * FROM fees_master WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."'
-AND extra_particulars = '".$extra_particulars."' AND extra_amount = '".$extra_amount."' AND extra_date = '".$extra_date."' AND standard = '".$standard."' ");
-while ($row=$selectClass->fetch_assoc()){
-
+$selectClass=$con->query("SELECT fm.academic_year, fm.medium, fm.student_type, fm.standard, ecaf.extra_particulars, ecaf.extra_amount, ecaf.extra_date, ecaf.status  FROM `fees_master` fm JOIN `extra_curricular_activities_fee` ecaf ON fm.fees_id = ecaf.fee_master_id WHERE fm.academic_year = '".$academic_year."' AND fm.medium = '".$medium."' AND fm.student_type = '".$student_type."' AND fm.standard = '".$standard."' AND ecaf.extra_particulars = '".$extra_particulars."' AND ecaf.extra_amount = '".$extra_amount."' AND ecaf.extra_date = '".$extra_date."' ");
+if(mysqli_num_rows($selectClass)>0){
+	$row=$selectClass->fetch_assoc();
 		$extra_academic_year    = $row["academic_year"];
 		$extra_medium    = $row["medium"];
 		$extra_student_type    = $row["student_type"];
@@ -58,31 +54,43 @@ while ($row=$selectClass->fetch_assoc()){
 		$extrac_amount    = $row["extra_amount"];
 		$extrac_date    = $row["extra_date"];
 		$extra_Status  = $row["status"];
-	}
-if($extra_academic_year != '' && $extra_medium != '' && $extra_student_type != '' && $extra_standard != '' && $extrac_particulars != '' && $extra_Status == 0){ ;
+}
+
+if($extra_academic_year == $academic_year && $extra_medium == $medium && $extra_student_type == $student_type && $extra_standard == $standard && $extrac_particulars == $extra_particulars && $extrac_amount == $extra_amount && $extrac_date == $extra_date && $extra_Status == 1){ ;
 	$message="Fees Already Exists, Please Enter a Different Name!";
-}
 
-else if($extra_academic_year != '' && $extra_medium != '' && $extra_student_type != '' && $extra_standard != '' && $extrac_particulars != ''  && $extrac_amount != '' && $extrac_date != '' && $extra_Status == 1){ ;
-	$updateClass=$con->query("UPDATE fees_master SET status=0 WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."'
-	AND extra_particulars = '".$extra_particulars."' AND extra_amount = '".$extra_amount."' AND extra_date = '".$extra_date."' ");
+}else if($extra_academic_year != '' && $extra_medium != '' && $extra_student_type != '' && $extra_standard != '' && $extrac_particulars != ''  && $extrac_amount != '' && $extrac_date != '' && $extra_Status == 0){ 
+	$updateClass=$con->query("UPDATE extra_curricular_activities_fee SET extra_particulars = '".$extra_particulars."', extra_amount = '".$extra_amount."', extra_date = '".$extra_date."', `status`='1' WHERE extra_particulars = '".$extra_particulars."' AND extra_amount = '".$extra_amount."' AND extra_date = '".$extra_date."' ");
 	$message="Fees Details Added Succesfully";
-}
 
-else{ 
-	if($fees_id>0){
-		$updateClass=$con->query("UPDATE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."'
-		AND extra_particulars = '".$extra_particulars."' AND extra_amount = '".$extra_amount."' AND extra_date = '".$extra_date."' WHERE fees_id='".$fees_id."' ");
-		if($updateClass == true){
-		    $message="Fees Details Updated Succesfully";
-	    }
-    }
-	else{ ;
-	    $insertClass=$con->query("INSERT INTO fees_master(academic_year,medium,student_type,standard,extra_particulars,extra_amount,extra_date,insert_login_id,extra_status,user_id,school_id) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."',
-		'".strip_tags($student_type)."','".strip_tags($standard)."','".strip_tags($extra_particulars)."','".strip_tags($extra_amount)."','".strip_tags($extra_date)."','".strip_tags($insert_login_id)."','1','".strip_tags($user_id)."','".strip_tags($school_id)."')");
-	    if($insertClass == true){
-		    $message="Fees Insert Succesfully";
-	    }
+}else{ 
+	if($extra_fee_id>0){
+		$updateextra=$con->query("UPDATE extra_curricular_activities_fee SET extra_particulars = '".$extra_particulars."', extra_amount = '".$extra_amount."', extra_date = '".$extra_date."', `status`='1' WHERE extra_fee_id='".$extra_fee_id."' ");
+		if($updateextra == true){
+			$message="Fees Details Updated Succesfully";
+		}
+    
+	}else{
+		$feeMasterrowcnt=$con->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."' order by fees_id desc ");
+
+		if(mysqli_num_rows($feeMasterrowcnt) > 0){
+			$fee_master_last_id = $feeMasterrowcnt->fetch_assoc()['fees_id'];
+
+			$UpdQry=$con->query("UPDATE `fees_master` SET `extra_status`='1',`update_login_id`='$user_id',`updated_date`='$curdate' WHERE `fees_id`='$fee_master_last_id' ");
+
+		}else{
+			$insertClass=$con->query("INSERT INTO fees_master(academic_year,medium,student_type,standard,extra_status,insert_login_id,school_id) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."', '".strip_tags($student_type)."','".strip_tags($standard)."','1','".strip_tags($user_id)."','".strip_tags($school_id)."')");
+			$fee_master_last_id = mysqli_insert_id($con);
+			
+		}
+
+		$insertExtraFees = $con->query("INSERT INTO `extra_curricular_activities_fee`( `fee_master_id`, `extra_particulars`, `extra_amount`, `extra_date`) VALUES ('".strip_tags($fee_master_last_id)."','".strip_tags($extra_particulars)."','".strip_tags($extra_amount)."','".strip_tags($extra_date)."' )");
+
+		if($insertClass && $insertExtraFees){
+			$message="Fees Insert Succesfully";
+		}else{
+			$message="Fees Insert Failed";
+		}
     }
 }
 

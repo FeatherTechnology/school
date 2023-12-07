@@ -3,7 +3,7 @@
 if(isset($_SESSION["userid"])){
     $userid = $_SESSION["userid"];
 } 
-$SubjectList = $userObj->getSubjectDetails($mysqli);
+// $SubjectList = $userObj->getSubjectDetails($mysqli);
 
 $id=0;
  if(isset($_POST['submittrust_creation']) && $_POST['submittrust_creation'] != '')
@@ -89,14 +89,10 @@ if($idupd>0)
         <ol class="breadcrumb">
             <li class="breadcrumb-item">SM - Syllabus Report List </li>
         </ol>
-        <a href="edit_school_creation">
-            <button type="button" class="btn btn-primary"><span class="icon-arrow-left"></span>&nbsp; Back</button>
-        <!-- <button type="button" class="btn btn-primary"><span class="icon-border_color"></span>&nbsp Edit Employee Master</button> -->
-        </a>
     </div>
-				<!-- Page header end -->
+<!-- Page header end -->
 
-				<!-- Main container start -->
+<!-- Main container start -->
 <div class="main-container">
 <!--------form start-->
 <form id = "school_creation" name="school_creation" action="" method="post" enctype="multipart/form-data"> 
@@ -117,11 +113,6 @@ if($idupd>0)
                                         <label>Select</label>
                                         <select class="form-control select2" id="class_id" name="class_id">
                                         <option>Select</option> 
-                                        <option value="2" <?php  if(isset($class_id)) { if($class_id == "2") echo 'selected'; }?>>L.K.G</option> 
-                                            <option value="3" <?php  if(isset($class_id)) { if($class_id == "3") echo 'selected'; }?>>U.K.G</option> 
-                                            <option value="4" <?php  if(isset($class_id)) { if($class_id == "4") echo 'selected'; }?>>I</option> 
-                                            <option value="5" <?php  if(isset($class_id)) { if($class_id == "5") echo 'selected'; }?>>II</option> 
-                                            <option value="6" <?php  if(isset($class_id)) { if($class_id == "6") echo 'selected'; }?>>III</option> 
                                         </select>
                                     </div>
                                 </div>
@@ -136,31 +127,13 @@ if($idupd>0)
                         </div>
                     </div>
                 </div>
-                <div id="stockinfotable">
+                <div id="allocationReport" style="display: none;">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item">SM - Syllabus Report List </li>
+                        <li class="breadcrumb-item">SM - Syllabus List </li>
                     </ol> 
                     <div class="card">
                         <div class="card-body">
-                            <div id="updatedstockinfotable"> 
-                                <table class="table custom-table" id="updatedSyllabusTable"> 
-                                    <thead>
-                                        <tr>
-                                            <th>S. No</th>
-                                            <th>Paper Name</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (sizeof($SubjectList)>0) { 
-                                            for($j=0;$j<count($SubjectList);$j++) { ?>
-                                            <tr>
-                                                <td class="col-md-2 col-xl-2"><?php echo $j+1; ?></td>
-                                                <td><?php  echo $SubjectList[$j]['paper_name']; ?></td>
-                                            </tr>
-                                        <?php } } ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <div id="updatedstockinfotable"> </div>
                         </div>
                     </div>
                 </div>

@@ -53,6 +53,7 @@ if(isset($_POST['lusername'])) {
 		$_SESSION['school_name']    = $result['school_name']; 
 		$_SESSION['year_id']    = $result['year_id']; 
 		$_SESSION['academic_year']    = $result['academic_year']; 
+		$_SESSION['curdateFromIndexPage']    = date('Y-m-d'); 
 		?>
 		<script>location.href='<?php echo $HOSTPATH; ?>edit_school_creation';</script>  
 		<?php

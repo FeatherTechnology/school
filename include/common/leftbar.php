@@ -198,7 +198,7 @@ $billmodel = $userObj->getbilltype($mysqli, $userid);?>
 											</a>	
 										</li>
 										<li>
-											<a href="syllabus_report"><i><span class="icon-bug_report"></span></i>Report
+											<a href="syllabus_report"><i><span class="icon-bug_report"></span></i>Allocation View
 											</a>	
 										</li>
 									</ul>

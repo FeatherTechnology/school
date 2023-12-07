@@ -4,13 +4,47 @@ $(document).ready(function () {
 $('#firstnameCheck').hide();$('#lastnameCheck').hide();$('#dsgnCheck').hide();$('#genderCheck').hide();$('#qualificationCheck').hide();$('#adharnoCheck').hide();$('#contactCheck').hide();$('#dojCheck').hide();$('#emgcontactnoCheck').hide();$('#emgcontactpersonCheck').hide();
 // $('#panCheck').hide();
 $('#SubmitStaffCreation').click(function(){
-   staffSubmit();
+    staffSubmit();
 })
+
+$('[data-type="adhaar-number"]').keyup(function() {
+    var value = $(this).val();
+    value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
+    $(this).val(value);
+});
+
+$('[data-type="adhaar-number"]').on("change, blur", function() {
+    var value = $(this).val();
+    var maxLength = $(this).attr("maxLength");
+    if (value.length != maxLength) {
+        $(this).addClass("highlight-error");
+    } else {
+        $(this).removeClass("highlight-error");
+    }
+});
+
+$('#staff_pan').keyup(function () {     
+    validatepan();
+});
+
+// Create new bidder
+$("#SubmitStaffCreation").click(function(){ 
+    validatepan();    
+});
+
+$('input[type="checkbox"]').change(function() {
+    checkbox();
+});
 
 });// Document END.
 
 $(function(){
     getstaffCode();//Autocall for request code
+
+    var idupd = $('#idupd').val();
+    if(idupd >'0'){
+        checkbox(); //To show area field.
+    }
 })
 
 function staffSubmit(){
@@ -86,12 +120,11 @@ if(emgcontactNo == ''){
     $('#emgcontactnoCheck').hide();
 }
 
-
-$('#delete_staff').click(function(){
-    alert('delete STaff');
-})
-
 }
+
+// $('#delete_staff').click(function(){
+//     alert('delete STaff');
+// })
 
 //Get Request Code 
 function getstaffCode(){
@@ -109,55 +142,26 @@ function getstaffCode(){
     })
 }
 
-// Document is ready
-$(document).ready(function () {
-    $('#staff_pan').keyup(function () {     
-        validatepan();
-  });
-  $('#staff_pan').keyup(function () {     
-    validatepan();
-});
-
-
-
-// Create new bidder
-$("#SubmitStaffCreation").click(function(){ 
-
-    validatepan();
-  
-    
-});
-
-
-
-        $('input[type="checkbox"]').change(function() {
-            checkbox();
-        });
-        checkbox();
-});
 function validatepan(){
     var staff_pan = $("#staff_pan").val();
 
     if (staff_pan.length == '0') {
         $('#panCheck').text('Enter PAN');
         $('#SubmitStaffCreation').prop('disabled', true);
-       }
-       else{
-       var regex = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+        }
+        else{
+        var regex = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
         if (regex.test(staff_pan)){
-           
+            
             $('#panCheck').text('');
             $('#SubmitStaffCreation').prop('disabled', false);
         } else {
-            
             $('#panCheck').text('Enter PAN (ABCDE1234Z)');
             $('#SubmitStaffCreation').prop('disabled', true);
-
         }
-       }  
-  
-    
+        }      
 }
+
 function checkbox() {
     var checkoptionval= $('#checkoptionval').val();
     var checkedValue = $('input[type="checkbox"]:checked').val();   
@@ -174,13 +178,13 @@ function checkbox() {
             cache: false,
             type: "post",
             dataType: "json",
-        success: function (data) { 
+            success: function (data) { 
                 $("#areaname").css("display", "none");
                 $('#area_name').text('');
                 $('#area_name').val('');
                 var option = $('<option></option>').val('').text('Select Area');
                 $('#area_name').append(option);
-            for(var a=0; a<=data.length-1; a++){
+                for(var a=0; a<=data.length-1; a++){
                 
                 $("#areaname").css("display", "");
                 var selected = '';
@@ -189,14 +193,17 @@ function checkbox() {
                 }
                 
                 var option = $('<option '+selected+' ></option>').val(data[a]['area_id']).text(data[a]['area_name']);
-             
                 $('#area_name').append(option);
                 }
-        }
+            }
         });
 
     }else{
         $('#areaname').hide();
-    }
-    
+    }   
 }
+
+function loadFile(event) {
+    var image = document.getElementById("viewimage");
+    image.src = URL.createObjectURL(event.target.files[0]);
+};

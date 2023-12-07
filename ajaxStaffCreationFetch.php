@@ -1,11 +1,8 @@
 <?php
 include('ajaxconfig.php');
 @session_start();
-
-if(isset($_SESSION["userid"])){
-    $userid = $_SESSION["userid"];
+if(isset($_SESSION["school_id"])){
     $school_id = $_SESSION["school_id"];
-    $year_id = $_SESSION["academic_year"];
 }
 
 $column = array(
@@ -16,7 +13,7 @@ $column = array(
     'area',
     'status'
 );
-$query = "SELECT * FROM staff_creation  WHERE  school_id='$school_id' AND year_id='$year_id'";
+$query = "SELECT * FROM staff_creation  WHERE  school_id='$school_id' ";
 if($_POST['search']!="");
 {
     if (isset($_POST['search'])) {
@@ -89,17 +86,14 @@ foreach ($result as $row) {
 	
 	$action="<div class='bd-example'>
     <div class='btn-group dropstart'>
-      <button type='button' class='btn btn-primary dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
-       
-      </button>
-      <ul class='dropdown-menu'>
-      <li><a class='dropdown-item' href='staff_creation&upd=$id'><span class='icon-border_color'></span> Edit</a></li>
-      <li><input type='hidden' name='student_id1' id='student_id1' value='$id'></li>
-      <li><a class='dropdown-item' href='staff_creation&del=$id'><span class='icon-x-circle'></span>&nbsp;Delete </a> </li>
-
-      </ul>
+    <button type='button' class='btn btn-primary dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'> </button>
+        <ul class='dropdown-menu'>
+        <li><a class='dropdown-item' href='staff_creation&upd=$id'><span class='icon-border_color'></span> Edit</a></li>
+        <li><input type='hidden' name='student_id1' id='student_id1' value='$id'></li>
+        <li><a class='dropdown-item' href='staff_creation&del=$id'><span class='icon-x-circle'></span>&nbsp;Delete </a> </li>
+        </ul>
     </div>
-  </div>";
+    </div>";
 
 	$sub_array[] = $action;
     $data[]      = $sub_array;
@@ -108,12 +102,10 @@ foreach ($result as $row) {
 
 function count_all_data($connect)
 {
-    if(isset($_SESSION["userid"])){
-        $userid = $_SESSION["userid"];
+    if(isset($_SESSION["school_id"])){
         $school_id = $_SESSION["school_id"];
-        $year_id = $_SESSION["academic_year"];
     }
-    $query     = "SELECT * FROM staff_creation  WHERE  school_id='$school_id' AND year_id='$year_id'";
+    $query     = "SELECT * FROM staff_creation  WHERE  school_id='$school_id' ";
     $statement = $connect->prepare($query);
     $statement->execute();
     return $statement->rowCount();

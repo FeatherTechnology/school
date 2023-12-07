@@ -1,17 +1,16 @@
 <?php
 include '../../ajaxconfig.php';
-if(isset($_POST["fees_id"])){
-	$fees_id  = $_POST["fees_id"];
+if(isset($_POST["amenity_fee_id"])){
+	$amenity_fee_id  = $_POST["amenity_fee_id"];
 }
 
-$getct = "SELECT * FROM fees_master WHERE fees_id = '".$fees_id."' AND status=0 AND amenity_status = 1";
+$feeDetails = array();
+$getct = "SELECT * FROM amenity_fee WHERE amenity_fee_id = '".$amenity_fee_id."' AND status = 1"; //Status = 1 - true, 0 - false.
 $result = $con->query($getct);
-while($row=$result->fetch_assoc())
-{
+$row=$result->fetch_assoc();
     $amenity_particulars = $row['amenity_particulars'];
     $amenity_amount = $row['amenity_amount'];
     $amenity_date= $row['amenity_date'];
-}
 
 $feeDetails['amenity_particulars'] = $amenity_particulars;
 $feeDetails['amenity_amount'] = $amenity_amount;

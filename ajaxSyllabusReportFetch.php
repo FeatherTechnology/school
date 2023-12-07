@@ -4,23 +4,12 @@ include 'ajaxconfig.php';
 if(isset($_POST["class_id"])){
 	$class_id  = $_POST["class_id"]; 
 } 
+if(isset($_POST["class_name"])){
+	$class_name  = $_POST["class_name"]; 
+} 
 ?>
 <table class="table custom-table" id="updatedSyllabusTable"> 
-	<label style="background-color:#5090c0;color:#fff;width:100%;padding:10px;">Course Name: 
-		<?php 
-			if($class_id == "2"){
-				echo "L.K.G" ;
-			}elseif($class_id == "3"){
-				echo "U.K.G" ;
-			}elseif($class_id == "4"){
-				echo "I" ;
-			}elseif($class_id == "5"){
-				echo "II" ;
-			}elseif($class_id == "6"){
-				echo "III" ;
-			}
-		?>
-	</label>
+	<label style="background-color:#5090c0;color:#fff;width:100%;padding:10px;">Course Name: <?php echo $class_name; ?> </label>
 	<thead>
 		<tr>
 			<th>S.No</th>
@@ -45,7 +34,7 @@ if(isset($_POST["class_id"])){
 
 <script type="text/javascript">
 $(function(){
-  $('#updatedSyllabusTable').DataTable({
+	$('#updatedSyllabusTable').DataTable({
 		dom: 'lBfrtip', 
 	buttons: [
 		
@@ -67,6 +56,6 @@ $(function(){
 		[10, 25, 50, -1],
 		[10, 25, 50, "All"]
 	]
-  });
+	});
 });
 </script>
