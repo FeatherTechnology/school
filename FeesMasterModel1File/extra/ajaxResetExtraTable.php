@@ -31,7 +31,7 @@ if(isset($_POST['standard'])){
     <tbody>
         <?php
         $extraFeeQry="SELECT ecaf.extra_fee_id, ecaf.extra_particulars, ecaf.extra_amount, ecaf.extra_date FROM fees_master fm JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id WHERE fm.academic_year = '$academic_year' AND fm.medium = '$medium' AND fm.student_type = '$student_type' AND fm.standard = '$standard' AND ecaf.status = '1' AND fm.school_id ='$school_id'";
-        $extraFeeDetails=$con->query($extraFeeQry);
+        $extraFeeDetails=$mysqli->query($extraFeeQry);
         if($extraFeeDetails->num_rows>0){
         $i=1;
         while($extra_data=$extraFeeDetails->fetch_assoc()){

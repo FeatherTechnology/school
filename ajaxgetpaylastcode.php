@@ -1,25 +1,19 @@
 <?php
 include 'ajaxconfig.php';
 
-$selectIC = $con->query("SELECT receipt_number FROM pay_last_year_fees WHERE receipt_number != '' ");
+$codeAvailable = $mysqli->query("SELECT receipt_no FROM last_year_fees WHERE receipt_no != '' ORDER BY id DESC LIMIT 1 ");
 
-if($selectIC->num_rows>0)
+if($codeAvailable->num_rows>0)
 {
-    $codeAvailable = $con->query("SELECT receipt_number FROM pay_last_year_fees WHERE receipt_number != '' ORDER BY pay_last_year_fees_id DESC LIMIT 1");
-    while($row = $codeAvailable->fetch_assoc()){
-        $ac2 = $row["receipt_number"];
-    }
-
+    $row = $codeAvailable->fetch_assoc();
+    $ac2 = $row["receipt_no"];
     $appno1 = ltrim(strstr($ac2, 'T'), 'T')+1;
-	$receipt_number="LAST".$appno1;
-}
-else
-{
+	$receipt_no="LAST".$appno1;
+
+}else{
     $initialgrno=1001;
-	$receipt_number="LAST".$initialgrno;
+	$receipt_no="LAST".$initialgrno;
 }
 
-
-echo json_encode($receipt_number);
-
+echo json_encode($receipt_no);
 ?>

@@ -134,27 +134,39 @@ $(document).ready(function(){
 });
 $(document).ready(function(){
 
-var mail = $('#lusername').val();
-$.ajax({
-	url: "ajaxgetschooldata.php",
-	data: { "mail":mail },
-	cache: false,
-	type: "post",
-	dataType: "json",
-	success: function (data) {
-		$('#school').text('');
-		$('#school').val('');
-		var option = $('<option></option>').val('').text('Select School');
-		$('#school').append(option);
-		for(var a=0; a<=data.school.length-1; a++){
-			
-			var option = $('<option ></option>').val(data.school[a]['school_id']).text(data.school[a]['school_name']);
-			$('#school').append(option);
-			}
+	// Get the current URL
+	var currentUrl = window.location.href;
+	// Extract the pathname from the URL
+	var pathname = new URL(currentUrl).pathname;
+	// If you only want the page name without any directory structure
+	var pageName = pathname.split('/').pop();
+	// Now, pageName contains the name of the current page
 	
+	if(pageName == 'index' || pageName == '' || pageName == 'index.php'){
+		
+		var mail = $('#lusername').val();
+		$.ajax({
+			url: "ajaxgetschooldata.php",
+			data: { "mail":mail },
+			cache: false,
+			type: "post",
+			dataType: "json",
+			success: function (data) {
+				$('#school').text('');
+				$('#school').val('');
+				var option = $('<option></option>').val('').text('Select School');
+				$('#school').append(option);
+				for(var a=0; a<=data.school.length-1; a++){
+					
+					var option = $('<option ></option>').val(data.school[a]['school_id']).text(data.school[a]['school_name']);
+					$('#school').append(option);
+					}
+			
+			}
+			});
+		passcheck();
+
 	}
-	});
-passcheck();
 });
 
 
@@ -162,13 +174,13 @@ passcheck();
 // Bootstrap JS ***********
 
 // Tooltip
-$(function () {
-	$('[data-toggle="tooltip"]').tooltip()
-})
+// $(function () {
+// 	$('[data-toggle="tooltip"]').tooltip()
+// })
 
-$(function () {
-	$('[data-toggle="popover"]').popover()
-})
+// $(function () {
+// 	$('[data-toggle="popover"]').popover()
+// })
 
 
 

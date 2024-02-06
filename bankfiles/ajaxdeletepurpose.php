@@ -5,7 +5,7 @@ if(isset($_POST["purposeid"])){
 }
 $isdel='';
 $message='';
-$isavl = $con->query("SELECT * FROM bankmaster WHERE purpose = '".$purposeid."' ");
+$isavl = $mysqli->query("SELECT * FROM bankmaster WHERE purpose = '".$purposeid."' ");
 while($row=$isavl->fetch_assoc()){
 	$isdel = $row["purpose"];
 }
@@ -15,7 +15,7 @@ if($isdel!=''){
 }
 else
 {
-	$deletepurpose=$con->query("UPDATE purpose SET status = 1 WHERE purposeid='".$purposeid."' ");
+	$deletepurpose=$mysqli->query("UPDATE purpose SET status = 1 WHERE purposeid='".$purposeid."' ");
 	if($deletepurpose){
 		$message="Purpose Inactivated Successfully";
 	}

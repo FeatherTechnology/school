@@ -9,7 +9,7 @@ if(isset($_POST["ponum"])){
 // if(isset($_POST["shipto"])){
 // 	$shipto=$_POST["shipto"]; 
 // }
-$getpo=$con->query("SELECT * FROM purchaseorder WHERE ponumber='".strip_tags($ponum)."' ");
+$getpo=$mysqli->query("SELECT * FROM purchaseorder WHERE ponumber='".strip_tags($ponum)."' ");
 while($row=$getpo->fetch_assoc()){
 	$vendor=$row["vendor"];
 	$shipto=$row["shipto"];
@@ -69,13 +69,13 @@ while($row=$getpo->fetch_assoc()){
 	}
 }
 
-$getmailid=$con->query("SELECT mailid FROM vendor WHERE vendorid='".$vendor."' ");
+$getmailid=$mysqli->query("SELECT mailid FROM vendor WHERE vendorid='".$vendor."' ");
 while ($data=$getmailid->fetch_assoc()){
 	$vendormail=$data["mailid"];
 }
 
 
-$getbrc=$con->query("SELECT * FROM temple_creation");
+$getbrc=$mysqli->query("SELECT * FROM temple_creation");
 while ($brc=$getbrc->fetch_assoc()) {
 	$address1  =$brc["address1"];
 	$address2  =$brc["address2"];

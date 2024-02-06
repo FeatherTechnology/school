@@ -1,11 +1,11 @@
 <?php
 include 'ajaxconfig.php';
 
-$selectIC = $con->query("SELECT item_code FROM item_creation WHERE item_code != '' ");
+$selectIC = $mysqli->query("SELECT item_code FROM item_creation WHERE item_code != '' ");
 
 if($selectIC->num_rows>0)
 {
-    $codeAvailable = $con->query("SELECT item_code FROM item_creation WHERE item_code != '' ORDER BY item_id DESC LIMIT 1");
+    $codeAvailable = $mysqli->query("SELECT item_code FROM item_creation WHERE item_code != '' ORDER BY item_id DESC LIMIT 1");
     while($row = $codeAvailable->fetch_assoc()){
         $ac2 = $row["item_code"];
     }

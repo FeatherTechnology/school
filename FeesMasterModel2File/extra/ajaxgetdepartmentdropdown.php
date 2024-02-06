@@ -1,7 +1,7 @@
 <?php 
 include('../ajaxconfig.php');
 $papernamearr = array();
-$result=$con->query("SELECT * FROM subject_details where 1 and status=0");
+$result=$mysqli->query("SELECT * FROM subject_details where 1 and status=0");
 while( $row = $result->fetch_assoc()){
       $subject_id = $row['subject_id'];
       $paper_name = $row['paper_name'];

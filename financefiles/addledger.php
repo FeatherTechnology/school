@@ -70,7 +70,7 @@ $accountsId="";
 
 $ledgers[]=(1);
 $isadd="SELECT ledgername FROM ledger";
-$res=$con->query($isadd);
+$res=$mysqli->query($isadd);
 while($row=$res->fetch_assoc()){
 	$ledgers[]=$row["ledgername"];
 }
@@ -79,14 +79,14 @@ if(in_array($ledgername, $ledgers)){
 }else{
 
 	$isadd="SELECT * FROM accountsgroup where AccountsName='".strip_tags($ledgergroup)."' ";
-	$res=$con->query($isadd);
+	$res=$mysqli->query($isadd);
 	while($row=$res->fetch_assoc()){
 		$accountsId =$row["Id"];
 	}
 
 	$insertqry="INSERT INTO ledger(ledgername, groupname, subgroupname, costcentre, openingbalancedr, opening_credit, opening_debit, 	openingbalance, inventory, exciseduty, address1, pan, address2, tin, address3, servicetax, address4, contactperson, contactnumber, AccountRefId) 
 	VALUES('".strip_tags($ledgername)."', '".strip_tags($accountsId)."', '".strip_tags($ledgersubgroup)."', '".strip_tags($ledgercostcentre)."', '".strip_tags($openingbalancedr)."' ,'".strip_tags($opening_credit)."' ,'".strip_tags($opening_debit)."' , '".strip_tags($openingbalance)."', '".strip_tags($inventory)."', '".strip_tags($exciseduty)."', '".strip_tags($address1)."', '".strip_tags($pan)."', '".strip_tags($address2)."', '".strip_tags($tin)."', '".strip_tags($address3)."', '".strip_tags($servicetax)."', '".strip_tags($address4)."', '".strip_tags($contactperson)."', '".strip_tags($contactnumber)."', '".strip_tags($ledgersubgroup)."' )";
-	$insresult=$con->query($insertqry) or die($con->error);
+	$insresult=$mysqli->query($insertqry) or die($mysqli->error);
 	$ledgerinsert="Ledger Added Succesfully!";
 }
 echo json_encode($ledgerinsert);

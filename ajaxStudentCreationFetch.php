@@ -7,10 +7,10 @@ if(isset($_SESSION["userid"])){
 }
 if(isset($_SESSION["school_id"])){
     $school_id = $_SESSION["school_id"];
- }
- if(isset($_SESSION["academic_year"])){
+}
+if(isset($_SESSION["academic_year"])){
     $year_id = $_SESSION["academic_year"];
- }
+}
 $column = array(
     'student_id',
     'student_name',
@@ -20,7 +20,7 @@ $column = array(
     'status'
 );
 
-$query = "SELECT * FROM student_creation WHERE  school_id='$school_id' AND year_id='$year_id'";
+$query = "SELECT stdc.*, sc.standard as std_name, stdc.admission_number, stdc.facility FROM student_creation stdc JOIN standard_creation sc ON stdc.standard = sc.standard_id WHERE  stdc.school_id='$school_id' AND stdc.year_id='$year_id'";
 if($_POST['search']!="");
 {
     if (isset($_POST['search'])) {
@@ -37,10 +37,10 @@ if($_POST['search']!="");
         else{	
             $query .= "
             AND student_name LIKE  '%".$_POST['search']."%'
-            AND standard LIKE '%".$_POST['search']."%'
+            AND stdc.standard LIKE '%".$_POST['search']."%'
             AND gender LIKE '%".$_POST['search']."%'
             AND flat_no LIKE '%".$_POST['search']."%'
-            AND status LIKE '%".$_POST['search']."%' ";
+            AND stdc.status LIKE '%".$_POST['search']."%' ";
         }
     }
 }
@@ -75,9 +75,10 @@ foreach ($result as $row) {
     }
     
     $sub_array[] = $row['student_name'];
-    $sub_array[] = $row['standard'];
+    $sub_array[] = $row['std_name'];
     $sub_array[] = $row['gender'];
     $sub_array[] = $row['flat_no'];
+    $facility = $row['facility'];
     
     $status      = $row['status'];
     if($status == 1)
@@ -89,34 +90,31 @@ foreach ($result as $row) {
     $sub_array[] = "<span style='width: 144px;'><span class='kt-badge  kt-badge--success kt-badge--inline kt-badge--pill'>Active</span></span>";
 	}
 
-    // dropdown list ui design
-    // <ul class='dropdown-menu'>
-    //     <li><a class='dropdown-item' href='student_creation&upd=$id'><span class='icon-border_color'></span></a></li>
-    //     <li><a class='dropdown-item' href='student_creation&del=$id'><span class='icon-trash-2'></span></a></li>
-    //     <li><a class='dropdown-item' href='#'>Attachments</a></li>
-    //     <li><hr class='dropdown-divider'>Last Year Fees</li>
-    //     <li><a class='dropdown-item' href='#'>Individual SMS</a></li>
-    //   </ul>
-
 	$id   = $row['student_id'];
+	$admissionNo   = $row['admission_number'];
 	
 	$action="<div class='bd-example'>
     <div class='btn-group dropstart'>
-      <button type='button' class='btn btn-primary dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
-       
-      </button>
-      <ul class='dropdown-menu'>
-      <li><a id='editemai' class='dropdown-item' href='student_creation&upd=$id'><span class='icon-border_color'></span> Edit</a></li>
-      <li><input type='hidden' name='student_id1' id='student_id1' value='$id'></li>
-      <li><button type='button' data-id='$id' data-toggle='modal' data-target='#rejectModal' class='btn rejectpo' title='Delete student'><span class='icon-x-circle'></span>&nbsp;Delete</button></li>
-        <li><a class='dropdown-item' href='#'><span class='icon-attachment1'></span> Attachments</a></li>
+        <button type='button' class='btn btn-primary dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
+        
+        </button>
+        <ul class='dropdown-menu'>
+        <li><a id='editemai' class='dropdown-item' href='student_creation&upd=$id'><span class='icon-border_color'></span> Edit</a></li>
+        <li><input type='hidden' name='student_id1' id='student_id1' value='$id'></li>
+        <li><button type='button' data-id='$id' data-toggle='modal' data-target='#rejectModal' class='btn rejectpo' title='Delete student'><span class='icon-x-circle'></span>&nbsp;Delete</button></li>
+        <li><button type='button' data-no='$admissionNo' data-id='$id' data-toggle='modal' data-target='.attachmentModal' class='btn attachmentFiles' title='student Attachment'><span class='icon-attachment1'></span>&nbsp;Attachments</button></li>
         <li><a class='dropdown-item' href='pay_fees&upd=$id'><span class='icon-dollar-sign'></span> Pay Fees</a></li>
-        <li><a class='dropdown-item' href='last_year_fees_pay&upd=$id'><span class='icon-dollar-sign'></span> Last Year Fees</a></li>
-        <li><a class='dropdown-item' href='transport_fees&upd=$id'><span class='icon-dollar-sign'></span> Pay Transport Fees</a></li>
-        <li><a class='dropdown-item' href='#'><span class='icon-message'></span> Individual SMS</a></li>
-      </ul>
-    </div>
-  </div>";
+        <li><a class='dropdown-item' href='last_year_fees_pay&upd=$id'><span class='icon-dollar-sign'></span> Last Year Fees</a></li>";
+        
+        if($facility == 'Transport'){
+        $action .= "<li><a class='dropdown-item' href='transport_fees&upd=$id'><span class='icon-dollar-sign'></span> Pay Transport Fees</a></li>"; 
+        }
+
+        // <li><a class='dropdown-item' href='#'><span class='icon-message'></span> Individual SMS</a></li>
+    $action .="</ul>
+        </div>
+        </div>";
+        // <li><a class='dropdown-item' href='#'><span class='icon-attachment1'></span> Attachments</a></li>
 
 	$sub_array[] = $action;
     $data[]      = $sub_array;

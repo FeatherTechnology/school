@@ -5,7 +5,7 @@ if(isset($_POST["last_year_fees_master_id"])){
 }
 
 $getct = "SELECT * FROM last_year_fees_master WHERE last_year_fees_master_id = '".$last_year_fees_master_id."' AND status=0 AND grp_status = 1";
-$result = $con->query($getct);
+$result = $mysqli->query($getct);
 while($row=$result->fetch_assoc())
 {
     $grp_particulars = $row['grp_particulars'];

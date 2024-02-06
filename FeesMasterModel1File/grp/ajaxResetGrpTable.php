@@ -31,7 +31,7 @@ if(isset($_POST['standard'])){
     <tbody>
         <?php
         $grpFeeQry="SELECT gcf.grp_course_id, gcf.grp_particulars, gcf.grp_amount, gcf.grp_date  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '".$academic_year."' AND fm.medium = '".$medium."' AND fm.student_type = '".$student_type."' AND fm.standard = '".$standard."' AND gcf.status = 1 AND fm.school_id = '$school_id' "; 
-        $grpFeeDetails=$con->query($grpFeeQry);
+        $grpFeeDetails=$mysqli->query($grpFeeQry);
         if($grpFeeDetails->num_rows>0){
         $i=1;
         while($grprow=$grpFeeDetails->fetch_assoc()){

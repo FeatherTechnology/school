@@ -23,9 +23,9 @@ if(in_array($_FILES["file"]["type"],$allowedFileType)){
             foreach ($Reader as $Row){
 				
 			$bankcode = "";
-            $selectcc=$con->query("SELECT bankcode FROM bankmaster");
+            $selectcc=$mysqli->query("SELECT bankcode FROM bankmaster");
             if($selectcc->num_rows>0){
-            $bankavailable=$con->query("SELECT bankcode FROM bankmaster ORDER BY bankid  DESC LIMIT 1");
+            $bankavailable=$mysqli->query("SELECT bankcode FROM bankmaster ORDER BY bankid  DESC LIMIT 1");
             while ($row=$bankavailable->fetch_assoc()) {
             $bankcode2=$row["bankcode"];
             }
@@ -38,51 +38,51 @@ if(in_array($_FILES["file"]["type"],$allowedFileType)){
 			
            // $bankcode = "";
            // if(isset($Row[0])) {
-           // $bankcode = mysqli_real_escape_string($con,$Row[0]);
+           // $bankcode = mysqli_real_escape_string($mysqli,$Row[0]);
            // }
             $bankname = "";
             if(isset($Row[0])) {
-            $bankname = mysqli_real_escape_string($con,$Row[0]);
+            $bankname = mysqli_real_escape_string($mysqli,$Row[0]);
             }
             $accountno = "";
             if(isset($Row[1])) {
-            $accountno = mysqli_real_escape_string($con,$Row[1]);
+            $accountno = mysqli_real_escape_string($mysqli,$Row[1]);
             }
             $branchname = "";
             if(isset($Row[2])) {
-            $branchname = mysqli_real_escape_string($con,$Row[2]);
+            $branchname = mysqli_real_escape_string($mysqli,$Row[2]);
             }
             $shortform = "";
             if(isset($Row[3])) {
-            $shortform = mysqli_real_escape_string($con,$Row[3]);
+            $shortform = mysqli_real_escape_string($mysqli,$Row[3]);
             }
             $purpose = "";
             if(isset($Row[4])) {
-            $purpose = mysqli_real_escape_string($con,$Row[4]);
+            $purpose = mysqli_real_escape_string($mysqli,$Row[4]);
             }
             $email = "";
             if(isset($Row[5])) {
-            $email = mysqli_real_escape_string($con,$Row[5]);
+            $email = mysqli_real_escape_string($mysqli,$Row[5]);
             }
             $ifsccode = "";
             if(isset($Row[6])) {
-            $ifsccode = mysqli_real_escape_string($con,$Row[6]);
+            $ifsccode = mysqli_real_escape_string($mysqli,$Row[6]);
             }
 			$micrcode = "";
             if(isset($Row[7])) {
-            $micrcode = mysqli_real_escape_string($con,$Row[7]);
+            $micrcode = mysqli_real_escape_string($mysqli,$Row[7]);
             }
             $contactperson = "";
             if(isset($Row[8])) {
-            $contactperson = mysqli_real_escape_string($con,$Row[8]);
+            $contactperson = mysqli_real_escape_string($mysqli,$Row[8]);
             }
             $contactno = "";
             if(isset($Row[9])) {
-            $contactno = mysqli_real_escape_string($con,$Row[9]);
+            $contactno = mysqli_real_escape_string($mysqli,$Row[9]);
             }            
             $accounttype = "";
             if(isset($Row[10])) {
-            $accounttype = mysqli_real_escape_string($con,$Row[10]);
+            $accounttype = mysqli_real_escape_string($mysqli,$Row[10]);
             }
 			
 			if(isset($accounttype))
@@ -125,7 +125,7 @@ if(in_array($_FILES["file"]["type"],$allowedFileType)){
 			$bankgrouprefid="";
 			$getqry="SELECT ParentId,AccountsName,Id FROM accountsgroup WHERE Id='".strip_tags($subgroup)."' and status=0";
 
-			$res=$con->query($getqry);
+			$res=$mysqli->query($getqry);
 			while ($row=$res->fetch_assoc()){
 				$ParentId           = $row["ParentId"];
 				//$subgrouptype       = $row["AccountsName"];
@@ -133,7 +133,7 @@ if(in_array($_FILES["file"]["type"],$allowedFileType)){
 				if(	$ParentId > 0)
 				{
 					$getqry1="SELECT AccountsName, Id FROM accountsgroup WHERE Id='".strip_tags($ParentId)."' and status=0";
-					$res1=$con->query($getqry1);
+					$res1=$mysqli->query($getqry1);
 					while ($row1=$res1->fetch_assoc()){	
 						$group                       = $row1["AccountsName"];
 						$group                       = $row1["Id"];
@@ -144,7 +144,7 @@ if(in_array($_FILES["file"]["type"],$allowedFileType)){
 			}
 			
 			$getqry="SELECT purposeid,purposename FROM purpose WHERE 	purposename ='".strip_tags($purpose)."' and status=0";
-			$res11=$con->query($getqry);
+			$res11=$mysqli->query($getqry);
 			while($row11=$res11->fetch_assoc())
 			{
 				$purpose           = $row11["purposeid"];        
@@ -152,20 +152,20 @@ if(in_array($_FILES["file"]["type"],$allowedFileType)){
 
            // $subgrouptype = "";
            // if(isset($Row[12])) {
-           // $subgrouptype = mysqli_real_escape_string($con,$Row[12]);
+           // $subgrouptype = mysqli_real_escape_string($mysqli,$Row[12]);
           //  }
           //  $group = "";
           //  if(isset($Row[13])) {
-           // $group = mysqli_real_escape_string($con,$Row[13]);
+           // $group = mysqli_real_escape_string($mysqli,$Row[13]);
           //  }
 			
             $ledgername = "";
             if(isset($Row[0])) {
-            $ledgername = mysqli_real_escape_string($con,$Row[0]);
+            $ledgername = mysqli_real_escape_string($mysqli,$Row[0]);
             }			
             $costcenter = "";
             if(isset($Row[11])) {
-            $costcenter = mysqli_real_escape_string($con,$Row[11]);
+            $costcenter = mysqli_real_escape_string($mysqli,$Row[11]);
             if(isset($costcenter) &&    $costcenter == 'Yes')		
                {
                    $costcenter             = 0;
@@ -189,7 +189,7 @@ if(in_array($_FILES["file"]["type"],$allowedFileType)){
         '".strip_tags($subgrouptype)."','".strip_tags($group)."','".strip_tags($ledgername)."',
         '".strip_tags($costcenter)."','".strip_tags($bankgrouprefid)."')";
 
-       $result = $con->query($query);
+       $result = $mysqli->query($query);
 
     } } }  
 

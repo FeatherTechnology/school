@@ -226,11 +226,11 @@ foreach ($result as $row) {
 
     $company_name='';
     $qry = "SELECT * FROM branch_creation WHERE company_id = '".$row['company_name']."' AND status=0 ORDER BY branch_id DESC"; 
-    $res = $con->query($qry);
+    $res = $mysqli->query($qry);
     while($row5 = $res->fetch_assoc())
     {
         $getname = "SELECT company_name FROM company_creation WHERE company_id = '".$row5['company_id']."' ";
-        $res1 = $con->query($getname) ;
+        $res1 = $mysqli->query($getname) ;
         while ($row52 = $res1->fetch_assoc()) {
             $company_name = $row52['company_name'];
         }

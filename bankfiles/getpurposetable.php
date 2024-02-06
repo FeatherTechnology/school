@@ -1,7 +1,7 @@
 <?php
 include '../ajaxconfig.php';
 
-$getitem=$con->query("SELECT * FROM purpose WHERE  status=0 ");
+$getitem=$mysqli->query("SELECT * FROM purpose WHERE  status=0 ");
 if($getitem->num_rows<0){
 	$message = 'Purpose Not Found';
 	echo json_encode($message);

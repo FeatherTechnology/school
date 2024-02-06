@@ -62,7 +62,7 @@ if ($sbranch_id == 'Overall') {
               
     $sdepartment_id = array();
     $branchQry = "SELECT department_creation.* FROM department_creation INNER JOIN audit_assign ON department_creation.department_id = audit_assign.department_id WHERE audit_assign.status = 0 and department_creation.status = 0 and department_creation.company_id = '".$sbranch_id."' ";
-    $branchRes = $con->query($branchQry);
+    $branchRes = $mysqli->query($branchQry);
     while($branchrow = $branchRes->fetch_assoc())
     {
         $branch_id[] = $branchrow["company_id"];      
@@ -113,7 +113,7 @@ foreach ($result as $row) {
     foreach($departmentId1 as $departmentId) {
         $departmentId = trim($departmentId);
         $getqry1 = "SELECT department_name FROM department_creation WHERE department_id ='".strip_tags($departmentId)."' and status = 0";
-        $res13 = $con->query($getqry1);
+        $res13 = $mysqli->query($getqry1);
         while($row13 = $res13->fetch_assoc())
         {
            $department_name[] = $row13["department_name"];      
@@ -123,7 +123,7 @@ foreach ($result as $row) {
     $role1Name='';
     $role1Id = $row['role1'];   
     $getAuditorName = "SELECT designation_name FROM designation_creation WHERE designation_id ='".strip_tags($role1Id)."' and status = 0";
-    $res12 = $con->query($getAuditorName);
+    $res12 = $mysqli->query($getAuditorName);
     while($row12 = $res12->fetch_assoc())
     {
        $role1Name = $row12["designation_name"];        
@@ -132,7 +132,7 @@ foreach ($result as $row) {
     $role2Name='';
     $role2Id = $row['role2'];   
     $getAuditeeName = "SELECT designation_name FROM designation_creation WHERE designation_id ='".strip_tags($role2Id)."' and status = 0";
-    $res14 = $con->query($getAuditeeName);
+    $res14 = $mysqli->query($getAuditeeName);
     while($row14 = $res14->fetch_assoc())
     {
        $role2Name = $row14["designation_name"];        

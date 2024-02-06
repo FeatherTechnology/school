@@ -7,7 +7,7 @@ if(isset($_POST["rejectponum"])){
 if(isset($_POST["rejectreason"])){
 	$rejectreason = $_POST["rejectreason"];
 }
-$rejectqry=$con->query("UPDATE purchaseorder SET rejectreason = '".$rejectreason."', approvedstatus = 2 WHERE ponumber = '".$rejectponum."' ") OR die("Error");
+$rejectqry=$mysqli->query("UPDATE purchaseorder SET rejectreason = '".$rejectreason."', approvedstatus = 2 WHERE ponumber = '".$rejectponum."' ") OR die("Error");
 if($rejectqry){
 	$message="updated";
 }

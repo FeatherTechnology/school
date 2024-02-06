@@ -17,7 +17,7 @@ $itemname2   = array();
 $rate   = array();
 
 
-	$getitem1 = $con->query("SELECT * FROM item_creation WHERE status = 0 GROUP BY item_id ") or die("Error :".$con->error);
+	$getitem1 = $mysqli->query("SELECT * FROM item_creation WHERE status = 0 GROUP BY item_id ") or die("Error :".$mysqli->error);
 	while ($row=$getitem1->fetch_assoc()){
 		// $account1id[] = $row["account1id"];
 		$item_id[] = $row["item_id"];

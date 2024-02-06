@@ -13,7 +13,7 @@ include '../ajaxconfig.php';
     <tbody>
         <?php
         $ctselect="SELECT * FROM Student_creation WHERE 1 AND status=0 ORDER BY student_id DESC";
-        $ctresult=$con->query($ctselect);
+        $ctresult=$mysqli->query($ctselect);
         if($ctresult->num_rows>0){
         $i=1;
         while($ct=$ctresult->fetch_assoc()){

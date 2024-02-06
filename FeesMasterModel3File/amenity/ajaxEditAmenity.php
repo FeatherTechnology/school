@@ -11,7 +11,7 @@ $max_mark = '';
 
 
 $getct = "SELECT * FROM subject_details WHERE subject_id = '".$subject_id."' AND status=0";
-$result = $con->query($getct);
+$result = $mysqli->query($getct);
 while($row=$result->fetch_assoc())
 {
     $paper_name = $row['paper_name'];

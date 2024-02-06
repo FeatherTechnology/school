@@ -1,3 +1,4 @@
+
 <?php
 include('ajaxconfig.php');
 @session_start();
@@ -7,10 +8,10 @@ if(isset($_SESSION["userid"])){
 }
 if(isset($_SESSION["school_id"])){
     $school_id = $_SESSION["school_id"];
- }
- if(isset($_SESSION["academic_year"])){
+}
+if(isset($_SESSION["academic_year"])){
     $year_id = $_SESSION["academic_year"];
- }
+}
 $column = array(
     'temp_admission_id',
     'temp_student_name',
@@ -20,11 +21,10 @@ $column = array(
     'temp_street',
     'temp_area',
     'temp_district',
-
     'status'
 );
 
-$query = "SELECT * FROM temp_admission_student WHERE  school_id='$school_id' AND year_id='$year_id'";
+$query = "SELECT tas.temp_admission_id,tas.temp_student_name, tas.temp_standard,tas.temp_gender,tas.temp_flat_no,tas.temp_street,tas.temp_area,tas.temp_district,tas.status,sc.standard FROM temp_admission_student tas JOIN standard_creation sc ON tas.temp_standard = sc.standard_id WHERE  tas.school_id='$school_id' AND tas.year_id='$year_id'";
 
 if($_POST['search']!="");
 {
@@ -42,14 +42,14 @@ if($_POST['search']!="");
         else{	
             $query .= "
             
-           AND temp_student_name LIKE  '%".$_POST['search']."%'
-           AND temp_standard LIKE '%".$_POST['search']."%'
-           AND temp_gender LIKE '%".$_POST['search']."%'
-           AND temp_flat_no LIKE '%".$_POST['search']."%'
-           AND temp_street LIKE '%".$_POST['search']."%'
-           AND temp_area LIKE '%".$_POST['search']."%'
-           AND temp_district LIKE '%".$_POST['search']."%'
-           AND status LIKE '%".$_POST['search']."%' ";
+            AND temp_student_name LIKE  '%".$_POST['search']."%'
+            AND temp_standard LIKE '%".$_POST['search']."%'
+            AND temp_gender LIKE '%".$_POST['search']."%'
+            AND temp_flat_no LIKE '%".$_POST['search']."%'
+            AND temp_street LIKE '%".$_POST['search']."%'
+            AND temp_area LIKE '%".$_POST['search']."%'
+            AND temp_district LIKE '%".$_POST['search']."%'
+            AND tas.status LIKE '%".$_POST['search']."%' ";
         }
     }
 }
@@ -84,9 +84,9 @@ foreach ($result as $row) {
     }
     
     $sub_array[] = $row['temp_student_name'];
-    $sub_array[] = $row['temp_standard'];
+    $sub_array[] = $row['standard'];
     $sub_array[] = $row['temp_gender'];
-    $sub_array[] = $row['temp_flat_no'] ." ". " " .$row['temp_street'] ." ". " ".$row['temp_street']." ". " ".$row['temp_area']." ". " ".$row['temp_district'];
+    $sub_array[] = $row['temp_flat_no'] ." " .$row['temp_street'] ." ".$row['temp_area']." ".$row['temp_district'];
     
     // $status      = $row['status'];
     // if($status == 1)
@@ -99,8 +99,19 @@ foreach ($result as $row) {
 	// }
 	$id   = $row['temp_admission_id'];
 	
-	$action="<a href='temp_admission_form&upd=$id' title='Edit details'><span class='icon-border_color'></span></a>&nbsp;&nbsp; 
-	<a href='temp_admission_form&del=$id' title='Delete details' class='delete_temp_student'><span class='icon-trash-2'></span></a>";
+	// $action="<a href='temp_admission_form&upd=$id' title='Edit details'><span class='icon-border_color'></span></a>&nbsp;&nbsp; 
+	// <a href='temp_admission_form&del=$id' title='Delete details' class='delete_temp_student'><span class='icon-trash-2'></span></a>";
+
+	$action="
+    <div class='bd-example'>
+        <div class='btn-group dropstart'>
+            <button type='button' class='btn btn-primary dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'> </button>
+            <ul class='dropdown-menu'>
+                <li><input type='hidden' name='student_id1' id='student_id1' value='$id'></li>
+                <li><a class='dropdown-item' href='temp_admission_pay_fees&upd=$id'><span class='icon-dollar-sign'></span> Pay Fees</a></li>
+            </ul>
+        </div>
+    </div>";
 
 	$sub_array[] = $action;
     $data[]      = $sub_array;

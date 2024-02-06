@@ -5,7 +5,7 @@ if(isset($_POST["vendorname"])){
 	$vendorname=$_POST["vendorname"];
 }
 
-$getvendor=$con->query("SELECT * FROM vendor WHERE vendorid='".$vendorname."' AND status = 0");
+$getvendor=$mysqli->query("SELECT * FROM vendor WHERE vendorid='".$vendorname."' AND status = 0");
 while($row=$getvendor->fetch_assoc()){
 	$vendorname=$row["vendorname"];
 	$address1=$row["address1"];

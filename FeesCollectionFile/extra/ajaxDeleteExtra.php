@@ -6,7 +6,7 @@ if(isset($_POST["fees_id"])){
 }
 $isdel = '';
 
-$ctqry=$con->query("SELECT * FROM fees_master_model3 WHERE extra_particulars = '".$fees_id."' ");
+$ctqry=$mysqli->query("SELECT * FROM fees_master_model3 WHERE extra_particulars = '".$fees_id."' ");
 while($row=$ctqry->fetch_assoc()){
 
 	$isdel=$row["extra_particulars"];
@@ -17,7 +17,7 @@ if($isdel != ''){
 }
 else
 { 
-	$delct=$con->query("UPDATE fees_master_model3 SET status = 1 WHERE fees_id = '".$fees_id."' ");
+	$delct=$mysqli->query("UPDATE fees_master_model3 SET status = 1 WHERE fees_id = '".$fees_id."' ");
 	if($delct){
 		$message="Fees Inactivated Successfully";
 	}

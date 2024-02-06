@@ -6,7 +6,7 @@ if(isset($_POST["fees_id"])){
 }
 
 $getct = "SELECT * FROM fees_master_model3 WHERE fees_id = '".$fees_id."' AND status=0 AND grp_status = 1";
-$result = $con->query($getct);
+$result = $mysqli->query($getct);
 while($row=$result->fetch_assoc())
 {
     $grp_particulars = $row['grp_particulars'];

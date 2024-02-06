@@ -77,7 +77,7 @@ foreach ($result as $row) {
      $grp_classification_name='';
      $GrpClassificationName = $row['grp_classification'];   
      $getqry = "SELECT grp_classification_name FROM grp_classification WHERE grp_classification_id ='".strip_tags($GrpClassificationName)."' and status = 0";
-     $res12 = $con->query($getqry);
+     $res12 = $mysqli->query($getqry);
      while($row12 = $res12->fetch_assoc())
      {
         $grp_classification_name = $row12["grp_classification_name"];        

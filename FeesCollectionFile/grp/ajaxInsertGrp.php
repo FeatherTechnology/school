@@ -39,7 +39,7 @@ $grpc_particulars = '';
 $grpc_amount = '' ;
 $grpc_date = '' ;
 
-$selectClass=$con->query("SELECT * FROM fees_master_model3 WHERE academic_year = '".$academic_year."' AND medium = '".$medium."'
+$selectClass=$mysqli->query("SELECT * FROM fees_master_model3 WHERE academic_year = '".$academic_year."' AND medium = '".$medium."'
 AND grp_particulars = '".$grp_particulars."' AND grp_amount = '".$grp_amount."' AND grp_date = '".$grp_date."' AND standard = '".$standard."' ");
 while ($row=$selectClass->fetch_assoc()){
 
@@ -56,21 +56,21 @@ if($grp_academic_year != '' && $grp_medium != '' && $grp_standard != '' && $grpc
 }
 
 else if($grp_academic_year != '' && $grp_medium != '' && $grp_standard != '' && $grpc_particulars != ''  && $grpc_amount != '' && $grpc_date != '' && $grp_Status == 1){ 
-	$updateClass=$con->query("UPDATE fees_master_model3 SET status=0 WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND standard = '".$standard."'
+	$updateClass=$mysqli->query("UPDATE fees_master_model3 SET status=0 WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND standard = '".$standard."'
 	AND grp_particulars = '".$grp_particulars."' AND grp_amount = '".$grp_amount."' AND grp_date = '".$grp_date."' ");
 	$message="Fees Details Added Succesfully";
 }
 
 else{ 
 	if($fees_id>0){
-		$updateClass=$con->query("UPDATE academic_year = '".$academic_year."' AND medium = '".$medium."' AND standard = '".$standard."'
+		$updateClass=$mysqli->query("UPDATE academic_year = '".$academic_year."' AND medium = '".$medium."' AND standard = '".$standard."'
 		AND grp_particulars = '".$grp_particulars."' AND grp_amount = '".$grp_amount."' AND grp_date = '".$grp_date."' WHERE fees_id='".$fees_id."' ");
 		if($updateClass == true){
 		    $message="Fees Details Updated Succesfully";
 	    }
     }
 	else{ 
-	    $insertClass=$con->query("INSERT INTO fees_master_model3(academic_year,medium,standard,grp_particulars,grp_amount,grp_date,insert_login_id,grp_status) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."',
+	    $insertClass=$mysqli->query("INSERT INTO fees_master_model3(academic_year,medium,standard,grp_particulars,grp_amount,grp_date,insert_login_id,grp_status) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."',
 		'".strip_tags($standard)."','".strip_tags($grp_particulars)."','".strip_tags($grp_amount)."','".strip_tags($grp_date)."','".strip_tags($insert_login_id)."', '1')");
 	    if($insertClass == true){
 		    $message="Fees Insert Succesfully";

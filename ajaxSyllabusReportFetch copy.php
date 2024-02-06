@@ -45,7 +45,7 @@ if(isset($_POST["class_id"])){
 							$paper_name     = array();
 							$class_id1     	= array();
 							$subject_id 	= array();
-							$getrefqry =$con->query("SELECT * FROM subject_details  WHERE class_id = '".$class_id."' "); 
+							$getrefqry =$mysqli->query("SELECT * FROM subject_details  WHERE class_id = '".$class_id."' "); 
 							
 							while($orow = $getrefqry->fetch_assoc()){
 								$subject_id[]		 = $orow["subject_id"];

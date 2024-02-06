@@ -6,7 +6,7 @@ if(isset($_POST["ponumber"])){
 	$ponumber=$_POST["ponumber"];
 }
 
-$getpo=$con->query("SELECT * FROM purchaseorder WHERE ponumber='".strip_tags($ponumber)."' ");
+$getpo=$mysqli->query("SELECT * FROM purchaseorder WHERE ponumber='".strip_tags($ponumber)."' ");
 while($row=$getpo->fetch_assoc()){
 	$vendor=$row["vendor"];
 	$shipto=$row["shipto"];
@@ -53,7 +53,7 @@ while($row=$getpo->fetch_assoc()){
 	$othercomments=$row["othercomments"];
 }
 
-$getmailid=$con->query("SELECT mailid FROM vendor WHERE vendorid='".$vendor."' ");
+$getmailid=$mysqli->query("SELECT mailid FROM vendor WHERE vendorid='".$vendor."' ");
 while ($data=$getmailid->fetch_assoc()){
 	$vendormail=$data["mailid"];
 }
@@ -62,7 +62,7 @@ while ($data=$getmailid->fetch_assoc()){
 // {
 //     $branchid	= $_SESSION['branchid'];
 // }
-$getbrc=$con->query("SELECT * FROM branch WHERE 1 ");
+$getbrc=$mysqli->query("SELECT * FROM branch WHERE 1 ");
 while ($brc=$getbrc->fetch_assoc()) {
 	$branchname=$brc["branchname"];
 	$address1  =$brc["address1"];

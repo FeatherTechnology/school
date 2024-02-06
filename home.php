@@ -27,17 +27,14 @@ include('api/main.php'); // Database Connection File
 <!-- end customer excel div -->
 
 <!-- Important -->
-<?php  if( $current_page != 'vendorcreation' and $current_page != 'auction_details' ) { ?>
-<?php include "include/common/dashboardhead.php"?>
-<?php  } ?>
+<?php  
+if( $current_page != 'vendorcreation' and $current_page != 'auction_details' ) { 
+	include "include/common/dashboardhead.php";
+} 
 
-
-<?php if($current_page == 'vendorcreation') { ?>
-<?php include "include/common/dashboardfinancedatatablehead.php"?>
-<?php } ?>
-<?php if($current_page == 'auction_details') { ?>
-<?php include "include/common/dashboardfinancedatatablehead.php"?>
-<?php } ?>
+if($current_page == 'vendorcreation' || $current_page == 'auction_details') { 
+	include "include/common/dashboardfinancedatatablehead.php";
+} ?>
 
 <body>
 	<!-- Page wrapper start -->
@@ -125,206 +122,224 @@ include('api/main.php'); // Database Connection File
 			<!-- Header end -->
 
 			<!-- School Creation -->
-			<?php if($current_page == 'school_creation') { ?>
-			<?php include "include/templates/school_creation.php" ?>
-			<?php } ?>
+			<?php if($current_page == 'school_creation') { 
+			include "include/templates/school_creation.php"; 
+			} 
 
-			<?php if($current_page == 'edit_school_creation') { ?>
-			<?php include "include/templates/edit_school_creation.php" ?>
-			<?php } ?>
+			if($current_page == 'edit_school_creation') { 
+			include "include/templates/edit_school_creation.php"; 
+			} 
 
-			<!-- syllabus Allocation -->
-			<?php if($current_page == 'syllabus_allocation') { ?>
-			<?php include "include/templates/syllabus_allocation.php" ?>
-			<?php } ?>
+			//syllabus Allocation
+			if($current_page == 'syllabus_allocation') { 
+			include "include/templates/syllabus_allocation.php"; 
+			} 
 
-			<?php if($current_page == 'syllabus_report') { ?>
-			<?php include "include/templates/syllabus_report.php" ?>
-			<?php } ?>
-			<!-- Fees Master Model1-->	
-			<?php if($current_page == 'fees_master_model1') { ?>
-			<?php include "include/templates/fees_master_model1.php" ?>
-			<?php } ?>
-			<!-- Fees Master Model2 -->
-			<?php if($current_page == 'fees_master_model2') { ?>
-			<?php include "include/templates/fees_master_model2.php" ?>
-			<?php } ?>
-			<!-- Fees Master Model3 -->
-			<?php if($current_page == 'fees_master_model3') { ?>
-			<?php include "include/templates/fees_master_model3.php" ?>
-			<?php } ?>
-			<!-- Fees Master Model4 -->
-			<?php if($current_page == 'fees_master_model4') { ?>
-			<?php include "include/templates/fees_master_model4.php" ?>
-			<?php } ?>
-			<!-- Holiday Creation -->
-			<?php if($current_page == 'holiday_creation') { ?>
-			<?php include "include/templates/holiday_creation.php" ?>
-			<?php } ?>
-				<!-- Backup And Restore -->
-			<?php if($current_page == 'backup_restore') { ?>
-			<?php include "include/templates/backup_restore.php" ?>
-			<?php } ?>
-				<!-- Temp Student Admission -->
-			<?php if($current_page == 'temp_admission_form') { ?>
-			<?php include "include/templates/temp_admission_form.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'edit_temp_admission_form') { ?>
-			<?php include "include/templates/edit_temp_admission_form.php" ?>
-			<?php } ?>
-				<!-- student Creation -->
-			<?php if($current_page == 'student_creation') { ?>
-			<?php include "include/templates/student_creation.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'edit_student_creation') { ?>
-			<?php include "include/templates/edit_student_creation.php" ?>
-			<?php } ?>
-				<!-- Delete Student -->
-			<?php if($current_page == 'delete_student') { ?>
-			<?php include "include/templates/delete_student.php" ?>
-			<?php } ?>
-				<!-- Student Rollback -->
-			<?php if($current_page == 'student_rollback') { ?>
-			<?php include "include/templates/student_rollback.php" ?>
-			<?php } ?>
-				<!-- Covid Concession -->
-			<?php if($current_page == 'covid_concession') { ?>
-			<?php include "include/templates/covid_concession.php" ?>
-			<?php } ?>
-				<!-- Fees Concession -->
-			<?php if($current_page == 'fees_concession') { ?>
-			<?php include "include/templates/fees_concession.php" ?>
-			<?php } ?>
-
-			<!-- Fees collection -->
-			<?php if($current_page == 'fees_collection') { ?>
-			<?php include "include/templates/fees_collection.php" ?>
-			<?php } ?>
-
-				<!-- Configuration Setting-->
-			<?php if($current_page == 'configurationsetting') { ?>
-			<?php include "include/templates/configurationsetting.php" ?>
-			<?php } ?>
-
-			<!-- Trust creation -->
-			<?php if($current_page == 'trust_creation') { ?>
-			<?php include "include/templates/trust_creation.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'edit_trust_creation') { ?>
-			<?php include "include/templates/edit_trust_creation.php" ?>
-			<?php } ?>
-			<!-- Item Creation -->
-			<?php if($current_page == 'item_creation') { ?>
-			<?php include "include/templates/item_creation.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'edit_item_creation') { ?>
-			<?php include "include/templates/edit_item_creation.php" ?>
-			<?php } ?>
-			<!-- Area Creation -->
-			<?php if($current_page == 'area_creation') { ?>
-			<?php include "include/templates/area_creation.php" ?>
-			<?php } ?>
-
-			<!-- staff Creation -->
-			<?php if($current_page == 'staff_creation') { ?>
-			<?php include "include/templates/staff_creation.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'edit_staff_creation') { ?>
-			<?php include "include/templates/edit_staff_creation.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'pay_fees') { ?>
-			<?php include "include/templates/pay_fees.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'transport_fees') { ?>
-			<?php include "include/templates/transport_fees.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'last_year_fees') { ?>
-			<?php include "include/templates/last_year_fees.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'dashboard') { ?>
-			<?php include "include/templates/dashboard.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'transfer_certificate') { ?>
-			<?php include "include/templates/transfer_certificate.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'edit_transfer_certificate') { ?>
-			<?php include "include/templates/edit_transfer_certificate.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'conduct_certificate') { ?>
-			<?php include "include/templates/conduct_certificate.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'edit_conduct_certificate') { ?>
-			<?php include "include/templates/edit_conduct_certificate.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'study_certificate') { ?>
-			<?php include "include/templates/study_certificate.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'bonafide_certificate') { ?>
-			<?php include "include/templates/bonafide_certificate.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'course_completion') { ?>
-			<?php include "include/templates/course_completion.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'marksheet_certificate') { ?>
-			<?php include "include/templates/marksheet_certificate.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'transport_fees_master') { ?>
-			<?php include "include/templates/transport_fees_master.php" ?>
-			<?php } ?>
-
-			<?php if($current_page == 'last_year_fees_master') { ?>
-			<?php include "include/templates/last_year_fees_master.php" ?>
-			<?php } ?>
+			if($current_page == 'syllabus_report') { 
+			include "include/templates/syllabus_report.php";
+			} 
 			
-			<?php if($current_page == 'last_year_fees_pay') { ?>
-			<?php include "include/templates/last_year_fees_pay.php" ?>
-			<?php } ?>
+			//Fees Master Model1	
+			if($current_page == 'fees_master_model1') { 
+			include "include/templates/fees_master_model1.php"; 
+			}
+			
+			//Fees Master Model2
+			if($current_page == 'fees_master_model2') { 
+			include "include/templates/fees_master_model2.php"; 
+			} 
 
-			<?php if($current_page == 'bonafide_community_certificate') { ?>
-			<?php include "include/templates/bonafide_community_certificate.php" ?>
-			<?php } ?>
+			//Fees Master Model3
+			if($current_page == 'fees_master_model3') { 
+			include "include/templates/fees_master_model3.php"; 
+			} 
+			
+			//Fees Master Model4
+			if($current_page == 'fees_master_model4') { 
+			include "include/templates/fees_master_model4.php"; 
+			} 
 
-			<?php if($current_page == 'edit_student_bonafide') { ?>
-			<?php include "include/templates/edit_student_bonafide.php" ?>
-			<?php } ?>
+			//Holiday Creation
+			if($current_page == 'holiday_creation') { 
+			include "include/templates/holiday_creation.php"; 
+			} 
+			
+			//Backup And Restore
+			if($current_page == 'backup_restore') { 
+			include "include/templates/backup_restore.php"; 
+			} 
+			
+			//Temp Student Admission
+			if($current_page == 'temp_admission_form') { 
+			include "include/templates/temp_admission_form.php"; 
+			} 
 
-			<?php if($current_page == 'purchase_order') { ?>
-			<?php include "include/templates/purchase_order.php" ?>
-			<?php } ?>
+			if($current_page == 'edit_temp_admission_form') { 
+			include "include/templates/edit_temp_admission_form.php"; 
+			} 
+			
+			//student Creation
+			if($current_page == 'student_creation') { 
+			include "include/templates/student_creation.php"; 
+			} 
 
-			<?php if($current_page == 'edit_purchase_order') { ?>
-			<?php include "include/templates/edit_purchase_order.php" ?>
-			<?php } ?>
+			if($current_page == 'edit_student_creation') { 
+			include "include/templates/edit_student_creation.php"; 
+			} 
+			
+			//Delete Student
+			if($current_page == 'delete_student') { 
+			include "include/templates/delete_student.php"; 
+			} 
+			
+			//Student Rollback 
+			if($current_page == 'student_rollback') { 
+			include "include/templates/student_rollback.php";
+			} 
+			
+			//Covid Concession 
+			if($current_page == 'covid_concession') { 
+			include "include/templates/covid_concession.php"; 
+			} 
+			
+			//Fees Concession 
+			if($current_page == 'fees_concession') { 
+			include "include/templates/fees_concession.php"; 
+			} 
 
-			<?php if($current_page == 'stock_issuance') { ?>
-			<?php include "include/templates/stock_issuance.php" ?>
-			<?php } ?>
+			//Fees collection 
+			if($current_page == 'fees_collection') { 
+			include "include/templates/fees_collection.php"; 
+			} 
 
-			<?php if($current_page == 'edit_stock_issuance') { ?>
-			<?php include "include/templates/edit_stock_issuance.php" ?>
-			<?php } ?>
+			//Configuration Setting
+			if($current_page == 'configurationsetting') { 
+			include "include/templates/configurationsetting.php"; 
+			} 
 
-			<?php if($current_page == 'stockstatement') { ?>
-			<?php include "include/templates/stockstatement.php" ?>
-			<?php } ?>
+			//Trust creation 
+			if($current_page == 'trust_creation') { 
+			include "include/templates/trust_creation.php"; 
+			} 
+
+			if($current_page == 'edit_trust_creation') { 
+			include "include/templates/edit_trust_creation.php"; 
+			} 
+			
+			//Item Creation
+			if($current_page == 'item_creation') { 
+			include "include/templates/item_creation.php"; 
+			} 
+
+			if($current_page == 'edit_item_creation') { 
+			include "include/templates/edit_item_creation.php"; 
+			} 
+			
+			//Area Creation
+			if($current_page == 'area_creation') { 
+			include "include/templates/area_creation.php";; 
+			} 
+
+			//staff Creation
+			if($current_page == 'staff_creation') { 
+			include "include/templates/staff_creation.php"; 
+			} 
+
+			if($current_page == 'edit_staff_creation') { 
+			include "include/templates/edit_staff_creation.php"; 
+			} 
+
+			if($current_page == 'pay_fees') { 
+			include "include/templates/pay_fees.php"; 
+			} 
+
+			if($current_page == 'transport_fees') { 
+			include "include/templates/transport_fees.php"; 
+			} 
+
+			if($current_page == 'last_year_fees') { 
+			include "include/templates/last_year_fees.php"; 
+			} 
+
+			if($current_page == 'dashboard') { 
+			include "include/templates/dashboard.php"; 
+			} 
+
+			if($current_page == 'transfer_certificate') { 
+			include "include/templates/transfer_certificate.php"; 
+			} 
+
+			if($current_page == 'edit_transfer_certificate') { 
+			include "include/templates/edit_transfer_certificate.php"; 
+			} 
+
+			if($current_page == 'conduct_certificate') { 
+			include "include/templates/conduct_certificate.php"; 
+			} 
+
+			if($current_page == 'edit_conduct_certificate') { 
+			include "include/templates/edit_conduct_certificate.php"; 
+			} 
+
+			if($current_page == 'study_certificate') { 
+			include "include/templates/study_certificate.php"; 
+			} 
+
+			if($current_page == 'bonafide_certificate') { 
+			include "include/templates/bonafide_certificate.php"; 
+			} 
+
+			if($current_page == 'course_completion') { 
+			include "include/templates/course_completion.php"; 
+			} 
+
+			if($current_page == 'marksheet_certificate') { 
+			include "include/templates/marksheet_certificate.php"; 
+			} 
+
+			if($current_page == 'transport_fees_master') { 
+			include "include/templates/transport_fees_master.php"; 
+			} 
+
+			if($current_page == 'last_year_fees_master') { 
+			include "include/templates/last_year_fees_master.php"; 
+			} 
+			
+			if($current_page == 'last_year_fees_pay') { 
+			include "include/templates/last_year_fees_pay.php"; 
+			} 
+
+			if($current_page == 'bonafide_community_certificate') { 
+			include "include/templates/bonafide_community_certificate.php"; 
+			} 
+
+			if($current_page == 'edit_student_bonafide') { 
+			include "include/templates/edit_student_bonafide.php"; 
+			} 
+
+			if($current_page == 'purchase_order') { 
+			include "include/templates/purchase_order.php"; 
+			} 
+
+			if($current_page == 'edit_purchase_order') { 
+			include "include/templates/edit_purchase_order.php"; 
+			} 
+
+			if($current_page == 'stock_issuance') { 
+			include "include/templates/stock_issuance.php"; 
+			} 
+
+			if($current_page == 'edit_stock_issuance') { 
+			include "include/templates/edit_stock_issuance.php"; 
+			} 
+
+			if($current_page == 'stockstatement') { 
+			include "include/templates/stockstatement.php"; 
+			} 
+			
+			if($current_page == 'temp_admission_pay_fees') { 
+				include "include/templates/temp_admission_pay_fees.php";
+			} ?>
 
 
 			

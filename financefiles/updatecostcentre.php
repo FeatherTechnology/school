@@ -7,7 +7,7 @@ include '../ajaxconfig.php';
     $costcentreid=$_POST["costcentreid"];
   }
 
-$selectexist=$con->query("SELECT costcentrename FROM costcentre") or die("Error".$mysqli->error);
+$selectexist=$mysqli->query("SELECT costcentrename FROM costcentre") or die("Error".$mysqli->error);
 while ($row=$selectexist->fetch_assoc()) {
   $costcentreexist[]=$row["costcentrename"];
 }
@@ -18,7 +18,7 @@ $costcentreupdate="CostCenter Already Exists, Enter Different Name!";
 else
 {
 $updatecentre="UPDATE costcentre SET costcentrename = '".strip_tags($costcentrenewname)."' WHERE costcentreid = '".strip_tags($costcentreid)."' ";
-$updatecostcentre=$con->query($updatecentre) or die("Error :".$con->error);
+$updatecostcentre=$mysqli->query($updatecentre) or die("Error :".$mysqli->error);
 $costcentreupdate="Cost centre Has been Updated!";
 }
 echo json_encode($costcentreupdate);

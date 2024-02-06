@@ -5,7 +5,7 @@ if(isset($_POST["branchid"])){
 	$branchid=$_POST["branchid"];
 }
 $branchid1 = ltrim($branchid, 'b');
-$getbranch =$con->query("SELECT * FROM branch WHERE branchid='".$branchid1."' AND status = 0");
+$getbranch =$mysqli->query("SELECT * FROM branch WHERE branchid='".$branchid1."' AND status = 0");
 while($row=$getbranch->fetch_assoc()){
 	$branchname = $row["branchname"];
 	$address    = $row["address"];

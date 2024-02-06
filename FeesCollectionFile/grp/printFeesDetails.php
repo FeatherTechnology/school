@@ -147,7 +147,7 @@ function convertNumberToWords($number) {
     return $string;
 }													
 
-$qry =$con->query("SELECT * FROM student_creation WHERE student_id = '$student_id' AND status=0 AND school_id='$school_id' AND year_id='$year_id'"); 
+$qry =$mysqli->query("SELECT * FROM student_creation WHERE student_id = '$student_id' AND status=0 AND school_id='$school_id' AND year_id='$year_id'"); 
 // SELECT * FROM student_creation WHERE student_id = '$student_id' AND status=0
 while($row=$qry->fetch_assoc()){
 	$student_name=$row["student_name"]; 	
@@ -156,7 +156,7 @@ while($row=$qry->fetch_assoc()){
 	$section=$row["section"];
 } 
 
-$getbrc=$con->query("SELECT * FROM school_creation WHERE status = 0 AND school_id = '$school_id' AND FIND_IN_SET('$year_id', year_id) > 0");
+$getbrc=$mysqli->query("SELECT * FROM school_creation WHERE status = 0 AND school_id = '$school_id' AND FIND_IN_SET('$year_id', year_id) > 0");
 // SELECT * FROM school_creation WHERE status=0 AND school_id='$school_id' AND year_id='$year_id'
 while ($brc=$getbrc->fetch_assoc()) {
 	$address1  =$brc["address1"];

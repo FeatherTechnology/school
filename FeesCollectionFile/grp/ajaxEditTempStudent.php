@@ -33,7 +33,7 @@ if(isset($student_id)){
     //fetch student Details
     $getct = "SELECT * FROM student_creation WHERE student_id = '".$student_id."' AND status=0";
     // print_r($getct);
-    $result = $con->query($getct);
+    $result = $mysqli->query($getct);
     while($row=$result->fetch_assoc())
     {
         $student_id = $row['student_id'];
@@ -54,7 +54,7 @@ if(isset($student_id)){
 
         //fetch fees master details
         $getct1="SELECT * FROM fees_master WHERE medium ='$medium' AND standard='$standard' AND student_type='$student_type' AND academic_year ='$currentAcademicYear' AND status=0"; 
-        $result1 = $con->query($getct1);
+        $result1 = $mysqli->query($getct1);
         $grp_amount = 0;
         // $extra_amount = 0;
         $amenity_amount = 0;
@@ -71,7 +71,7 @@ if(isset($student_id)){
                 $amenity_amount += $sumamenity;
             }
             $ctselect="SELECT * FROM fees_master WHERE medium ='$medium' AND  student_type='$student_type' AND standard='$standard' AND academic_year ='$currentAcademicYear' AND status=0 AND fees_id IN ($extra_curricular)"; 
-            $result10 = $con->query($ctselect);
+            $result10 = $mysqli->query($ctselect);
             $extra_amount = 0;
             while($row10=$result10->fetch_assoc())
             {
@@ -83,7 +83,7 @@ if(isset($student_id)){
     
         //fetch transport fees details
         $getct5 = "SELECT * FROM area_creation WHERE area_id = '".$transportId."' AND  status=0"; 
-        $result1 = $con->query($getct5);
+        $result1 = $mysqli->query($getct5);
     
         if($result1->num_rows > 0){
             while($row1=$result1->fetch_assoc())
@@ -98,7 +98,7 @@ if(isset($student_id)){
         $getct1="SELECT grp_fees_total_received,extra_fees_total_received, amenity_fees_total_received, grp_concession_fees,extra_concession_fees,pay_fees.academic_year,
         amenity_concession_fees, amenity_fees_balance, extra_fees_balance, grp_fees_balance, standard, pay_fees_ref.student_id FROM pay_fees_ref JOIN pay_fees ON (pay_fees_ref.pay_fees_id = pay_fees.pay_fees_id)
          WHERE pay_fees.standard='$standard' AND pay_fees.academic_year ='".$currentAcademicYear."' AND pay_fees_ref.student_id = '".$student_id."' AND pay_fees_ref.status=0"; 
-        $result1 = $con->query($getct1);
+        $result1 = $mysqli->query($getct1);
         $grp_amountre = 0;
         $extra_amountre = 0;
         $amenity_amountre = 0;
@@ -138,7 +138,7 @@ if(isset($student_id)){
         //pay transport detaisl
         $getct1 = "SELECT transport_concession_fees_total,transport_received_fees_total, transport_fees_ref.student_id FROM transport_fees_ref JOIN pay_transport_fees ON (transport_fees_ref.transport_fees_id = pay_transport_fees.pay_transport_fees_id)
          WHERE standard = '".$standard."' AND transport_fees_ref.student_id = '".$student_id."' AND pay_transport_fees.academic_year= '".$currentAcademicYear."' AND  transport_fees_ref.status=0";
-        $result1 = $con->query($getct1);
+        $result1 = $mysqli->query($getct1);
         $transport_concession_fees_total = 0;
         $transport_received_fees_total = 0;
        
@@ -169,7 +169,7 @@ if(isset($student_id)){
         // $currentAcademicLastYear = ($currentYear - 1) . '-' .($currentYear);2022-2023
         $getct1 = "SELECT grp_fees_total_received,grp_concession_fees, pay_last_year_fees.academic_year,grp_fees_balance, standard, pay_last_year_fees_ref.student_id FROM pay_last_year_fees_ref JOIN pay_last_year_fees ON (pay_last_year_fees_ref.pay_last_year_fees_id = pay_last_year_fees.pay_last_year_fees_id)
          WHERE standard = '".$standard."' AND pay_last_year_fees_ref.student_id = '".$student_id."' AND pay_last_year_fees.academic_year = '".$currentAcademicLastYear."' AND  pay_last_year_fees_ref.status=0";
-        $result1 = $con->query($getct1);
+        $result1 = $mysqli->query($getct1);
         $grp_amounlast= 0;
         $grp_conlast = 0;
         if($result1->num_rows > 0){
@@ -254,7 +254,7 @@ if(isset($student_id)){
      $currentAcademicYear = $_SESSION["academic_year"];
      //fetch student Details
     $getct3 = "SELECT * FROM student_creation WHERE student_id = '".$student_name1."' AND status=0"; 
-    $result3 = $con->query($getct3);
+    $result3 = $mysqli->query($getct3);
     while($row3=$result3->fetch_assoc())
     {
         $upd = $row3['student_id'];
@@ -281,7 +281,7 @@ if(isset($student_id)){
 
 
     $getct1="SELECT * FROM fees_master WHERE medium ='$medium1' AND standard='$standard1' AND academic_year ='$currentAcademicYear' AND student_type='$student_type' AND status=0"; 
-    $result1 = $con->query($getct1);
+    $result1 = $mysqli->query($getct1);
     $grp_amount = 0;
     $extra_amount = 0;
     $amenity_amount = 0;
@@ -298,7 +298,7 @@ if(isset($student_id)){
         }
         $ctselect="SELECT * FROM fees_master WHERE medium ='$medium1' AND standard='$standard1' AND student_type='$student_type' AND academic_year ='$currentAcademicYear' AND status=0 AND fees_id IN ($extra_curricular)"; 
         // echo "$ctselect".$ctselect; die;
-        $result10 = $con->query($ctselect);
+        $result10 = $mysqli->query($ctselect);
         // $extra_amount = 0;
         while($row10=$result10->fetch_assoc())
         {
@@ -313,7 +313,7 @@ if(isset($student_id)){
                                                                                                               
     //fetch transport fees details
     $getct5 = "SELECT * FROM area_creation WHERE area_id = '".$transportId."' AND  status=0"; 
-    $result1 = $con->query($getct5);
+    $result1 = $mysqli->query($getct5);
 
     if($result1->num_rows > 0){
         while($row1=$result1->fetch_assoc())
@@ -326,7 +326,7 @@ if(isset($student_id)){
         }
     }
     $getct1="SELECT * FROM pay_fees WHERE standard='$standard1' AND academic_year ='".$currentAcademicYear."' AND student_id = '".$student_name1."' AND status=0"; 
-    $result1 = $con->query($getct1);
+    $result1 = $mysqli->query($getct1);
     $grp_amountre = 0;
     $extra_amountre = 0;
     $amenity_amountre = 0;
@@ -395,7 +395,7 @@ if(isset($student_id)){
 
     //pay transport detaisl
     $getct1 = "SELECT * FROM pay_transport_fees WHERE standard = '".$standard1."' AND student_id = '".$student_name1."' AND academic_year= '".$currentAcademicYear."' AND  status=0";
-    $result1 = $con->query($getct1);
+    $result1 = $mysqli->query($getct1);
     $transport_concession_fees_total = 0;
     $transport_received_fees_total = 0;
    
@@ -438,7 +438,7 @@ if(isset($student_id)){
     
     $getct1 = "SELECT grp_fees_total_received,grp_concession_fees, pay_last_year_fees.academic_year,grp_fees_balance, standard, pay_last_year_fees_ref.student_id FROM pay_last_year_fees_ref JOIN pay_last_year_fees ON (pay_last_year_fees_ref.pay_last_year_fees_id = pay_last_year_fees.pay_last_year_fees_id)
      WHERE standard = '".$standard1."' AND pay_last_year_fees_ref.student_id = '".$student_name1."' AND pay_last_year_fees.academic_year = '".$currentAcademicLastYear."' AND  pay_last_year_fees_ref.status=0";
-    $result1 = $con->query($getct1);
+    $result1 = $mysqli->query($getct1);
     $grp_amounlast= 0;
     $grp_conlast = 0;
     if($result1->num_rows > 0){

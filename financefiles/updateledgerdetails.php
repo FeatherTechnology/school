@@ -69,7 +69,7 @@ $eexciseduty=$eaddress1=$epan=$eaddress2=$etin=$eaddress3=$eservicetax=$eaddress
     $eopeningbalance = -1*$eopeningbalance;
   }
 
-  // $ledgerexists=$con->query("SELECT ledgername FROM ledger");
+  // $ledgerexists=$mysqli->query("SELECT ledgername FROM ledger");
   // while($row=$ledgerexists->fetch_assoc()){
   //   $ledgerarray[]=$row["ledgername"];
   // }
@@ -78,7 +78,7 @@ $eexciseduty=$eaddress1=$epan=$eaddress2=$etin=$eaddress3=$eservicetax=$eaddress
     $updateledgerqry="UPDATE ledger SET  AccountRefId = '".strip_tags($eledgersubgroup)."', ledgername = '".$eledgername."',
     inventory='".strip_tags($einventory)."',    costcentre='".strip_tags($eledgercostcentre)."',  exciseduty='".strip_tags($eexciseduty)."', pan='".strip_tags($epan)."',tin='".strip_tags($etin)."',servicetax='".strip_tags($eservicetax)."',contactnumber='".strip_tags($econtactnumber)."',contactperson='".strip_tags($econtactperson)."',address1='".strip_tags($eaddress1)."',address2='".strip_tags($eaddress2)."',address3='".strip_tags($eaddress3)."',address4='".strip_tags($eaddress4)."', opening_credit = '".$opening_credit."', opening_debit = '".$opening_debit."', openingbalancedr = '".$openingbalancedr1."', openingbalance = openingbalance + '".$eopeningbalance."' WHERE ledgerid='".strip_tags($ledgerid)."' ";
  
-   $update=$con->query($updateledgerqry) or die("Error :".$con->error);
+   $update=$mysqli->query($updateledgerqry) or die("Error :".$mysqli->error);
    $ledgerupdate ="Cost centre Has been Updated!";
    // }
   

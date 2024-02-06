@@ -1,11 +1,11 @@
 <?php
 include 'ajaxconfig.php';
 
-$selectIC = $con->query("SELECT receipt_number FROM pay_transport_fees WHERE receipt_number != '' ");
+$selectIC = $mysqli->query("SELECT receipt_number FROM pay_transport_fees WHERE receipt_number != '' ");
 
 if($selectIC->num_rows>0)
 {
-    $codeAvailable = $con->query("SELECT receipt_number FROM pay_transport_fees WHERE receipt_number != '' ORDER BY pay_transport_fees_id DESC LIMIT 1");
+    $codeAvailable = $mysqli->query("SELECT receipt_number FROM pay_transport_fees WHERE receipt_number != '' ORDER BY pay_transport_fees_id DESC LIMIT 1");
     while($row = $codeAvailable->fetch_assoc()){
         $ac2 = $row["receipt_number"];
     }

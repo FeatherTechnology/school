@@ -4,7 +4,7 @@ if(isset($_POST["ponum"])){
 	$ponum = $_POST["ponum"];
 }
 
-// $getitemavlqry=$con->query("SELECT vendor, shipto, partcode, quantity, unitprice FROM purchaseorder WHERE ponumber = '".$ponum."' ");
+// $getitemavlqry=$mysqli->query("SELECT vendor, shipto, partcode, quantity, unitprice FROM purchaseorder WHERE ponumber = '".$ponum."' ");
 // while($row=$getitemavlqry->fetch_assoc()){
 // 	$vendor       = $row["vendor"];
 // 	$shipto       = $row["shipto"];
@@ -19,14 +19,14 @@ if(isset($_POST["ponum"])){
 
 // if($shipto[0] == 'g'){
 // 	$Sshipto = ltrim($shipto, 'g');
-// 	$isvendor = $con->query("SELECT godownrefid FROM godownref WHERE vendorselect = '".$vendor."' ");
+// 	$isvendor = $mysqli->query("SELECT godownrefid FROM godownref WHERE vendorselect = '".$vendor."' ");
 // 	if($isvendor->num_rows>0){
 // 		for($i=0; $i<=sizeof($equantity)-1; $i++){
-// 		$updateqry=$con->query("UPDATE godownref SET openingstock = openingstock + '".$equantity[$i]."', purchaseprice = '".$eunitprice[$i]."' WHERE vendorselect = '".$vendor."' AND godownid = '".$Sshipto."' ");
+// 		$updateqry=$mysqli->query("UPDATE godownref SET openingstock = openingstock + '".$equantity[$i]."', purchaseprice = '".$eunitprice[$i]."' WHERE vendorselect = '".$vendor."' AND godownid = '".$Sshipto."' ");
 // 	}
 // 	}else{
 // 		for($i=0; $i<=sizeof($equantity)-1; $i++){
-// 			$insertqry = $con->query("INSERT INTO godownref(openingstock, purchaseprice, vendorselect, godownid) VALUES('".$equantity[$i]."', '".$eunitprice[$i]."', '".$vendor."', '".$Sshipto."') ");
+// 			$insertqry = $mysqli->query("INSERT INTO godownref(openingstock, purchaseprice, vendorselect, godownid) VALUES('".$equantity[$i]."', '".$eunitprice[$i]."', '".$vendor."', '".$Sshipto."') ");
 // 		}
 // 	}
 // }
@@ -35,22 +35,22 @@ if(isset($_POST["ponum"])){
 // else if($shipto[0] == 'b'){
 // 	$Sshipto = ltrim($shipto, 'b');
 // 	for($i=0; $i<=sizeof($equantity)-1; $i++){
-// 		$getTable = $con->query("SELECT * FROM account1 WHERE partnumber = '".$epartcode[$i]."' ");
+// 		$getTable = $mysqli->query("SELECT * FROM account1 WHERE partnumber = '".$epartcode[$i]."' ");
 // 		if($getTable->num_rows>0){
-// 		$updateqry=$con->query("UPDATE account1ref SET openingstock = openingstock + '".$equantity[$i]."', purchasestock =  '".$equantity[$i]."', purchaseprice = '".$eunitprice[$i]."' WHERE partnumber = '".$epartcode[$i]."'  AND branchid = '".$Sshipto."' ");
+// 		$updateqry=$mysqli->query("UPDATE account1ref SET openingstock = openingstock + '".$equantity[$i]."', purchasestock =  '".$equantity[$i]."', purchaseprice = '".$eunitprice[$i]."' WHERE partnumber = '".$epartcode[$i]."'  AND branchid = '".$Sshipto."' ");
 
-// 		$updateqry1=$con->query("UPDATE account1 SET noofgmpcs = noofgmpcs + '".$equantity[$i]."'  WHERE partnumber = '".$epartcode[$i]."' AND branchid = '".$Sshipto."' ");
+// 		$updateqry1=$mysqli->query("UPDATE account1 SET noofgmpcs = noofgmpcs + '".$equantity[$i]."'  WHERE partnumber = '".$epartcode[$i]."' AND branchid = '".$Sshipto."' ");
 // 		}
 // 		else
 // 		{
-// 		$updateqry=$con->query("UPDATE account2ref SET openingstock = openingstock + '".$equantity[$i]."', purchasestock = '".$equantity[$i]."', purchaseprice = '".$eunitprice[$i]."' WHERE partnumber = '".$epartcode[$i]."'  AND branchid = '".$Sshipto."' ");
+// 		$updateqry=$mysqli->query("UPDATE account2ref SET openingstock = openingstock + '".$equantity[$i]."', purchasestock = '".$equantity[$i]."', purchaseprice = '".$eunitprice[$i]."' WHERE partnumber = '".$epartcode[$i]."'  AND branchid = '".$Sshipto."' ");
 
-// 		$updateqry1=$con->query("UPDATE account2 SET noofgmpcs = noofgmpcs + '".$equantity[$i]."'  WHERE partnumber = '".$epartcode[$i]."' AND branchid = '".$Sshipto."' ");
+// 		$updateqry1=$mysqli->query("UPDATE account2 SET noofgmpcs = noofgmpcs + '".$equantity[$i]."'  WHERE partnumber = '".$epartcode[$i]."' AND branchid = '".$Sshipto."' ");
 // 		}
 // 	}
 // }
 
-$approveqry=$con->query("UPDATE purchaseorder SET  approvedstatus = 1 WHERE ponumber = '".$ponum."' ") OR die("Error");
+$approveqry=$mysqli->query("UPDATE purchaseorder SET  approvedstatus = 1 WHERE ponumber = '".$ponum."' ") OR die("Error");
 if($approveqry){
 	$message="updated";
 }

@@ -6,7 +6,7 @@ if(isset($_POST["extra_fee_id"])){
 
 $feeDetails = array();
 $getct = "SELECT * FROM extra_curricular_activities_fee WHERE extra_fee_id = '".$extra_fee_id."' AND status = 1"; //Status = 1 - true.
-$result = $con->query($getct);
+$result = $mysqli->query($getct);
 $row=$result->fetch_assoc();
     $extra_particulars = $row['extra_particulars'];
     $extra_amount = $row['extra_amount'];

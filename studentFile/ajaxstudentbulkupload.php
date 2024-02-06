@@ -20,25 +20,25 @@ if(in_array($_FILES["file"]["type"],$allowedFileType)){
 			
             $reference = "";
             if(isset($Row[0])) {
-            $reference = mysqli_real_escape_string($con,$Row[0]);
+            $reference = mysqli_real_escape_string($mysqli,$Row[0]);
             }
             $depth = "";
             if(isset($Row[1])) {
-            $depth = mysqli_real_escape_string($con,$Row[1]);
+            $depth = mysqli_real_escape_string($mysqli,$Row[1]);
             }
             $screen_name = "";
             if(isset($Row[2])) {
-            $screen_name = mysqli_real_escape_string($con,$Row[2]);
+            $screen_name = mysqli_real_escape_string($mysqli,$Row[2]);
             }
             $new_product_ref_id = "";
             if(isset($Row[3])) {
-            $new_product_ref_id = mysqli_real_escape_string($con,$Row[3]);
+            $new_product_ref_id = mysqli_real_escape_string($mysqli,$Row[3]);
             }
 
 			// $product_name = "";
             // if(isset($Row[3])) {
-            // $product_name = mysqli_real_escape_string($con,$Row[3]);
-			// $getproduct             = $con->query("SELECT product_id,product_name FROM product WHERE product_name='".$product_name."' ");
+            // $product_name = mysqli_real_escape_string($mysqli,$Row[3]);
+			// $getproduct             = $mysqli->query("SELECT product_id,product_name FROM product WHERE product_name='".$product_name."' ");
 			// while($row13=$getproduct->fetch_assoc()){
 			// $product_name                   = $row13["product_name"];		
 			// }
@@ -46,8 +46,8 @@ if(in_array($_FILES["file"]["type"],$allowedFileType)){
 
             // $module_name = "";
             // if(isset($Row[3])) {
-            // $module_name = mysqli_real_escape_string($con,$Row[3]);
-			// $getmodule             = $con->query("SELECT module_id,module_name FROM module WHERE module_name='".$module_name."' ");
+            // $module_name = mysqli_real_escape_string($mysqli,$Row[3]);
+			// $getmodule             = $mysqli->query("SELECT module_id,module_name FROM module WHERE module_name='".$module_name."' ");
 			// while($row13=$getmodule->fetch_assoc()){
 			// $module_name                   = $row13["module_name"];		
 			// }
@@ -61,7 +61,7 @@ if(in_array($_FILES["file"]["type"],$allowedFileType)){
 	    '".strip_tags($product_name)."','".strip_tags($module_name)."','".strip_tags($screen_name)."',
 	   '".strip_tags($reference)."','".strip_tags($depth)."')";
 
-       $result = $con->query($query) or die("Error ".$con->error);
+       $result = $mysqli->query($query) or die("Error ".$mysqli->error);
 
     } } }  
 
