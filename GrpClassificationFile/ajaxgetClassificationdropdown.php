@@ -1,7 +1,7 @@
 <?php 
 include('../ajaxconfig.php');
 $departmentarr = array();
-$result=$con->query("SELECT * FROM grp_classification WHERE 1 AND status=0");
+$result=$mysqli->query("SELECT * FROM grp_classification WHERE 1 AND status=0");
 while( $row = $result->fetch_assoc()){
       $grp_classification_id  = $row['grp_classification_id']; 
       $grp_classification_name = $row['grp_classification_name'];

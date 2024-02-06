@@ -31,7 +31,7 @@ if(isset($_POST['student_type'])){
     <tbody>
         <?php
         $amenityFeeQry="SELECT af.amenity_fee_id, af.amenity_particulars, af.amenity_amount, af.amenity_date FROM fees_master fm JOIN amenity_fee af ON fm.fees_id = af.fee_master_id WHERE fm.academic_year = '$academic_year' AND fm.medium = '$medium' AND fm.student_type = '$student_type' AND fm.standard = '$standard' AND af.status = '1' AND fm.school_id ='$school_id'";
-        $amenityFeeDetails=$con->query($amenityFeeQry);
+        $amenityFeeDetails=$mysqli->query($amenityFeeQry);
         if($amenityFeeDetails->num_rows>0){
         $i=1;
         while($amenity_data=$amenityFeeDetails->fetch_assoc()){

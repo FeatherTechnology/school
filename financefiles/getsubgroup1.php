@@ -6,7 +6,7 @@ if(isset($_POST["groupname"])){
 }
 
 $subgrparr = array();
-$result=$con->query("SELECT * FROM accountsgroup WHERE ParentId='".strip_tags($groupname)."' and status=0");
+$result=$mysqli->query("SELECT * FROM accountsgroup WHERE ParentId='".strip_tags($groupname)."' and status=0");
 while( $row = $result->fetch_assoc()){
       $Id           = $row['Id'];
       $AccountsName = $row['AccountsName'];

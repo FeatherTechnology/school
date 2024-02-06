@@ -17,7 +17,7 @@ if(isset($_POST["esubgroupname1"])){
 $grouparray[]=(1);
 $isduplicate="SELECT AccountsName FROM accountsgroup WHERE AccountsName = '".strip_tags($subgroupname)."' and ParentId=$groupname and status=0  ";
 
-$isdupresult=$con->query($isduplicate);
+$isdupresult=$mysqli->query($isduplicate);
   while ($row=$isdupresult->fetch_assoc()) {
     $subgroupname1 = $row["AccountsName"];
 }
@@ -28,7 +28,7 @@ if($esubgroupname1 == 12 || $esubgroupname1 == 40){
   }else{
       $insertgrp = "INSERT INTO accountsgroup(AccountsName, ParentId) VALUES ('".strip_tags($subgroupname)."',  '".strip_tags($esubgroupname1)."') ";
 
-      $insresult=$con->query($insertgrp) or die("Error :".$con->error);
+      $insresult=$mysqli->query($insertgrp) or die("Error :".$mysqli->error);
       $insresult="Subgroup Added Succesfully!";
   }
 }else{
@@ -37,7 +37,7 @@ if($esubgroupname1 == 12 || $esubgroupname1 == 40){
   }else{
       $insertgrp = "INSERT INTO accountsgroup(AccountsName, ParentId) VALUES ('".strip_tags($subgroupname)."',  '".strip_tags($groupname)."') ";
 
-      $insresult=$con->query($insertgrp) or die("Error :".$con->error);
+      $insresult=$mysqli->query($insertgrp) or die("Error :".$mysqli->error);
       $insresult="Subgroup Added Succesfully!";
   }
 }

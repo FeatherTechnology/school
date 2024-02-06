@@ -28,15 +28,14 @@
                                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label>Academic Year</label>
-                                            <select tabindex="1" type="text" class="form-control select2 freezeFieldAfterClick" id="academic_year" name="academic_year" tabindex="1">
-
+                                            <select tabindex="1" type="text" class="form-control select2 freezeFieldAfterClick" id="academic_year" name="academic_year">
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label>Medium</label>
-                                            <select class="form-control select2 freezeFieldAfterClick" id="medium" name="medium"> <!--- 1= Tamil, 2= English -->
+                                            <select class="form-control select2 freezeFieldAfterClick" id="medium" name="medium" tabindex="2"> <!--- 1= Tamil, 2= English -->
                                                 <option>Select Medium</option>
                                                 <option value="1">Tamil</option>
                                                 <option value="2">English</option>
@@ -46,7 +45,7 @@
                                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label>Students Type</label>
-                                            <select class="form-control select2 freezeFieldAfterClick" id="student_type" name="student_type"> <!--1 = New Student, 2 = Old Student -->
+                                            <select class="form-control select2 freezeFieldAfterClick" id="student_type" name="student_type" tabindex="3"> <!--1 = New Student, 2 = Old Student -->
                                                 <option>Select Type</option>
                                                 <option value="1">New Student</option>
                                                 <option value="2">Old Student</option>
@@ -56,14 +55,14 @@
                                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label>Standard List</label>
-                                            <select class="form-control select2 freezeFieldAfterClick" id="standard" name="standard"> <!--From Ajax file --> </select>
+                                            <select class="form-control select2 freezeFieldAfterClick" id="standard" name="standard" tabindex="4"> <!--From Ajax file --> </select>
                                         </div>
                                     </div><br><br><br><br><br><br>
                                     <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 col-12"></div>
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <input type="button" name="table_view" id="table_view" class="btn btn-primary table_view" value="View" tabindex="14">
-                                            <input type="button" name="table_refresh" id="table_refresh" class="btn btn-danger" value="Refresh" tabindex="14">
+                                            <input type="button" name="table_view" id="table_view" class="btn btn-primary table_view" value="View" tabindex="5">
+                                            <input type="button" name="table_refresh" id="table_refresh" class="btn btn-danger" value="Refresh" tabindex="6">
                                         </div>
                                     </div>
                                 </div>
@@ -105,21 +104,21 @@
                                                 <div class="form-group">
                                                     <label>Particulars</label>
                                                     <input type="hidden" name="grp_course_id" id="grp_course_id" class="grpTableField">
-                                                    <input name="grp_particulars" id="grp_particulars" placeholder="Particulars" class="form-control grpTableField" type="text">
+                                                    <input name="grp_particulars" id="grp_particulars" placeholder="Particulars" class="form-control grpTableField" type="text" tabindex="7">
                                                     <span class="text-danger" id="grp_particularsCheck" style="display: none;">Enter Particulars</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group">
                                                     <label>Amount</label>
-                                                    <input name="grp_amount" id="grp_amount" placeholder="Amount" class="form-control grpTableField" type="number">
+                                                    <input name="grp_amount" id="grp_amount" placeholder="Amount" class="form-control grpTableField" type="number" tabindex="8">
                                                     <span class="text-danger" id="grp_amountCheck" style="display: none;">Enter Amount</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group">
                                                     <label>Date</label>
-                                                    <input name="grp_date" id="grp_date" class="form-control grpTableField" type="date">
+                                                    <input name="grp_date" id="grp_date" class="form-control grpTableField" type="date" tabindex="9">
                                                     <span class="text-danger" id="grp_dateCheck" style="display: none;">Enter Due Date</span>
                                                 </div>
                                             </div>
@@ -170,27 +169,27 @@
                                                 <div class="form-group">
                                                     <label>Particulars</label>
                                                     <input type="hidden" name="extra_fee_id" id="extra_fee_id" class="extraCurField">
-                                                    <input name="extra_particulars" id="extra_particulars" placeholder="Particulars" class="form-control extraCurField" type="text">
+                                                    <input name="extra_particulars" id="extra_particulars" placeholder="Particulars" class="form-control extraCurField" type="text" tabindex="11">
                                                     <span class="text-danger" id="extra_particularsCheck" style="display: none;">Enter Particulars</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group">
                                                     <label>Amount</label>
-                                                    <input name="extra_amount" id="extra_amount" placeholder="Amount" class="form-control extraCurField" type="number">
+                                                    <input name="extra_amount" id="extra_amount" placeholder="Amount" class="form-control extraCurField" type="number" tabindex="12">
                                                     <span class="text-danger" id="extra_amountCheck" style="display: none;">Enter Amount</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group">
                                                     <label>Date</label>
-                                                    <input name="extra_date" id="extra_date" class="form-control extraCurField" type="date">
+                                                    <input name="extra_date" id="extra_date" class="form-control extraCurField" type="date" tabindex="13">
                                                     <span class="text-danger" id="extra_dateCheck" style="display: none;">Enter Date</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group">
-                                                    <button style="margin-top:20px;" type="button" name="Submit_Extra" id="Submit_Extra" class="btn btn-primary" value="submit" tabindex="10">Save</button>
+                                                    <button style="margin-top:20px;" type="button" name="Submit_Extra" id="Submit_Extra" class="btn btn-primary" value="submit" tabindex="14">Save</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -236,27 +235,27 @@
                                                 <div class="form-group">
                                                     <label>Particulars</label>
                                                     <input type="hidden" name="amenity_fee_id" id="amenity_fee_id" class="amenityField">
-                                                    <input name="amenity_particulars" id="amenity_particulars" placeholder="Particulars" class="form-control amenityField" type="text">
+                                                    <input name="amenity_particulars" id="amenity_particulars" placeholder="Particulars" class="form-control amenityField" type="text" tabindex="15">
                                                     <span class="text-danger" id="amenity_particularsCheck" style="display: none;">Enter Particulars</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group">
                                                     <label>Amount</label>
-                                                    <input name="amenity_amount" id="amenity_amount" placeholder="Amount" class="form-control amenityField" type="number">
+                                                    <input name="amenity_amount" id="amenity_amount" placeholder="Amount" class="form-control amenityField" type="number" tabindex="16">
                                                     <span class="text-danger" id="amenity_amountCheck" style="display: none;">Enter Amount</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group">
                                                     <label>Date</label>
-                                                    <input name="amenity_date" id="amenity_date" placeholder="Amount" class="form-control amenityField" type="date">
+                                                    <input name="amenity_date" id="amenity_date" placeholder="Amount" class="form-control amenityField" type="date" tabindex="17">
                                                     <span class="text-danger" id="amenity_dateCheck" style="display: none;">Enter Date</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group">
-                                                    <button style="margin-top:20px;" type="button" name="Submit_Amenity" id="Submit_Amenity" class="btn btn-primary" value="submit" tabindex="10">Save</button>
+                                                    <button style="margin-top:20px;" type="button" name="Submit_Amenity" id="Submit_Amenity" class="btn btn-primary" value="submit" tabindex="18">Save</button>
                                                 </div>
                                             </div>
                                         </div>

@@ -1,9 +1,9 @@
 <?php
 include '../ajaxconfig.php';
 
-$selectpo=$con->query("SELECT ponumber FROM purchaseorder");
+$selectpo=$mysqli->query("SELECT ponumber FROM purchaseorder");
 if($selectpo->num_rows>0){
-	$poavailable=$con->query("SELECT ponumber FROM purchaseorder ORDER BY purchaseid DESC LIMIT 1");
+	$poavailable=$mysqli->query("SELECT ponumber FROM purchaseorder ORDER BY purchaseid DESC LIMIT 1");
 	while ($row=$poavailable->fetch_assoc()) {
 		$ponum2=$row["ponumber"];
 	}

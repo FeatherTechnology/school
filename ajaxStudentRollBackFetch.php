@@ -23,7 +23,7 @@ if(isset($_POST['section'])){
             <tbody>
                 <?php
                 $ctselect="SELECT * FROM student_creation WHERE standard ='".$standard."' AND section ='".$section."' "; 
-                $ctresult=$con->query($ctselect);
+                $ctresult=$mysqli->query($ctselect);
                 if($ctresult->num_rows>0){
         
                 while($ct=$ctresult->fetch_assoc()){

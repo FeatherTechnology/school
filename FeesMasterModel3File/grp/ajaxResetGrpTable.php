@@ -27,7 +27,7 @@ if(isset($_POST['standard'])){
         <?php
         $ctselect="SELECT * FROM fees_master WHERE  academic_year = '".$academic_year."' AND medium = '".$medium."' AND 
 		standard = '".$standard."' AND status = 0 AND grp_status= 1 "; 
-        $ctresult=$con->query($ctselect);
+        $ctresult=$mysqli->query($ctselect);
         if($ctresult->num_rows>0){
         $i=1;
         while($ct=$ctresult->fetch_assoc()){

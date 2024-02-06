@@ -18,7 +18,7 @@ if(isset($_POST["class_id"])){
     <tbody>
         <?php
         $ctselect="SELECT * FROM subject_details WHERE class_id = '".$class_id."' AND status=0"; 
-        $ctresult=$con->query($ctselect);
+        $ctresult=$mysqli->query($ctselect);
         if($ctresult->num_rows>0){
         $i=1;
         while($ct=$ctresult->fetch_assoc()){

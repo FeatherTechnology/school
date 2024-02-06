@@ -310,81 +310,51 @@
 			// 	$year_id = $_POST['year_id'];
 			// } 
 		
-			$tempStudentInsert="INSERT INTO temp_admission_student(temp_no,temp_student_name, temp_dob, temp_gender, temp_category, temp_standard, temp_student_type, temp_medium,
-			 temp_entrance_exam_date,temp_entrance_exam_mark, temp_src, temp_father_name, temp_mother_name, temp_contact_number, temp_flat_no, temp_street,
-			 temp_district, temp_area, insert_login_id,school_id,year_id) 
+			$tempStudentInsert="INSERT INTO temp_admission_student(temp_no,temp_student_name, temp_dob, temp_gender, temp_category, temp_standard, temp_student_type, temp_medium,temp_entrance_exam_date,temp_entrance_exam_mark, temp_src, temp_father_name, temp_mother_name, temp_contact_number, temp_flat_no, temp_street,
+			temp_district, temp_area, insert_login_id,school_id,year_id) 
 			VALUES('".strip_tags($temp_no)."','".strip_tags($temp_student_name)."','".strip_tags($temp_dob)."', '".strip_tags($temp_gender)."', '".strip_tags($temp_category)."', 
 			'".strip_tags($temp_standard)."', '".strip_tags($temp_student_type)."', '".strip_tags($temp_medium)."','".strip_tags($temp_entrance_exam_date)."','".strip_tags($temp_entrance_exam_mark)."',
 			'".strip_tags($temp_src)."','".strip_tags($temp_father_name)."','".strip_tags($temp_mother_name)."','".strip_tags($temp_contact_number)."','".strip_tags($temp_flat_no)."',
 			'".strip_tags($temp_street)."',	'".strip_tags($temp_district)."','".strip_tags($temp_area)."', '".strip_tags($userid)."', '".strip_tags($school_id)."', '".strip_tags($year_id)."' )";
 
 			$insresult=$mysqli->query($tempStudentInsert) or die("Error ".$mysqli->error);
+			$lastInsertedTempId = $mysqli->insert_id;
+
+			return $lastInsertedTempId;
 		}
 
-		// // Get tempStudent
-		// public function getTempStudentCreation($mysqli, $id){
-
-		// 	$tempStudentSelect = "SELECT * FROM temp_admission_student WHERE temp_admission_id='".mysqli_real_escape_string($mysqli, $id)."' "; 
-		// 	$res = $mysqli->query($tempStudentSelect) or die("Error in Get All Records".$mysqli->error);
-		// 	$detailrecords = array();
-		// 	if ($mysqli->affected_rows>0)
-		// 	{
-		// 		$row = $res->fetch_object();	
-		// 		$detailrecords['temp_admission_id']      = $row->temp_admission_id; 
-		// 		$detailrecords['temp_no']    = $row->temp_no;
-		// 		$detailrecords['temp_student_name']    = $row->temp_student_name;
-		// 		$detailrecords['temp_dob']    = $row->temp_dob; 
-		// 		$detailrecords['temp_gender']        = $row->temp_gender;
-		// 		$detailrecords['temp_category']      = $row->temp_category;  	
-		// 		$detailrecords['temp_standard']       = $row->temp_standard;
-		// 		$detailrecords['temp_student_type']         = $row->temp_student_type;
-		// 		$detailrecords['temp_entrance_exam_date']       = $row->temp_entrance_exam_date;
-		// 		$detailrecords['temp_entrance_exam_mark']       = $row->temp_entrance_exam_mark;
-		// 		$detailrecords['temp_src']       = $row->temp_src;
-		// 		$detailrecords['temp_father_name']       = $row->temp_father_name;
-		// 		$detailrecords['temp_mother_name']       = $row->temp_mother_name;
-		// 		$detailrecords['temp_contact_number']       = $row->temp_contact_number;
-		// 		$detailrecords['temp_flat_no']       = $row->temp_flat_no;
-		// 		$detailrecords['temp_street']       = $row->temp_street;
-		// 		$detailrecords['temp_district']       = $row->temp_district;
-		// 		$detailrecords['temp_area']       = $row->temp_area;
-		// 		$detailrecords['temp_medium']       = $row->temp_medium;
-		// 	}
-			
-		// 	return $detailrecords;
-		// }
-		// Get tempStudent
-		public function getTempStudentCreation($mysqli, $id,$school_id,$year_id){
-
-			$tempStudentSelect = "SELECT * FROM temp_admission_student WHERE temp_admission_id='$id' AND school_id='$school_id' AND year_id ='$year_id'"; 
-			$res = $mysqli->query($tempStudentSelect) or die("Error in Get All Records".$mysqli->error);
-			$detailrecords = array();
-			if ($mysqli->affected_rows>0)
-			{
-				$row = $res->fetch_object();	
-				$detailrecords['temp_admission_id']      = $row->temp_admission_id; 
-				$detailrecords['temp_no']    = $row->temp_no;
-				$detailrecords['temp_student_name']    = $row->temp_student_name;
-				$detailrecords['temp_dob']    = $row->temp_dob; 
-				$detailrecords['temp_gender']        = $row->temp_gender;
-				$detailrecords['temp_category']      = $row->temp_category;  	
-				$detailrecords['temp_standard']       = $row->temp_standard;
-				$detailrecords['temp_student_type']         = $row->temp_student_type;
-				$detailrecords['temp_entrance_exam_date']       = $row->temp_entrance_exam_date;
-				$detailrecords['temp_entrance_exam_mark']       = $row->temp_entrance_exam_mark;
-				$detailrecords['temp_src']       = $row->temp_src;
-				$detailrecords['temp_father_name']       = $row->temp_father_name;
-				$detailrecords['temp_mother_name']       = $row->temp_mother_name;
-				$detailrecords['temp_contact_number']       = $row->temp_contact_number;
-				$detailrecords['temp_flat_no']       = $row->temp_flat_no;
-				$detailrecords['temp_street']       = $row->temp_street;
-				$detailrecords['temp_district']       = $row->temp_district;
-				$detailrecords['temp_area']       = $row->temp_area;
-				$detailrecords['temp_medium']       = $row->temp_medium;
-			}
-			
-			return $detailrecords;
-		}
+	// Get tempStudent
+	public function getTempStudentCreation($mysqli, $id){
+		$tempStudentSelect = "SELECT * FROM temp_admission_student tas JOIN standard_creation sc ON tas.temp_standard = sc.standard_id WHERE temp_admission_id='$id' "; 
+		$res = $mysqli->query($tempStudentSelect) or die("Error in Get All Records".$mysqli->error);
+		$detailrecords = array();
+		if ($mysqli->affected_rows>0)
+		{
+			$row = $res->fetch_object();	
+			$detailrecords['temp_admission_id']      	= $row->temp_admission_id; 
+			$detailrecords['temp_no']    				= $row->temp_no;
+			$detailrecords['temp_student_name']    		= $row->temp_student_name;
+			$detailrecords['temp_dob']    				= $row->temp_dob; 
+			$detailrecords['temp_gender']        		= $row->temp_gender;
+			$detailrecords['temp_category']      		= $row->temp_category;  	
+			$detailrecords['temp_standard']       		= $row->temp_standard;
+			$detailrecords['temp_standard_name']       	= $row->standard;
+			$detailrecords['temp_student_type']         = $row->temp_student_type;
+			$detailrecords['temp_entrance_exam_date']   = $row->temp_entrance_exam_date;
+			$detailrecords['temp_entrance_exam_mark']   = $row->temp_entrance_exam_mark;
+			$detailrecords['temp_src']       			= $row->temp_src;
+			$detailrecords['temp_father_name']       	= $row->temp_father_name;
+			$detailrecords['temp_mother_name']       	= $row->temp_mother_name;
+			$detailrecords['temp_contact_number']       = $row->temp_contact_number;
+			$detailrecords['temp_flat_no']       		= $row->temp_flat_no;
+			$detailrecords['temp_street']       		= $row->temp_street;
+			$detailrecords['temp_district']       		= $row->temp_district;
+			$detailrecords['temp_area']       			= $row->temp_area;
+			$detailrecords['temp_medium']       		= $row->temp_medium;
+			$detailrecords['year_id']       			= $row->year_id;
+		}	
+		return $detailrecords;
+	}
 
 			// Update tempStudent
 			public function updateTempStudentCreation($mysqli, $id, $userid,$school_id,$year_id){
@@ -469,423 +439,6 @@
 			$tempStudentDelete = "UPDATE temp_admission_student set status='1', delete_login_id='".strip_tags($userid)."' WHERE temp_admission_id = '".strip_tags($id)."' ";
 			$runQry = $mysqli->query($tempStudentDelete) or die("Error in delete query".$mysqli->error);
 		}
-
-
-		// // Add Temp Student
-		// public function addStudentCreation($mysqli, $userid){
-
-		// 	if(isset($_POST['temp_no'])){
-		// 		$temp_no = $_POST['temp_no'];
-		// 	}
-		// 	if(isset($_POST['admission_number'])){
-		// 		$admission_number = $_POST['admission_number'];
-		// 	}
-		// 	if(isset($_POST['student_name'])){
-		// 		$student_name = $_POST['student_name'];
-		// 	}
-		// 	if(isset($_POST['sur_name'])){
-		// 		$sur_name = $_POST['sur_name'];
-		// 	}
-		// 	if(isset($_POST['date_of_birth'])){
-		// 		$date_of_birth = $_POST['date_of_birth'];
-		// 	}
-		// 	if(isset($_POST['gender'])){
-		// 		$gender = $_POST['gender'];
-		// 	}
-		// 	if(isset($_POST['mother_tongue'])){
-		// 		$mother_tongue = $_POST['mother_tongue'];
-		// 	}
-		// 	if(isset($_POST['aadhar_number'])){
-		// 		$aadhar_number = $_POST['aadhar_number'];
-		// 	}
-		// 	if(isset($_POST['blood_group'])){
-		// 		$blood_group = $_POST['blood_group'];
-		// 	}
-		// 	if(isset($_POST['category'])){
-		// 		$category = $_POST['category'];
-		// 	}
-		// 	if(isset($_POST['castename'])){
-		// 		$castename = $_POST['castename'];
-		// 	}
-		// 	if(isset($_POST['sub_caste'])){
-		// 		$sub_caste = $_POST['sub_caste'];
-		// 	}
-		// 	if(isset($_POST['nationality'])){
-		// 		$nationality = $_POST['nationality'];
-		// 	}
-		// 	if(isset($_POST['religion'])){
-		// 		$religion = $_POST['religion'];
-		// 	}
-		// 	if(isset($_POST['filltoo'])){
-		// 		$filltoo = $_POST['filltoo'];
-		// 	}
-		// 	if(isset($_POST['flat_no'])){
-		// 		$flat_no = $_POST['flat_no'];
-		// 	}
-		// 	if(isset($_POST['flat_no1'])){
-		// 		$flat_no1 = $_POST['flat_no1'];
-		// 	}
-		// 	if(isset($_POST['street'])){
-		// 		$street = $_POST['street'];
-		// 	}
-		// 	if(isset($_POST['street1'])){
-		// 		$street1 = $_POST['street1'];
-		// 	}
-		// 	if(isset($_POST['area_locatlity'])){
-		// 		$area_locatlity = $_POST['area_locatlity'];
-		// 	}
-		// 	if(isset($_POST['area_locatlity1'])){
-		// 		$area_locatlity1 = $_POST['area_locatlity1'];
-		// 	}
-		// 	if(isset($_POST['district'])){
-		// 		$district = $_POST['district'];
-		// 	}
-		// 	if(isset($_POST['district1'])){
-		// 		$district1 = $_POST['district1'];
-		// 	}
-		// 	if(isset($_POST['pincode'])){
-		// 		$pincode = $_POST['pincode'];
-		// 	}
-		// 	if(isset($_POST['pincode1'])){
-		// 		$pincode1 = $_POST['pincode1'];
-		// 	}
-		// 	if(isset($_POST['standard'])){
-		// 		$standard = $_POST['standard'];
-		// 	}
-		// 	if(isset($_POST['previouschoolname'])){
-		// 		$previouschoolname = $_POST['previouschoolname'];
-		// 	}
-		// 	if(isset($_POST['previousplace'])){
-		// 		$previousplace = $_POST['previousplace'];
-		// 	}
-		// 	if(isset($_POST['strpreviousdoj'])){
-		// 		$strpreviousdoj = $_POST['strpreviousdoj'];
-		// 	}
-		// 	if(isset($_POST['strpreviousdol'])){
-		// 		$strpreviousdol = $_POST['strpreviousdol'];
-		// 	}
-		// 	if(isset($_POST['timeoftchandedover'])){
-		// 		$timeoftchandedover = $_POST['timeoftchandedover'];
-		// 	}
-		// 	if(isset($_POST['previousclassattended'])){
-		// 		$previousclassattended = $_POST['previousclassattended'];
-		// 	}
-		// 	if(isset($_POST['section'])){
-		// 		$section = $_POST['section'];
-		// 	}
-		// 	if(isset($_POST['medium'])){
-		// 		$medium = $_POST['medium'];
-		// 	}
-		// 	if(isset($_POST['studentrollno'])){
-		// 		$studentrollno = $_POST['studentrollno'];
-		// 	}
-		// 	if(isset($_POST['emisno'])){
-		// 		$emisno = $_POST['emisno'];
-		// 	}
-		// 	if(isset($_POST['studentstype'])){
-		// 		$studentstype = $_POST['studentstype'];
-		// 	}
-		// 	if(isset($_POST['referencecat'])){
-		// 		$referencecat = $_POST['referencecat'];
-		// 	}
-		// 	if(isset($_POST['refstaffid'])){
-		// 		$refstaffid = $_POST['refstaffid'];
-		// 	}
-		// 	if(isset($_POST['refstudentid'])){
-		// 		$refstudentid = $_POST['refstudentid'];
-		// 	}
-		// 	if(isset($_POST['refoldstudentid'])){
-		// 		$refoldstudentid = $_POST['refoldstudentid'];
-		// 	}
-		// 	if(isset($_POST['referencecatname'])){
-		// 		$referencecatname = $_POST['referencecatname'];
-		// 	}
-		// 	if(isset($_POST['concession_type'])){
-		// 		$concession_type = $_POST['concession_type'];
-		// 	}
-		// 	if(isset($_POST['concessiontypedetails'])){
-		// 		$concessiontypedetails = $_POST['concessiontypedetails'];
-		// 	}
-		// 	if(isset($_POST['facility'])){
-		// 		$facility = $_POST['facility'];
-		// 	}
-		// 	if(isset($_POST['roomcatogoryfeeid'])){
-		// 		$roomcatogoryfeeid = $_POST['roomcatogoryfeeid'];
-		// 	}
-		// 	if(isset($_POST['advancefee'])){
-		// 		$advancefee = $_POST['advancefee'];
-		// 	}
-		// 	if(isset($_POST['roomrent'])){
-		// 		$roomrent = $_POST['roomrent'];
-		// 	}
-		// 	if(isset($_POST['transportarearefid'])){
-		// 		$transportarearefid = $_POST['transportarearefid'];
-		// 	}
-		// 	if(isset($_POST['transportstopping'])){
-		// 		$transportstopping = $_POST['transportstopping'];
-		// 	}
-		// 	if(isset($_POST['busno'])){
-		// 		$busno = $_POST['busno'];
-		// 	}
-		// 	if(isset($_POST['father_name'])){
-		// 		$father_name = $_POST['father_name'];
-		// 	}
-		// 	if(isset($_POST['mother_name'])){
-		// 		$mother_name = $_POST['mother_name'];
-		// 	}
-		// 	if(isset($_POST['father_aadhar_number'])){
-		// 		$father_aadhar_number = $_POST['father_aadhar_number'];
-		// 	}
-		// 	if(isset($_POST['mother_aadhar_number'])){
-		// 		$mother_aadhar_number = $_POST['mother_aadhar_number'];
-		// 	}
-		// 	if(isset($_POST['occupation'])){
-		// 		$occupation = $_POST['occupation'];
-		// 	}
-		// 	if(isset($_POST['monthly_income'])){
-		// 		$monthly_income = $_POST['monthly_income'];
-		// 	}
-		// 	if(isset($_POST['nature_business'])){
-		// 		$nature_business = $_POST['nature_business'];
-		// 	}
-		// 	if(isset($_POST['position_held'])){
-		// 		$position_held = $_POST['position_held'];
-		// 	}
-		// 	if(isset($_POST['telephone_number'])){
-		// 		$telephone_number = $_POST['telephone_number'];
-		// 	}
-		// 	if(isset($_POST['lives_gaurdian'])){
-		// 		$lives_gaurdian = $_POST['lives_gaurdian'];
-		// 	}
-		// 	if(isset($_POST['gaurdian_name'])){
-		// 		$gaurdian_name = $_POST['gaurdian_name'];
-		// 	}
-		// 	if(isset($_POST['gaurdian_mobile'])){
-		// 		$gaurdian_mobile = $_POST['gaurdian_mobile'];
-		// 	}
-		// 	if(isset($_POST['gaurdian_aadhar_number'])){
-		// 		$gaurdian_aadhar_number = $_POST['gaurdian_aadhar_number'];
-		// 	}
-		// 	if(isset($_POST['gaurdian_email_id'])){
-		// 		$gaurdian_email_id = $_POST['gaurdian_email_id'];
-		// 	}
-		// 	if(isset($_POST['father_mobile_no'])){
-		// 		$father_mobile_no = $_POST['father_mobile_no'];
-		// 	}
-		// 	if(isset($_POST['mother_mobile_no'])){
-		// 		$mother_mobile_no = $_POST['mother_mobile_no'];
-		// 	}
-		// 	if(isset($_POST['father_email_id'])){
-		// 		$father_email_id = $_POST['father_email_id'];
-		// 	}
-		// 	if(isset($_POST['sms_sent_no'])){
-		// 		$sms_sent_no = $_POST['sms_sent_no'];
-		// 	}
-		// 	if(isset($_POST['sibling_name'])){
-		// 		$sibling_name = $_POST['sibling_name'];
-		// 	}
-		// 	if(isset($_POST['sibling_school_name'])){
-		// 		$sibling_school_name = $_POST['sibling_school_name'];
-		// 	}
-		// 	if(isset($_POST['sibling_standard'])){
-		// 		$sibling_standard = $_POST['sibling_standard'];
-		// 	}
-		// 	if(isset($_POST['sibling_name2'])){
-		// 		$sibling_name2 = $_POST['sibling_name2'];
-		// 	}
-		// 	if(isset($_POST['sibling_school_name2'])){
-		// 		$sibling_school_name2 = $_POST['sibling_school_name2'];
-		// 	}
-		// 	if(isset($_POST['sibling_standard2'])){
-		// 		$sibling_standard2 = $_POST['sibling_standard2'];
-		// 	}
-		// 	if(isset($_POST['sibling_name3'])){
-		// 		$sibling_name3 = $_POST['sibling_name3'];
-		// 	}
-		// 	if(isset($_POST['sibling_school_name3'])){
-		// 		$sibling_school_name3 = $_POST['sibling_school_name3'];
-		// 	}
-		// 	if(isset($_POST['sibling_standard3'])){
-		// 		$sibling_standard3 = $_POST['sibling_standard3'];
-		// 	}
-		// 	if(isset($_POST['anyextracurricular'])){
-		// 		$anyextracurricular = $_POST['anyextracurricular'];
-		// 	}
-		// 	if(isset($_POST['title'])){
-		// 		$title = $_POST['title'];
-		// 	}
-		// 	if(isset($_POST['title1'])){
-		// 		$title1 = $_POST['title1'];
-		// 	}
-		// 	if(isset($_POST['title2'])){
-		// 		$title2 = $_POST['title2'];
-		// 	}
-		// 	if(isset($_POST['title3'])){
-		// 		$title3 = $_POST['title3'];
-		// 	}
-		// 	if(isset($_POST['title4'])){
-		// 		$title4 = $_POST['title4'];
-		// 	}
-					
-		// 	if(isset($_POST['userid'])){
-		// 		$userid = $_POST['userid'];
-		// 	} 
-		// 	if(isset($_POST['temp_admission_id'])){
-		// 		$temp_admission_id = $_POST['temp_admission_id'];
-		// 	} 
-		
-		// 	$certificate = '';
-		// 	$subdir = $_POST['admission_number'];
-		// 	//set the directory path name
-		// 	$dir = ("uploads/certificates/". $subdir);
-		// 	//make the directory
-		// 	mkdir($dir, 0777);
-		// 	if(!empty($_FILES['certificate']['name']))		
-		// 	{
-		// 		$certificate = $_FILES['certificate']['name'];
-		// 		$certificate_tmp = $_FILES['certificate']['tmp_name'];
-		// 		$certificatefolder="$dir/".$certificate ;
-		// 		move_uploaded_file($certificate_tmp, $certificatefolder);
-		// 	} 
-		// 	$certificate1 = '';
-		// 	$subdir1 = $_POST['admission_number'];
-		// 	//set the directory path name
-		// 	$dir1 = ("uploads/certificates/". $subdir1);
-		// 	//make the directory
-		// 	mkdir($dir1, 0777);
-
-		// 	if(!empty($_FILES['certificate1']['name']))		
-		// 	{
-		// 		$certificate1 = $_FILES['certificate1']['name'];
-		// 		$certificate1_tmp = $_FILES['certificate1']['tmp_name'];
-		// 		$certificate1folder="$dir1/".$certificate1 ;
-		// 		move_uploaded_file($certificate1_tmp, $certificate1folder);
-		// 	} 
-		// 	$certificate2 = '';
-		// 	$subdir2 = $_POST['admission_number'];
-		// 	//set the directory path name
-		// 	$dir2 = ("uploads/certificates/". $subdir2);
-		// 	//make the directory
-		// 	mkdir($dir2, 0777);
-			
-		// 	if(!empty($_FILES['certificate2']['name']))		
-		// 	{
-		// 		$certificate2 = $_FILES['certificate2']['name'];
-		// 		$certificate2_tmp = $_FILES['certificate2']['tmp_name'];
-		// 		$certificate2folder="$dir2/".$certificate2 ;
-		// 		move_uploaded_file($certificate2_tmp, $certificate2folder);
-		// 	} 
-		// 	$certificate3 = '';
-		// 	$subdir3 = $_POST['admission_number'];
-		// 	//set the directory path name
-		// 	$dir3 = ("uploads/certificates/". $subdir3);
-		// 	//make the directory
-		// 	mkdir($dir3, 0777);
-		// 	if(!empty($_FILES['certificate3']['name']))		
-		// 	{
-		// 		$certificate3 = $_FILES['certificate3']['name'];
-		// 		$certificate3_tmp = $_FILES['certificate3']['tmp_name'];
-		// 		$certificate3folder="$dir3/".$certificate3 ;
-		// 		move_uploaded_file($certificate3_tmp, $certificate3folder);
-		// 	}
-		// 	 $certificate4 = '';
-		// 	 $subdir4 = $_POST['admission_number'];
-		// 	 //set the directory path name
-		// 	 $dir4 = ("uploads/certificates/". $subdir4);
-		// 	 //make the directory
-		// 	 mkdir($dir4, 0777);
-		// 	if(!empty($_FILES['certificate4']['name']))		
-		// 	{
-		// 		$certificate4 = $_FILES['certificate4']['name'];
-		// 		$certificate4_tmp = $_FILES['certificate4']['tmp_name'];
-		// 		$certificate4folder="$dir4/".$certificate4 ;
-		// 		move_uploaded_file($certificate4_tmp, $certificate4folder);
-		// 	} 
-		// 	$student_image = '';
-		// 	$subdir5 = $_POST['admission_number'];
-		// 	//set the directory path name
-		// 	$dir5 = ("uploads/student_creation/". $subdir5);
-		// 	//make the directory
-		// 	mkdir($dir5, 0777);
-		// 	if(!empty($_FILES['student_image']['name']))		
-		// 	{
-		// 		$student_image = $_FILES['student_image']['name'];
-		// 		$student_image_tmp = $_FILES['student_image']['tmp_name'];
-		// 		$student_imagefolder="$dir5/".$student_image ;
-		// 		move_uploaded_file($student_image_tmp, $student_imagefolder);
-		// 	} 
-
-		// 	$father_image = '';
-		// 	$subdir6 = $_POST['admission_number'];
-		// 	//set the directory path name
-		// 	$dir6 = ("uploads/student_creation/". $subdir6);
-		// 	//make the directory
-		// 	mkdir($dir6, 0777);
-		// 	if(!empty($_FILES['father_image']['name']))		
-		// 	{
-		// 		$father_image = $_FILES['father_image']['name'];
-		// 		$father_image_tmp = $_FILES['father_image']['tmp_name'];
-		// 		$father_imagefolder="$dir6/".$father_image ;
-		// 		move_uploaded_file($father_image_tmp, $father_imagefolder);
-		// 	} 
-
-		// 	$mother_image = '';
-		// 	$subdir7 = $_POST['admission_number'];
-		// 	//set the directory path name
-		// 	$dir7 = ("uploads/student_creation/". $subdir7);
-		// 	//make the directory
-		// 	mkdir($dir7, 0777);
-		// 	if(!empty($_FILES['mother_image']['name']))		
-		// 	{
-		// 		$mother_image = $_FILES['mother_image']['name'];
-		// 		$mother_image_tmp = $_FILES['mother_image']['tmp_name'];
-		// 		$mother_imagefolder="$dir7/".$mother_image ;
-		// 		move_uploaded_file($mother_image_tmp, $mother_imagefolder);
-		// 	} 
-		// 	if(isset($_POST['extra_curricular'])){
-		// 		$extra_curricularstr = $_POST['extra_curricular'];
-		// 		$extra_curricular = implode(",",$extra_curricularstr);
-		// 	}
-
-		// 	$StudentInsert="INSERT INTO student_creation(temp_admission_id,temp_no, admission_number, student_name, sur_name, date_of_birth, gender, mother_tongue,
-		// 	 aadhar_number,blood_group, category, castename, sub_caste, nationality, religion, student_image, filltoo, flat_no, flat_no1, street,street1,area_locatlity,
-		// 	 area_locatlity1,district,district1,pincode, pincode1, standard, previouschoolname, previousplace, strpreviousdoj, strpreviousdol, timeoftchandedover,
-		// 	 previousclassattended, section, medium, studentrollno, emisno, studentstype, referencecat, refstaffid, refstudentid, 
-		// 	 refoldstudentid, referencecatname, concession_type, concessiontypedetails, facility, roomcatogoryfeeid, advancefee, roomrent, transportarearefid,
-		// 	 transportstopping, busno, father_name, mother_name, father_aadhar_number, mother_aadhar_number, occupation, monthly_income, nature_business,
-		// 	 position_held, telephone_number, lives_gaurdian, gaurdian_name, gaurdian_mobile, gaurdian_aadhar_number, gaurdian_email_id, father_mobile_no, 
-		// 	 mother_mobile_no, father_email_id, sms_sent_no, sibling_name, sibling_school_name, sibling_standard, sibling_name2, sibling_school_name2, sibling_standard2,
-		// 	 sibling_name3, sibling_school_name3, sibling_standard3, anyextracurricular, title, certificate, title1, certificate1, title2, certificate2, title3,
-		// 	 certificate3, title4, certificate4,mother_image, father_image, insert_login_id, extra_curricular) 
-		// 	VALUES('".strip_tags($temp_admission_id)."','".strip_tags($temp_no)."','".strip_tags($admission_number)."', '".strip_tags($student_name)."', '".strip_tags($sur_name)."', 
-		// 	'".strip_tags($date_of_birth)."', '".strip_tags($gender)."', '".strip_tags($mother_tongue)."','".strip_tags($aadhar_number)."','".strip_tags($blood_group)."',
-		// 	'".strip_tags($category)."','".strip_tags($castename)."','".strip_tags($sub_caste)."','".strip_tags($nationality)."','".strip_tags($religion)."', '".strip_tags($student_image)."',
-		// 	'".strip_tags($filltoo)."','".strip_tags($flat_no)."',	'".strip_tags($flat_no1)."','".strip_tags($street)."', '".strip_tags($street1)."','".strip_tags($area_locatlity)."','".strip_tags($area_locatlity1)."',
-		// 	'".strip_tags($district)."','".strip_tags($district1)."','".strip_tags($pincode)."','".strip_tags($pincode1)."','".strip_tags($standard)."',
-		// 	'".strip_tags($previouschoolname)."','".strip_tags($previousplace)."','".strip_tags($strpreviousdoj)."','".strip_tags($strpreviousdol)."','".strip_tags($timeoftchandedover)."',
-		// 	'".strip_tags($previousclassattended)."','".strip_tags($section)."','".strip_tags($medium)."','".strip_tags($studentrollno)."','".strip_tags($emisno)."','".strip_tags($studentstype)."',
-		// 	'".strip_tags($referencecat)."',
-		// 	'".strip_tags($refstaffid)."','".strip_tags($refstudentid)."','".strip_tags($refoldstudentid)."','".strip_tags($referencecatname)."','".strip_tags($concession_type)."',
-		// 	'".strip_tags($concessiontypedetails)."',
-		// 	'".strip_tags($facility)."','".strip_tags($roomcatogoryfeeid)."','".strip_tags($advancefee)."', '".strip_tags($roomrent)."','".strip_tags($transportarearefid)."',
-		// 	'".strip_tags($transportstopping)."',
-		// 	'".strip_tags($busno)."','".strip_tags($father_name)."','".strip_tags($mother_name)."','".strip_tags($father_aadhar_number)."','".strip_tags($mother_aadhar_number)."',
-		// 	'".strip_tags($occupation)."',
-		// 	'".strip_tags($monthly_income)."','".strip_tags($nature_business)."','".strip_tags($position_held)."','".strip_tags($telephone_number)."','".strip_tags($lives_gaurdian)."',
-		// 	'".strip_tags($gaurdian_name)."',
-		// 	'".strip_tags($gaurdian_mobile)."','".strip_tags($gaurdian_aadhar_number)."','".strip_tags($gaurdian_email_id)."','".strip_tags($father_mobile_no)."','".strip_tags($mother_mobile_no)."',
-		// 	'".strip_tags($father_email_id)."',
-		// 	'".strip_tags($sms_sent_no)."','".strip_tags($sibling_name)."','".strip_tags($sibling_school_name)."','".strip_tags($sibling_standard)."','".strip_tags($sibling_name2)."',
-		// 	'".strip_tags($sibling_school_name2)."',
-		// 	'".strip_tags($sibling_standard2)."','".strip_tags($sibling_name3)."','".strip_tags($sibling_school_name3)."','".strip_tags($sibling_standard3)."','".strip_tags($anyextracurricular)."',
-		// 	'".strip_tags($title)."',
-		// 	'".strip_tags($certificate)."','".strip_tags($title1)."','".strip_tags($certificate1)."','".strip_tags($title2)."','".strip_tags($certificate2)."','".strip_tags($title3)."',
-		// 	'".strip_tags($certificate3)."','".strip_tags($title4)."','".strip_tags($certificate4)."','".strip_tags($mother_image)."','".strip_tags($father_image)."','".strip_tags($userid)."','".strip_tags($extra_curricular)."' )";
-
-		// 	$insresult=$mysqli->query($StudentInsert) or die("Error ".$mysqli->error);
-		// }
-
-
 
 		// Add Temp Student
 		public function addStudentCreation($mysqli, $userid,$school_id,$year_id){
@@ -1270,15 +823,15 @@
 			}
 
 			$StudentInsert="INSERT INTO student_creation(temp_admission_id,temp_no, admission_number, student_name, sur_name, date_of_birth, gender, mother_tongue,
-			 aadhar_number,blood_group, category, castename, sub_caste, nationality, religion, student_image, filltoo, flat_no, flat_no1, street,street1,area_locatlity,
-			 area_locatlity1,district,district1,pincode, pincode1, standard, previouschoolname, previousplace, strpreviousdoj, strpreviousdol, timeoftchandedover,
-			 previousclassattended, section, medium, studentrollno, emisno, studentstype, referencecat, refstaffid, refstudentid, 
-			 refoldstudentid, referencecatname, concession_type, concessiontypedetails, facility, roomcatogoryfeeid, advancefee, roomrent, transportarearefid,
-			 transportstopping, busno, father_name, mother_name, father_aadhar_number, mother_aadhar_number, occupation, monthly_income, nature_business,
-			 position_held, telephone_number, lives_gaurdian, gaurdian_name, gaurdian_mobile, gaurdian_aadhar_number, gaurdian_email_id, father_mobile_no, 
-			 mother_mobile_no, father_email_id, sms_sent_no, sibling_name, sibling_school_name, sibling_standard, sibling_name2, sibling_school_name2, sibling_standard2,
-			 sibling_name3, sibling_school_name3, sibling_standard3, anyextracurricular, title, certificate, title1, certificate1, title2, certificate2, title3,
-			 certificate3, title4, certificate4,mother_image, father_image,insert_login_id, extra_curricular,school_id,year_id) 
+			aadhar_number,blood_group, category, castename, sub_caste, nationality, religion, student_image, filltoo, flat_no, flat_no1, street,street1,area_locatlity,
+			area_locatlity1,district,district1,pincode, pincode1, standard, previouschoolname, previousplace, strpreviousdoj, strpreviousdol, timeoftchandedover,
+			previousclassattended, section, medium, studentrollno, emisno, studentstype, referencecat, refstaffid, refstudentid, 
+			refoldstudentid, referencecatname, concession_type, concessiontypedetails, facility, roomcatogoryfeeid, advancefee, roomrent, transportarearefid,
+			transportstopping, busno, father_name, mother_name, father_aadhar_number, mother_aadhar_number, occupation, monthly_income, nature_business,
+			position_held, telephone_number, lives_gaurdian, gaurdian_name, gaurdian_mobile, gaurdian_aadhar_number, gaurdian_email_id, father_mobile_no, 
+			mother_mobile_no, father_email_id, sms_sent_no, sibling_name, sibling_school_name, sibling_standard, sibling_name2, sibling_school_name2, sibling_standard2,
+			sibling_name3, sibling_school_name3, sibling_standard3, anyextracurricular, title, certificate, title1, certificate1, title2, certificate2, title3,
+			certificate3, title4, certificate4,mother_image, father_image,insert_login_id, extra_curricular,school_id,year_id) 
 			VALUES('".strip_tags($temp_admission_id)."','".strip_tags($temp_no)."','".strip_tags($admission_number)."', '".strip_tags($student_name)."', '".strip_tags($sur_name)."', 
 			'".strip_tags($date_of_birth)."', '".strip_tags($gender)."', '".strip_tags($mother_tongue)."','".strip_tags($aadhar_number)."','".strip_tags($blood_group)."',
 			'".strip_tags($category)."','".strip_tags($castename)."','".strip_tags($sub_caste)."','".strip_tags($nationality)."','".strip_tags($religion)."', '".strip_tags($student_image)."',
@@ -1305,12 +858,32 @@
 			'".strip_tags($certificate3)."','".strip_tags($title4)."','".strip_tags($certificate4)."','".strip_tags($mother_image)."','".strip_tags($father_image)."','".strip_tags($userid)."','".strip_tags($extra_curricular)."','".strip_tags($school_id)."','".strip_tags($year_id)."' )";
 
 			$insresult=$mysqli->query($StudentInsert) or die("Error ".$mysqli->error);
+
+			$stdLastInsertId = $mysqli->insert_id;
+			
+			if($temp_admission_id !=''){
+				$selectFeesQry = $mysqli->query("SELECT `id`, `TempAdmissionId` FROM `temp_admission_fees` WHERE `TempAdmissionId` = '$temp_admission_id' ");
+				while($getdetails = $selectFeesQry->fetch_assoc()){
+					$temp_fees_id = $getdetails['id'];
+					
+					$mysqli->query("INSERT INTO `admission_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `other_charges`, `other_charges_received`, `scholarship`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `update_login_id`, `created_on`, `updated_on`) SELECT  '$stdLastInsertId', `ReceiptNo`, `ReceiptDate`, `AcademicYear`, `Othercharges`, `OtherChargesReceived`, `Scholarship`, `TotalFeestobeCollected`, `FinalAmounttobeCollect`, `FeesCollected`, `BalancetobePaid`, `school_id`, `insert_login_id`, `update_login_id`, `created_on`, `updated_on` FROM `temp_admission_fees` WHERE `id` = '$temp_fees_id' ") or die("Error ON admission_fees--".$mysqli->error);
+					$admFeesid = $mysqli->insert_id;
+
+					$mysqli->query("INSERT INTO `admission_fees_denomination`( `admission_fees_ref_id`, `payment_mode`, `ledger_ref_id`, `no_five_hundred`, `no_two_hundred`, `no_hundred`, `no_fifty`, `no_twenty`, `no_ten`, `no_five`, `total_amount`, `cheque_number`, `cheque_date`, `cheque_amount`, `cheque_bank_name`, `neft_ref_number`, `neft_tran_date`, `neft_amount`, `neft_bank_name`, `insert_login_id`, `update_login_id`, `created_on`, `updated_on`) SELECT '$admFeesid', `PaymentMode`, `LedgerRefId`, `No_Fivehundred`, `No_Twohundred`, `No_hundred`, `No_fifty`, `No_twenty`, `No_ten`, `No_five`, `totalamt`, `ChequeNumber`, `ChequeDate`, `ChequeAmt`, `ChequeBankName`, `NeftRefNumber`, `NeftTranDate`, `NeftAmt`, `NeftBankName`, `insert_login_id`, `update_login_id`, `created_on`, `updated_on` FROM `temp_admission_fees_denomination` WHERE `TempAdmFeeRefId` = '$temp_fees_id' ") or die("Error ON admission_fees_denomination--".$mysqli->error);
+					
+					$mysqli->query("INSERT INTO `admission_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) SELECT '$admFeesid', `FeesMasterId`, `FeesTableName`, `FeesId`, `FeeReceived`, `BalancetobePaid`, `Scholarship` FROM `temp_admissionfees_details` WHERE `TempAdmFeeRefId` = '$temp_fees_id' ") or die("Error ON admission_fees_details--".$mysqli->error);
+				}		
+			}
+
+			return $stdLastInsertId;
+
 		}
 
 		// Get tempStudent
 		public function getStudentCreation($mysqli, $id){
 
-			$tempStudentSelect = "SELECT * FROM student_creation WHERE student_id='$id'"; 
+			// $tempStudentSelect = "SELECT * FROM student_creation WHERE student_id='$id'"; 
+			$tempStudentSelect = "SELECT stdc.*, sc.standard as std_name FROM student_creation stdc JOIN standard_creation sc ON stdc.standard = sc.standard_id WHERE stdc.student_id='$id'"; 
 			$res = $mysqli->query($tempStudentSelect) or die("Error in Get All Records".$mysqli->error);
 			$detailrecords = array();
 			if ($mysqli->affected_rows>0)
@@ -1344,6 +917,7 @@
 				$detailrecords['pincode']       = $row->pincode;
 				$detailrecords['pincode1']       = $row->pincode1;
 				$detailrecords['standard']       = $row->standard;
+				$detailrecords['standard_name']       = $row->std_name;
 				$detailrecords['previouschoolname']       = $row->previouschoolname;
 				$detailrecords['previousplace']       = $row->previousplace;
 				$detailrecords['strpreviousdoj']       = $row->strpreviousdoj;
@@ -1411,556 +985,11 @@
 				$detailrecords['mother_image']       = $row->mother_image;
 				$detailrecords['father_image']       = $row->father_image;
 				$detailrecords['extra_curricular']       = $row->extra_curricular;
+				$detailrecords['year_id']       = $row->year_id;
 			}
 			
 			return $detailrecords;
 		}
-		// // Get tempStudent
-		// public function getStudentCreation($mysqli, $id){
-
-		// 	$tempStudentSelect = "SELECT * FROM student_creation WHERE student_id='".mysqli_real_escape_string($mysqli, $id)."' "; 
-		// 	$res = $mysqli->query($tempStudentSelect) or die("Error in Get All Records".$mysqli->error);
-		// 	$detailrecords = array();
-		// 	if ($mysqli->affected_rows>0)
-		// 	{
-		// 		$row = $res->fetch_object();	
-		// 		$detailrecords['student_id']      = $row->student_id; 
-		// 		$detailrecords['temp_no']    = $row->temp_no;
-		// 		$detailrecords['admission_number']    = $row->admission_number; 
-		// 		$detailrecords['student_name']        = $row->student_name;
-		// 		$detailrecords['sur_name']      = $row->sur_name;  	
-		// 		$detailrecords['date_of_birth']       = $row->date_of_birth;
-		// 		$detailrecords['gender']         = $row->gender;
-		// 		$detailrecords['mother_tongue']         = $row->mother_tongue;
-		// 		$detailrecords['aadhar_number']       = $row->aadhar_number;
-		// 		$detailrecords['blood_group']       = $row->blood_group;
-		// 		$detailrecords['category']       = $row->category;
-		// 		$detailrecords['castename']       = $row->castename;
-		// 		$detailrecords['sub_caste']       = $row->sub_caste;
-		// 		$detailrecords['nationality']       = $row->nationality;
-		// 		$detailrecords['religion']       = $row->religion;
-		// 		$detailrecords['student_image']       = $row->student_image;
-		// 		$detailrecords['filltoo']       = $row->filltoo;
-		// 		$detailrecords['flat_no']       = $row->flat_no;
-		// 		$detailrecords['flat_no1']       = $row->flat_no1;
-		// 		$detailrecords['street']       = $row->street;
-		// 		$detailrecords['street1']       = $row->street1;
-		// 		$detailrecords['area_locatlity']       = $row->area_locatlity;
-		// 		$detailrecords['area_locatlity1']       = $row->area_locatlity1;
-		// 		$detailrecords['district']       = $row->district;
-		// 		$detailrecords['district1']       = $row->district1;
-		// 		$detailrecords['pincode']       = $row->pincode;
-		// 		$detailrecords['pincode1']       = $row->pincode1;
-		// 		$detailrecords['standard']       = $row->standard;
-		// 		$detailrecords['previouschoolname']       = $row->previouschoolname;
-		// 		$detailrecords['previousplace']       = $row->previousplace;
-		// 		$detailrecords['strpreviousdoj']       = $row->strpreviousdoj;
-		// 		$detailrecords['strpreviousdol']       = $row->strpreviousdol;
-		// 		$detailrecords['timeoftchandedover']       = $row->timeoftchandedover;
-		// 		$detailrecords['previousclassattended']       = $row->previousclassattended;
-		// 		$detailrecords['section']       = $row->section;
-		// 		$detailrecords['medium']       = $row->medium;
-		// 		$detailrecords['studentrollno']       = $row->studentrollno;
-		// 		$detailrecords['emisno']       = $row->emisno;
-		// 		$detailrecords['studentstype']       = $row->studentstype;
-		// 		$detailrecords['referencecat']       = $row->referencecat;
-		// 		$detailrecords['refstaffid']       = $row->refstaffid;
-		// 		$detailrecords['refstudentid']       = $row->refstudentid;
-		// 		$detailrecords['refoldstudentid']       = $row->refoldstudentid;
-		// 		$detailrecords['referencecatname']       = $row->referencecatname;
-		// 		$detailrecords['concession_type']       = $row->concession_type;
-		// 		$detailrecords['concessiontypedetails']       = $row->concessiontypedetails;
-		// 		$detailrecords['facility']       = $row->facility;
-		// 		$detailrecords['roomcatogoryfeeid']       = $row->roomcatogoryfeeid;
-		// 		$detailrecords['advancefee']       = $row->advancefee;
-		// 		$detailrecords['roomrent']       = $row->roomrent;
-		// 		$detailrecords['transportarearefid']       = $row->transportarearefid;
-		// 		$detailrecords['transportstopping']       = $row->transportstopping;
-		// 		$detailrecords['busno']       = $row->busno;
-		// 		$detailrecords['father_name']       = $row->father_name;
-		// 		$detailrecords['mother_name']       = $row->mother_name;
-		// 		$detailrecords['father_aadhar_number']       = $row->father_aadhar_number;
-		// 		$detailrecords['mother_aadhar_number']       = $row->mother_aadhar_number;
-		// 		$detailrecords['occupation']       = $row->occupation;
-		// 		$detailrecords['monthly_income']       = $row->monthly_income;
-		// 		$detailrecords['nature_business']       = $row->nature_business;
-		// 		$detailrecords['position_held']       = $row->position_held;
-		// 		$detailrecords['telephone_number']       = $row->telephone_number;
-		// 		$detailrecords['lives_gaurdian']       = $row->lives_gaurdian;
-		// 		$detailrecords['gaurdian_name']       = $row->gaurdian_name;
-		// 		$detailrecords['gaurdian_mobile']       = $row->gaurdian_mobile;
-		// 		$detailrecords['gaurdian_aadhar_number']       = $row->gaurdian_aadhar_number;
-		// 		$detailrecords['gaurdian_email_id']       = $row->gaurdian_email_id;
-		// 		$detailrecords['father_mobile_no']       = $row->father_mobile_no;
-		// 		$detailrecords['mother_mobile_no']       = $row->mother_mobile_no;
-		// 		$detailrecords['father_email_id']       = $row->father_email_id;
-		// 		$detailrecords['sms_sent_no']       = $row->sms_sent_no;
-		// 		$detailrecords['sibling_name']       = $row->sibling_name;
-		// 		$detailrecords['sibling_school_name']       = $row->sibling_school_name;
-		// 		$detailrecords['sibling_standard']       = $row->sibling_standard;
-		// 		$detailrecords['sibling_name2']       = $row->sibling_name2;
-		// 		$detailrecords['sibling_school_name2']       = $row->sibling_school_name2;
-		// 		$detailrecords['sibling_standard2']       = $row->sibling_standard2;
-		// 		$detailrecords['sibling_name3']       = $row->sibling_name3;
-		// 		$detailrecords['sibling_school_name3']       = $row->sibling_school_name3;
-		// 		$detailrecords['sibling_standard3']       = $row->sibling_standard3;
-		// 		$detailrecords['anyextracurricular']       = $row->anyextracurricular;
-		// 		$detailrecords['title']       = $row->title;
-		// 		$detailrecords['certificate']       = $row->certificate;
-		// 		$detailrecords['title1']       = $row->title1;
-		// 		$detailrecords['certificate1']       = $row->certificate1;
-		// 		$detailrecords['title2']       = $row->title2;
-		// 		$detailrecords['certificate2']       = $row->certificate2;
-		// 		$detailrecords['title3']       = $row->title3;
-		// 		$detailrecords['certificate3']       = $row->certificate3;
-		// 		$detailrecords['title4']       = $row->title4;
-		// 		$detailrecords['certificate4']       = $row->certificate4;
-		// 		$detailrecords['temp_admission_id']       = $row->temp_admission_id;
-		// 		$detailrecords['mother_image']       = $row->mother_image;
-		// 		$detailrecords['father_image']       = $row->father_image;
-		// 		$detailrecords['extra_curricular']       = $row->extra_curricular;
-		// 	}
-			
-		// 	return $detailrecords;
-		// }
-
-		// // Update tempStudent
-		// public function updateStudentCreation($mysqli, $id, $userid){	
-		// 	if(isset($_POST['temp_no'])){
-		// 		$temp_no = $_POST['temp_no'];
-		// 	}
-		// 	if(isset($_POST['admission_number'])){
-		// 		$admission_number = $_POST['admission_number'];
-		// 	}
-		// 	if(isset($_POST['student_name'])){
-		// 		$student_name = $_POST['student_name'];
-		// 	}
-		// 	if(isset($_POST['sur_name'])){
-		// 		$sur_name = $_POST['sur_name'];
-		// 	}
-		// 	if(isset($_POST['date_of_birth'])){
-		// 		$date_of_birth = $_POST['date_of_birth'];
-		// 	}
-		// 	if(isset($_POST['gender'])){
-		// 		$gender = $_POST['gender'];
-		// 	}
-		// 	if(isset($_POST['mother_tongue'])){
-		// 		$mother_tongue = $_POST['mother_tongue'];
-		// 	}
-		// 	if(isset($_POST['aadhar_number'])){
-		// 		$aadhar_number = $_POST['aadhar_number'];
-		// 	}
-		// 	if(isset($_POST['blood_group'])){
-		// 		$blood_group = $_POST['blood_group'];
-		// 	}
-		// 	if(isset($_POST['category'])){
-		// 		$category = $_POST['category'];
-		// 	}
-		// 	if(isset($_POST['castename'])){
-		// 		$castename = $_POST['castename'];
-		// 	}
-		// 	if(isset($_POST['sub_caste'])){
-		// 		$sub_caste = $_POST['sub_caste'];
-		// 	}
-		// 	if(isset($_POST['nationality'])){
-		// 		$nationality = $_POST['nationality'];
-		// 	}
-		// 	if(isset($_POST['religion'])){
-		// 		$religion = $_POST['religion'];
-		// 	}
-		// 	if(isset($_POST['filltoo'])){
-		// 		$filltoo = $_POST['filltoo'];
-		// 	}
-		// 	if(isset($_POST['flat_no'])){
-		// 		$flat_no = $_POST['flat_no'];
-		// 	}
-		// 	if(isset($_POST['flat_no1'])){
-		// 		$flat_no1 = $_POST['flat_no1'];
-		// 	}
-		// 	if(isset($_POST['street'])){
-		// 		$street = $_POST['street'];
-		// 	}
-		// 	if(isset($_POST['street1'])){
-		// 		$street1 = $_POST['street1'];
-		// 	}
-		// 	if(isset($_POST['area_locatlity'])){
-		// 		$area_locatlity = $_POST['area_locatlity'];
-		// 	}
-		// 	if(isset($_POST['area_locatlity1'])){
-		// 		$area_locatlity1 = $_POST['area_locatlity1'];
-		// 	}
-		// 	if(isset($_POST['district'])){
-		// 		$district = $_POST['district'];
-		// 	}
-		// 	if(isset($_POST['district1'])){
-		// 		$district1 = $_POST['district1'];
-		// 	}
-		// 	if(isset($_POST['pincode'])){
-		// 		$pincode = $_POST['pincode'];
-		// 	}
-		// 	if(isset($_POST['pincode1'])){
-		// 		$pincode1 = $_POST['pincode1'];
-		// 	}
-		// 	if(isset($_POST['standard'])){
-		// 		$standard = $_POST['standard'];
-		// 	}
-		// 	if(isset($_POST['previouschoolname'])){
-		// 		$previouschoolname = $_POST['previouschoolname'];
-		// 	}
-		// 	if(isset($_POST['previousplace'])){
-		// 		$previousplace = $_POST['previousplace'];
-		// 	}
-		// 	if(isset($_POST['strpreviousdoj'])){
-		// 		$strpreviousdoj = $_POST['strpreviousdoj'];
-		// 	}
-		// 	if(isset($_POST['strpreviousdol'])){
-		// 		$strpreviousdol = $_POST['strpreviousdol'];
-		// 	}
-		// 	if(isset($_POST['timeoftchandedover'])){
-		// 		$timeoftchandedover = $_POST['timeoftchandedover'];
-		// 	}
-		// 	if(isset($_POST['previousclassattended'])){
-		// 		$previousclassattended = $_POST['previousclassattended'];
-		// 	}
-		// 	if(isset($_POST['section'])){
-		// 		$section = $_POST['section'];
-		// 	}
-		// 	if(isset($_POST['medium'])){
-		// 		$medium = $_POST['medium'];
-		// 	}
-		// 	if(isset($_POST['studentrollno'])){
-		// 		$studentrollno = $_POST['studentrollno'];
-		// 	}
-		// 	if(isset($_POST['emisno'])){
-		// 		$emisno = $_POST['emisno'];
-		// 	}
-		// 	if(isset($_POST['studentstype'])){
-		// 		$studentstype = $_POST['studentstype'];
-		// 	}
-		// 	if(isset($_POST['referencecat'])){
-		// 		$referencecat = $_POST['referencecat'];
-		// 	}
-		// 	if(isset($_POST['refstaffid'])){
-		// 		$refstaffid = $_POST['refstaffid'];
-		// 	}
-		// 	if(isset($_POST['refstudentid'])){
-		// 		$refstudentid = $_POST['refstudentid'];
-		// 	}
-		// 	if(isset($_POST['refoldstudentid'])){
-		// 		$refoldstudentid = $_POST['refoldstudentid'];
-		// 	}
-		// 	if(isset($_POST['referencecatname'])){
-		// 		$referencecatname = $_POST['referencecatname'];
-		// 	}
-		// 	if(isset($_POST['concession_type'])){
-		// 		$concession_type = $_POST['concession_type'];
-		// 	}
-		// 	if(isset($_POST['concessiontypedetails'])){
-		// 		$concessiontypedetails = $_POST['concessiontypedetails'];
-		// 	}
-		// 	if(isset($_POST['facility'])){
-		// 		$facility = $_POST['facility'];
-		// 	}
-		// 	if(isset($_POST['roomcatogoryfeeid'])){
-		// 		$roomcatogoryfeeid = $_POST['roomcatogoryfeeid'];
-		// 	}
-		// 	if(isset($_POST['advancefee'])){
-		// 		$advancefee = $_POST['advancefee'];
-		// 	}
-		// 	if(isset($_POST['roomrent'])){
-		// 		$roomrent = $_POST['roomrent'];
-		// 	}
-		// 	if(isset($_POST['transportarearefid'])){
-		// 		$transportarearefid = $_POST['transportarearefid'];
-		// 	}
-		// 	if(isset($_POST['transportstopping'])){
-		// 		$transportstopping = $_POST['transportstopping'];
-		// 	}
-		// 	if(isset($_POST['busno'])){
-		// 		$busno = $_POST['busno'];
-		// 	}
-		// 	if(isset($_POST['father_name'])){
-		// 		$father_name = $_POST['father_name'];
-		// 	}
-		// 	if(isset($_POST['mother_name'])){
-		// 		$mother_name = $_POST['mother_name'];
-		// 	}
-		// 	if(isset($_POST['father_aadhar_number'])){
-		// 		$father_aadhar_number = $_POST['father_aadhar_number'];
-		// 	}
-		// 	if(isset($_POST['mother_aadhar_number'])){
-		// 		$mother_aadhar_number = $_POST['mother_aadhar_number'];
-		// 	}
-		// 	if(isset($_POST['occupation'])){
-		// 		$occupation = $_POST['occupation'];
-		// 	}
-		// 	if(isset($_POST['monthly_income'])){
-		// 		$monthly_income = $_POST['monthly_income'];
-		// 	}
-		// 	if(isset($_POST['nature_business'])){
-		// 		$nature_business = $_POST['nature_business'];
-		// 	}
-		// 	if(isset($_POST['position_held'])){
-		// 		$position_held = $_POST['position_held'];
-		// 	}
-		// 	if(isset($_POST['telephone_number'])){
-		// 		$telephone_number = $_POST['telephone_number'];
-		// 	}
-		// 	if(isset($_POST['lives_gaurdian'])){
-		// 		$lives_gaurdian = $_POST['lives_gaurdian'];
-		// 	}
-		// 	if(isset($_POST['gaurdian_name'])){
-		// 		$gaurdian_name = $_POST['gaurdian_name'];
-		// 	}
-		// 	if(isset($_POST['gaurdian_mobile'])){
-		// 		$gaurdian_mobile = $_POST['gaurdian_mobile'];
-		// 	}
-		// 	if(isset($_POST['gaurdian_aadhar_number'])){
-		// 		$gaurdian_aadhar_number = $_POST['gaurdian_aadhar_number'];
-		// 	}
-		// 	if(isset($_POST['gaurdian_email_id'])){
-		// 		$gaurdian_email_id = $_POST['gaurdian_email_id'];
-		// 	}
-		// 	if(isset($_POST['father_mobile_no'])){
-		// 		$father_mobile_no = $_POST['father_mobile_no'];
-		// 	}
-		// 	if(isset($_POST['mother_mobile_no'])){
-		// 		$mother_mobile_no = $_POST['mother_mobile_no'];
-		// 	}
-		// 	if(isset($_POST['father_email_id'])){
-		// 		$father_email_id = $_POST['father_email_id'];
-		// 	}
-		// 	if(isset($_POST['sms_sent_no'])){
-		// 		$sms_sent_no = $_POST['sms_sent_no'];
-		// 	}
-		// 	if(isset($_POST['sibling_name'])){
-		// 		$sibling_name = $_POST['sibling_name'];
-		// 	}
-		// 	if(isset($_POST['sibling_school_name'])){
-		// 		$sibling_school_name = $_POST['sibling_school_name'];
-		// 	}
-		// 	if(isset($_POST['sibling_standard'])){
-		// 		$sibling_standard = $_POST['sibling_standard'];
-		// 	}
-		// 	if(isset($_POST['sibling_name2'])){
-		// 		$sibling_name2 = $_POST['sibling_name2'];
-		// 	}
-		// 	if(isset($_POST['sibling_school_name2'])){
-		// 		$sibling_school_name2 = $_POST['sibling_school_name2'];
-		// 	}
-		// 	if(isset($_POST['sibling_standard2'])){
-		// 		$sibling_standard2 = $_POST['sibling_standard2'];
-		// 	}
-		// 	if(isset($_POST['sibling_name3'])){
-		// 		$sibling_name3 = $_POST['sibling_name3'];
-		// 	}
-		// 	if(isset($_POST['sibling_school_name3'])){
-		// 		$sibling_school_name3 = $_POST['sibling_school_name3'];
-		// 	}
-		// 	if(isset($_POST['sibling_standard3'])){
-		// 		$sibling_standard3 = $_POST['sibling_standard3'];
-		// 	}
-		// 	if(isset($_POST['anyextracurricular'])){
-		// 		$anyextracurricular = $_POST['anyextracurricular'];
-		// 	}
-		// 	if(isset($_POST['title'])){
-		// 		$title = $_POST['title'];
-		// 	}
-		// 	if(isset($_POST['title1'])){
-		// 		$title1 = $_POST['title1'];
-		// 	}
-		// 	if(isset($_POST['title2'])){
-		// 		$title2 = $_POST['title2'];
-		// 	}
-		// 	if(isset($_POST['title3'])){
-		// 		$title3 = $_POST['title3'];
-		// 	}
-		// 	if(isset($_POST['title4'])){
-		// 		$title4 = $_POST['title4'];
-		// 	}
-		// 	if(isset($_POST['temp_admission_id'])){
-		// 		$temp_admission_id = $_POST['temp_admission_id'];
-		// 	} 
-
-		// 	$student_image = '';
-        //     if(!empty($_FILES['student_image']['name']))
-        //     {
-        //         //delete old file
-        //         $path="uploads/student_creation/$admission_number/".$_POST["updateimage"];
-        //         if (file_exists($path)) {
-        //             unlink($path);
-        //         }
-        //         //insert new file
-        //         $student_image = $_FILES['student_image']['name'];
-        //         $student_image_tmp = $_FILES['student_image']['tmp_name'];
-        //         $student_imagefolder="uploads/student_creation/$admission_number/".$student_image;
-        //         move_uploaded_file($student_image_tmp, $student_imagefolder);
-        //     }
-        //     if($father_image == '' && isset($_POST["updateimage"])){
-        //         $father_image = $_POST["updateimage"];
-        //     }
-
-		// 	$father_image = '';
-        //     if(!empty($_FILES['father_image']['name']))
-        //     {
-        //         //delete old file
-        //         $path="uploads/student_creation/$admission_number/".$_POST["updatefatherimage"];
-        //         if (file_exists($path)) {
-        //             unlink($path);
-        //         }
-        //         //insert new file
-        //         $father_image = $_FILES['father_image']['name'];
-        //         $father_image_tmp = $_FILES['father_image']['tmp_name'];
-        //         $father_imagefolder="uploads/student_creation/$admission_number/".$father_image;
-        //         move_uploaded_file($father_image_tmp, $father_imagefolder);
-        //     }
-        //     if($father_image == '' && isset($_POST["updatefatherimage"])){
-        //         $father_image = $_POST["updatefatherimage"];
-        //     }
-
-		// 	$mother_image = '';
-        //     if(!empty($_FILES['mother_image']['name']))
-        //     {
-        //         //delete old file
-        //         $path="uploads/student_creation/$admission_number/".$_POST["updatemotherimage"];
-        //         if (file_exists($path)) {
-        //             unlink($path);
-        //         }
-        //         //insert new file
-        //         $mother_image = $_FILES['mother_image']['name'];
-        //         $mother_image_tmp = $_FILES['mother_image']['tmp_name'];
-        //         $mother_imagefolder="uploads/student_creation/$admission_number/".$mother_image;
-        //         move_uploaded_file($mother_image_tmp, $mother_imagefolder);
-        //     }
-        //     if($mother_image == '' && isset($_POST["updatemotherimage"])){
-        //         $mother_image = $_POST["updatemotherimage"];
-        //     }
-
-		// 	$certificate = '';
-        //     if(!empty($_FILES['certificate']['name']))
-        //     {
-        //         // delete old file
-        //         $path="uploads/certificates/$admission_number/".$_POST["updatecertificate"];
-        //         if (file_exists($path)) {
-        //             unlink($path);
-        //         }
-        //         //insert new file
-        //         $certificate = $_FILES['certificate']['name'];
-        //         $certificate_tmp = $_FILES['certificate']['tmp_name'];
-        //         $certificatefolder="uploads/certificates/$admission_number/".$certificate;
-        //         move_uploaded_file($certificate_tmp, $certificatefolder);
-        //     }
-        //     if($certificate == '' && isset($_POST["updatecertificate"])){
-        //         $certificate = $_POST["updatecertificate"];
-        //     }
-
-		// 	$certificate1 = '';
-        //     if(!empty($_FILES['certificate1']['name']))
-        //     {
-        //         //delete old file
-        //         $path="uploads/certificates/$admission_number/".$_POST["updatecertificate1"];
-        //         if (file_exists($path)) {
-        //             unlink($path);
-        //         }
-        //         //insert new file
-        //         $certificate1 = $_FILES['certificate1']['name'];
-        //         $certificate1_tmp = $_FILES['certificate1']['tmp_name'];
-        //         $certificate1folder="uploads/certificates/$admission_number/".$certificate1;
-        //         move_uploaded_file($certificate1_tmp, $certificate1folder);
-        //     }
-        //     if($certificate1 == '' && isset($_POST["updatecertificate1"])){
-        //         $certificate1 = $_POST["updatecertificate1"];
-        //     }
-
-		// 	$certificate2 = '';
-        //     if(!empty($_FILES['certificate2']['name']))
-        //     {
-        //         //delete old file
-        //         $path="uploads/certificates/$admission_number/".$_POST["updatecertificate2"];
-        //         if (file_exists($path)) {
-        //             unlink($path);
-        //         }
-        //         //insert new file
-        //         $certificate2 = $_FILES['certificate2']['name'];
-        //         $certificate2_tmp = $_FILES['certificate2']['tmp_name'];
-        //         $certificate2folder="uploads/certificates/$admission_number/".$certificate2;
-        //         move_uploaded_file($certificate2_tmp, $certificate2folder);
-        //     }
-        //     if($certificate2 == '' && isset($_POST["updatecertificate2"])){
-        //         $certificate2 = $_POST["updatecertificate2"];
-        //     }
-
-		// 	$certificate3 = '';
-        //     if(!empty($_FILES['certificate3']['name']))
-        //     {
-        //         //delete old file
-        //         $path="uploads/certificates/$admission_number/".$_POST["updatecertificate3"];
-        //         if (file_exists($path)) {
-        //             unlink($path);
-        //         }
-        //         //insert new file
-        //         $certificate3 = $_FILES['certificate3']['name'];
-        //         $certificate3_tmp = $_FILES['certificate3']['tmp_name'];
-        //         $certificate3folder="uploads/certificates/$admission_number/".$certificate3;
-        //         move_uploaded_file($certificate3_tmp, $certificate3folder);
-        //     }
-        //     if($certificate3 == '' && isset($_POST["updatecertificate3"])){
-        //         $certificate3 = $_POST["updatecertificate3"];
-        //     }
-
-		// 	$certificate4 = '';
-        //     if(!empty($_FILES['certificate4']['name']))
-        //     {
-        //         //delete old file
-        //         $path="uploads/certificates/$admission_number/".$_POST["updatecertificate4"];
-        //         if (file_exists($path)) {
-        //             unlink($path);
-        //         } 
-        //         //insert new file
-        //         $certificate4 = $_FILES['certificate4']['name'];
-        //         $certificate4_tmp = $_FILES['certificate4']['tmp_name'];
-        //         $certificate4folder="uploads/certificates/$admission_number/".$certificate4;
-        //         move_uploaded_file($certificate4_tmp, $certificate4folder);
-        //     }
-
-        //     if($certificate4 == '' && isset($_POST["updatecertificate4"])){
-        //         $certificate4 = $_POST["updatecertificate4"]; 
-        //     } 
-		// 	if(isset($_POST['extra_curricular'])){
-		// 		$extra_curricularstr = $_POST['extra_curricular'];
-		// 		$extra_curricular = implode(",",$extra_curricularstr);
-		// 	}
-		//    $tempStudentUpdaet = "UPDATE student_creation SET temp_admission_id = '".strip_tags($temp_admission_id)."', temp_no = '".strip_tags($temp_no)."', admission_number='".strip_tags($admission_number)."', 
-		// 	student_name='".strip_tags($student_name)."', sur_name='".strip_tags($sur_name)."', date_of_birth='".strip_tags($date_of_birth)."', 
-		// 	gender='".strip_tags($gender)."', mother_tongue='".strip_tags($mother_tongue)."', aadhar_number='".strip_tags($aadhar_number)."',blood_group='".strip_tags($blood_group)."',
-		// 	category='".strip_tags($category)."',castename='".strip_tags($castename)."',sub_caste='".strip_tags($sub_caste)."',nationality='".strip_tags($nationality)."',
-		// 	religion='".strip_tags($religion)."',student_image='".strip_tags($student_image)."',filltoo='".strip_tags($filltoo)."',flat_no='".strip_tags($flat_no)."',flat_no1='".strip_tags($flat_no1)."',street = '".strip_tags($street)."',street1 ='".strip_tags($street1)."',
-		// 	area_locatlity ='".strip_tags($area_locatlity)."', area_locatlity1 = '".strip_tags($area_locatlity1)."' ,district ='".strip_tags($district)."',district1 = '".strip_tags($district1)."',pincode = '".strip_tags($pincode)."',
-		// 	pincode1 = '".strip_tags($pincode1)."', standard ='".strip_tags($standard)."' , previouschoolname='".strip_tags($previouschoolname)."',previousplace='".strip_tags($previousplace)."',
-		// 	strpreviousdoj	='".strip_tags($strpreviousdoj	)."',strpreviousdol='".strip_tags($strpreviousdol)."',timeoftchandedover='".strip_tags($timeoftchandedover)."',
-		// 	previousclassattended='".strip_tags($previousclassattended)."',section='".strip_tags($section)."',medium='".strip_tags($medium)."',
-		// 	studentrollno='".strip_tags($studentrollno)."',emisno='".strip_tags($emisno)."',studentstype='".strip_tags($studentstype)."',
-		// 	referencecat='".strip_tags($referencecat)."',refstaffid='".strip_tags($refstaffid)."',refstudentid='".strip_tags($refstudentid)."',
-		// 	refoldstudentid='".strip_tags($refoldstudentid)."',referencecatname='".strip_tags($referencecatname)."',concession_type='".strip_tags($concession_type)."',
-		// 	concessiontypedetails='".strip_tags($concessiontypedetails)."',facility='".strip_tags($facility)."',roomcatogoryfeeid='".strip_tags($roomcatogoryfeeid)."',
-		// 	advancefee='".strip_tags($advancefee)."',roomrent='".strip_tags($roomrent)."',transportarearefid='".strip_tags($transportarearefid)."',
-		// 	transportstopping='".strip_tags($transportstopping)."',busno='".strip_tags($busno)."',father_name='".strip_tags($father_name)."',
-		// 	mother_name='".strip_tags($mother_name)."',father_aadhar_number='".strip_tags($father_aadhar_number)."',mother_aadhar_number='".strip_tags($mother_aadhar_number)."',
-		// 	occupation='".strip_tags($occupation)."',monthly_income='".strip_tags($monthly_income)."',nature_business='".strip_tags($nature_business)."',
-		// 	position_held='".strip_tags($position_held)."',telephone_number='".strip_tags($telephone_number)."',lives_gaurdian='".strip_tags($lives_gaurdian)."',
-		// 	gaurdian_name='".strip_tags($gaurdian_name)."',gaurdian_mobile='".strip_tags($gaurdian_mobile)."',gaurdian_aadhar_number='".strip_tags($gaurdian_aadhar_number)."',
-		// 	gaurdian_email_id='".strip_tags($gaurdian_email_id)."',father_mobile_no='".strip_tags($father_mobile_no)."',mother_mobile_no='".strip_tags($mother_mobile_no)."',
-		// 	mother_mobile_no='".strip_tags($mother_mobile_no)."',sms_sent_no='".strip_tags($sms_sent_no)."',sibling_name='".strip_tags($sibling_name)."',
-		// 	sibling_school_name='".strip_tags($sibling_school_name)."',sibling_standard='".strip_tags($sibling_standard)."',sibling_name2='".strip_tags($sibling_name2)."',
-		// 	sibling_school_name2='".strip_tags($sibling_school_name2)."',sibling_standard2='".strip_tags($sibling_standard2)."',sibling_name3='".strip_tags($sibling_name3)."',
-		// 	sibling_school_name3='".strip_tags($sibling_school_name3)."',sibling_standard3='".strip_tags($sibling_standard3)."',anyextracurricular='".strip_tags($anyextracurricular)."',
-		// 	title='".strip_tags($title)."',certificate='".strip_tags($certificate)."',title1='".strip_tags($title1)."',
-		// 	certificate1='".strip_tags($certificate1)."',title2='".strip_tags($title2)."',certificate2='".strip_tags($certificate2)."',
-		// 	title3='".strip_tags($title3)."',certificate3='".strip_tags($certificate3)."',title4='".strip_tags($title4)."',
-		// 	certificate4='".strip_tags($certificate4)."', mother_image='".strip_tags($mother_image)."',father_image='".strip_tags($father_image)."', extra_curricular='".strip_tags($extra_curricular)."', update_login_id='".strip_tags($userid)."', status = '0' WHERE student_id= '".strip_tags($id)."' ";
-		// 	$updresult = $mysqli->query($tempStudentUpdaet )or die ("Error in in update Query!.".$mysqli->error);
-		
-	 	// }
 
 		// Update tempStudent
 		public function updateStudentCreation($mysqli, $id, $userid,$school_id,$year_id){	
@@ -2412,34 +1441,11 @@
 
 		//  Delete tempStudent
 		public function deleteStudentCreation($mysqli, $id, $userid){
-
 			$date  = date('Y-m-d'); 
 			$tempStudentDelete = "UPDATE student_creation set status='1', deleted_student = '1', delete_login_id='".strip_tags($userid)."' WHERE student_id = '".strip_tags($id)."' ";
 			$runQry = $mysqli->query($tempStudentDelete) or die("Error in delete query".$mysqli->error);
-
-
 		}
-// // Add holiday
-// public function addSubjectDetails($mysqli, $userid){
 
-// 	if(isset($_POST['paper_name'])){
-// 		$paper_name = $_POST['paper_name'];
-// 	}
-// 	if(isset($_POST['max_mark'])){
-// 		$max_mark = $_POST['max_mark'];
-// 	}
-// 	if(isset($_POST['class_id'])){
-// 		$class_id = $_POST['class_id'];
-// 	}
-// 	if(isset($_POST['userid'])){
-// 		$userid = $_POST['userid'];
-// 	} 
-
-// 	$holidayInsert="INSERT INTO subject_details(paper_name, max_mark, class_id, insert_login_id) 
-// 	VALUES('".strip_tags($paper_name)."','".strip_tags($max_mark)."', '".strip_tags($class_id)."','".strip_tags($userid)."' )";
-
-// 	$insresult=$mysqli->query($holidayInsert) or die("Error ".$mysqli->error);
-// }
 
 // // Get Subject Details
 public function getSubjectDetails($mysqli){
@@ -2458,36 +1464,6 @@ public function getSubjectDetails($mysqli){
 	
 	return $detailrecords;
 }
-
-// // Update holiday
-// public function updateSubjectDetails($mysqli, $id, $userid){
-
-// 	if(isset($_POST['paper_name'])){
-// 		$paper_name = $_POST['paper_name'];
-// 	}
-// 	if(isset($_POST['max_mark'])){
-// 		$max_mark = $_POST['max_mark'];
-// 	}
-// 	if(isset($_POST['class_id'])){
-// 		$class_id = $_POST['class_id'];
-// 	}
-// 	if(isset($_POST['userid'])){
-// 		$userid = $_POST['userid'];
-// 	} 
-
-//    $holidayUpdaet = "UPDATE subject_details SET paper_name = '".strip_tags($paper_name)."', max_mark='".strip_tags($max_mark)."', 
-//    class_id='".strip_tags($class_id)."', update_login_id='".strip_tags($userid)."', status = '0' WHERE subject_id= '".strip_tags($id)."' ";
-//    $updresult = $mysqli->query($holidayUpdaet )or die ("Error in in update Query!.".$mysqli->error);
-
-//  }
-
-// //  Delete holiday
-// public function deleteSubjectDetails($mysqli, $id, $userid){
-
-// 	$date  = date('Y-m-d'); 
-// 	$holidayDelete = "UPDATE subject_details set status='1', delete_login_id='".strip_tags($userid)."' WHERE subject_id = '".strip_tags($id)."' ";
-// 	$runQry = $mysqli->query($holidayDelete) or die("Error in delete query".$mysqli->error);
-// }
 
 
 // Add Trust creation
@@ -2715,99 +1691,6 @@ public function deleteTrustCreation($mysqli, $id, $userid){
 	
 	return $detailrecords;
 }
-//  // Get Fees Master Details
-//  public function getFeesMasterModel2Details($mysqli){
-
-// 	$feesSelect = "SELECT * FROM fees_master_model2 WHERE fees_id='".mysqli_real_escape_string($mysqli)."' "; 
-// 	$res = $mysqli->query($feesSelect) or die("Error in Get All Records".$mysqli->error);
-// 	$detailrecords = array();
-// 	if ($mysqli->affected_rows>0)
-// 	{
-// 		$row = $res->fetch_object();	
-// 		$detailrecords['fees_id']      = $row->fees_id; 
-// 		$detailrecords['academic_year']    = $row->academic_year;
-// 		$detailrecords['medium']    = $row->medium; 
-// 		$detailrecords['student_type']        = $row->student_type; 
-// 		$detailrecords['standard']        = $row->standard; 
-// 		$detailrecords['grp_particulars']        = $row->grp_particulars; 
-// 		$detailrecords['grp_amount']        = $row->grp_amount; 
-// 		$detailrecords['grp_ledger_name']        = $row->grp_ledger_name; 
-// 		$detailrecords['extra_particulars']        = $row->extra_particulars; 
-// 		$detailrecords['extra_amount']        = $row->extra_amount; 
-// 		$detailrecords['extra_ledger_name']        = $row->extra_ledger_name; 
-// 		$detailrecords['amenity_particulars']        = $row->amenity_particulars; 
-// 		$detailrecords['amenity_amount']        = $row->amenity_amount; 
-// 		$detailrecords['amenity_ledger_name']        = $row->amenity_ledger_name; 
-// 		$detailrecords['temp_flat_no']        = $row->temp_flat_no; 
-// 		$detailrecords['temp_street']        = $row->temp_street; 
-// 		$detailrecords['temp_district']        = $row->temp_district; 
-// 		$detailrecords['temp_area']        = $row->temp_area; 
-// 	}
-	
-// 	return $detailrecords;
-// }
-//  // Get Fees Master Details
-//  public function getFeesMasterModel3Details($mysqli){
-
-// 	$feesSelect = "SELECT * FROM fees_master WHERE fees_id='".mysqli_real_escape_string($mysqli)."' "; 
-// 	$res = $mysqli->query($feesSelect) or die("Error in Get All Records".$mysqli->error);
-// 	$detailrecords = array();
-// 	if ($mysqli->affected_rows>0)
-// 	{
-// 		$row = $res->fetch_object();	
-// 		$detailrecords['fees_id']      = $row->fees_id; 
-// 		$detailrecords['academic_year']    = $row->academic_year;
-// 		$detailrecords['medium']    = $row->medium; 
-// 		$detailrecords['student_type']        = $row->student_type; 
-// 		$detailrecords['standard']        = $row->standard; 
-// 		$detailrecords['grp_particulars']        = $row->grp_particulars; 
-// 		$detailrecords['grp_amount']        = $row->grp_amount; 
-// 		$detailrecords['grp_date']        = $row->grp_date; 
-// 		$detailrecords['extra_particulars']        = $row->extra_particulars; 
-// 		$detailrecords['extra_amount']        = $row->extra_amount; 
-// 		$detailrecords['extra_date']        = $row->extra_date; 
-// 		$detailrecords['amenity_particulars']        = $row->amenity_particulars; 
-// 		$detailrecords['amenity_amount']        = $row->amenity_amount; 
-// 		$detailrecords['amenity_date']        = $row->amenity_date; 
-// 		$detailrecords['temp_flat_no']        = $row->temp_flat_no; 
-// 		$detailrecords['temp_street']        = $row->temp_street; 
-// 		$detailrecords['temp_district']        = $row->temp_district; 
-// 		$detailrecords['temp_area']        = $row->temp_area; 
-// 	}
-	
-// 	return $detailrecords;
-// }
-//  // Get Fees Master Details
-//  public function getFeesMasterModel4Details($mysqli){
-
-// 	$feesSelect = "SELECT * FROM fees_master WHERE fees_id='".mysqli_real_escape_string($mysqli)."' "; 
-// 	$res = $mysqli->query($feesSelect) or die("Error in Get All Records".$mysqli->error);
-// 	$detailrecords = array();
-// 	if ($mysqli->affected_rows>0)
-// 	{
-// 		$row = $res->fetch_object();	
-// 		$detailrecords['fees_id']      = $row->fees_id; 
-// 		$detailrecords['academic_year']    = $row->academic_year;
-// 		$detailrecords['medium']    = $row->medium; 
-// 		$detailrecords['student_type']        = $row->student_type; 
-// 		$detailrecords['standard']        = $row->standard; 
-// 		$detailrecords['grp_particulars']        = $row->grp_particulars; 
-// 		$detailrecords['grp_amount']        = $row->grp_amount; 
-// 		$detailrecords['grp_date']        = $row->grp_date; 
-// 		$detailrecords['extra_particulars']        = $row->extra_particulars; 
-// 		$detailrecords['extra_amount']        = $row->extra_amount; 
-// 		$detailrecords['extra_date']        = $row->extra_date; 
-// 		$detailrecords['amenity_particulars']        = $row->amenity_particulars; 
-// 		$detailrecords['amenity_amount']        = $row->amenity_amount; 
-// 		$detailrecords['amenity_date']        = $row->amenity_date; 
-// 		$detailrecords['temp_flat_no']        = $row->temp_flat_no; 
-// 		$detailrecords['temp_street']        = $row->temp_street; 
-// 		$detailrecords['temp_district']        = $row->temp_district; 
-// 		$detailrecords['temp_area']        = $row->temp_area; 
-// 	}
-	
-// 	return $detailrecords;
-// }
 
 		// Add Area creation
 		public function addAreaCreation($mysqli,$userid,$school_id,$log_year){
@@ -3628,27 +2511,7 @@ public function updateStaffCreation($mysqli, $id, $userid,$school_id,$year_id){
 				}
 				return $detailrecords;
 			} 
-			// // get StaffList
-			// public function getStaffList($mysqli) {
-
-			// 	$qry = "SELECT * FROM staff_creation WHERE 1 AND status=0 ORDER BY id DESC"; 
-			// 	$res =$mysqli->query($qry)or die("Error in Get All Records".$mysqli->error);
-			// 	$detailrecords = array();
-			// 	$i=0;
-			// 	if ($mysqli->affected_rows>0)
-			// 	{
-			// 		while($row = $res->fetch_object())
-			// 		{
-			// 			$detailrecords[$i]['staff_id']            = $row->id; 
-			// 			$detailrecords[$i]['first_name']       	= strip_tags($row->first_name);
-						
-			// 			$i++;
-			// 		}
-			// 	}
-			// 	return $detailrecords;
-			// } 
-
-			// get AreaList
+			
 			// get AreaList
 			public function getAreaList($mysqli,$school_id,$year_id) {
 
@@ -3669,44 +2532,6 @@ public function updateStaffCreation($mysqli, $id, $userid,$school_id,$year_id){
 				return $detailrecords;
 			}
 
-			// public function getAreaList($mysqli) {
-
-			// 	$qry = "SELECT * FROM area_creation WHERE 1 AND status=0 ORDER BY area_id DESC"; 
-			// 	$res =$mysqli->query($qry)or die("Error in Get All Records".$mysqli->error);
-			// 	$detailrecords = array();
-			// 	$i=0;
-			// 	if ($mysqli->affected_rows>0)
-			// 	{
-			// 		while($row = $res->fetch_object())
-			// 		{
-			// 			$detailrecords[$i]['area_id']            = $row->area_id; 
-			// 			$detailrecords[$i]['area_name']       	= strip_tags($row->area_name);
-						
-			// 			$i++;
-			// 		}
-			// 	}
-			// 	return $detailrecords;
-			// }
-
-			// // get New StudentList
-			// public function getNewTempStudentList($mysqli) {
-
-			// 	$qry = "SELECT * FROM temp_admission_student WHERE temp_student_type = 'New Student' AND status=0 ORDER BY temp_admission_id DESC"; 
-			// 	$res =$mysqli->query($qry)or die("Error in Get All Records".$mysqli->error);
-			// 	$detailrecords = array();
-			// 	$i=0;
-			// 	if ($mysqli->affected_rows>0)
-			// 	{
-			// 		while($row = $res->fetch_object())
-			// 		{
-			// 			$detailrecords[$i]['temp_admission_id']            = $row->temp_admission_id; 
-			// 			$detailrecords[$i]['temp_student_name']       	= strip_tags($row->temp_student_name);
-						
-			// 			$i++;
-			// 		}
-			// 	}
-			// 	return $detailrecords;
-			// }
 				// get CastList
 				public function getcastList($mysqli) {
 
@@ -3766,38 +2591,7 @@ public function updateStaffCreation($mysqli, $id, $userid,$school_id,$year_id){
 					}
 				}
 				return $detailrecords;
-			}
-			// // get Old StudentList
-			// public function getOldTempStudentList($mysqli) {
-
-			// 	$qry = "SELECT * FROM temp_admission_student WHERE temp_student_type = 'Old Student' AND status=0 ORDER BY temp_admission_id DESC"; 
-			// 	$res =$mysqli->query($qry)or die("Error in Get All Records".$mysqli->error);
-			// 	$detailrecords = array();
-			// 	$i=0;
-			// 	if ($mysqli->affected_rows>0)
-			// 	{
-			// 		while($row = $res->fetch_object())
-			// 		{
-			// 			$detailrecords[$i]['temp_admission_id']            = $row->temp_admission_id; 
-			// 			$detailrecords[$i]['temp_student_name']       	= strip_tags($row->temp_student_name);
-						
-			// 			$i++;
-			// 		}
-			// 	}
-			// 	return $detailrecords;
-			// }
-
-			// public function getConcessionDetails($mysqli){
-			// 	$today = date('Y-m-d');
-			// 	$detailrecords=array();
-			// 	$getQry = "SELECT SUM(result) FROM pay_fees WHERE student_id = '".$today."' and status=0 ";
-			// 	$res = $mysqli->query($getQry) or die("Error in Get All Records".$mysqli->error);
-			// 	if ($mysqli->affected_rows>0){
-			// 		$row = $res->fetch_assoc();
-			// 		$detailrecords['today_collection'] = $row;
-			// 	}
-			// 		return $detailrecords;
-			// }
+			}		
 
 			// Add Conduct Certificate creation
 		public function addCondutCertificateCreation($mysqli,$userid){
@@ -3951,398 +2745,7 @@ public function updateStaffCreation($mysqli, $id, $userid,$school_id,$year_id){
 		}
 		return $detailrecords;
 	}
-// // Add Event Details
-// public function addPayfeesCreation($mysqli, $userid,$school_id){
-	
-// 	if(isset($_POST['receipt_number'])){
-// 		$receipt_number = $_POST['receipt_number']; 
-// 	} 
-// 	if(isset($_POST['receipt_date'])){
-// 		$receipt_date = $_POST['receipt_date'];
-// 	}
-// 	if(isset($_POST['register_number'])){
-// 		$register_number = $_POST['register_number'];
-// 	}
-// 	if(isset($_POST['academic_year'])){
-// 		$academic_year = $_POST['academic_year'];
-// 	}
-// 	if(isset($_POST['student_id'])){
-// 		$student_id = $_POST['student_id'];
-// 	}
-// 	if(isset($_POST['standard'])){
-// 		$standard = $_POST['standard'];
-// 	}
-	
-// 	if(isset($_POST['grp_particulars'])){
-// 		$grp_particularsstr = $_POST['grp_particulars'];
-// 		$grp_particulars = ltrim(implode(",",$grp_particularsstr),','); 
-// 	}
-// 	if(isset($_POST['grp_amount'])){
-// 		$grp_amountstr = $_POST['grp_amount'];
-// 		$grp_amount = ltrim(implode(",",$grp_amountstr),','); 
-// 	}
-	
-		
-// 	if(isset($_POST['grp_fees_id'])){ 
-// 		$grp_fees_idstr = $_POST['grp_fees_id'];
-// 		$grp_fees_id = ltrim(implode(",",$grp_fees_idstr),','); 
-// 	} 
-// 	if(isset($_POST['amount_balance'])){
-// 		$amount_balancestr = $_POST['amount_balance'];
-// 		$amount_balance = ltrim(implode(",",$amount_balancestr),','); 
-// 	}
-// 	if(isset($_POST['extra_fees_id'])){
-// 		$extra_fees_idstr = $_POST['extra_fees_id'];
-// 		$extra_fees_id = ltrim(implode(",",$extra_fees_idstr),','); 
-// 	}
-// 	if(isset($_POST['extra_particulars'])){
-// 		$extra_particularsstr = $_POST['extra_particulars'];
-// 		$extra_particulars = ltrim(implode(",",$extra_particularsstr),','); 
-// 	}
-// 	if(isset($_POST['extra_amount'])){
-// 		$extra_amountstr = $_POST['extra_amount'];
-// 		$extra_amount = ltrim(implode(",",$extra_amountstr),','); 
-// 	}
-	
-// 	if(isset($_POST['extra_amount_recieved'])){
-// 		$extra_amount_recievedstr = $_POST['extra_amount_recieved'];
-// 		$extra_amount_recieved = ltrim(implode(",",$extra_amount_recievedstr),','); 
-// 	}
-// 	if(isset($_POST['extra_amount_balance'])){
-// 		$extra_amount_balancestr = $_POST['extra_amount_balance'];
-// 		$extra_amount_balance = ltrim(implode(",",$extra_amount_balancestr),','); 
-// 	}
-// 	if(isset($_POST['amenity_fees_id'])){
-// 		$amenity_fees_idstr = $_POST['amenity_fees_id'];
-// 		$amenity_fees_id = ltrim(implode(",",$amenity_fees_idstr),','); 
-// 	}
-// 	if(isset($_POST['amenity_particulars'])){
-// 		$amenity_particularsstr = $_POST['amenity_particulars'];
-// 		$amenity_particulars = ltrim(implode(",",$amenity_particularsstr),','); 
-// 	}
-// 	if(isset($_POST['amenity_amount'])){
-// 		$amenity_amountstr = $_POST['amenity_amount'];
-// 		$amenity_amount = ltrim(implode(",",$amenity_amountstr),','); 
-// 	}
-// 	if(isset($_POST['amenity_amount_recieved'])){
-// 		$amenity_amount_recievedstr = $_POST['amenity_amount_recieved'];
-// 		$amenity_amount_recieved = ltrim(implode(",",$amenity_amount_recievedstr),','); 
-// 	}
-// 	if(isset($_POST['amenity_amount_balance'])){
-// 		$amenity_amount_balancestr = $_POST['amenity_amount_balance'];
-// 		$amenity_amount_balance = ltrim(implode(",",$amenity_amount_balancestr),','); 
-// 	}
-// 	if(isset($_POST['grp_concession_amount'])){
-// 		$grp_concession_amountstr = $_POST['grp_concession_amount'];
-// 		$grp_concession_amount = ltrim(implode(",",$grp_concession_amountstr),','); 
-// 	}
-// 	if(isset($_POST['extra_concession_amount'])){
-// 		$extra_concession_amountstr = $_POST['extra_concession_amount'];
-// 		$extra_concession_amount = ltrim(implode(",",$extra_concession_amountstr),','); 
-// 	}
-// 	if(isset($_POST['amenity_concession_amount'])){
-// 		$amenity_concession_amountstr = $_POST['amenity_concession_amount'];
-// 		$amenity_concession_amount = ltrim(implode(",",$amenity_concession_amountstr),','); 
-// 	}
-// 	if(isset($_POST['qty1'])){
-// 		$qty1 = $_POST["qty1"];
-// 	}
-// 	if(isset($_POST['qty2'])){
-// 		$qty2 = $_POST["qty2"];
-// 	}
-// 	if(isset($_POST['qty3'])){
-// 		$qty3 = $_POST["qty3"];
-// 	}
-// 	if(isset($_POST['qty4'])){
-// 		$qty4 = $_POST["qty4"];
-// 	}
-// 	if(isset($_POST['qty5'])){
-// 		$qty5 = $_POST["qty5"];
-// 	}
-// 	if(isset($_POST['qty6'])){
-// 		$qty6 = $_POST["qty6"];
-// 	}
-// 	if(isset($_POST['qty7'])){
-// 		$qty7 = $_POST["qty7"];
-// 	}
-// 	if(isset($_POST['unit1'])){
-// 		$unit1 = $_POST['unit1'];
-// 	}
-// 	if(isset($_POST['unit2'])){
-// 		$unit2 = $_POST['unit2'];
-// 	}
-// 	if(isset($_POST['unit3'])){
-// 		$unit3 = $_POST['unit3'];
-// 	}
-// 	if(isset($_POST['unit4'])){
-// 		$unit4 = $_POST['unit4'];
-// 	}
-// 	if(isset($_POST['unit5'])){
-// 		$unit5 = $_POST['unit5'];
-// 	}
-// 	if(isset($_POST['unit6'])){
-// 		$unit6 = $_POST['unit6'];
-// 	}
-// 	if(isset($_POST['unit7'])){
-// 		$unit7 = $_POST['unit7'];
-// 	}
-// 	if(isset($_POST['amount1'])){
-// 		$amount1 = $_POST['amount1'];
-// 	}
-// 	if(isset($_POST['amount2'])){
-// 		$amount2 = $_POST['amount2'];
-// 	}
-// 	if(isset($_POST['amount3'])){
-// 		$amount3 = $_POST['amount3'];
-// 	}
-// 	if(isset($_POST['amount4'])){
-// 		$amount4 = $_POST['amount4'];
-// 	}
-// 	if(isset($_POST['amount5'])){
-// 		$amount5 = $_POST['amount5'];
-// 	}
-// 	if(isset($_POST['amount6'])){
-// 		$amount6 = $_POST['amount6'];
-// 	}
-// 	if(isset($_POST['amount7'])){
-// 		$amount7 = $_POST['amount7'];
-// 	}
-// 	if(isset($_POST['other_charges'])){
-// 		$other_charges = $_POST['other_charges'];
-// 	}
-// 	if(isset($_POST['other_charges_recieved'])){
-// 		$other_charges_recieved = $_POST['other_charges_recieved'];
-// 	}
-// 	if(isset($_POST['fees_total'])){
-// 		$fees_total = $_POST['fees_total'];
-// 	}
-// 	if(isset($_POST['result'])){
-// 		$result = $_POST['result'];
-// 	} 
 
-// 	if(isset($_POST['fees_scholarship'])){
-// 		$fees_scholarship = $_POST['fees_scholarship'];
-// 	}
-// 	if(isset($_POST['final_amount_recieved'])){
-// 		$final_amount_recieved = $_POST['final_amount_recieved'];
-// 	}
-// 	if(isset($_POST['userid'])){
-// 		$userid = $_POST['userid'];
-// 	}
-// 	if(isset($_POST['fees_collected'])){
-// 		$fees_collected = $_POST['fees_collected'];
-// 	} 
-// 	if(isset($_POST['fees_balance'])){
-// 		$fees_balance = $_POST['fees_balance'];
-// 	}
-// 	if(isset($_POST['collection_info'])){
-// 		$collection_info = $_POST['collection_info'];
-// 	}
-// 	if(isset($_POST['cheque_number'])){
-// 		$cheque_number = $_POST['cheque_number'];
-// 	}
-// 	if(isset($_POST['cheque_amount'])){
-// 		$cheque_amount = $_POST['cheque_amount'];
-// 	}
-// 	if(isset($_POST['cheque_date'])){
-// 		$cheque_date = $_POST['cheque_date'];
-// 	}
-// 	if(isset($_POST['cheque_bank_name'])){
-// 		$cheque_bank_name = $_POST['cheque_bank_name'];
-// 	}
-// 	if(isset($_POST['cheque_ledger_name'])){
-// 		$cheque_ledger_name = $_POST['cheque_ledger_name'];
-// 	}
-// 	if(isset($_POST['neft_number'])){
-// 		$neft_number = $_POST['neft_number'];
-// 	}
-// 	if(isset($_POST['neft_amount'])){
-// 		$neft_amount = $_POST['neft_amount'];
-// 	}
-// 	if(isset($_POST['neft_date'])){
-// 		$neft_date = $_POST['neft_date'];
-// 	}
-// 	if(isset($_POST['neft_bank_name'])){
-// 		$neft_bank_name = $_POST['neft_bank_name'];
-// 	}
-// 	if(isset($_POST['neft_ledger_name'])){
-// 		$neft_ledger_name = $_POST['neft_ledger_name'];
-// 	}
-// 	if(isset($_POST['final_fees_balance'])){
-// 		$final_fees_balance = $_POST['final_fees_balance'];
-// 	}
-// 	if(isset($_POST['final_fees_collected'])){
-// 		$final_fees_collected = $_POST['final_fees_collected'];
-// 	}
-// 	if(isset($_POST['final_received_fees_total'])){
-// 		$final_received_fees_total = $_POST['final_received_fees_total'];
-// 	}
-// 	if(isset($_POST['final_concession_fees_total'])){
-// 		$final_concession_fees_total = $_POST['final_concession_fees_total'];
-// 	}
-// 	if(isset($_POST['final_fees_total'])){
-// 		$final_fees_total = $_POST['final_fees_total'];
-// 	}
-// 	if(isset($_POST['grp_fees_total'])){
-// 		$grp_fees_total = $_POST['grp_fees_total'];
-// 	}
-// 	if(isset($_POST['extra_fees_total'])){
-// 		$extra_fees_total = $_POST['extra_fees_total'];
-// 	}
-// 	if(isset($_POST['amenity_fees_total'])){
-// 		$amenity_fees_total = $_POST['amenity_fees_total'];
-// 	}
-// 	if(isset($_POST['grp_fees_total_received'])){
-// 		$grp_fees_total_received = $_POST['grp_fees_total_received'];
-// 	}
-// 	if(isset($_POST['extra_fees_total_received'])){
-// 		$extra_fees_total_received = $_POST['extra_fees_total_received'];
-// 	}
-// 	if(isset($_POST['amenity_fees_total_received'])){
-// 		$amenity_fees_total_received = $_POST['amenity_fees_total_received'];
-// 	}
-// 	if(isset($_POST['grp_fees_balance'])){
-// 		$grp_fees_balance = $_POST['grp_fees_balance'];
-// 	}
-// 	if(isset($_POST['extra_fees_balance'])){
-// 		$extra_fees_balance = $_POST['extra_fees_balance'];
-// 	}
-// 	if(isset($_POST['amenity_fees_balance'])){
-// 		$amenity_fees_balance = $_POST['amenity_fees_balance'];
-// 	}
-
-// 	if(isset($_POST['grp_concession_fees'])){
-// 		$grp_concession_fees = $_POST['grp_concession_fees'];
-// 	}
-// 	if(isset($_POST['extra_concession_fees'])){
-// 		$extra_concession_fees = $_POST['extra_concession_fees'];
-// 	}
-// 	if(isset($_POST['amenity_concession_fees'])){
-// 		$amenity_concession_fees = $_POST['amenity_concession_fees'];
-// 	}
-// 	if(isset($_POST['grp_concession_amount12'])){
-// 		$grp_concession_amount12str = $_POST['grp_concession_amount12'];
-// 		$grp_concession_amount12 = ltrim(implode(",",$grp_concession_amount12str),','); 
-// 	}
-// 	if(isset($_POST['grp_concession_amount'])){
-// 		$grp_concession_amountstr = $_POST['grp_concession_amount'];
-// 		$grp_concession_amount13 = ltrim(implode(",",$grp_concession_amountstr),','); 
-// 	}
-	
-// 	if(isset($_POST['amount_recieved12'])){
-// 		$amount_recieved12str = $_POST['amount_recieved12'];
-// 		$amount_recieved12 = ltrim(implode(",",$amount_recieved12str),','); 
-		
-// 	} 
-// 	if(isset($_POST['amount_recieved'])){
-// 		$amount_recieved13str = $_POST['amount_recieved'];
-// 		$amount_recieved13 = ltrim(implode(",",$amount_recieved13str),','); 
-		
-// 	} 
-// 	// Add the values
-// 	$grp_concession_amount = intval($grp_concession_amount12) + intval($grp_concession_amount13);
-
-// 	$amount_recieved = intval($amount_recieved12) + intval($amount_recieved13);
-
-// 	$selectClass=$mysqli->query("SELECT * FROM pay_fees WHERE 1");
-		
-// 		$student_id1 = array();
-
-// 		while ($row=$selectClass->fetch_assoc()){
-
-// 		$student_id1[]    = $row["student_id"];
-		
-// 	}
-	
-// 		if(isset($_POST['stud_id'])){
-// 			$stud_id = $_POST['stud_id'];  
-
-// 		if(in_array($stud_id, $student_id1)){ 
-		
-// 			$eventUpdaet = "UPDATE pay_fees SET grp_fees_id = '".strip_tags($grp_fees_id)."', extra_fees_id = '".strip_tags($extra_fees_id)."',
-// 		amenity_fees_id = '".strip_tags($amenity_fees_id)."', receipt_number = '".strip_tags($receipt_number)."', receipt_date='".strip_tags($receipt_date)."', 
-// 		register_number='".strip_tags($register_number)."', academic_year='".strip_tags($academic_year)."', 
-// 		student_id='".strip_tags($student_id)."', standard='".strip_tags($standard)."', grp_particulars='".strip_tags($grp_particulars)."',
-// 		grp_amount='".strip_tags($grp_amount)."',amount_recieved='".strip_tags($amount_recieved)."',amount_balance='".strip_tags($amount_balance)."',
-// 		extra_particulars='".strip_tags($extra_particulars)."',extra_amount='".strip_tags($extra_amount)."',extra_amount_recieved='".strip_tags($extra_amount_recieved)."',
-// 		extra_amount_balance='".strip_tags($extra_amount_balance)."',amenity_particulars='".strip_tags($amenity_particulars)."',amenity_amount='".strip_tags($amenity_amount)."',
-// 		amenity_amount_recieved='".strip_tags($amenity_amount_recieved)."',  amenity_amount_balance = '".strip_tags($amenity_amount_balance)."', qty1='".strip_tags($qty1)."', qty2='".strip_tags($qty2)."',qty3='".strip_tags($qty3)."',
-// 		qty4='".strip_tags($qty4)."',qty5='".strip_tags($qty5)."',qty6='".strip_tags($qty6)."', qty7='".strip_tags($qty7)."', unit1='".strip_tags($unit1)."', unit2='".strip_tags($unit2)."',
-// 		unit3='".strip_tags($unit3)."', unit4='".strip_tags($unit4)."', unit5='".strip_tags($unit5)."', unit6='".strip_tags($unit6)."', unit7='".strip_tags($unit7)."',
-// 		result='".strip_tags($result)."', amount1='".strip_tags($amount1)."', amount2='".strip_tags($amount2)."', amount3='".strip_tags($amount3)."',
-// 		amount4='".strip_tags($amount4)."',amount5='".strip_tags($amount5)."',amount6='".strip_tags($amount6)."', amount7='".strip_tags($amount7)."', final_amount_recieved='".strip_tags($final_amount_recieved)."', 
-// 		other_charges='".strip_tags($other_charges)."', other_charges_recieved='".strip_tags($other_charges_recieved)."', 
-// 		fees_total='".strip_tags($fees_total)."', collection_info='".strip_tags($collection_info)."', fees_balance='".strip_tags($fees_balance)."',
-// 		cheque_number='".strip_tags($cheque_number)."', cheque_amount='".strip_tags($cheque_amount)."', cheque_date='".strip_tags($cheque_date)."',
-// 		cheque_bank_name='".strip_tags($cheque_bank_name)."',cheque_ledger_name='".strip_tags($cheque_ledger_name)."',neft_number='".strip_tags($neft_number)."',neft_amount='".strip_tags($neft_amount)."',
-// 		neft_date='".strip_tags($neft_date)."',neft_bank_name='".strip_tags($neft_bank_name)."',neft_ledger_name='".strip_tags($neft_ledger_name)."',
-// 		fees_collected='".strip_tags($fees_collected)."', update_login_id='".strip_tags($userid)."',school_id='".strip_tags($school_id)."', status = '0',grp_concession_amount ='".strip_tags($grp_concession_amount)."' WHERE student_id= '".strip_tags($stud_id)."' AND school_id='".strip_tags($school_id)."' ";
-// 		echo "addPayfeesCreation IF".$eventUpdaet;
-// 		$updresult = $mysqli->query($eventUpdaet);
-// 		$UpdateId = $mysqli->affected_rows; 
-
-// 		$eventreffInsert="INSERT INTO pay_fees_ref(student_id, pay_fees_id, final_fees_total, final_received_fees_total, final_fees_collected,
-// 		 final_fees_balance,insert_login_id, grp_fees_total, extra_fees_total, amenity_fees_total,grp_fees_total_received, extra_fees_total_received,
-// 		  amenity_fees_total_received, grp_fees_balance, extra_fees_balance, amenity_fees_balance, amenity_concession_fees, extra_concession_fees, grp_concession_fees,
-// 		  grp_particulars, grp_amount,amount_recieved,extra_particulars, extra_amount, extra_amount_recieved,amenity_particulars, amenity_amount, amenity_amount_recieved,
-// 		  grp_fees_id, extra_fees_id, amenity_fees_id,grp_concession_amount, extra_concession_amount,amenity_concession_amount) 
-// 		VALUES('".strip_tags($student_id)."','".$UpdateId."', '".strip_tags($final_fees_total)."', 
-// 		'".strip_tags($final_received_fees_total)."', '".strip_tags($final_fees_collected)."','".strip_tags($final_fees_balance)."', '".strip_tags($userid)."', '".strip_tags($grp_fees_total)."',
-// 		'".strip_tags($extra_fees_total)."','".strip_tags($amenity_fees_total)."', '".strip_tags($grp_fees_total_received)."' , '".strip_tags($extra_fees_total_received)."', 
-// 		'".strip_tags($amenity_fees_total_received)."', '".strip_tags($grp_fees_balance)."', '".strip_tags($extra_fees_balance)."', '".strip_tags($amenity_fees_balance)."',
-// 		'".strip_tags($amenity_concession_fees)."','".strip_tags($extra_concession_fees)."','".strip_tags($grp_concession_fees)."','".strip_tags($grp_particulars)."',
-// 		 '".strip_tags($grp_amount)."','".strip_tags($amount_recieved12)."','".strip_tags($extra_particulars)."', '".strip_tags($extra_amount)."', '".strip_tags($extra_amount_recieved)."', 
-// 		 '".strip_tags($amenity_particulars)."', '".strip_tags($amenity_amount)."', '".strip_tags($amenity_amount_recieved)."','".strip_tags($grp_fees_id)."','".strip_tags($extra_fees_id)."',
-// 		 '".strip_tags($amenity_fees_id)."','".strip_tags($grp_concession_amount13)."', '".strip_tags($extra_concession_amount)."', '".strip_tags($amenity_concession_amount)."')"; 
-// 		echo "addPayfeesCreation IF2".$eventreffInsert;
-// 		$insresult=$mysqli->query($eventreffInsert) or die("Error in Get All Records".$mysqli->error);
-// 		die;
-
-// 	}else{
-// 		$eventInsert="INSERT INTO pay_fees(receipt_number, receipt_date, register_number, academic_year, student_id, standard, grp_particulars, grp_amount,
-// 		amount_recieved, amount_balance,extra_particulars, extra_amount, extra_amount_recieved, extra_amount_balance, amenity_particulars, amenity_amount, amenity_amount_recieved, 
-// 		amenity_amount_balance, qty1, qty2, qty3, qty4, qty5, qty6, qty7, unit1, unit2, unit3, unit4, unit5, unit6, unit7, amount1, amount2, amount3, amount4, amount5, amount6,
-// 		amount7, other_charges,	other_charges_recieved, fees_total, result, final_amount_recieved, fees_collected, fees_balance, collection_info, cheque_number,
-// 		cheque_amount, cheque_date, cheque_bank_name, cheque_ledger_name, neft_number, neft_amount, neft_date,  neft_bank_name, neft_ledger_name, grp_fees_id, extra_fees_id, amenity_fees_id,
-// 		insert_login_id, grp_concession_amount, extra_concession_amount,amenity_concession_amount,school_id) 
-// 		VALUES('".strip_tags($receipt_number)."','".strip_tags($receipt_date)."', '".strip_tags($register_number)."', 
-// 		'".strip_tags($academic_year)."', '".strip_tags($student_id)."','".strip_tags($standard)."', '".strip_tags($grp_particulars)."', '".strip_tags($grp_amount)."',
-// 		'".strip_tags($amount_recieved)."', '".strip_tags($amount_balance)."', '".strip_tags($extra_particulars)."', '".strip_tags($extra_amount)."', '".strip_tags($extra_amount_recieved)."', 
-// 		'".strip_tags($extra_amount_balance)."', 
-// 		'".strip_tags($amenity_particulars)."', '".strip_tags($amenity_amount)."', '".strip_tags($amenity_amount_recieved)."', '".strip_tags($amenity_amount_balance)."', 
-// 		'".strip_tags($qty1)."', '".strip_tags($qty2)."','".strip_tags($qty3)."',	'".strip_tags($qty4)."','".strip_tags($qty5)."', '".strip_tags($qty6)."', '".strip_tags($qty7)."',
-// 		'".strip_tags($unit1)."', '".strip_tags($unit2)."', '".strip_tags($unit3)."',
-// 		'".strip_tags($unit4)."', '".strip_tags($unit5)."', '".strip_tags($unit6)."', '".strip_tags($unit7)."', '".strip_tags($amount1)."', '".strip_tags($amount2)."', 
-// 		'".strip_tags($amount3)."', '".strip_tags($amount4)."', '".strip_tags($amount5)."',
-// 		'".strip_tags($amount6)."', '".strip_tags($amount7)."', '".strip_tags($other_charges)."', '".strip_tags($other_charges_recieved)."', '".strip_tags($fees_total)."',
-// 		'".strip_tags($result)."', '".strip_tags($final_amount_recieved)."', '".strip_tags($fees_collected)."', 
-// 		'".strip_tags($fees_balance)."','".strip_tags($collection_info)."', '".strip_tags($cheque_number)."', '".strip_tags($cheque_amount)."', '".strip_tags($cheque_date)."', 
-// 		'".strip_tags($cheque_bank_name)."', '".strip_tags($cheque_ledger_name)."', '".strip_tags($neft_number)."', '".strip_tags($neft_amount)."', '".strip_tags($neft_date)."',
-// 		'".strip_tags($neft_bank_name)."', '".strip_tags($neft_ledger_name)."', '".strip_tags($grp_fees_id)."','".strip_tags($extra_fees_id)."',
-// 		'".strip_tags($amenity_fees_id)."','".strip_tags($userid)."', '".strip_tags($grp_concession_amount13)."', '".strip_tags($extra_concession_amount)."', '".strip_tags($amenity_concession_amount)."','".strip_tags($school_id)."')"; 
-// 		echo "addPayfeesCreation ELSE".$eventInsert;
-// 		$insresult=$mysqli->query($eventInsert);
-// 		$InsertId = $mysqli->insert_id; 
-
-// 		$eventreffInsert="INSERT INTO pay_fees_ref(student_id, pay_fees_id, final_fees_total, final_received_fees_total, final_fees_collected, final_fees_balance,insert_login_id,
-// 		grp_fees_total, extra_fees_total, amenity_fees_total,grp_fees_total_received, extra_fees_total_received, amenity_fees_total_received, grp_fees_balance, extra_fees_balance, amenity_fees_balance,
-// 		amenity_concession_fees, extra_concession_fees, grp_concession_fees,grp_particulars, grp_amount,amount_recieved,extra_particulars, extra_amount, extra_amount_recieved,
-// 		amenity_particulars, amenity_amount, amenity_amount_recieved, grp_fees_id, extra_fees_id, amenity_fees_id,grp_concession_amount, extra_concession_amount,
-// 		amenity_concession_amount) 
-// 		VALUES('".strip_tags($student_id)."','".$InsertId."', '".strip_tags($final_fees_total)."',
-// 		'".strip_tags($final_received_fees_total)."', '".strip_tags($final_fees_collected)."','".strip_tags($final_fees_balance)."', '".strip_tags($userid)."',
-// 		'".strip_tags($grp_fees_total)."','".strip_tags($extra_fees_total)."','".strip_tags($amenity_fees_total)."','".strip_tags($grp_fees_total_received)."' , '".strip_tags($extra_fees_total_received)."', 
-// 		'".strip_tags($amenity_fees_total_received)."','".strip_tags($grp_fees_balance)."','".strip_tags($extra_fees_balance)."', '".strip_tags($amenity_fees_balance)."',
-// 		'".strip_tags($amenity_concession_fees)."','".strip_tags($extra_concession_fees)."','".strip_tags($grp_concession_fees)."','".strip_tags($grp_particulars)."',
-// 		'".strip_tags($grp_amount)."','".strip_tags($amount_recieved12)."','".strip_tags($extra_particulars)."', '".strip_tags($extra_amount)."', '".strip_tags($extra_amount_recieved)."', 
-// 		'".strip_tags($amenity_particulars)."', '".strip_tags($amenity_amount)."', '".strip_tags($amenity_amount_recieved)."','".strip_tags($grp_fees_id)."','".strip_tags($extra_fees_id)."',
-// 		'".strip_tags($amenity_fees_id)."','".strip_tags($grp_concession_amount)."', '".strip_tags($extra_concession_amount)."', '".strip_tags($amenity_concession_amount)."' )"; 
-// 		echo "eventreffInsert ELSE".$eventInsert;
-// 		$insresult=$mysqli->query($eventreffInsert);
-// die;
-// 		}
-// 	}
-// }
 public function addPayfeesCreation($mysqli, $userid,$school_id){
 	if(isset($_POST['receipt_number'])){
 		$receipt_number = $_POST['receipt_number']; 
@@ -5887,63 +4290,6 @@ public function deletePayfeesCreation($mysqli, $id, $userid){
 		return $billmodel;
 	}
 
-	// // Get Extra Curricular Activities
-
-	// public function getExtrtaCurricularList($mysqli) {
-	// 	$qry = "SELECT * FROM fees_master WHERE 1 AND status=0"; 
-	// 	$res = $mysqli->query($qry) or die("Error in Get All Records: " . $mysqli->error);
-	// 	$detailrecords = array();
-	// 	$i = 1;
-	
-	// 	while ($ct = $res->fetch_assoc()) {
-	// 		$s_array = explode(",", $ct['extra_particulars']);
-	// 		$s_array1 = explode(",", $ct['extra_amount']);
-	// 		$record = array();
-	// 		$record['fees_id'] = $ct["fees_id"];
-	// 		$record['extra_particulars'] = $s_array; 
-	// 		$record['extra_amount'] = $s_array1;
-			
-	// 		if (end($record['extra_particulars']) === '') {
-	// 			array_pop($record['extra_particulars']); // remove last element if it's empty
-	// 		}
-	
-	// 		$detailrecords[$i] = $record;
-	// 		$i++;
-	// 	} 
-	
-	// 	return $detailrecords;
-	// }
-// Get Extra Curricular Activities
-
-	// public function getExtrtaCurricularList($mysqli,$school_id,$year_id) {
-	// // if($standards == '' && $mediums ==''){
-	// 	$qry = "SELECT * FROM fees_master WHERE academic_year = '$year_id' AND school_id = '$school_id'  AND extra_particulars IS NOT NULL AND extra_amount IS NOT NULL AND status = '0'"; 
-		
-	// // }else{
-	// // 	$qry = "SELECT * FROM fees_master WHERE academic_year = '2023-2024' AND school_id = '1'  AND extra_particulars IS NOT NULL AND extra_amount IS NOT NULL AND medium='$mediums' AND standard='$standards' AND  status = '0'"; 
-	// // }
-	// $res = $mysqli->query($qry) or die("Error in Get All Records: " . $mysqli->error);
-
-	// 	$detailrecords = array();
-	// 	$i = 1;
-
-	// 	while ($ct = $res->fetch_assoc()) {
-	// 		$s_array = explode(",", $ct['extra_particulars']);
-	// 		$s_array1 = explode(",", $ct['extra_amount']);
-	// 		$record = array();
-	// 		$record['fees_id'] = $ct["fees_id"];
-	// 		$record['extra_particulars'] = $s_array; 
-	// 		$record['extra_amount'] = $s_array1;
-			
-	// 		if (end($record['extra_particulars']) === '') {
-	// 			array_pop($record['extra_particulars']); // remove last element if it's empty
-	// 		}
-
-	// 		$detailrecords[$i] = $record;
-	// 		$i++;
-	// 	} 
-	// 	return $detailrecords;
-	// }	
 	// Add Event Details
 public function addPayLastYearfeesCreation($mysqli, $userid){
 
@@ -6623,6 +4969,746 @@ public function addPurchaseOrder($mysqli){
 				return 1;
 			}
 		}
+
+	public function addTempPayFees($mysqli,$userid,$school_id){
+
+		//temp_admission_fees table//
+		if(isset($_POST['temp_admission_form_id'])){
+			$temp_admission_form_id = $_POST['temp_admission_form_id'];
+		}
+		if(isset($_POST['receipt_number'])){
+			$receipt_number = $_POST['receipt_number'];
+		}
+		if(isset($_POST['receipt_date'])){
+			$receipt_date =  $_POST['receipt_date'];
+		}
+		if(isset($_POST['academic_year'])){
+			$academic_year = $_POST['academic_year'];
+		}
+		if(isset($_POST['other_charges'])){
+			$other_charges = $_POST['other_charges'];
+		}
+		if(isset($_POST['other_charges_recieved'])){
+			$other_charges_recieved = $_POST['other_charges_recieved'];
+		}
+		if(isset($_POST['fees_scholarship'])){
+			$fees_scholarship = $_POST['fees_scholarship'];
+		}
+		if(isset($_POST['fees_total'])){
+			$fees_total = $_POST['fees_total'];
+		}
+		if(isset($_POST['final_amount_recieved'])){
+			$final_amount_recieved = $_POST['final_amount_recieved'];
+		}
+		if(isset($_POST['fees_collected'])){
+			$fees_collected = $_POST['fees_collected'];
+		}
+		if(isset($_POST['fees_balance'])){
+			$fees_balance = $_POST['fees_balance'];
+		}
+		//temp_admission_fees table END//
+		
+		// temp_admission_fees_denomination//
+		if(isset($_POST['payment_mode'])){
+			$payment_mode = $_POST['payment_mode'];
+		} 
+		if(isset($_POST['receive_five_hundred'])){
+			$receive_five_hundred = $_POST['receive_five_hundred'];
+		} 
+		if(isset($_POST['receive_two_hundred'])){
+			$receive_two_hundred = $_POST['receive_two_hundred'];
+		} 
+		if(isset($_POST['receive_hundred'])){
+			$receive_hundred = $_POST['receive_hundred'];
+		} 
+		if(isset($_POST['receive_fifty'])){
+			$receive_fifty = $_POST['receive_fifty'];
+		} 
+		if(isset($_POST['receive_twenty'])){
+			$receive_twenty = $_POST['receive_twenty'];
+		} 
+		if(isset($_POST['receive_ten'])){
+			$receive_ten = $_POST['receive_ten'];
+		} 
+		if(isset($_POST['receive_five'])){
+			$receive_five = $_POST['receive_five'];
+		} 
+		if(isset($_POST['total_amount'])){
+			$total_amount = $_POST['total_amount'];
+		} 
+
+		if(isset($_POST['cheque_number'])){
+			$cheque_number = $_POST['cheque_number'];
+		} 
+		if(isset($_POST['cheque_amount'])){
+			$cheque_amount = $_POST['cheque_amount'];
+		} 
+		if(isset($_POST['cheque_date'])){
+			$cheque_date = $_POST['cheque_date'];
+		} 
+		if(isset($_POST['cheque_bank_name'])){
+			$cheque_bank_name = $_POST['cheque_bank_name'];
+		} 
+		if(isset($_POST['cheque_ledger_name'])){
+			$cheque_ledger_name = $_POST['cheque_ledger_name'];
+		} 
+
+		if(isset($_POST['neft_number'])){
+			$neft_number = $_POST['neft_number'];
+		} 
+		if(isset($_POST['neft_amount'])){
+			$neft_amount = $_POST['neft_amount'];
+		} 
+		if(isset($_POST['neft_date'])){
+			$neft_date = $_POST['neft_date'];
+		} 
+		if(isset($_POST['neft_bank_name'])){
+			$neft_bank_name = $_POST['neft_bank_name'];
+		} 
+		if(isset($_POST['neft_ledger_name'])){
+			$neft_ledger_name = $_POST['neft_ledger_name'];
+		} 
+		// temp_admission_fees_denomination END//
+		
+		//Group Table data//
+		$feesMasterid = [];
+		if(isset($_POST['feesMasterid'])){
+			$feesMasterid = $_POST['feesMasterid'];
+		} 
+		if(isset($_POST['grpid'])){
+			$grptablename = 'grptable';
+			$grpid = $_POST['grpid'];
+		} 
+		if(isset($_POST['grpFeeReceived'])){
+			$grpFeeReceived = $_POST['grpFeeReceived'];
+		} 
+		if(isset($_POST['grpFeeBalance'])){
+			$grpFeeBalance = $_POST['grpFeeBalance'];
+		} 
+		if(isset($_POST['grpFeeScholarship'])){
+			$grpFeeScholarship = $_POST['grpFeeScholarship'];
+		} 
+		//Group Table data END//
+
+		//Extra Curricular Activity Table data//
+		$extraFeesMasterid = [];
+		if(isset($_POST['extraFeesMasterid'])){
+			$extraFeesMasterid = $_POST['extraFeesMasterid'];
+		} 
+		if(isset($_POST['extraAmntid'])){
+			$extratablename = 'extratable';
+			$extraAmntid = $_POST['extraAmntid'];
+		} 
+		if(isset($_POST['extraAmntReceived'])){
+			$extraAmntReceived = $_POST['extraAmntReceived'];
+		} 
+		if(isset($_POST['extraAmntBalance'])){
+			$extraAmntBalance = $_POST['extraAmntBalance'];
+		} 
+		if(isset($_POST['extraAmntScholarship'])){
+			$extraAmntScholarship = $_POST['extraAmntScholarship'];
+		} 
+		//Extra Curricular Activity Table data END//
+
+		//Amenity Table data//
+		$amenityFeesMasterid = [];
+		if(isset($_POST['amenityFeesMasterid'])){
+			$amenityFeesMasterid = $_POST['amenityFeesMasterid'];
+		} 
+		if(isset($_POST['amenityAmntid'])){
+			$amenitytablename = 'amenitytable';
+			$amenityAmntid = $_POST['amenityAmntid'];
+		} 
+		if(isset($_POST['amenityAmntReceived'])){
+			$amenityAmntReceived = $_POST['amenityAmntReceived'];
+		} 
+		if(isset($_POST['amenityAmntBalance'])){
+			$amenityAmntBalance = $_POST['amenityAmntBalance'];
+		} 
+		if(isset($_POST['amenityAmntScholarship'])){
+			$amenityAmntScholarship = $_POST['amenityAmntScholarship'];
+		} 
+		//Amenity Table data END//
+
+		if(isset($_SESSION['curdateFromIndexPage'])){
+			$curdate = $_SESSION['curdateFromIndexPage'];
+		}
+
+		$insertTempFeesQry = $mysqli->query("INSERT INTO `temp_admission_fees`(`TempAdmissionId`, `ReceiptNo`, `ReceiptDate`, `AcademicYear`, `Othercharges`, `OtherChargesReceived`, `Scholarship`, `TotalFeestobeCollected`, `FinalAmounttobeCollect`, `FeesCollected`, `BalancetobePaid`, `school_id`, `insert_login_id`, `created_on`) VALUES ('$temp_admission_form_id','$receipt_number','$receipt_date','$academic_year','$other_charges','$other_charges_recieved','$fees_scholarship','$fees_total','$final_amount_recieved','$fees_collected','$fees_balance','$school_id','$userid','$curdate')");
+		
+		$tempFeesLastInsertId = $mysqli->insert_id;
+
+		if($payment_mode == 'cash_payment'){
+			$insertCashDenomination = $mysqli->query("INSERT INTO `temp_admission_fees_denomination`(`TempAdmFeeRefId`, `PaymentMode`, `LedgerRefId`, `No_Fivehundred`, `No_Twohundred`, `No_hundred`, `No_fifty`, `No_twenty`, `No_ten`, `No_five`, `totalamt`, `insert_login_id`, `created_on`) VALUES ('$tempFeesLastInsertId','$payment_mode','$academic_year','$receive_five_hundred','$receive_two_hundred','$receive_hundred','$receive_fifty','$receive_twenty','$receive_ten','$receive_five','$total_amount','$userid','$curdate')");
+
+		}else if($payment_mode == 'cheque'){
+			$insertCashDenomination = $mysqli->query("INSERT INTO `temp_admission_fees_denomination`(`TempAdmFeeRefId`, `PaymentMode`, `LedgerRefId`, `ChequeNumber`, `ChequeDate`, `ChequeAmt`, `ChequeBankName`, `insert_login_id`, `created_on`) VALUES ('$tempFeesLastInsertId','$payment_mode','$cheque_ledger_name','$cheque_number','$cheque_date','$cheque_amount','$cheque_bank_name','$userid','$curdate')");
+			
+		}else if($payment_mode == 'neft'){
+			$insertCashDenomination = $mysqli->query("INSERT INTO `temp_admission_fees_denomination`(`TempAdmFeeRefId`, `PaymentMode`, `LedgerRefId`, `NeftRefNumber`, `NeftTranDate`, `NeftAmt`, `NeftBankName`, `insert_login_id`, `created_on`) VALUES ('$tempFeesLastInsertId','$payment_mode','$neft_ledger_name','$neft_number','$neft_date','$neft_amount','$neft_bank_name','$userid','$curdate')");
+
+		}
+
+		for($a = 0; $a < count($feesMasterid); $a++){
+			$insertFeesDetailsQry = $mysqli->query("INSERT INTO `temp_admissionfees_details`( `TempAdmFeeRefId`, `FeesMasterId`, `FeesTableName`, `FeesId`, `FeeReceived`, `BalancetobePaid`, `Scholarship`) VALUES ('$tempFeesLastInsertId','$feesMasterid[$a]','$grptablename','$grpid[$a]','$grpFeeReceived[$a]','$grpFeeBalance[$a]','$grpFeeScholarship[$a]')");
+		}
+
+		for($b = 0; $b < count($extraFeesMasterid); $b++){
+			$insertextraFeesDetailsQry = $mysqli->query("INSERT INTO `temp_admissionfees_details`( `TempAdmFeeRefId`, `FeesMasterId`, `FeesTableName`, `FeesId`, `FeeReceived`, `BalancetobePaid`, `Scholarship`) VALUES ('$tempFeesLastInsertId','$extraFeesMasterid[$b]','$extratablename','$extraAmntid[$b]','$extraAmntReceived[$b]','$extraAmntBalance[$b]','$extraAmntScholarship[$b]')");
+		}
+
+		for($c = 0; $c < count($amenityFeesMasterid); $c++){
+			$insertamenityFeesDetailsQry = $mysqli->query("INSERT INTO `temp_admissionfees_details`( `TempAdmFeeRefId`, `FeesMasterId`, `FeesTableName`, `FeesId`, `FeeReceived`, `BalancetobePaid`, `Scholarship`) VALUES ('$tempFeesLastInsertId','$amenityFeesMasterid[$c]','$amenitytablename','$amenityAmntid[$c]','$amenityAmntReceived[$c]','$amenityAmntBalance[$c]','$amenityAmntScholarship[$c]')");
+		}
+
+		if($insertTempFeesQry){
+			return $tempFeesLastInsertId;
+		}else{
+			return 2;
+		}
+	}
+
+
+	public function addPayFees($mysqli,$userid,$school_id){
+
+		//admission_fees table//
+		if(isset($_POST['admission_form_id'])){
+			$admission_form_id = $_POST['admission_form_id'];
+		}
+		if(isset($_POST['receipt_number'])){
+			$receipt_number = $_POST['receipt_number'];
+		}
+		if(isset($_POST['receipt_date'])){
+			$receipt_date =  $_POST['receipt_date'];
+		}
+		if(isset($_POST['academic_year'])){
+			$academic_year = $_POST['academic_year'];
+		}
+		if(isset($_POST['other_charges'])){
+			$other_charges = $_POST['other_charges'];
+		}
+		if(isset($_POST['other_charges_recieved'])){
+			$other_charges_recieved = $_POST['other_charges_recieved'];
+		}
+		if(isset($_POST['fees_scholarship'])){
+			$fees_scholarship = $_POST['fees_scholarship'];
+		}
+		if(isset($_POST['fees_total'])){
+			$fees_total = $_POST['fees_total'];
+		}
+		if(isset($_POST['final_amount_recieved'])){
+			$final_amount_recieved = $_POST['final_amount_recieved'];
+		}
+		if(isset($_POST['fees_collected'])){
+			$fees_collected = $_POST['fees_collected'];
+		}
+		if(isset($_POST['fees_balance'])){
+			$fees_balance = $_POST['fees_balance'];
+		}
+		//admission_fees table END//
+		
+		//admission_fees_denomination//
+		if(isset($_POST['payment_mode'])){
+			$payment_mode = $_POST['payment_mode'];
+		} 
+		if(isset($_POST['receive_five_hundred'])){
+			$receive_five_hundred = $_POST['receive_five_hundred'];
+		} 
+		if(isset($_POST['receive_two_hundred'])){
+			$receive_two_hundred = $_POST['receive_two_hundred'];
+		} 
+		if(isset($_POST['receive_hundred'])){
+			$receive_hundred = $_POST['receive_hundred'];
+		} 
+		if(isset($_POST['receive_fifty'])){
+			$receive_fifty = $_POST['receive_fifty'];
+		} 
+		if(isset($_POST['receive_twenty'])){
+			$receive_twenty = $_POST['receive_twenty'];
+		} 
+		if(isset($_POST['receive_ten'])){
+			$receive_ten = $_POST['receive_ten'];
+		} 
+		if(isset($_POST['receive_five'])){
+			$receive_five = $_POST['receive_five'];
+		} 
+		if(isset($_POST['total_amount'])){
+			$total_amount = $_POST['total_amount'];
+		} 
+
+		if(isset($_POST['cheque_number'])){
+			$cheque_number = $_POST['cheque_number'];
+		} 
+		if(isset($_POST['cheque_amount'])){
+			$cheque_amount = $_POST['cheque_amount'];
+		} 
+		if(isset($_POST['cheque_date'])){
+			$cheque_date = $_POST['cheque_date'];
+		} 
+		if(isset($_POST['cheque_bank_name'])){
+			$cheque_bank_name = $_POST['cheque_bank_name'];
+		} 
+		if(isset($_POST['cheque_ledger_name'])){
+			$cheque_ledger_name = $_POST['cheque_ledger_name'];
+		} 
+
+		if(isset($_POST['neft_number'])){
+			$neft_number = $_POST['neft_number'];
+		} 
+		if(isset($_POST['neft_amount'])){
+			$neft_amount = $_POST['neft_amount'];
+		} 
+		if(isset($_POST['neft_date'])){
+			$neft_date = $_POST['neft_date'];
+		} 
+		if(isset($_POST['neft_bank_name'])){
+			$neft_bank_name = $_POST['neft_bank_name'];
+		} 
+		if(isset($_POST['neft_ledger_name'])){
+			$neft_ledger_name = $_POST['neft_ledger_name'];
+		} 
+		// admission_fees_denomination END//
+		
+		//Group Table data//
+		$feesMasterid = [];
+		if(isset($_POST['feesMasterid'])){
+			$feesMasterid = $_POST['feesMasterid'];
+		} 
+		if(isset($_POST['grpid'])){
+			$grptablename = 'grptable';
+			$grpid = $_POST['grpid'];
+		} 
+		if(isset($_POST['grpFeeReceived'])){
+			$grpFeeReceived = $_POST['grpFeeReceived'];
+		} 
+		if(isset($_POST['grpFeeBalance'])){
+			$grpFeeBalance = $_POST['grpFeeBalance'];
+		} 
+		if(isset($_POST['grpFeeScholarship'])){
+			$grpFeeScholarship = $_POST['grpFeeScholarship'];
+		} 
+		//Group Table data END//
+
+		//Extra Curricular Activity Table data//
+		$extraFeesMasterid = [];
+		if(isset($_POST['extraFeesMasterid'])){
+			$extraFeesMasterid = $_POST['extraFeesMasterid'];
+		} 
+		if(isset($_POST['extraAmntid'])){
+			$extratablename = 'extratable';
+			$extraAmntid = $_POST['extraAmntid'];
+		} 
+		if(isset($_POST['extraAmntReceived'])){
+			$extraAmntReceived = $_POST['extraAmntReceived'];
+		} 
+		if(isset($_POST['extraAmntBalance'])){
+			$extraAmntBalance = $_POST['extraAmntBalance'];
+		} 
+		if(isset($_POST['extraAmntScholarship'])){
+			$extraAmntScholarship = $_POST['extraAmntScholarship'];
+		} 
+		//Extra Curricular Activity Table data END//
+
+		//Amenity Table data//
+		$amenityFeesMasterid = [];
+		if(isset($_POST['amenityFeesMasterid'])){
+			$amenityFeesMasterid = $_POST['amenityFeesMasterid'];
+		} 
+		if(isset($_POST['amenityAmntid'])){
+			$amenitytablename = 'amenitytable';
+			$amenityAmntid = $_POST['amenityAmntid'];
+		} 
+		if(isset($_POST['amenityAmntReceived'])){
+			$amenityAmntReceived = $_POST['amenityAmntReceived'];
+		} 
+		if(isset($_POST['amenityAmntBalance'])){
+			$amenityAmntBalance = $_POST['amenityAmntBalance'];
+		} 
+		if(isset($_POST['amenityAmntScholarship'])){
+			$amenityAmntScholarship = $_POST['amenityAmntScholarship'];
+		} 
+		//Amenity Table data END//
+
+		$insertPayFeesQry = $mysqli->query("INSERT INTO `admission_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `other_charges`, `other_charges_received`, `scholarship`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `created_on`) VALUES ('$admission_form_id','$receipt_number','$receipt_date','$academic_year','$other_charges','$other_charges_recieved','$fees_scholarship','$fees_total','$final_amount_recieved','$fees_collected','$fees_balance','$school_id','$userid',now())");
+		
+		$FeesLastInsertId = $mysqli->insert_id;
+
+		if($payment_mode == 'cash_payment'){
+			$insertCashDenomination = $mysqli->query("INSERT INTO `admission_fees_denomination`(`admission_fees_ref_id`, `payment_mode`, `ledger_ref_id`, `no_five_hundred`, `no_two_hundred`, `no_hundred`, `no_fifty`, `no_twenty`, `no_ten`, `no_five`, `total_amount`, `insert_login_id`, `created_on`) VALUES ('$FeesLastInsertId','$payment_mode','$academic_year','$receive_five_hundred','$receive_two_hundred','$receive_hundred','$receive_fifty','$receive_twenty','$receive_ten','$receive_five','$total_amount','$userid',now())");
+
+		}else if($payment_mode == 'cheque'){
+			$insertCashDenomination = $mysqli->query("INSERT INTO `admission_fees_denomination`(`admission_fees_ref_id`, `payment_mode`, `ledger_ref_id`, `cheque_number`, `cheque_date`, `cheque_amount`, `cheque_bank_name`, `insert_login_id`, `created_on`) VALUES ('$FeesLastInsertId','$payment_mode','$cheque_ledger_name','$cheque_number','$cheque_date','$cheque_amount','$cheque_bank_name','$userid',now())");
+			
+		}else if($payment_mode == 'neft'){
+			$insertCashDenomination = $mysqli->query("INSERT INTO `admission_fees_denomination`(`admission_fees_ref_id`, `payment_mode`, `ledger_ref_id`, `neft_ref_number`, `neft_tran_date`, `neft_amount`, `neft_bank_name`, `insert_login_id`, `created_on`) VALUES ('$FeesLastInsertId','$payment_mode','$neft_ledger_name','$neft_number','$neft_date','$neft_amount','$neft_bank_name','$userid',now())");
+
+		}
+
+		for($a = 0; $a < count($feesMasterid); $a++){
+			$insertFeesDetailsQry = $mysqli->query("INSERT INTO `admission_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$feesMasterid[$a]','$grptablename','$grpid[$a]','$grpFeeReceived[$a]','$grpFeeBalance[$a]','$grpFeeScholarship[$a]')");
+		}
+
+		for($b = 0; $b < count($extraFeesMasterid); $b++){
+			$insertextraFeesDetailsQry = $mysqli->query("INSERT INTO `admission_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$extraFeesMasterid[$b]','$extratablename','$extraAmntid[$b]','$extraAmntReceived[$b]','$extraAmntBalance[$b]','$extraAmntScholarship[$b]')");
+		}
+
+		for($c = 0; $c < count($amenityFeesMasterid); $c++){
+			$insertamenityFeesDetailsQry = $mysqli->query("INSERT INTO `admission_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$amenityFeesMasterid[$c]','$amenitytablename','$amenityAmntid[$c]','$amenityAmntReceived[$c]','$amenityAmntBalance[$c]','$amenityAmntScholarship[$c]')");
+		}
+
+		if($insertPayFeesQry){
+			return $FeesLastInsertId;
+		}else{
+			return 2;
+		}
+	}
+
+
+	public function addLastYearFees($mysqli,$userid,$school_id){
+
+		//last_year_fees table//
+		if(isset($_POST['admission_form_id'])){
+			$admission_form_id = $_POST['admission_form_id'];
+		}
+		if(isset($_POST['receipt_number'])){
+			$receipt_number = $_POST['receipt_number'];
+		}
+		if(isset($_POST['receipt_date'])){
+			$receipt_date =  $_POST['receipt_date'];
+		}
+		if(isset($_POST['academic_year'])){
+			$academic_year = $_POST['academic_year'];
+		}
+		if(isset($_POST['other_charges'])){
+			$other_charges = $_POST['other_charges'];
+		}
+		if(isset($_POST['other_charges_recieved'])){
+			$other_charges_recieved = $_POST['other_charges_recieved'];
+		}
+		if(isset($_POST['fees_scholarship'])){
+			$fees_scholarship = $_POST['fees_scholarship'];
+		}
+		if(isset($_POST['fees_total'])){
+			$fees_total = $_POST['fees_total'];
+		}
+		if(isset($_POST['final_amount_recieved'])){
+			$final_amount_recieved = $_POST['final_amount_recieved'];
+		}
+		if(isset($_POST['fees_collected'])){
+			$fees_collected = $_POST['fees_collected'];
+		}
+		if(isset($_POST['fees_balance'])){
+			$fees_balance = $_POST['fees_balance'];
+		}
+		//last_year_fees table END//
+		
+		// last_year_fees_denomination//
+		if(isset($_POST['payment_mode'])){
+			$payment_mode = $_POST['payment_mode'];
+		} 
+		if(isset($_POST['receive_five_hundred'])){
+			$receive_five_hundred = $_POST['receive_five_hundred'];
+		} 
+		if(isset($_POST['receive_two_hundred'])){
+			$receive_two_hundred = $_POST['receive_two_hundred'];
+		} 
+		if(isset($_POST['receive_hundred'])){
+			$receive_hundred = $_POST['receive_hundred'];
+		} 
+		if(isset($_POST['receive_fifty'])){
+			$receive_fifty = $_POST['receive_fifty'];
+		} 
+		if(isset($_POST['receive_twenty'])){
+			$receive_twenty = $_POST['receive_twenty'];
+		} 
+		if(isset($_POST['receive_ten'])){
+			$receive_ten = $_POST['receive_ten'];
+		} 
+		if(isset($_POST['receive_five'])){
+			$receive_five = $_POST['receive_five'];
+		} 
+		if(isset($_POST['total_amount'])){
+			$total_amount = $_POST['total_amount'];
+		} 
+
+		if(isset($_POST['cheque_number'])){
+			$cheque_number = $_POST['cheque_number'];
+		} 
+		if(isset($_POST['cheque_amount'])){
+			$cheque_amount = $_POST['cheque_amount'];
+		} 
+		if(isset($_POST['cheque_date'])){
+			$cheque_date = $_POST['cheque_date'];
+		} 
+		if(isset($_POST['cheque_bank_name'])){
+			$cheque_bank_name = $_POST['cheque_bank_name'];
+		} 
+		if(isset($_POST['cheque_ledger_name'])){
+			$cheque_ledger_name = $_POST['cheque_ledger_name'];
+		} 
+
+		if(isset($_POST['neft_number'])){
+			$neft_number = $_POST['neft_number'];
+		} 
+		if(isset($_POST['neft_amount'])){
+			$neft_amount = $_POST['neft_amount'];
+		} 
+		if(isset($_POST['neft_date'])){
+			$neft_date = $_POST['neft_date'];
+		} 
+		if(isset($_POST['neft_bank_name'])){
+			$neft_bank_name = $_POST['neft_bank_name'];
+		} 
+		if(isset($_POST['neft_ledger_name'])){
+			$neft_ledger_name = $_POST['neft_ledger_name'];
+		} 
+		// last_year_fees_denomination END//
+		
+		//Group Table data//
+		$feesMasterid = [];
+		if(isset($_POST['feesMasterid'])){
+			$feesMasterid = $_POST['feesMasterid'];
+		} 
+		if(isset($_POST['grpid'])){
+			$grptablename = 'grptable';
+			$grpid = $_POST['grpid'];
+		} 
+		if(isset($_POST['grpFeeReceived'])){
+			$grpFeeReceived = $_POST['grpFeeReceived'];
+		} 
+		if(isset($_POST['grpFeeBalance'])){
+			$grpFeeBalance = $_POST['grpFeeBalance'];
+		} 
+		if(isset($_POST['grpFeeScholarship'])){
+			$grpFeeScholarship = $_POST['grpFeeScholarship'];
+		} 
+		//Group Table data END//
+
+		//Extra Curricular Activity Table data//
+		$extraFeesMasterid = [];
+		if(isset($_POST['extraFeesMasterid'])){
+			$extraFeesMasterid = $_POST['extraFeesMasterid'];
+		} 
+		if(isset($_POST['extraAmntid'])){
+			$extratablename = 'extratable';
+			$extraAmntid = $_POST['extraAmntid'];
+		} 
+		if(isset($_POST['extraAmntReceived'])){
+			$extraAmntReceived = $_POST['extraAmntReceived'];
+		} 
+		if(isset($_POST['extraAmntBalance'])){
+			$extraAmntBalance = $_POST['extraAmntBalance'];
+		} 
+		if(isset($_POST['extraAmntScholarship'])){
+			$extraAmntScholarship = $_POST['extraAmntScholarship'];
+		} 
+		//Extra Curricular Activity Table data END//
+
+		//Amenity Table data//
+		$amenityFeesMasterid = [];
+		if(isset($_POST['amenityFeesMasterid'])){
+			$amenityFeesMasterid = $_POST['amenityFeesMasterid'];
+		} 
+		if(isset($_POST['amenityAmntid'])){
+			$amenitytablename = 'amenitytable';
+			$amenityAmntid = $_POST['amenityAmntid'];
+		} 
+		if(isset($_POST['amenityAmntReceived'])){
+			$amenityAmntReceived = $_POST['amenityAmntReceived'];
+		} 
+		if(isset($_POST['amenityAmntBalance'])){
+			$amenityAmntBalance = $_POST['amenityAmntBalance'];
+		} 
+		if(isset($_POST['amenityAmntScholarship'])){
+			$amenityAmntScholarship = $_POST['amenityAmntScholarship'];
+		} 
+		//Amenity Table data END//
+
+		if(count($feesMasterid) > 0 && count($extraFeesMasterid) > 0 && count($amenityFeesMasterid) > 0 ){
+		$insertPayFeesQry = $mysqli->query("INSERT INTO `last_year_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `other_charges`, `other_charges_received`, `scholarship`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `created_on`) VALUES ('$admission_form_id','$receipt_number','$receipt_date','$academic_year','$other_charges','$other_charges_recieved','$fees_scholarship','$fees_total','$final_amount_recieved','$fees_collected','$fees_balance','$school_id','$userid',now())");
+		
+		$FeesLastInsertId = $mysqli->insert_id;
+
+		if($payment_mode == 'cash_payment'){
+			$insertCashDenomination = $mysqli->query("INSERT INTO `last_year_fees_denomination`(`admission_fees_ref_id`, `payment_mode`, `ledger_ref_id`, `no_five_hundred`, `no_two_hundred`, `no_hundred`, `no_fifty`, `no_twenty`, `no_ten`, `no_five`, `total_amount`, `insert_login_id`, `created_on`) VALUES ('$FeesLastInsertId','$payment_mode','$academic_year','$receive_five_hundred','$receive_two_hundred','$receive_hundred','$receive_fifty','$receive_twenty','$receive_ten','$receive_five','$total_amount','$userid',now())");
+
+		}else if($payment_mode == 'cheque'){
+			$insertCashDenomination = $mysqli->query("INSERT INTO `last_year_fees_denomination`(`admission_fees_ref_id`, `payment_mode`, `ledger_ref_id`, `cheque_number`, `cheque_date`, `cheque_amount`, `cheque_bank_name`, `insert_login_id`, `created_on`) VALUES ('$FeesLastInsertId','$payment_mode','$cheque_ledger_name','$cheque_number','$cheque_date','$cheque_amount','$cheque_bank_name','$userid',now())");
+			
+		}else if($payment_mode == 'neft'){
+			$insertCashDenomination = $mysqli->query("INSERT INTO `last_year_fees_denomination`(`admission_fees_ref_id`, `payment_mode`, `ledger_ref_id`, `neft_ref_number`, `neft_tran_date`, `neft_amount`, `neft_bank_name`, `insert_login_id`, `created_on`) VALUES ('$FeesLastInsertId','$payment_mode','$neft_ledger_name','$neft_number','$neft_date','$neft_amount','$neft_bank_name','$userid',now())");
+
+		}
+
+		for($a = 0; $a < count($feesMasterid); $a++){
+			$insertFeesDetailsQry = $mysqli->query("INSERT INTO `last_year_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$feesMasterid[$a]','$grptablename','$grpid[$a]','$grpFeeReceived[$a]','$grpFeeBalance[$a]','$grpFeeScholarship[$a]')");
+		}
+
+		for($b = 0; $b < count($extraFeesMasterid); $b++){
+			$insertextraFeesDetailsQry = $mysqli->query("INSERT INTO `last_year_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$extraFeesMasterid[$b]','$extratablename','$extraAmntid[$b]','$extraAmntReceived[$b]','$extraAmntBalance[$b]','$extraAmntScholarship[$b]')");
+		}
+
+		for($c = 0; $c < count($amenityFeesMasterid); $c++){
+			$insertamenityFeesDetailsQry = $mysqli->query("INSERT INTO `last_year_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$amenityFeesMasterid[$c]','$amenitytablename','$amenityAmntid[$c]','$amenityAmntReceived[$c]','$amenityAmntBalance[$c]','$amenityAmntScholarship[$c]')");
+		}
+		
+		if($insertPayFeesQry){
+			return $FeesLastInsertId;
+		}else{
+			return 2;
+		}
+	}else{
+		return 2;
+	}
+
+	}
+
+
+	public function addTransportFees($mysqli,$userid,$school_id){
+
+		//transport_fees table//
+		if(isset($_POST['admission_form_id'])){
+			$admission_form_id = $_POST['admission_form_id'];
+		}
+		if(isset($_POST['receipt_number'])){
+			$receipt_number = $_POST['receipt_number'];
+		}
+		if(isset($_POST['receipt_date'])){
+			$receipt_date =  $_POST['receipt_date'];
+		}
+		if(isset($_POST['academic_year'])){
+			$academic_year = $_POST['academic_year'];
+		}
+		if(isset($_POST['fees_scholarship'])){
+			$fees_scholarship = $_POST['fees_scholarship'];
+		}
+		if(isset($_POST['fees_total'])){
+			$fees_total = $_POST['fees_total'];
+		}
+		if(isset($_POST['final_amount_recieved'])){
+			$final_amount_recieved = $_POST['final_amount_recieved'];
+		}
+		if(isset($_POST['fees_collected'])){
+			$fees_collected = $_POST['fees_collected'];
+		}
+		if(isset($_POST['fees_balance'])){
+			$fees_balance = $_POST['fees_balance'];
+		}
+		//transport_fees table END//
+		
+		// 	transport_admission_fees_denomination//
+		if(isset($_POST['payment_mode'])){
+			$payment_mode = $_POST['payment_mode'];
+		} 
+		if(isset($_POST['receive_five_hundred'])){
+			$receive_five_hundred = $_POST['receive_five_hundred'];
+		} 
+		if(isset($_POST['receive_two_hundred'])){
+			$receive_two_hundred = $_POST['receive_two_hundred'];
+		} 
+		if(isset($_POST['receive_hundred'])){
+			$receive_hundred = $_POST['receive_hundred'];
+		} 
+		if(isset($_POST['receive_fifty'])){
+			$receive_fifty = $_POST['receive_fifty'];
+		} 
+		if(isset($_POST['receive_twenty'])){
+			$receive_twenty = $_POST['receive_twenty'];
+		} 
+		if(isset($_POST['receive_ten'])){
+			$receive_ten = $_POST['receive_ten'];
+		} 
+		if(isset($_POST['receive_five'])){
+			$receive_five = $_POST['receive_five'];
+		} 
+		if(isset($_POST['total_amount'])){
+			$total_amount = $_POST['total_amount'];
+		} 
+
+		if(isset($_POST['cheque_number'])){
+			$cheque_number = $_POST['cheque_number'];
+		} 
+		if(isset($_POST['cheque_amount'])){
+			$cheque_amount = $_POST['cheque_amount'];
+		} 
+		if(isset($_POST['cheque_date'])){
+			$cheque_date = $_POST['cheque_date'];
+		} 
+		if(isset($_POST['cheque_bank_name'])){
+			$cheque_bank_name = $_POST['cheque_bank_name'];
+		} 
+		if(isset($_POST['cheque_ledger_name'])){
+			$cheque_ledger_name = $_POST['cheque_ledger_name'];
+		} 
+
+		if(isset($_POST['neft_number'])){
+			$neft_number = $_POST['neft_number'];
+		} 
+		if(isset($_POST['neft_amount'])){
+			$neft_amount = $_POST['neft_amount'];
+		} 
+		if(isset($_POST['neft_date'])){
+			$neft_date = $_POST['neft_date'];
+		} 
+		if(isset($_POST['neft_bank_name'])){
+			$neft_bank_name = $_POST['neft_bank_name'];
+		} 
+		if(isset($_POST['neft_ledger_name'])){
+			$neft_ledger_name = $_POST['neft_ledger_name'];
+		} 
+		// 	transport_admission_fees_denomination END//
+		
+		//Area Table data//
+		$areaCreationId = [];
+		if(isset($_POST['areaCreationId'])){
+			$areaCreationId = $_POST['areaCreationId'];
+		} 
+		if(isset($_POST['particularId'])){
+			$particularId = $_POST['particularId'];
+		} 
+		if(isset($_POST['transportFeeReceived'])){
+			$transportFeeReceived = $_POST['transportFeeReceived'];
+		} 
+		if(isset($_POST['transportFeeBalance'])){
+			$transportFeeBalance = $_POST['transportFeeBalance'];
+		} 
+		if(isset($_POST['transportFeeScholarship'])){
+			$transportFeeScholarship = $_POST['transportFeeScholarship'];
+		} 
+		//Area Table data END//
+
+		if(count($areaCreationId) > 0 ){
+		$insertPayFeesQry = $mysqli->query("INSERT INTO `transport_admission_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `scholarship`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `created_on`) VALUES ('$admission_form_id','$receipt_number','$receipt_date','$academic_year','$fees_scholarship','$fees_total','$final_amount_recieved','$fees_collected','$fees_balance','$school_id','$userid',now())");
+		
+		$FeesLastInsertId = $mysqli->insert_id;
+
+		if($payment_mode == 'cash_payment'){
+			$insertCashDenomination = $mysqli->query("INSERT INTO `transport_admission_fees_denomination`(`admission_fees_ref_id`, `payment_mode`, `ledger_ref_id`, `no_five_hundred`, `no_two_hundred`, `no_hundred`, `no_fifty`, `no_twenty`, `no_ten`, `no_five`, `total_amount`, `insert_login_id`, `created_on`) VALUES ('$FeesLastInsertId','$payment_mode','$academic_year','$receive_five_hundred','$receive_two_hundred','$receive_hundred','$receive_fifty','$receive_twenty','$receive_ten','$receive_five','$total_amount','$userid',now())");
+
+		}else if($payment_mode == 'cheque'){
+			$insertCashDenomination = $mysqli->query("INSERT INTO `transport_admission_fees_denomination`(`admission_fees_ref_id`, `payment_mode`, `ledger_ref_id`, `cheque_number`, `cheque_date`, `cheque_amount`, `cheque_bank_name`, `insert_login_id`, `created_on`) VALUES ('$FeesLastInsertId','$payment_mode','$cheque_ledger_name','$cheque_number','$cheque_date','$cheque_amount','$cheque_bank_name','$userid',now())");
+			
+		}else if($payment_mode == 'neft'){
+			$insertCashDenomination = $mysqli->query("INSERT INTO `transport_admission_fees_denomination`(`admission_fees_ref_id`, `payment_mode`, `ledger_ref_id`, `neft_ref_number`, `neft_tran_date`, `neft_amount`, `neft_bank_name`, `insert_login_id`, `created_on`) VALUES ('$FeesLastInsertId','$payment_mode','$neft_ledger_name','$neft_number','$neft_date','$neft_amount','$neft_bank_name','$userid',now())");
+
+		}
+
+		for($a = 0; $a < count($areaCreationId); $a++){
+			$insertFeesDetailsQry = $mysqli->query("INSERT INTO `transport_admission_fees_details`(`admission_fees_ref_id`, `area_creation_id`, `area_creation_particulars_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$areaCreationId[$a]','$particularId[$a]','$transportFeeReceived[$a]','$transportFeeBalance[$a]','$transportFeeScholarship[$a]')");
+		}
+		
+		if($insertPayFeesQry){
+			return $FeesLastInsertId;
+		}else{
+			return 2;
+		}
+	}else{
+		return 2;
+	}
+
+	}
+
+
 }
 ?>
 

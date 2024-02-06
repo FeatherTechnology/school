@@ -24,9 +24,9 @@ include '../ajaxconfig.php';
 			$year_id = $_SESSION["academic_year"];
 		 }
 		
-        $ctselect="SELECT * FROM `temp_admission_student` WHERE  school_id='$school_id' AND year_id='$year_id' AND status = 0 ORDER BY temp_medium ASC"; 
+        $ctselect="SELECT * FROM `temp_admission_student` WHERE  school_id='$school_id' AND year_id='$year_id' AND status = 0 ORDER BY temp_admission_id DESC"; 
 		
-        $ctresult=$con->query($ctselect);
+        $ctresult=$mysqli->query($ctselect);
         if($ctresult->num_rows>0){
         $i=1;
         while($ct=$ctresult->fetch_assoc()){

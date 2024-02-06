@@ -15,21 +15,21 @@ $CastList = $userObj->getcastList($mysqli);
 // $extraCurricularList = $userObj->getExtrtaCurricularList($mysqli,$school_id,$year_id);
 
 $id=0;
- if(isset($_POST['SubmitStudentCreation']) && $_POST['SubmitStudentCreation'] != '')
- {
+if(isset($_POST['SubmitStudentCreation']) && $_POST['SubmitStudentCreation'] != '')
+{
     if(isset($_POST['id']) && $_POST['id'] >0 && is_numeric($_POST['id'])){		
         $id = $_POST['id']; 	
     $updateStudentCreationmaster = $userObj->updateStudentCreation($mysqli,$id,$userid,$school_id,$year_id);  
     ?>
-   <script>location.href='<?php echo $HOSTPATH; ?>edit_student_creation&msc=2';</script> 
+    <script>location.href='<?php echo $HOSTPATH; ?>edit_student_creation&msc=2';</script> 
     <?php }
     else{   
 		$addStudentCreation = $userObj->addStudentCreation($mysqli,$userid,$school_id,$year_id);   
         ?>
-     <script>location.href='<?php echo $HOSTPATH; ?>edit_student_creation&msc=1';</script>
+    <script>location.href='<?php echo $HOSTPATH; ?>pay_fees&upd=<?php echo $addStudentCreation;?>';</script>
         <?php
     }
- }   
+}   
 
 $del=0;
 if(isset($_GET['del']))
@@ -51,7 +51,7 @@ $idupd=$_GET['upd'];
 $status =0;
 if($idupd>0)
 {
-  
+
 	$getStudentCreation = $userObj->getStudentCreation($mysqli,$idupd); 
 	
 	if (sizeof($getStudentCreation)>0) {
@@ -162,8 +162,8 @@ if($idupd>0)
         $year_id = $_SESSION["academic_year"];
         $school_id = $_SESSION["school_id"];
     } 
-    $tempStudentSelect = "SELECT fm.fees_id, fm.extra_particulars, fm.extra_amount, fm.extra_date FROM student_creation sc LEFT JOIN fees_master fm ON fm.academic_year = sc.year_id WHERE sc.student_id = '$idupd' AND sc.year_id = '$year_id' AND sc.school_id = '$school_id' AND fm.extra_particulars IS NOT NULL AND fm.extra_amount IS NOT NULL AND fm.fees_id IN ($extra_curricular_id) AND fm.status = '0'";
-      $res = $mysqli->query($tempStudentSelect);
+    $tempStudentSelect = "SELECT fm.fees_id, fm.extra_particulars, fm.extra_amount, fm.extra_date FROM student_creation sc LEFT JOIN fees_master fm ON fm.academic_year = sc.year_id WHERE sc.student_id = '$idupd' AND sc.year_id = '$year_id' AND sc.school_id = '$school_id' AND fm.extra_particulars IS NOT NULL AND fm.extra_amount IS NOT NULL AND fm.fees_id IN ('$extra_curricular_id') AND fm.status = '0'";
+    $res = $mysqli->query($tempStudentSelect);
     //   or die("Error in Get All Records" . $mysqli->error)
     $detailrecords = array();
     
@@ -172,12 +172,8 @@ if($idupd>0)
             $record = array();
             $fees_id[] = $row->fees_id;
             
-          
         }
-       
     }
-   
-    
     ?>
 
 
@@ -200,9 +196,9 @@ if($idupd>0)
             var mother_image = $('#mother_imageEdit').val(); 
 
              // Edit standard
-             DropDownStock(father_image)
-             DropDownStock(mother_image)
-           
+            DropDownStock(father_image)
+            DropDownStock(mother_image)
+        
             // Edit standard
             hide_show_standard(standard)
 
@@ -233,44 +229,34 @@ if($idupd>0)
             } 
              // Enable the text box for editing
             // $('#emisno').prop('readonly', false);
-  
         }
-
-   
     </script>
-   
 
 <?php    
 } 
 ?> 
- <style>
-        .select2-container--default .select2-selection--multiple .select2-selection__choice {
-            background-color: #5897fb !important;
-            color: white !important;
-            border: 1px solid #5897fb !important;
-            border-radius: 4px !important;
-            cursor: default !important;
-            float: left !important;
-            margin-right: 5px !important;
-            margin-top: 5px !important;
-            padding: 0 5px !important;
-        }
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-            color: white !important;
-            cursor: pointer !important;
-            display: inline-block !important;
-            font-weight: bold !important;
-            margin-right: 2px !important;
-        }
-      
-    </style>
-<link rel="stylesheet" href="css.min.css" />
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/4.0.6-rc.0/js.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #5897fb !important;
+        color: white !important;
+        border: 1px solid #5897fb !important;
+        border-radius: 4px !important;
+        cursor: default !important;
+        float: left !important;
+        margin-right: 5px !important;
+        margin-top: 5px !important;
+        padding: 0 5px !important;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color: white !important;
+        cursor: pointer !important;
+        display: inline-block !important;
+        font-weight: bold !important;
+        margin-right: 2px !important;
+    }
+    
+</style>
+
 <!-- Page header start -->
 <div class="page-header">
     <ol class="breadcrumb">
@@ -291,34 +277,34 @@ if($idupd>0)
     <form id = "employee" name="employee" action="" method="post" enctype="multipart/form-data"> 
         <input type="hidden" class="form-control" value="<?php if(isset($student_id)) echo $student_id; ?>"  id="id" name="id" aria-describedby="id" placeholder="Enter id">
         <input type="hidden" class="form-control" value=""  id="tranid" name="tranid">
- 		<!-- Row start -->
-         <div class="row gutters">
+    <!-- Row start -->
+        <div class="row gutters">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
 					<div class="card-header">
 						<div class="card-title">General Info <i class="icon-stars"></i></div>
 					</div>
                     <div class="card-body">
-                    	 <div class="row">
+                        <div class="row">
                             <!--Fields -->
-                           <div class="col-md-8 "> 
-                              <div class="row">
+                            <div class="col-md-8 "> 
+                                <div class="row">
                                     <div class="col-xl-5 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Temporary No</label>
+                                            <label for="temp_no">Temporary No</label>
                                             <input type="text" tabindex="1" id="temp_no" name="temp_no" class="form-control"  value="<?php if(isset($temp_no)) echo $temp_no;?>" placeholder="Enter Temporary Number">
                                             <input type="hidden"  id="temp_admission_id" name="temp_admission_id" class="form-control"  value="<?php if(isset($temp_admission_id))  echo $temp_admission_id; ?>">
                                         </div>
                                     </div>
-                                    <div class="col-xl-1 col-lg-4 col-md-6 col-sm-6 col-12">
+                                    <div class="col-xl-1 col-lg-4 col-md-2 col-sm-2 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput" style="visibility: hidden;">search</label>
+                                            <label for="add_departmentDetails" style="visibility: hidden;">search</label>
                                             <button type="button" class="btn btn-primary"  tabindex="2" id="add_departmentDetails" name="add_departmentDetails" data-toggle="modal" data-target=".addDepartmentModal"><i class="fa fa-search"></i></button>
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Admission No<span class="required">*</span></label>
+                                            <label for="admission_number">Admission No<span class="required">*</span></label>
                                             <input type="text" tabindex="3" id="admission_number" name="admission_number" class="form-control"  value="<?php if(isset($admission_number)) echo $admission_number; ?>" placeholder="Enter Admission Number">
                                             <span id="admission_numberCheck" class="text-danger" >Enter Admission Number</span>
                                         </div>
@@ -348,9 +334,9 @@ if($idupd>0)
                                         <div class="form-group">
                                             <label for="disabledInput">Gender<span class="required">*</span></label><br>
                                             <input type="radio" tabindex="7" name="gender" id="male" value="Male" <?php if(isset($gender))
-                                         echo ($gender=='Male')?'checked':'' ?>>  &nbsp;&nbsp; <label for="male">Male </label> &nbsp;&nbsp;&nbsp;&nbsp;
+                                            echo ($gender=='Male')?'checked':'' ?>>  &nbsp;&nbsp; <label for="male">Male </label> &nbsp;&nbsp;&nbsp;&nbsp;
                                             <input type="radio" tabindex="8" name="gender" id="female"  value="Female" <?php if(isset($gender))
-                                         echo ($gender=='Female')?'checked':'' ?>>  &nbsp;&nbsp; <label for="female">Female </label> &nbsp;&nbsp;&nbsp;&nbsp;
+                                            echo ($gender=='Female')?'checked':'' ?>>  &nbsp;&nbsp; <label for="female">Female </label> &nbsp;&nbsp;&nbsp;&nbsp;
                                             <span id="genderCheck" class="text-danger" >| Please Select Gender</span>
                                         </div>
                                     </div>
@@ -490,7 +476,7 @@ if($idupd>0)
                             </div>  
                             <!-- Field Finished -->
                             <div class="col-md-4"><br />
-                                <div class="col-xl-12 col-lg-4 col-md-6 col-sm-6 col-12 mx-auto">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <label for="disabledInput">Student Photo</label>
                                     <?php if(isset($_GET['upd'])<=0){ ?>
                                         <div class="form-group" style="margin: auto;"> 
@@ -635,34 +621,10 @@ if($idupd>0)
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12"></div>
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                        <?php  if(isset($standard)) {  $temp_standard = $standard; }?>
-                                            <label for="disabledInput">Standard<span class="required">*</span></label>
+                                            <label for="standard">Standard<span class="required">*</span></label>
                                             <select class="form-control select2" id="standard" name="standard" tabindex="35">
-                                                        <option value="">Select a Standard...</option>
-                                                        <option value="PRE.K.G" <?php  if(isset($temp_standard)) { if($temp_standard == "PRE.K.G") echo 'selected'; }?>>PRE.K.G</option>
-                                                        <option value="L.K.G"<?php  if(isset($temp_standard)) { if($temp_standard == "L.K.G") echo 'selected'; }?>>L.K.G</option>
-                                                        <option value="U.K.G" <?php  if(isset($temp_standard)) { if($temp_standard == "U.K.G") echo 'selected'; }?>>U.K.G</option>
-                                                        <option value="I" <?php  if(isset($temp_standard)) { if($temp_standard == "I") echo 'selected'; }?>>I</option>
-                                                        <option value="II" <?php  if(isset($temp_standard)) { if($temp_standard == "II") echo 'selected'; }?>>II</option>
-                                                        <option value="III" <?php  if(isset($temp_standard)) { if($temp_standard == "III") echo 'selected'; }?>>III</option>
-                                                        <option value="IV" <?php  if(isset($temp_standard)) { if($temp_standard == "IV") echo 'selected'; }?>>IV</option>
-                                                        <option value="V" <?php  if(isset($temp_standard)) { if($temp_standard == "V") echo 'selected'; }?>>V</option>
-                                                        <option value="VI" <?php  if(isset($temp_standard)) { if($temp_standard == "VI") echo 'selected'; }?>>VI</option>
-                                                        <option value="VI" <?php  if(isset($temp_standard)) { if($temp_standard == "VI") echo 'selected'; }?>>VII</option>
-                                                        <option value="VIII" <?php  if(isset($temp_standard)) { if($temp_standard == "VIII") echo 'selected'; }?>>VIII</option>
-                                                        <option value="IX" <?php  if(isset($temp_standard)) { if($temp_standard == "IX") echo 'selected'; }?>>IX</option>
-                                                        <option value="X" <?php  if(isset($temp_standard)) { if($temp_standard == "X") echo 'selected'; }?>>X</option>
-                                                        <option value="XI_Maths_Biology" <?php  if(isset($temp_standard)) { if($temp_standard == "XI_Maths_Biology") echo 'selected'; }?>>XI_Maths_Biology</option>
-                                                        <option value="XI_Maths_ComputerScience" <?php  if(isset($temp_standard)) { if($temp_standard == "XI_Maths_ComputerScience") echo 'selected'; }?>>XI_Maths_ComputerScience</option>
-                                                        <option value="XI_Biology_ComputerScience" <?php  if(isset($temp_standard)) { if($temp_standard == "XI_Biology_ComputerScience") echo 'selected'; }?>>XI_Biology_ComputerScience</option>
-                                                        <option value="XII_Maths_Biology" <?php  if(isset($temp_standard)) { if($temp_standard == "XII_Maths_Biology") echo 'selected'; }?>>XII_Maths_Biology</option>
-                                                        <option value="XII_Maths_ComputerScience" <?php  if(isset($temp_standard)) { if($temp_standard == "XII_Maths_ComputerScience") echo 'selected'; }?>>XII_Maths_ComputerScience</option>
-                                                        <option value="XII_Biology_ComputerScience" <?php  if(isset($temp_standard)) { if($temp_standard == "XII_Biology_ComputerScience") echo 'selected'; }?>>XII_Biology_ComputerScience</option>
-                                                        <option value="XI_All" <?php  if(isset($temp_standard)) { if($temp_standard == "XI_All") echo 'selected'; }?>>XI_All</option>
-                                                        <option value="XII_All" <?php  if(isset($temp_standard)) { if($temp_standard == "XII_All") echo 'selected'; }?>>XII_All</option>
-                                                        <option value="XI_Commerce_ComputerScience" <?php  if(isset($temp_standard)) { if($temp_standard == "XI_Commerce_ComputerScience") echo 'selected'; }?>>XI_Commerce_ComputerScience</option>
-                                                        <option value="XII_Commerce_ComputerScience" <?php  if(isset($temp_standard)) { if($temp_standard == "XII_Commerce_ComputerScience") echo 'selected'; }?>>XII_Commerce_ComputerScience</option>
-                                                </select>
+                                                <option value="">Select a Standard...</option>
+                                            </select>
                                             <span id="standardCheck" class="text-danger">Please Select Standard</span>
                                         </div>
                                     </div>
@@ -731,8 +693,8 @@ if($idupd>0)
                                         <div class="form-group">
                                             <label for="inputReadOnly">Medium<span class="required">*</span></label>
                                             <select class="form-control " id="medium" name="medium" tabindex="35"><option value="">Select a Medium...</option>
-                                                <option value="Tamil" <?php  if(isset($medium)) { if($medium == "Tamil") echo 'selected'; }?>>Tamil</option>
-                                                <option value="English"<?php  if(isset($medium)) { if($medium == "English") echo 'selected'; }?>>English</option>
+                                                <option value="1" <?php  if(isset($medium)) { if($medium == "1") echo 'selected'; }?>>Tamil</option>
+                                                <option value="2"<?php  if(isset($medium)) { if($medium == "2") echo 'selected'; }?>>English</option>
                                             </select>
                                             <span id="mediumCheck" class="text-danger" >Please Select Medium</span>
                                         </div>
@@ -754,9 +716,10 @@ if($idupd>0)
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label for="disabledInput">Student Type<span class="required">*</span></label>
-                                            <select class="form-control select2" tabindex="45" id="studentstype" name="studentstype"><option value="">Select a Type of Students...</option>
-                                                <option value="New Student"<?php  if(isset($studentstype)) { if($studentstype == "New Student") echo 'selected'; }?> >New Student</option>
-                                                <option value="Old Student"<?php if(isset($studentstype)) { if($studentstype == "Old Student") echo 'selected'; }?> >Old Student</option>
+                                            <select class="form-control" tabindex="45" id="studentstype" name="studentstype">
+                                                <option value="">Select a Type of Students...</option>
+                                                <option value="1"<?php  if(isset($studentstype)) { if($studentstype == "1") echo 'selected'; }?> >New Student</option>
+                                                <option value="2"<?php if(isset($studentstype)) { if($studentstype == "2") echo 'selected'; }?> >Old Student</option>
                                             </select>
                                             <span id="studentstypeCheck" class="text-danger">Please Select Student Type</span>
                                         </div>
@@ -1081,49 +1044,41 @@ if($idupd>0)
                                         <div class="form-group">
                                             <label for="disabledInput">Lives with Guardian</label>&nbsp;&nbsp;
                                             <input type="checkbox" id="lives_gaurdian" tabindex="75" name="lives_gaurdian" value="lives_gaurdian" <?php if(isset($lives_gaurdian))
-                                         echo ($lives_gaurdian=='lives_gaurdian')?'checked':'' ?>>
+                                        echo ($lives_gaurdian=='lives_gaurdian')?'checked':'' ?>>
                                         </div>
                                     </div> 
-                                    <div id="gaurdian_details" style="display:none;">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <!--Fields -->
-                                                <div class="col-md-8 "> 
-                                                    <div class="row">
-                                                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
-                                                            <div class="form-group">
-                                                                <label for="disabledInput">Gaurdian Name</label>&nbsp;&nbsp;
-                                                                <input type="text" class="form-control" id="gaurdian_name" tabindex="76" name="gaurdian_name" value="<?php if(isset($gaurdian_name)) echo $gaurdian_name; ?>" placeholder="Enter Gaurdian Name">
-                                                            </div>
-                                                        </div> 
-                                                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
-                                                            <div class="form-group">
-                                                                <label for="disabledInput">Gaurdian Mobile</label>
-                                                                <input type="number" id="gaurdian_mobile" tabindex="77" name="gaurdian_mobile" class="form-control"  value="<?php if(isset($gaurdian_mobile)) echo $gaurdian_mobile; ?>" placeholder="Enter Gaurdian Mobile Number" onkeydown="javascript: return event.keyCode == 69 ? false : true" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;">
-                                                                <span id="gaurdmobile" class="text-danger"></span>
-                                                            </div>
-                                                        </div> 
-                                                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
-                                                            <div class="form-group">
-                                                                <label for="disabledInput">Gaurdian Aadhar Number</label>
-                                                                <input  name="gaurdian_aadhar_number" tabindex="78" placeholder ="Gaurdian Aadhar Number" id="gaurdian_aadhar_number" value="<?php if(isset($gaurdian_aadhar_number)) echo $gaurdian_aadhar_number; ?>" class="form-control"  data-type="adhaar-number" maxLength="14"  type="text">
-                                                              <span id="gaurdaadhar_chk" class="text-danger"></span>
 
-                                                            </div>
-                                                        </div> 
-                                                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
-                                                            <div class="form-group">
-                                                                <label for="disabledInput">Gaurdian Email Id</label>
-                                                                <input  name="gaurdian_email_id" tabindex="79" placeholder ="Gaurdian Email Id" id="gaurdian_email_id" value="<?php if(isset($gaurdian_email_id)) echo $gaurdian_email_id; ?>" class="form-control" type="email">
-                                                                <span id="gaurdemail" class="text-danger"></span>
-
-                                                            </div>
-                                                        </div> 
-                                                    </div>
-                                                </div> 
+                                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12 gaurdian_details" style="display:none;">
+                                            <div class="form-group">
+                                                <label for="disabledInput">Gaurdian Name</label>&nbsp;&nbsp;
+                                                <input type="text" class="form-control" id="gaurdian_name" tabindex="76" name="gaurdian_name" value="<?php if(isset($gaurdian_name)) echo $gaurdian_name; ?>" placeholder="Enter Gaurdian Name">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12 gaurdian_details" style="display:none;">
+                                            <div class="form-group">
+                                                <label for="disabledInput">Gaurdian Mobile</label>
+                                                <input type="number" id="gaurdian_mobile" tabindex="77" name="gaurdian_mobile" class="form-control"  value="<?php if(isset($gaurdian_mobile)) echo $gaurdian_mobile; ?>" placeholder="Enter Gaurdian Mobile Number" onkeydown="javascript: return event.keyCode == 69 ? false : true" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;">
+                                                <span id="gaurdmobile" class="text-danger"></span>
                                             </div>
                                         </div> 
-                                    </div> 
+
+                                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12 gaurdian_details" style="display:none;">
+                                            <div class="form-group">
+                                                <label for="disabledInput">Gaurdian Aadhar Number</label>
+                                                <input  name="gaurdian_aadhar_number" tabindex="78" placeholder ="Gaurdian Aadhar Number" id="gaurdian_aadhar_number" value="<?php if(isset($gaurdian_aadhar_number)) echo $gaurdian_aadhar_number; ?>" class="form-control"  data-type="adhaar-number" maxLength="14"  type="text">
+                                                <span id="gaurdaadhar_chk" class="text-danger"></span>
+                                            </div>
+                                        </div> 
+
+                                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12 gaurdian_details" style="display:none;">
+                                            <div class="form-group">
+                                                <label for="disabledInput">Gaurdian Email Id</label>
+                                                <input  name="gaurdian_email_id" tabindex="79" placeholder ="Gaurdian Email Id" id="gaurdian_email_id" value="<?php if(isset($gaurdian_email_id)) echo $gaurdian_email_id; ?>" class="form-control" type="email">
+                                                <span id="gaurdemail" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label for="disabledInput">Father Mobile No</label>
@@ -1512,22 +1467,17 @@ if($idupd>0)
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-               
-                <div class="row">
-                   
+            <div class="modal-body">    
+                <div class="row">    
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
-                        <div class="form-group">
-                           
+                        <div class="form-group">     
                             <input type="hidden" name="temp_admission_id" id="temp_admission_id">
-                           
                         </div>
-                    </div>
-                   
+                    </div>           
                 </div>
             <div id="updateddepartmentTable"> 
                     <table class="table custom-table" id="departmentTable"> 
-                 <thead>
+                <thead>
                     <tr>
                         <th width="50">S. No</th>
                         <th>Temporary Register Number</th>
@@ -1560,135 +1510,3 @@ if($idupd>0)
         </div>
     </div>
 </div>
-<script>
-
-     // First loadFile function
-  var loadFile1 = function(event) {
-    var image1 = document.getElementById("viewimage1");
-    image1.src = URL.createObjectURL(event.target.files[0]);
-  };
-
-  // Second loadFile function
-  var loadFile2 = function(event) {
-    var image2 = document.getElementById("viewimage2");
-    image2.src = URL.createObjectURL(event.target.files[0]);
-  };
-
-  // Third loadFile function
-  var loadFile3 = function(event) {
-    var image3 = document.getElementById("viewimage3");
-    image3.src = URL.createObjectURL(event.target.files[0]);
-  };
-
-</script>
-<script>
-
-    //  $('[data-type="adhaar-number"]').keyup(function() {
-    //     var value = $(this).val();
-    //     value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(value => value.length > 0).join("-");
-    //     console.log(value.length);
-    //     $(this).val(value);
-    // });
-
-   
-    $('[data-type="adhaar-number"]').keyup(function() {
-                  var value = $(this).val();
-                    values = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(value => value.length > 0).join("-");
-                    $(this).val(values);
-                var aadhaarNumber =  $(this).val();
-
-                if (aadhaarNumber.length === 0) {
-                
-                } else if (aadhaarNumber.length > 14) {
-                    $(this).val(aadhaarNumber.slice(0, 14));
-                } 
-               
-            });
-     
-    
-
-   $('#aadhar_number').blur(function() {    
-    appaadhaar();
-   }); 
-   $('#father_aadhar_number').blur(function() { 
-        dadaadhaar();   
-    }); 
-    $('#mother_aadhar_number').blur(function() {    
-            momaadhaar();
-    }); 
-    $('#gaurdian_aadhar_number').blur(function() {    
-            gaurdaadhar();
-        });
-        
-    function appaadhaar(){
-            var aadhar_number= $('#aadhar_number').val();
-            if (aadhar_number.length == '' ) {
-                $("#aadhar_chk").text('Enter valid Aadhaar number');
-                $('#SubmitStudentCreation').prop('disabled', true);
-            }else{
-            if (aadhar_number.length  < 14 ) {
-                $("#aadhar_chk").text('Enter valid Aadhaar number');
-                $('#SubmitStudentCreation').prop('disabled', true);
-            }else{
-            $("#aadhar_chk").text('');
-            $('#SubmitStudentCreation').prop('disabled', false);
-
-            }
-
-            }
-        }
-        function dadaadhaar(){
-        var aadhar_number= $('#father_aadhar_number').val();
-            if (aadhar_number.length == '' ) {
-            $("#dadaadhar_chk").text('');
-            $('#SubmitStudentCreation').prop('disabled', false);
-            }else{
-            if (aadhar_number.length  < 14 ) {
-            $("#dadaadhar_chk").text('Enter valid Aadhaar number');
-            $('#SubmitStudentCreation').prop('disabled', true);
-        }else{
-            $("#dadaadhar_chk").text('');
-            $('#SubmitStudentCreation').prop('disabled', false);
-
-        }
-        
-        }
-       }
-    function momaadhaar() {
-        var aadhar_number= $('#mother_aadhar_number').val();
-            if (aadhar_number.length == '' ) {
-            $("#momaadhar_chk").text('');
-            $('#SubmitStudentCreation').prop('disabled', false);
-            }else{
-            if (aadhar_number.length  < 14 ) {
-            $("#momaadhar_chk").text('Enter valid Aadhaar number');
-            $('#SubmitStudentCreation').prop('disabled', true);
-        }else{
-            $("#momaadhar_chk").text('');
-            $('#SubmitStudentCreation').prop('disabled', false);
-
-        }
-        
-        }
-
-    }
-        function gaurdaadhar() {
-            var aadhar_number= $('#gaurdian_aadhar_number').val();
-            if (aadhar_number.length == '' ) {
-            $("#gaurdaadhar_chk").text('');
-            $('#SubmitStudentCreation').prop('disabled', false);
-            }else{
-            if (aadhar_number.length  < 14 ) {
-            $("#gaurdaadhar_chk").text('Enter valid Aadhaar number');
-            $('#SubmitStudentCreation').prop('disabled', true);
-        }else{
-            $("#gaurdaadhar_chk").text('');
-            $('#SubmitStudentCreation').prop('disabled', false);
-
-        }
-        
-        }
-        }
-       
-    
-</script>

@@ -6,7 +6,7 @@ if(isset($_POST["student_id"])){
 }
 
 $getct = "SELECT * FROM student_creation WHERE student_id = '".$student_id."' AND status=0";
-$result = $con->query($getct);
+$result = $mysqli->query($getct);
 while($row=$result->fetch_assoc())
 {
     $reason = $row['reason'];

@@ -13,7 +13,7 @@ $year_id = $_SESSION["academic_year"];
 
 //   // make a query to fetch the section list
 //   $sql = "SELECT section FROM student_creation WHERE standard = '$standard' AND school_id='$school_id' AND year_id ='$year_id'"; 
-//   $result = mysqli_query($con, $sql);
+//   $result = mysqli_query($mysqli, $sql);
 
 //   // check if there are any sections in the result
 //   if (mysqli_num_rows($result) > 0) {
@@ -35,7 +35,7 @@ if(isset($_POST['medium']) && isset($_POST['standard'])){
   
     // make a query to fetch the section list
     $sql = "SELECT section FROM student_creation WHERE medium = '$medium' AND standard = '$standard' AND school_id='$school_id' GROUP BY section";
-    $result = mysqli_query($con, $sql);
+    $result = mysqli_query($mysqli, $sql);
   
     // check if there are any sections in the result
     if (mysqli_num_rows($result) > 0) {
@@ -57,7 +57,7 @@ if(isset($_POST['medium']) && isset($_POST['standard'])){
     // make a query to fetch the student names list
     $sql2 = "SELECT student_id, student_name FROM student_creation WHERE section = '$section' AND school_id='$school_id' AND year_id ='$year_id'";
     // print_r($sql2);
-    $result2 = mysqli_query($con, $sql2);
+    $result2 = mysqli_query($mysqli, $sql2);
   
     // check if there are any students in the result
     if (mysqli_num_rows($result2) > 0) {
@@ -87,7 +87,7 @@ if(isset($_POST['medium']) && isset($_POST['standard'])){
     }
 
     // execute the query and return results
-    $result = mysqli_query($con, $sql);
+    $result = mysqli_query($mysqli, $sql);
   
     // check if there are any students in the result
     if (mysqli_num_rows($result) > 0) {
@@ -103,6 +103,6 @@ if(isset($_POST['medium']) && isset($_POST['standard'])){
 
   
   // close the database connection
-  mysqli_close($con);
+  mysqli_close($mysqli);
 
 ?>

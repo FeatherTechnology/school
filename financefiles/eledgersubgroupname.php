@@ -7,7 +7,7 @@ if(isset($_POST["selectledger"])){
 
 $ledgerdetails=array();
 $getqry="SELECT * FROM ledger WHERE ledgername='".strip_tags($selectledger)."'  ";
-$res=$con->query($getqry);
+$res=$mysqli->query($getqry);
 while ($row=$res->fetch_assoc()){
 	$AccountRefId              = $row["AccountRefId"];
 	?>
@@ -15,7 +15,7 @@ while ($row=$res->fetch_assoc()){
  <option value="">Select Subgroupname</option> 
 <?php
 	$getqry1="SELECT * FROM accountsgroup WHERE Id='".strip_tags($AccountRefId)."'  ORDER BY AccountsName ASC";
-	$res1=$con->query($getqry1);
+	$res1=$mysqli->query($getqry1);
 	while ($row1=$res1->fetch_assoc()){
 		$ParentId                  = $row1["ParentId"];
     $Id                        = $row1["Id"];
@@ -23,7 +23,7 @@ while ($row=$res->fetch_assoc()){
     ?>
     <?php
     $getqry2="SELECT * FROM accountsgroup ORDER BY AccountsName ASC ";
-	$res2=$con->query($getqry2);
+	$res2=$mysqli->query($getqry2);
 	while ($row2=$res2->fetch_assoc()){
 		$ParentId2                  = $row2["ParentId"];
     $Id2                        = $row2["Id"];

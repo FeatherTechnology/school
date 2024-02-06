@@ -11,7 +11,8 @@ $column = array(
     'last_name',
     'gender',
     'area',
-    'status'
+    'status',
+    'id'
 );
 $query = "SELECT * FROM staff_creation  WHERE  school_id='$school_id' ";
 if($_POST['search']!="");
@@ -49,7 +50,6 @@ $query1 = '';
 if ($_POST['length'] != -1) {
     $query1 = 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
 }
-
 $statement = $connect->prepare($query);
 $statement->execute();
 $number_filter_row = $statement->rowCount();

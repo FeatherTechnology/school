@@ -75,7 +75,7 @@ foreach ($result as $row) {
         $sub_array[] = $row['pay_fees_id '];
         $student_id = '';
         $student_id = $row['student_id'];
-        $gvq = $con->query("SELECT * FROM student_creation WHERE student_id ='".$student_id."' ");
+        $gvq = $mysqli->query("SELECT * FROM student_creation WHERE student_id ='".$student_id."' ");
         while($row1=$gvq->fetch_assoc()){
             $student_name = $row1["student_name"];
             $studentrollno = $row1["studentrollno"];
@@ -86,14 +86,14 @@ foreach ($result as $row) {
 
         $receipt_number="";
         $receipt_number1 = $row['receipt_number'];
-            $sfqry = $con->query("SELECT temple_name FROM temple_creation WHERE temple_id = '".$receipt_number1."' ");
+            $sfqry = $mysqli->query("SELECT temple_name FROM temple_creation WHERE temple_id = '".$receipt_number1."' ");
             while ($row2=$sfqry->fetch_assoc()){
             $receipt_number = $row2["temple_name"];
             }
       
         // else if($receipt_number[0] == 'b'){
         //     $Sreceipt_number = ltrim($receipt_number, 'b');
-        //     $sfqry = $con->query("SELECT branchname FROM branch WHERE branchid = '".$Sreceipt_number."' ");
+        //     $sfqry = $mysqli->query("SELECT branchname FROM branch WHERE branchid = '".$Sreceipt_number."' ");
         //     while ($row2=$sfqry->fetch_assoc()){
         //     $receipt_number1 = $row2["branchname"];
         //     }
@@ -113,21 +113,21 @@ foreach ($result as $row) {
         $sub_array[] = $row['pay_fees_id '];
         $student_idname = '';
         $student_id = $row['student_id'];
-        $gvq = $con->query("SELECT student_name FROM student_id WHERE student_id ='".$student_id."' ");
+        $gvq = $mysqli->query("SELECT student_name FROM student_id WHERE student_id ='".$student_id."' ");
         while($row2=$gvq->fetch_assoc()){
             $student_idname = $row2["student_name"];
         }
         $sub_array[] = $student_idname;
         
             $receipt_number = $row['receipt_number'];
-            $sfqry = $con->query("SELECT temple_name FROM temple_creation WHERE temple_id = '".$receipt_number."' ");
+            $sfqry = $mysqli->query("SELECT temple_name FROM temple_creation WHERE temple_id = '".$receipt_number."' ");
             while ($row2=$sfqry->fetch_assoc()){
             $receipt_number = $row2["temple_name"];
             }
         
         // else if($receipt_number[0] == 'b'){
         //     $Sreceipt_number = ltrim($receipt_number, 'b');
-        //     $sfqry = $con->query("SELECT branchname FROM branch WHERE branchid = '".$Sreceipt_number."' ");
+        //     $sfqry = $mysqli->query("SELECT branchname FROM branch WHERE branchid = '".$Sreceipt_number."' ");
         //     while ($row2=$sfqry->fetch_assoc()){
         //     $receipt_number1 = $row2["branchname"];
         //     }

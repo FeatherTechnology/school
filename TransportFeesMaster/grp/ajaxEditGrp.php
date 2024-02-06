@@ -5,7 +5,7 @@ if(isset($_POST["transport_fees_master_id"])){
 }
 
 $getct = "SELECT * FROM transport_fees_master WHERE transport_fees_master_id = '".$transport_fees_master_id."' AND status=0 AND grp_status = 1";
-$result = $con->query($getct);
+$result = $mysqli->query($getct);
 while($row=$result->fetch_assoc())
 {
     $grp_particulars = $row['grp_particulars'];

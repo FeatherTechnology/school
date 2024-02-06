@@ -6,7 +6,7 @@ if(isset($_POST["subject_id"])){
 }
 $isdel = '';
 
-$ctqry=$con->query("SELECT * FROM subject_details WHERE paper_name = '".$subject_id."' ");
+$ctqry=$mysqli->query("SELECT * FROM subject_details WHERE paper_name = '".$subject_id."' ");
 while($row=$ctqry->fetch_assoc()){
 	$isdel=$row["paper_name"];
 }
@@ -16,7 +16,7 @@ if($isdel != ''){
 }
 else
 { 
-	$delct=$con->query("UPDATE subject_details SET status = 1 WHERE subject_id = '".$subject_id."' ");
+	$delct=$mysqli->query("UPDATE subject_details SET status = 1 WHERE subject_id = '".$subject_id."' ");
 	if($delct){
 		$message="Subject Inactivated Successfully";
 	}

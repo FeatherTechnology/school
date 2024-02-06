@@ -8,7 +8,7 @@ if(isset($_POST["dcostcentre"])){
 }
 $costcentres[]=(1);
 $isdelete="SELECT costcentre FROM ledger";
-$centres=$con->query($isdelete) or die("Erro :".$mysqli->error);
+$centres=$mysqli->query($isdelete) or die("Erro :".$mysqli->error);
 while($row=$centres->fetch_assoc()){
 	$costcentres[]=$row["costcentre"];
 }
@@ -17,7 +17,7 @@ if(in_array($dcostcentre, $costcentres)){
 }
 else{
 $deletecentre="UPDATE costcentre SET status='1' WHERE costcentreid='".$dcostcentreid."' ";
-$deletecostcentre=$con->query($deletecentre) or die("Erro :".$mysqli->error);
+$deletecostcentre=$mysqli->query($deletecentre) or die("Erro :".$mysqli->error);
 $costcentredelete="Cost centre Has been Deleted!";
 }
 echo json_encode($costcentredelete);

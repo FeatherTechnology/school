@@ -98,7 +98,7 @@ foreach ($result as $row) {
     $purposename = '';
     $getqry="SELECT purposeid,purposename FROM purpose WHERE purposeid ='".strip_tags($purposeid)."' and status=0";
 
-    $res11=$con->query($getqry);
+    $res11=$mysqli->query($getqry);
     while($row11=$res11->fetch_assoc())
     {
         $purposename           = $row11["purposename"];        
@@ -113,13 +113,13 @@ foreach ($result as $row) {
     $sub_array[] = $row['typeofaccount'];
     $subgroup   =  $row['undersubgroup'];
 
-    $getsubgroup = $con->query("SELECT AccountsName FROM accountsgroup WHERE Id = '".$subgroup."' ");
+    $getsubgroup = $mysqli->query("SELECT AccountsName FROM accountsgroup WHERE Id = '".$subgroup."' ");
     while($row1 = $getsubgroup->fetch_assoc()){
        $sub_array[] = $row1["AccountsName"];
     }
 
     $fgroup       = $row['fgroup'];
-    $getsubgroup  = $con->query("SELECT AccountsName FROM accountsgroup WHERE Id = '".$fgroup."' ");
+    $getsubgroup  = $mysqli->query("SELECT AccountsName FROM accountsgroup WHERE Id = '".$fgroup."' ");
     while($row1   = $getsubgroup->fetch_assoc()){
        $sub_array[] = $row1["AccountsName"];
     }

@@ -63,7 +63,7 @@ $itemids1		      = array();
 
  if($startdate1 != 0 || $startdate != '' && $enddate1 != 0 || $enddate != '') {
 
-	$getitem1 = $con->query("SELECT * FROM purchaseorderref WHERE DATE(createddate) >= '".$startdate."' AND DATE(createddate) <= '".$enddate."' ") or die("Error :".$con->error);
+	$getitem1 = $mysqli->query("SELECT * FROM purchaseorderref WHERE DATE(createddate) >= '".$startdate."' AND DATE(createddate) <= '".$enddate."' ") or die("Error :".$mysqli->error);
 	
 	while ($row=$getitem1->fetch_assoc()){
 
@@ -72,7 +72,7 @@ $itemids1		      = array();
 		
 	}
 
-	$getitem2 = $con->query("SELECT * FROM stock_issuance_ref WHERE DATE(createddate) >= '".$startdate."' AND DATE(createddate) <= '".$enddate."' ") or die("Error :".$con->error);
+	$getitem2 = $mysqli->query("SELECT * FROM stock_issuance_ref WHERE DATE(createddate) >= '".$startdate."' AND DATE(createddate) <= '".$enddate."' ") or die("Error :".$mysqli->error);
 
 	while ($row=$getitem2->fetch_assoc()){
 
@@ -97,7 +97,7 @@ $itemids1		      = array();
 			sort($account1id1);  // optional
 
 	for($i=0; $i<=sizeof($account1id1)-1; $i++){
-		$getitem1ref = $con->query("SELECT * FROM item_creation WHERE item_id = '".$account1id1[$i]."' ") or die("Error :".$con->error);
+		$getitem1ref = $mysqli->query("SELECT * FROM item_creation WHERE item_id = '".$account1id1[$i]."' ") or die("Error :".$mysqli->error);
 		while ($row1=$getitem1ref->fetch_assoc()){
 	
 				$account1id[] = $row1["item_id"]; 
@@ -110,7 +110,7 @@ $itemids1		      = array();
 	// ACCOUNT 1
 	if(isset($account1id)){
 		for($o=0; $o<=sizeof($account1id)-1; $o++){
-			$getrefqry =$con->query("SELECT account1ref.openingstock AS openingquantity, account1ref.purchaseprice,account1ref.initialopeningstock, account1ref.purchasestock,  account1ref.createddate, 
+			$getrefqry =$mysqli->query("SELECT account1ref.openingstock AS openingquantity, account1ref.purchaseprice,account1ref.initialopeningstock, account1ref.purchasestock,  account1ref.createddate, 
 			goodsreceivingnoteref.receivedquantity, goodsreceivingnoteref.receivedunitprice, goodsreceivingnoteref.createddate, damageexpiryref.damagetype, SUM(damageexpiryref.quantity) AS quantity,
 				SUM(damageexpiryref.exp_quantity) AS exp_quantity,  
 			damageexpiryref.unitprice, damageexpiryref.createddate,  posreceivesub.subquantity, posreceivesub.subprice, posreceivesub.createddate FROM `account1ref` LEFT JOIN damageexpiryref 

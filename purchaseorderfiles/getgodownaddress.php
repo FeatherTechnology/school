@@ -5,7 +5,7 @@ if(isset($_POST["godownid"])){
 	$godownid = $_POST["godownid"];
 }
 $godownid1 = ltrim($godownid, 'g');
-$getgodown=$con->query("SELECT * FROM godown WHERE godownid='".$godownid1."' AND status = 0");
+$getgodown=$mysqli->query("SELECT * FROM godown WHERE godownid='".$godownid1."' AND status = 0");
 while($row=$getgodown->fetch_assoc()){
 	$godownname = $row["godownname"];
 	$address    = $row["address"];

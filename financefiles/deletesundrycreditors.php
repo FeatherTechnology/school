@@ -3,7 +3,7 @@ include '../ajaxconfig.php';
 if(isset($_POST["dledgername"])){
   $dledgername=$_POST["dledgername"];
 }
-$select=$con->query("SELECT * FROM ledger WHERE ledgername='".$dledgername."' ");
+$select=$mysqli->query("SELECT * FROM ledger WHERE ledgername='".$dledgername."' ");
 while($row=$select->fetch_assoc()){ ?>
 
   <div class="row">

@@ -1,11 +1,11 @@
 <?php
 include 'ajaxconfig.php';
 
-$selectIC = $con->query("SELECT si_number FROM stock_issuance WHERE si_number != '' ");
+$selectIC = $mysqli->query("SELECT si_number FROM stock_issuance WHERE si_number != '' ");
 
 if($selectIC->num_rows>0)
 {
-    $codeAvailable = $con->query("SELECT si_number FROM stock_issuance WHERE si_number != '' ORDER BY stock_issuance_id DESC LIMIT 1");
+    $codeAvailable = $mysqli->query("SELECT si_number FROM stock_issuance WHERE si_number != '' ORDER BY stock_issuance_id DESC LIMIT 1");
     while($row = $codeAvailable->fetch_assoc()){
         $ac2 = $row["si_number"];
     }

@@ -9,7 +9,7 @@ if(isset($_POST["admission_number"])){
 $student_details = array();
 
 // get student name
-$getInstName=$con->query("SELECT * FROM `student_creation` WHERE student_id ='".$admission_number."' ");
+$getInstName=$mysqli->query("SELECT * FROM `student_creation` WHERE student_id ='".$admission_number."' ");
 
 	while($row2=$getInstName->fetch_assoc()){
     $student_id[]    = $row2["student_id"];

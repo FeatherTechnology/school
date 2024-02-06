@@ -41,7 +41,7 @@ $extrac_particulars = '';
 $extrac_amount = '' ;
 $extrac_ledger_name = '' ;
 
-$selectClass=$con->query("SELECT * FROM fees_master WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."'
+$selectClass=$mysqli->query("SELECT * FROM fees_master WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."'
 AND extra_particulars = '".$extra_particulars."' AND extra_amount = '".$extra_amount."' AND extra_ledger_name = '".$extra_ledger_name."' AND standard = '".$standard."' ");
 while ($row=$selectClass->fetch_assoc()){
 
@@ -59,21 +59,21 @@ if($extra_academic_year != '' && $extra_medium != '' && $extra_student_type != '
 }
 
 else if($extra_academic_year != '' && $extra_medium != '' && $extra_student_type != '' && $extra_standard != '' && $extrac_particulars != ''  && $extrac_amount != '' && $extrac_ledger_name != '' && $extra_Status == 1){ ;
-	$updateClass=$con->query("UPDATE fees_master SET status=0 WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."'
+	$updateClass=$mysqli->query("UPDATE fees_master SET status=0 WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."'
 	AND extra_particulars = '".$extra_particulars."' AND extra_amount = '".$extra_amount."' AND extra_ledger_name = '".$extra_ledger_name."' ");
 	$message="Fees Details Added Succesfully";
 }
 
 else{ 
 	if($fees_id>0){
-		$updateClass=$con->query("UPDATE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."'
+		$updateClass=$mysqli->query("UPDATE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."'
 		AND extra_particulars = '".$extra_particulars."' AND extra_amount = '".$extra_amount."' AND extra_ledger_name = '".$extra_ledger_name."' WHERE fees_id='".$fees_id."' ");
 		if($updateClass == true){
 		    $message="Fees Details Updated Succesfully";
 	    }
     }
 	else{ ;
-	    $insertClass=$con->query("INSERT INTO fees_master(academic_year,medium,student_type,standard,extra_particulars,extra_amount,extra_ledger_name,insert_login_id,extra_status) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."',
+	    $insertClass=$mysqli->query("INSERT INTO fees_master(academic_year,medium,student_type,standard,extra_particulars,extra_amount,extra_ledger_name,insert_login_id,extra_status) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."',
 		'".strip_tags($student_type)."','".strip_tags($standard)."','".strip_tags($extra_particulars)."','".strip_tags($extra_amount)."','".strip_tags($extra_ledger_name)."','".strip_tags($insert_login_id)."',1)");
 	    if($insertClass == true){
 		    $message="Fees Insert Succesfully";

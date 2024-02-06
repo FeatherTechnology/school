@@ -41,7 +41,7 @@ $grpc_particulars = '';
 $grpc_amount = '' ;
 $grpc_date = '' ;
 
-$selectClass=$con->query("SELECT * FROM transport_fees_master WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."'
+$selectClass=$mysqli->query("SELECT * FROM transport_fees_master WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."'
 AND grp_particulars = '".$grp_particulars."' AND grp_amount = '".$grp_amount."' AND grp_date = '".$grp_date."' AND standard = '".$standard."' ");
 while ($row=$selectClass->fetch_assoc()){
 
@@ -59,14 +59,14 @@ if($grp_academic_year != '' && $grp_medium != '' && $grp_student_type != '' && $
 }
 
 else if($grp_academic_year != '' && $grp_medium != '' && $grp_student_type != '' && $grp_standard != '' && $grpc_particulars != ''  && $grpc_amount != '' && $grpc_date != '' && $grp_Status == 1){ 
-	$updateClass=$con->query("UPDATE transport_fees_master SET status=0 WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."'
+	$updateClass=$mysqli->query("UPDATE transport_fees_master SET status=0 WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."'
 	AND grp_particulars = '".$grp_particulars."' AND grp_amount = '".$grp_amount."' AND grp_date = '".$grp_date."' ");
 	$message="Fees Details Added Succesfully";
 }
 
 else{ 
 	if($transport_fees_master_id>0){
-		$updateClass1=$con->query("UPDATE transport_fees_master SET academic_year = '".$academic_year."', medium = '".$medium."', student_type = '".$student_type."', 
+		$updateClass1=$mysqli->query("UPDATE transport_fees_master SET academic_year = '".$academic_year."', medium = '".$medium."', student_type = '".$student_type."', 
 		standard = '".$standard."', grp_particulars = '".$grp_particulars."', grp_amount = '".$grp_amount."', grp_date = '".$grp_date."' WHERE transport_fees_master_id='".$transport_fees_master_id."' 
 		"); 
 		if($updateClass1 == true){ 
@@ -74,12 +74,12 @@ else{
 	    }
     }
 	else{ 
-	    $insertClass=$con->query("INSERT INTO transport_fees_master(academic_year,medium,student_type,standard,grp_particulars,grp_amount,grp_date,insert_login_id,grp_status) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."',
+	    $insertClass=$mysqli->query("INSERT INTO transport_fees_master(academic_year,medium,student_type,standard,grp_particulars,grp_amount,grp_date,insert_login_id,grp_status) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."',
 		'".strip_tags($student_type)."','".strip_tags($standard)."','".strip_tags($grp_particulars)."','".strip_tags($grp_amount)."','".strip_tags($grp_date)."','".strip_tags($insert_login_id)."', '1')");
-		//  $lastInsertId = mysqli_insert_id($con);
+		//  $lastInsertId = mysqli_insert_id($mysqli);
 		if($insertClass == true){
 		    $message="Fees Insert Succesfully";
-			// $lastInsertId = mysqli_insert_id($con);
+			// $lastInsertId = mysqli_insert_id($mysqli);
 
 	    }
     }

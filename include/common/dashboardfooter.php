@@ -10,19 +10,22 @@
 
 
 <!-- Slimscroll JS -->
-<script src="vendor/slimscroll/slimscroll.min.js"></script>
-<script src="vendor/slimscroll/custom-scrollbar.js"></script>
+<!-- <script src="vendor/slimscroll/slimscroll.min.js"></script>
+<script src="vendor/slimscroll/custom-scrollbar.js"></script> -->
  
 <!-- Daterange -->
-<script src="vendor/daterange/daterange.js"></script>
-<script src="vendor/daterange/custom-daterange.js"></script>
+<!-- <script src="vendor/daterange/daterange.js"></script>
+<script src="vendor/daterange/custom-daterange.js"></script> -->
 
 <script src="vendor/bs-select/bs-select.min.js"></script>
 <!-- Font -->
 <script src="js/main.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>  
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>   -->
 
+<script src="https://getbootstrap.com/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script src="https://getbootstrap.com/docs/5.0/assets/js/docs.min.js"></script>	
 <script type="text/javascript" src="jsd/datatables.min.js"></script>
 
 
@@ -716,8 +719,8 @@ if($current_page == 'student_creation') { ?>
 <?php }
 
 if($current_page == 'edit_student_creation') { ?>
-	<script src="js/student_creation.js"></script>
-	<?php }
+<script src="js/edit_student_creation.js"></script>
+<?php }
 
 if($current_page == 'delete_student') { ?>
 <script src="js/delete_student.js"></script>
@@ -805,6 +808,10 @@ if($current_page == 'stock_movement') { ?>
 
 if($current_page == 'stockstatement') { ?>
 <script src="js/stockstatement.js"></script>
+<?php }
+
+if($current_page == 'temp_admission_pay_fees') { ?>
+<script src="js/temp_admission_pay_fees.js"></script>
 <?php }
 ?> 
 

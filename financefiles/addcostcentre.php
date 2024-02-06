@@ -8,7 +8,7 @@ if(isset($_POST["costcentrename"])){
 
 $costcentrearray[]=(1);
 $centre = "SELECT costcentrename FROM costcentre"; 
-$ispresent=$con->query($centre);
+$ispresent=$mysqli->query($centre);
 while ($row=$ispresent->fetch_assoc()){
   $costcentrearray[]=$row["costcentrename"];
 }
@@ -16,7 +16,7 @@ if(in_array($costcentrename, $costcentrearray)){
   $cosrcentreres= "Cost Cender Already Exists, Please Enter a Different Name!";
 }else{
   $insertcentre="INSERT INTO costcentre(costcentrename) VALUES('".strip_tags($costcentrename)."') ";
-  $insertcostcentre=$con->query($insertcentre) or die("Error :".$con->error);
+  $insertcostcentre=$mysqli->query($insertcentre) or die("Error :".$mysqli->error);
   $cosrcentreres= "Cost Cender Added Succesfully";
 }
 

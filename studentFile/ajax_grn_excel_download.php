@@ -15,7 +15,7 @@ if(isset($_POST["grnno"])){
 
 if($pono[0] == 'P'){
         
-    $isgrntakenqry = $con->query("SELECT isgrntaken FROM purchaseorder WHERE ponumber = '".$pono."' ");
+    $isgrntakenqry = $mysqli->query("SELECT isgrntaken FROM purchaseorder WHERE ponumber = '".$pono."' ");
     if($isgrntakenqry->num_rows>0){
         while($row = $isgrntakenqry->fetch_assoc()){
             $isgrntaken = $row["isgrntaken"];
@@ -24,7 +24,7 @@ if($pono[0] == 'P'){
 
     //If Not Taken For GRN
     if($isgrntaken == 0 || $isgrntaken == '0'){
-        $getpono = $con->query("SELECT * FROM purchaseorder WHERE ponumber = '".$pono."' "); 
+        $getpono = $mysqli->query("SELECT * FROM purchaseorder WHERE ponumber = '".$pono."' "); 
 
         while($row = $getpono->fetch_assoc()){
             $partcode1      = $row["partcode"];
@@ -43,7 +43,7 @@ if($pono[0] == 'P'){
     //If already Taken For GRN
     else if($isgrntaken == 1 || $isgrntaken == '1')
     {
-        $getpodetails = $con->query("SELECT * FROM goodsreceivingnoteref WHERE pono = '".$pono."' AND quantity != receivedquantity");
+        $getpodetails = $mysqli->query("SELECT * FROM goodsreceivingnoteref WHERE pono = '".$pono."' AND quantity != receivedquantity");
         if($getpodetails->num_rows>0){
             while ($row = $getpodetails->fetch_assoc()){
                 $refid[]              = $row["goodsreceivingnoterefid"];
@@ -132,7 +132,7 @@ if($pono[0] == 'P'){
     </table>
 
 <?php }else if($pono[0] == 'T'){
-    $isgrntakenqry = $con->query("SELECT transferid, isgrntaken FROM transfer WHERE transfernumber = '".$pono."' ");
+    $isgrntakenqry = $mysqli->query("SELECT transferid, isgrntaken FROM transfer WHERE transfernumber = '".$pono."' ");
     if($isgrntakenqry->num_rows>0){
         while($row = $isgrntakenqry->fetch_assoc()){
             $transferid = $row["transferid"];
@@ -142,11 +142,11 @@ if($pono[0] == 'P'){
 
     //If Not Taken For GRN
     if($isgrntaken == 0 || $isgrntaken == '0'){
-        $gettransferId=$con->query("SELECT transferid FROM transfer WHERE transfernumber = '".$pono."' ");
+        $gettransferId=$mysqli->query("SELECT transferid FROM transfer WHERE transfernumber = '".$pono."' ");
 		while($row=$gettransferId->fetch_assoc()){
 			$transferid        = $row["transferid"];
 
-			$gettransferRefdetails=$con->query("SELECT * FROM transferref WHERE transferid = '".$transferid."' ");
+			$gettransferRefdetails=$mysqli->query("SELECT * FROM transferref WHERE transferid = '".$transferid."' ");
             while($row = $gettransferRefdetails->fetch_assoc()){
                 $partcode1      = $row["partnumber"];
                 $description1   = $row["description"];

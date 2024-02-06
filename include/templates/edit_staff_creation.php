@@ -98,16 +98,16 @@
 	</style>
 <!-- Main container end -->
 
-<script src="https://getbootstrap.com/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<!-- <script src="https://getbootstrap.com/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
 
-<script src="https://getbootstrap.com/docs/5.0/assets/js/docs.min.js"></script>	
+<script src="https://getbootstrap.com/docs/5.0/assets/js/docs.min.js"></script>	 -->
 
-<script>
+<!-- <script>
     setTimeout(function() {
         $('.alert').fadeOut('slow');
     }, 2000);
-</script>
+</script> -->
 

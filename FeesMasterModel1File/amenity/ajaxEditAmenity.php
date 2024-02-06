@@ -6,7 +6,7 @@ if(isset($_POST["amenity_fee_id"])){
 
 $feeDetails = array();
 $getct = "SELECT * FROM amenity_fee WHERE amenity_fee_id = '".$amenity_fee_id."' AND status = 1"; //Status = 1 - true, 0 - false.
-$result = $con->query($getct);
+$result = $mysqli->query($getct);
 $row=$result->fetch_assoc();
     $amenity_particulars = $row['amenity_particulars'];
     $amenity_amount = $row['amenity_amount'];

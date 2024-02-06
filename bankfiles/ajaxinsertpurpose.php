@@ -11,7 +11,7 @@ if(isset($_POST['purposename'])) {
 $pname = '';
 $pstatus = '';
 
-$purposeselect=$con->query("SELECT * FROM purpose WHERE purposename = '".$purposename."' ");
+$purposeselect=$mysqli->query("SELECT * FROM purpose WHERE purposename = '".$purposename."' ");
 while ($row=$purposeselect->fetch_assoc()){
 	$pname   = $row["purposename"];
 	$pstatus = $row["status"];
@@ -22,17 +22,17 @@ if($pname != '' && $pstatus=0){
 	$message="Purpose Already Exists, Please Enter a Different Name!";
 }
 else if($pname != '' && $pstatus=1){
-	$update=$con->query("UPDATE purpose SET status=0 WHERE purposename='".$purposename."'   ");
+	$update=$mysqli->query("UPDATE purpose SET status=0 WHERE purposename='".$purposename."'   ");
 	$message="Purpose Added Succesfully";
 }
 else{
 	if($purposeid>0){
-		$update=$con->query("UPDATE purpose SET purposename='".$purposename."' WHERE purposeid='".$purposeid."' ");
+		$update=$mysqli->query("UPDATE purpose SET purposename='".$purposename."' WHERE purposeid='".$purposeid."' ");
 		if($update == true){
 		$message="Purpose Updated Succesfully";
 	    }}
 	    else{
-	    $insert=$con->query("INSERT INTO purpose(purposename) VALUES('".strip_tags($purposename)."')");
+	    $insert=$mysqli->query("INSERT INTO purpose(purposename) VALUES('".strip_tags($purposename)."')");
 	    if($insert == true){
 		$message="Purpose Added Succesfully";
 	}}} 

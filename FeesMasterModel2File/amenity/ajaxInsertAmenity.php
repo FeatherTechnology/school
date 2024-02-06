@@ -41,7 +41,7 @@ $grpc_particulars = '';
 $grpc_amount = '' ;
 $grpc_ledger_name = '' ;
 
-$selectClass=$con->query("SELECT * FROM fees_master WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."'
+$selectClass=$mysqli->query("SELECT * FROM fees_master WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."'
 AND amenity_particulars = '".$amenity_particulars."' AND amenity_amount = '".$amenity_amount."' AND amenity_ledger_name = '".$amenity_ledger_name."' AND standard = '".$standard."' ");
 while ($row=$selectClass->fetch_assoc()){
 
@@ -59,21 +59,21 @@ if($grp_academic_year != '' && $grp_medium != '' && $grp_student_type != '' && $
 }
 
 else if($grp_academic_year != '' && $grp_medium != '' && $grp_student_type != '' && $grp_standard != '' && $grpc_particulars != ''  && $grpc_amount != '' && $grpc_ledger_name != '' && $grp_Status == 1){ echo "2";
-	$updateClass=$con->query("UPDATE fees_master SET status=0 WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."'
+	$updateClass=$mysqli->query("UPDATE fees_master SET status=0 WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."'
 	AND amenity_particulars = '".$amenity_particulars."' AND amenity_amount = '".$amenity_amount."' AND amenity_ledger_name = '".$amenity_ledger_name."' ");
 	$message="Fees Details Added Succesfully";
 }
 
 else{ 
 	if($fees_id>0){
-		$updateClass=$con->query("UPDATE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."'
+		$updateClass=$mysqli->query("UPDATE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."'
 		AND amenity_particulars = '".$amenity_particulars."' AND amenity_amount = '".$amenity_amount."' AND amenity_ledger_name = '".$amenity_ledger_name."' WHERE fees_id='".$fees_id."' ");
 		if($updateClass == true){
 		    $message="Fees Details Updated Succesfully";
 	    }
     }
 	else{ 
-	    $insertClass=$con->query("INSERT INTO fees_master(academic_year,medium,student_type,standard,amenity_particulars,amenity_amount,amenity_ledger_name,insert_login_id, amenity_status) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."',
+	    $insertClass=$mysqli->query("INSERT INTO fees_master(academic_year,medium,student_type,standard,amenity_particulars,amenity_amount,amenity_ledger_name,insert_login_id, amenity_status) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."',
 		'".strip_tags($student_type)."','".strip_tags($standard)."','".strip_tags($amenity_particulars)."','".strip_tags($amenity_amount)."','".strip_tags($amenity_ledger_name)."','".strip_tags($insert_login_id)."',1)");
 	    if($insertClass == true){
 		    $message="Fees Insert Succesfully";
