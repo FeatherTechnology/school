@@ -8,24 +8,24 @@ $year_id = $_SESSION["academic_year"];
 
 } 
 
-// if(isset($_POST['standard'])){
-//   $standard = $_POST['standard']; 
+if(isset($_POST['standard'])){
+  $standard = $_POST['standard']; 
 
-//   // make a query to fetch the section list
-//   $sql = "SELECT section FROM student_creation WHERE standard = '$standard' AND school_id='$school_id' AND year_id ='$year_id'"; 
-//   $result = mysqli_query($mysqli, $sql);
+  // make a query to fetch the section list
+  $sql = "SELECT section FROM student_creation WHERE standard = '$standard' AND school_id='$school_id' AND year_id ='$year_id'"; 
+  $result = mysqli_query($mysqli, $sql);
 
-//   // check if there are any sections in the result
-//   if (mysqli_num_rows($result) > 0) {
-//     $section = array();
-//     while($row = mysqli_fetch_assoc($result)) {
-//       $section[] = $row['section'];
-//     }
-//     echo json_encode(array("section"=>$section));
-//   } else {
-//     echo json_encode(array("section"=>array()));
-//   }
-// } 
+  // check if there are any sections in the result
+  if (mysqli_num_rows($result) > 0) {
+    $section = array();
+    while($row = mysqli_fetch_assoc($result)) {
+      $section[] = $row['section'];
+    }
+    echo json_encode(array("section"=>$section));
+  } else {
+    echo json_encode(array("section"=>array()));
+  }
+} 
 
 
 // listen for changes in the medium, standard, and section dropdowns

@@ -1,11 +1,11 @@
 <?php
 include '../ajaxconfig.php';
 
-if (isset($_GET['upd'])) {
-    $upd = $_GET['upd'];
-  
+if (isset($_POST['student_id'])) {
+    $student_id = $_POST['student_id'];
+
     // Update the student status to mark it as restored
-    $updateQuery = "UPDATE student_creation SET deleted_student = 1 WHERE student_id = '$upd' "; 
+    $updateQuery = "UPDATE student_creation SET status = 0, deleted_student = 0 WHERE student_id = '$student_id' "; 
     $updateResult = $mysqli->query($updateQuery); 
 
     if ($updateResult) {

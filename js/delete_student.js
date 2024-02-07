@@ -41,3 +41,24 @@ $(document).ready(function () {
         });
      
 });
+
+
+function restoreStudent(sid){
+  var getConform = confirm('Do you want to restore this student?');
+  if(getConform){
+    $.ajax({
+      type: 'POST',
+      data: {'student_id': sid},
+      url: 'studentFile/ajaxRestoredDeleteStudent.php',
+      success:function(response){
+        if(response == 'success'){
+          alert('Successfully Student restored!');
+        }else{
+          alert('Student restore Failed!');
+        }
+        window.location.href="delete_student";
+      }
+    });
+  }
+
+}
