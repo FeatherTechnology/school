@@ -17,7 +17,7 @@ if(isset($_POST['standard'])){
     $standardId = $_POST['standard'];
 }
 
-$CheckReceiptQry = $connect->query("SELECT * FROM `transport_admission_fees` WHERE admission_id = '$admissionFormId' && academic_year = '$academicYear' order by id desc limit 1");
+$CheckReceiptQry = $connect->query("SELECT id FROM `transport_admission_fees` WHERE admission_id = '$admissionFormId' && academic_year = '$academicYear' order by id desc limit 1");
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
     //(gcf.grp_amount - afd.FeeReceived) as grp_amount
@@ -28,9 +28,7 @@ if($CheckReceiptQry->rowCount() > 0){
     JOIN area_creation_particulars acp ON tafd.area_creation_particulars_id = acp.particulars_id 
     WHERE taf.id = '$get_temp_fees_id' && taf.academic_year = '$academicYear' ");
 
-echo 'aaaa';
 }else{
-    echo 'bbbb';
     $feeDetailsQry = $connect->query("SELECT ac.area_id as fees_id, acp.particulars_id as particulars_id, ac.area_name, acp.particulars, acp.due_amount  
     FROM student_creation sc
     JOIN area_creation ac ON sc.transportarearefid = ac.area_id

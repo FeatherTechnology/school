@@ -17,7 +17,7 @@ if(isset($_POST['standard'])){
     $standardId = $_POST['standard'];
 }
 
-$CheckReceiptQry = $connect->query("SELECT * FROM `admission_fees` WHERE admission_id = '$admissionFormId' && academic_year = '$academicYear' order by id desc limit 1");
+$CheckReceiptQry = $connect->query("SELECT id FROM `admission_fees` WHERE admission_id = '$admissionFormId' && academic_year = '$academicYear' order by id desc limit 1");
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
     //(ecaf.extra_amount - afd.FeeReceived) as extra_amount

@@ -26,6 +26,9 @@ if(isset($_POST['submitpayfees']) && $_POST['submitpayfees'] != '')
 }
 }
 
+if(isset($_GET['pagename'])){
+    $pagename = $_GET['pagename'];
+}
 if(isset($_GET['upd'])){
     $admission_id = $_GET['upd'];
 
@@ -46,7 +49,7 @@ if(isset($_GET['upd'])){
     <ol class="breadcrumb">
         <li class="breadcrumb-item">School Fee Receipt</li>
     </ol>
-    <a href="edit_student_creation" > 
+    <a href=" <?php if($pagename == 'stdcreation'){ ?> edit_student_creation <?php }else{?> fees_collection <?php } ?>" > 
         <button type="button" class="btn btn-primary"><span class="icon-arrow-left"></span>&nbsp; Back</button>
     </a>
 </div>

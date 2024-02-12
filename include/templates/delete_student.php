@@ -35,7 +35,7 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
+                                    <!-- <tfoot>
                                         <tr>
                                             <th>S.No</th>
                                             <th>Student Name</th>
@@ -47,7 +47,7 @@
                                             <th>Reason</th>
                                             <th>Action</th>
                                         </tr>
-                                    </tfoot>
+                                    </tfoot> -->
                                     <tbody>
                                         <?php
                                         $ctselect = "SELECT * FROM student_creation WHERE status = 1 AND deleted_student = 1";

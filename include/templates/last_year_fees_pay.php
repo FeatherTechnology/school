@@ -11,13 +11,18 @@ if(isset($_SESSION["school_id"])){
     $school_id = $_SESSION["school_id"];
 }
 
+if(isset($_GET['pagename']))
+{
+    $pagename = $_GET['pagename'];
+}
+
 if(isset($_POST['submitpaylastyearfees']) && $_POST['submitpaylastyearfees'] != '')
 {
     $studid = $_POST['admission_form_id'];
     $addLastYearFeesCreation = $userObj->addLastYearFees($mysqli,$userid,$school_id);  
     if($addLastYearFeesCreation != 2){
 ?>
-    <script> location.href='<?php echo $HOSTPATH; ?>last_year_fees_pay&upd=<?php echo $studid; ?>';
+    <script> location.href='<?php echo $HOSTPATH; ?>last_year_fees_pay&pagename=<?php echo $pagename; ?>&upd=<?php echo $studid; ?>';
     setTimeout(() => {
         print_temp_fees(<?php echo $addLastYearFeesCreation; ?>);
     }, 1000);
@@ -51,7 +56,7 @@ if(isset($_POST['submitpaylastyearfees']) && $_POST['submitpaylastyearfees'] != 
 ?>
     <script>
     alert('Last year fees not added! Try again later.');
-    location.href='<?php echo $HOSTPATH; ?>last_year_fees_pay&upd=<?php echo $studid; ?>';
+    location.href='<?php echo $HOSTPATH; ?>last_year_fees_pay&pagename=<?php echo $pagename; ?>&upd=<?php echo $studid; ?>';
     </script>
 <?php
 }
@@ -78,7 +83,7 @@ if(isset($_GET['upd'])){
         <li class="breadcrumb-item">SM - Pay Last Year Fees</li>
     </ol>
 
-    <a <?php if($current_page == 'last_year_fees_pay'){ ?>href="edit_student_creation" <?php }else{ ?> href="fees_collection&st=<?php if(isset($admission_id)) echo $admission_id; ?>" <?php } ?> >
+    <a <?php if($pagename == 'stdcreation'){ ?>href="edit_student_creation" <?php }else{ ?> href="fees_collection" <?php } ?> >
         <button type="button" class="btn btn-primary"><span class="icon-arrow-left"></span>&nbsp; Back</button>
     </a>
 </div>

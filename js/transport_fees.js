@@ -100,7 +100,7 @@ function getFeesTableFunc(){
 function getReceiptCode(){
   // get Pay Reciept Code
   $.ajax({
-    url: "ajaxgetpaytransportreceiptcode.php",
+    url: "ajaxFiles/ajaxgetpaytransportreceiptcode.php",
     data: {},
     cache: false,
     type: "post",

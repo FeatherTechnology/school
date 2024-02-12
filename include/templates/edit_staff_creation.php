@@ -50,7 +50,7 @@
 						<thead>
 							<tr>
 								<th>S. No.</th>
-								<th>Fist Name</th>
+								<th>First Name</th>
 								<th>Last Name</th>
 								<th>Gender</th>
 								<th>Address</th>
