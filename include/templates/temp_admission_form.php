@@ -308,7 +308,7 @@ if($idupd>0)
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                        <label for="temp_contact_number">Contcat Number</label>
+                                        <label for="temp_contact_number">Contact Number</label>
                                         </div>
                                     </div>
                                     <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12">

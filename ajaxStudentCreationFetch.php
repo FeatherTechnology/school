@@ -103,11 +103,11 @@ foreach ($result as $row) {
         <li><input type='hidden' name='student_id1' id='student_id1' value='$id'></li>
         <li><button type='button' data-id='$id' data-toggle='modal' data-target='#rejectModal' class='btn rejectpo' title='Delete student'><span class='icon-x-circle'></span>&nbsp;Delete</button></li>
         <li><button type='button' data-no='$admissionNo' data-id='$id' data-toggle='modal' data-target='.attachmentModal' class='btn attachmentFiles' title='student Attachment'><span class='icon-attachment1'></span>&nbsp;Attachments</button></li>
-        <li><a class='dropdown-item' href='pay_fees&upd=$id'><span class='icon-dollar-sign'></span> Pay Fees</a></li>
-        <li><a class='dropdown-item' href='last_year_fees_pay&upd=$id'><span class='icon-dollar-sign'></span> Last Year Fees</a></li>";
+        <li><a class='dropdown-item' href='pay_fees&pagename=stdcreation&upd=$id'><span class='icon-dollar-sign'></span> Pay Fees</a></li>
+        <li><a class='dropdown-item' href='last_year_fees_pay&pagename=stdcreation&upd=$id'><span class='icon-dollar-sign'></span> Last Year Fees</a></li>";
         
         if($facility == 'Transport'){
-        $action .= "<li><a class='dropdown-item' href='transport_fees&upd=$id'><span class='icon-dollar-sign'></span> Pay Transport Fees</a></li>"; 
+        $action .= "<li><a class='dropdown-item' href='transport_fees&pagename=stdcreation&upd=$id'><span class='icon-dollar-sign'></span> Pay Transport Fees</a></li>"; 
         }
 
         // <li><a class='dropdown-item' href='#'><span class='icon-message'></span> Individual SMS</a></li>

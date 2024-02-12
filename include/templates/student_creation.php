@@ -26,7 +26,7 @@ if(isset($_POST['SubmitStudentCreation']) && $_POST['SubmitStudentCreation'] != 
     else{   
 		$addStudentCreation = $userObj->addStudentCreation($mysqli,$userid,$school_id,$year_id);   
         ?>
-    <script>location.href='<?php echo $HOSTPATH; ?>pay_fees&upd=<?php echo $addStudentCreation;?>';</script>
+    <script>location.href='<?php echo $HOSTPATH; ?>pay_fees&pagename=stdcreation&upd=<?php echo $addStudentCreation;?>';</script>
         <?php
     }
 }   
@@ -1385,7 +1385,7 @@ if($idupd>0)
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Bulk Impport <i class="icon-stars"></i>
+                            <div class="card-title">Bulk Import <i class="icon-stars"></i>
                             </div>
                         </div>
                         <div class="card-body">

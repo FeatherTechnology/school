@@ -1,10 +1,10 @@
 <?php
 include '../ajaxconfig.php';
-//The receipt no is in continues when insert pay_fees and temp_admission_fees so finding which receipt no is max and then increment the no.
-$getPayFeesQry = $mysqli->query("SELECT receipt_number FROM pay_fees WHERE receipt_number != '' ORDER BY pay_fees_id DESC LIMIT 1 ");
+//The receipt no is in continues when insert admission_fees and temp_admission_fees so finding which receipt no is max and then increment the no.
+$getPayFeesQry = $mysqli->query("SELECT receipt_no FROM admission_fees WHERE receipt_no != '' ORDER BY id DESC LIMIT 1 ");
 if ($getPayFeesQry->num_rows > 0) {
     $row = $getPayFeesQry->fetch_assoc();
-    $receipt_number = $row["receipt_number"];
+    $receipt_number = $row["receipt_no"];
 
 } else {
     $receipt_number = 1;

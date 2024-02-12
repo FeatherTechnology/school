@@ -9,6 +9,10 @@ if (isset($_SESSION["userid"])) {
 if (isset($_SESSION["school_id"])) {
     $school_id = $_SESSION["school_id"];
 }
+if(isset($_GET['pagename']))
+{
+    $pagename = $_GET['pagename'];
+}
 
 if (isset($_POST['submittransportpay']) && $_POST['submittransportpay'] != '') {
     $studid = $_POST['admission_form_id'];
@@ -16,7 +20,7 @@ if (isset($_POST['submittransportpay']) && $_POST['submittransportpay'] != '') {
     if ($addTransportFeesCreation != 2) {
 ?>
         <script>
-            location.href = '<?php echo $HOSTPATH; ?>transport_fees&upd=<?php echo $studid; ?>';
+            location.href = '<?php echo $HOSTPATH; ?>transport_fees&pagename=<?php echo $pagename; ?>&upd=<?php echo $studid; ?>';
             setTimeout(() => {
                 print_temp_fees(<?php echo $addTransportFeesCreation; ?>);
             }, 1000);
@@ -52,7 +56,7 @@ if (isset($_POST['submittransportpay']) && $_POST['submittransportpay'] != '') {
     ?>
         <script>
             alert('Transport fees not added! Try again later.');
-            location.href = '<?php echo $HOSTPATH; ?>last_year_fees_pay&upd=<?php echo $studid; ?>';
+            location.href = '<?php echo $HOSTPATH; ?>transport_fees&pagename=<?php echo $pagename; ?>&upd=<?php echo $studid; ?>';
         </script>
 <?php
     }
@@ -80,7 +84,7 @@ if (isset($_GET['upd'])) {
         <li class="breadcrumb-item">SM - Transport Fees</li>
     </ol>
 
-    <a <?php if ($current_page == 'transport_fees') { ?>href="edit_student_creation" <?php } else { ?> href="fees_collection&st=<?php if (isset($admission_id)) echo $admission_id; ?>" <?php } ?>>
+    <a <?php if ($pagename == 'stdcreation') { ?>href="edit_student_creation" <?php } else { ?> href="fees_collection" <?php } ?>>
         <button type="button" class="btn btn-primary"><span class="icon-arrow-left"></span>&nbsp; Back</button>
     </a>
 </div>

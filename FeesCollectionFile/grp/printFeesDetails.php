@@ -34,120 +34,46 @@ if(isset($_SESSION["userid"])){
     // $academic_year = $_SESSION["academic_year"];
 } 
 // Function to convert number to words
-function convertNumberToWords($number) {
-    $ones = array(
-        1 => "One",
-        2 => "Two",
-        3 => "Three",
-        4 => "Four",
-        5 => "Five",
-        6 => "Six",
-        7 => "Seven",
-        8 => "Eight",
-        9 => "Nine",
-        10 => "Ten",
-        11 => "Eleven",
-        12 => "Twelve",
-        13 => "Thirteen",
-        14 => "Fourteen",
-        15 => "Fifteen",
-        16 => "Sixteen",
-        17 => "Seventeen",
-        18 => "Eighteen",
-        19 => "Nineteen"
+function AmountInWords($amount)
+{
+    $amount_after_decimal = round($amount - ($num = floor($amount)), 2) * 100;
+    // Check if there is any number after decimal
+    $amt_hundred = null;
+    $count_length = strlen($num);
+    $x = 0;
+    $string = array();
+    $change_words = array(
+        0 => '', 1 => 'One', 2 => 'Two',
+        3 => 'Three', 4 => 'Four', 5 => 'Five', 6 => 'Six',
+        7 => 'Seven', 8 => 'Eight', 9 => 'Nine',
+        10 => 'Ten', 11 => 'Eleven', 12 => 'Twelve',
+        13 => 'Thirteen', 14 => 'Fourteen', 15 => 'Fifteen',
+        16 => 'Sixteen', 17 => 'Seventeen', 18 => 'Eighteen',
+        19 => 'Nineteen', 20 => 'Twenty', 30 => 'Thirty',
+        40 => 'Forty', 50 => 'Fifty', 60 => 'Sixty',
+        70 => 'Seventy', 80 => 'Eighty', 90 => 'Ninety'
     );
-
-    $tens = array(
-        2 => "Twenty",
-        3 => "Thirty",
-        4 => "Forty",
-        5 => "Fifty",
-        6 => "Sixty",
-        7 => "Seventy",
-        8 => "Eighty",
-        9 => "Ninety"
-    );
-
-    $hundreds = array(
-        "Hundred",
-        "Thousand",
-        "Million",
-        "Billion",
-        "Trillion",
-        "Quadrillion",
-        "Quintillion",
-        "Sextillion",
-        "Septillion",
-        "Octillion",
-        "Nonillion",
-        "Decillion",
-        "Undecillion",
-        "Duodecillion",
-        "Tredecillion",
-        "Quattuordecillion",
-        "Quindecillion",
-        "Sexdecillion",
-        "Septendecillion",
-        "Octodecillion",
-        "Novemdecillion",
-        "Vigintillion"
-    );
-
-    if (!is_numeric($number)) {
-        return false;
+    $here_digits = array('', 'Hundred', 'Thousand', 'Lakh', 'Crore');
+    while ($x < $count_length) {
+        $get_divider = ($x == 2) ? 10 : 100;
+        $amount = floor($num % $get_divider);
+        $num = floor($num / $get_divider);
+        $x += $get_divider == 10 ? 1 : 2;
+        if ($amount) {
+            $add_plural = (($counter = count($string)) && $amount > 9) ? 's' : null;
+            $amt_hundred = ($counter == 1 && $string[0]) ? ' and ' : null;
+            $string[] = ($amount < 21) ? $change_words[$amount] . ' ' . $here_digits[$counter] . $add_plural . ' 
+        ' . $amt_hundred : $change_words[floor($amount / 10) * 10] . ' ' . $change_words[$amount % 10] . ' 
+        ' . $here_digits[$counter] . $add_plural . ' ' . $amt_hundred;
+        } else $string[] = null;
     }
+    $implode_to_Rupees = implode('', array_reverse($string));
+    $get_paise = ($amount_after_decimal > 0) ? "And " . ($change_words[$amount_after_decimal / 10] . " 
+    " . $change_words[$amount_after_decimal % 10]) . ' Paise' : '';
+    return ($implode_to_Rupees ? $implode_to_Rupees . 'Rupees ' : '') . $get_paise;
+}												
 
-    $number = (int)$number;
-
-    if ($number < 0) {
-        return "minus " . convertNumberToWords(abs($number));
-    }
-
-    $string = $fraction = null;
-
-    if (strpos($number, '.') !== false) {
-        list($number, $fraction) = explode('.', $number);
-    }
-
-    switch (true) {
-        case $number < 21:
-            $string = $ones[$number];
-            break;
-        case $number < 100:
-            $tensDigit = (int)($number / 10);
-            $onesDigit = $number % 10;
-            $string = $tens[$tensDigit];
-            if ($onesDigit) {
-                $string .= '-' . $ones[$onesDigit];
-            }
-            break;
-        case $number < 1000:
-            $hundredsDigit = (int)($number / 100);
-            $remainder = $number % 100;
-            $string = $ones[$hundredsDigit] . ' ' . $hundreds[0];
-            if ($remainder) {
-                $string .= ' ' . convertNumberToWords($remainder);
-            }
-            break;
-        default:
-            $baseUnit = pow(1000, floor(log($number, 1000)));
-            $numBaseUnits = (int)($number / $baseUnit);
-            $remainder = $number % $baseUnit;
-            $string = convertNumberToWords($numBaseUnits) . ' ' . $hundreds[floor(log($number, 1000))];
-            if ($remainder) {
-                $string .= ' ' . convertNumberToWords($remainder);
-            }
-            break;
-    }
-
-    if (null !== $fraction && is_numeric($fraction)) {
-        $string .= ' and ' . convertNumberToWords((int)$fraction);
-    }
-
-    return $string;
-}													
-
-$qry =$mysqli->query("SELECT * FROM student_creation WHERE student_id = '$student_id' AND status=0 AND school_id='$school_id' AND year_id='$year_id'"); 
+$qry =$mysqli->query("SELECT stdc.student_name, stdc.admission_number, stdc.section, sc.standard FROM student_creation stdc JOIN standard_creation sc ON stdc.standard = sc.standard_id WHERE stdc.student_id = '$student_id' AND stdc.status=0 AND stdc.school_id='$school_id' AND stdc.year_id='$year_id'"); 
 // SELECT * FROM student_creation WHERE student_id = '$student_id' AND status=0
 while($row=$qry->fetch_assoc()){
 	$student_name=$row["student_name"]; 	
@@ -185,7 +111,7 @@ while ($brc=$getbrc->fetch_assoc()) {
 	
 		<td><img src="img/Logo.png" height="50px" width="50px" alt="testing"></td>
 		<td style="text-align: center;"><b style="font-size:20px;"><?php echo $school_name;?></b><br><?php echo $address1;?>&nbsp;&nbsp;<?php echo $address2; ?> &nbsp;<?php echo $district; ?>&nbsp;&nbsp;
-		 <br><span class="icon-mail"></span><?php echo $email_id;?>			
+		<br><span class="icon-mail"></span><?php echo $email_id;?>			
 		</td>
 		<td>
 			Receipt Number: <?php echo $receipt_number; ?><br>
@@ -217,7 +143,7 @@ while ($brc=$getbrc->fetch_assoc()) {
 	<td style="margin-left: 5px;padding-left: 30px;text-align: left;"><?php echo $mergedAmountArray; ?></td>
 	</tr>
 	<tr>
-	<td colspan="3">Amount In Words: <span id="amountInWords"><?php echo convertNumberToWords($mergedAmountArray) . ' Rupees Only/-'; ?></span></td>
+	<td colspan="3">Amount In Words: <span id="amountInWords"><?php echo AmountInWords($mergedAmountArray) . ' Rupees Only/-'; ?></span></td>
 
 	</tr>
 </table><br><p style="float:right">Signature</p>
@@ -229,16 +155,13 @@ while ($brc=$getbrc->fetch_assoc()) {
 <button type="button" name="printpurchase" onclick="poprint()" id="printpurchase" class="btn btn-primary">Print</button>
 
 <script type="text/javascript">
-  function poprint(){
-  var Bill = document.getElementById("dettable").innerHTML;
-  var printWindow = window.open('', '', 'height=400,width=800');
-     printWindow.document.write(Bill);
-     printWindow.document.close();
-     printWindow.print();
-     printWindow.close();
- }
- document.getElementById("printpurchase").click()
-
- 
-
+function poprint(){
+var Bill = document.getElementById("dettable").innerHTML;
+var printWindow = window.open('', '', 'height=400,width=800');
+    printWindow.document.write(Bill);
+    printWindow.document.close();
+    printWindow.print();
+    printWindow.close();
+}
+document.getElementById("printpurchase").click()
 </script>
