@@ -1074,8 +1074,8 @@
 			if(isset($_POST['pincode1'])){
 				$pincode1 = $_POST['pincode1'];
 			}
-			if(isset($_POST['standard'])){
-				$standard = $_POST['standard'];
+			if(isset($_POST['standardEditvalue'])){
+				$standard = $_POST['standardEditvalue'];
 			}
 			if(isset($_POST['previouschoolname'])){
 				$previouschoolname = $_POST['previouschoolname'];

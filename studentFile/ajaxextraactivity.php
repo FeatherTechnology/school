@@ -20,35 +20,25 @@ if (isset($_SESSION['academic_year'])) {
 if (isset($_POST['studentstype'])) {
     $studentstype = $_POST['studentstype'];
 }else{
-    $studentstype = $_POST['0'];
+    $studentstype = '0';
 }
 if($mediums == '' && $standards == ''){
-    
-	$qry = "SELECT * FROM fees_master WHERE academic_year = '$year_id' AND school_id = '$school_id'  AND extra_particulars IS NOT NULL AND extra_amount IS NOT NULL AND  status = '0'"; 
-   
+	$qry = "SELECT fm.fees_id, ecaf.extra_fee_id, ecaf.extra_particulars, ecaf.extra_amount  FROM `fees_master` fm JOIN `extra_curricular_activities_fee` ecaf ON fm.fees_id = ecaf.fee_master_id WHERE fm.academic_year = '$year_id' AND school_id = '$school_id' AND fm.extra_status = '1' AND fm.status = '0'"; 
+
 }else{
-	
-        $qry = "SELECT * FROM fees_master WHERE academic_year = '$year_id' AND school_id = '$school_id'  AND extra_particulars IS NOT NULL AND extra_amount IS NOT NULL AND medium='$mediums' AND standard='$standards' AND student_type = '$studentstype' AND status = '0'";
-   
+    $qry = "SELECT fm.fees_id, ecaf.extra_fee_id, ecaf.extra_particulars, ecaf.extra_amount  FROM `fees_master` fm JOIN `extra_curricular_activities_fee` ecaf ON fm.fees_id = ecaf.fee_master_id WHERE 
+    fm.academic_year = '$year_id' AND fm.medium = '$mediums' AND fm.student_type = '$studentstype' AND fm.standard = '$standards' AND fm.extra_status = '1' AND school_id = '$school_id' AND fm.status = '0'";
 }
 
-// $qry = "SELECT * FROM fees_master WHERE academic_year = '$year_id' AND school_id = '$school_id'  AND extra_particulars IS NOT NULL AND extra_amount IS NOT NULL AND medium='$mediums' AND standard='$standards' AND status = '0'"; 
 $res = $mysqli->query($qry) or die("Error in Get All Records: " . $mysqli->error);
 
-$detailrecords = array();
-$i = 1;
-
+$extracurArr = array();
 while ($ct = $res->fetch_assoc()) {
-    $s_array = explode(",", $ct['extra_particulars']);
-    $s_array1 = explode(",", $ct['extra_amount']);
-    
-    $record = array();
-    $record['fees_id'] = $ct["fees_id"];
-    $record['extra_particulars'] = $s_array[0];
-	$record['extra_amount'] = $s_array1[0];
-    $detailrecords[$i] = $record;
-    $i++;
+    $extracurArr[] = array(
+        "extra_fee_id"=> $ct["extra_fee_id"],
+        "extra_particulars"=> $ct['extra_particulars'],
+        "extra_amount"=> $ct['extra_amount']
+    );
 }
-
-echo json_encode($detailrecords);
+echo json_encode($extracurArr);
 ?>

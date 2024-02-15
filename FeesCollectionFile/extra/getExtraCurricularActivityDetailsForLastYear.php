@@ -16,6 +16,9 @@ if(isset($_POST['studentType'])){
 if(isset($_POST['standard'])){
     $standardId = $_POST['standard'];
 }
+if(isset($_POST['student_extra_curricular'])){
+    $studentExtraCurricular = $_POST['student_extra_curricular'];
+}
 
 $CheckReceiptQry = $connect->query("SELECT id FROM `admission_fees` WHERE admission_id = '$admissionFormId' && academic_year = '$academicYear' order by id desc limit 1");
 if($CheckReceiptQry->rowCount() > 0){
@@ -24,7 +27,7 @@ if($CheckReceiptQry->rowCount() > 0){
     $feeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as extra_amount, afd.fees_master_id as fees_id, afd.fees_id as extra_fee_id, ecaf.extra_particulars FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id JOIN extra_curricular_activities_fee ecaf ON afd.fees_id = ecaf.extra_fee_id WHERE af.id = '$get_temp_fees_id' && af.academic_year = '$academicYear' && afd.fees_table_name = 'extratable' ");
 
 }else{
-    $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, ecaf.*  FROM `fees_master` fm JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && fm.student_type = '$studentType' && fm.standard = '$standardId' ");
+    $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, ecaf.*  FROM `fees_master` fm JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && fm.student_type = '$studentType' && fm.standard = '$standardId' && ecaf.extra_fee_id IN($studentExtraCurricular) ");
 }
 
 $i=0;

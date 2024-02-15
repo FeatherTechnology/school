@@ -98,7 +98,8 @@ function getFeesTableFunc(){
   var medium = $('#student_medium').val();
   var studentType = $('#students_type').val();
   var standard = $('#standard_id').val(); 
-  getGroupFeesDetails(admissionFormId, academicYear, medium, studentType, standard);
+  var student_extra_curricular = $('#student_extra_curricular').val(); 
+  getGroupFeesDetails(admissionFormId, academicYear, medium, studentType, standard, student_extra_curricular);
   // getExtraCurricularActivityDetails(admissionFormId, academicYear, medium, studentType, standard);
   // getAmenityFeesDetails(admissionFormId, academicYear, medium, studentType, standard);
 
@@ -124,7 +125,7 @@ function getReceiptCode(){
     });
 }
 
-function getGroupFeesDetails(admissionFormId, academicYear, medium, studentType, standard){
+function getGroupFeesDetails(admissionFormId, academicYear, medium, studentType, standard, student_extra_curricular){
   $.ajax({
     type : 'POST',
     url : 'FeesCollectionFile/grp/getGroupFeesDetailsForLastYear.php',
@@ -133,16 +134,16 @@ function getGroupFeesDetails(admissionFormId, academicYear, medium, studentType,
       $('#temp_group_fees').empty();
       $('#temp_group_fees').html(reponse);
 
-      getExtraCurricularActivityDetails(admissionFormId, academicYear, medium, studentType, standard);
+      getExtraCurricularActivityDetails(admissionFormId, academicYear, medium, studentType, standard, student_extra_curricular);
     })
   })
 }
 
-function getExtraCurricularActivityDetails(admissionFormId, academicYear, medium, studentType, standard){
+function getExtraCurricularActivityDetails(admissionFormId, academicYear, medium, studentType, standard, student_extra_curricular){
   $.ajax({
     type : 'POST',
     url : 'FeesCollectionFile/extra/getExtraCurricularActivityDetailsForLastYear.php',
-    data : {'admissionFormId': admissionFormId,'academicYear': academicYear,'medium': medium,'studentType': studentType,'standard': standard},
+    data : {'admissionFormId': admissionFormId,'academicYear': academicYear,'medium': medium,'studentType': studentType,'standard': standard, 'student_extra_curricular': student_extra_curricular},
     success:(function(reponse){
       $('#temp_extra_curricular_fees').empty();
       $('#temp_extra_curricular_fees').html(reponse);

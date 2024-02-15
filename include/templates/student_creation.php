@@ -270,13 +270,14 @@ if($idupd>0)
 </div>
 <!-- Page header end -->
 <!-- Main container start -->
-<input type="hidden" id="extra_cur" name="extra_cur" value="<?php print_r($extra_curricular_id); ?>" >
+<input type="hidden" id="extra_cur" name="extra_cur" value="<?php if(isset($extra_curricular_id)) echo $extra_curricular_id; ?>" >
 
 <div class="main-container">
     <!--------form start-->
     <form id = "employee" name="employee" action="" method="post" enctype="multipart/form-data"> 
         <input type="hidden" class="form-control" value="<?php if(isset($student_id)) echo $student_id; ?>"  id="id" name="id" aria-describedby="id" placeholder="Enter id">
         <input type="hidden" class="form-control" value=""  id="tranid" name="tranid">
+        <input type="hidden" class="form-control" id="stdidOnEdit" name="stdidOnEdit" value="<?php if(isset($idupd)) echo $idupd; ?>">
     <!-- Row start -->
         <div class="row gutters">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -344,7 +345,7 @@ if($idupd>0)
                                         <div class="form-group">
                                             <label for="disabledInput">Mother Tongue<span class="required">*</span></label>
                                             <select tabindex="9" class="form-control select2" id="mother_tongue" name="mother_tongue">
-                                                <option value=" " >Select Your Mother Tongue...</option>
+                                                <option value="" >Select Your Mother Tongue...</option>
                                                 <option value="Hindi" <?php  if(isset($mother_tongue)) { if($mother_tongue == "Hindi" ) echo 'selected'; }?>>Hindi</option>
                                                 <option value="Kannada" <?php  if(isset($mother_tongue)) { if($mother_tongue == "Kannada" ) echo 'selected'; }?>>Kannada</option>
                                                 <option value="Malayalam" <?php  if(isset($mother_tongue)) { if($mother_tongue == "Malayalam" ) echo 'selected'; }?>>Malayalam</option>
@@ -622,6 +623,7 @@ if($idupd>0)
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label for="standard">Standard<span class="required">*</span></label>
+                                            <input type="hidden" id="standardEditvalue" name="standardEditvalue" value="<?php if(isset($standard)) echo($standard); ?>" >
                                             <select class="form-control select2" id="standard" name="standard" tabindex="35">
                                                 <option value="">Select a Standard...</option>
                                             </select>
@@ -806,7 +808,6 @@ if($idupd>0)
                                     <div class="form-group">
                                             <label class="label">Extra Curricular Activities</label>
                                             <select id="extra_curricular" class="select2 form-control " multiple="" data-select2-id="select2-data-extra_curricular" tabindex="51"  name="extra_curricular[]" aria-hidden="true">
-  
                                             </select>
                                     </div>
                                          
@@ -992,7 +993,7 @@ if($idupd>0)
                                     </div>
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Father Aadhar Number</label>
+                                            <label for="disabledInput">Father Aadhar Number</label><span class="required">*</span>
                                             <input  name="father_aadhar_number" tabindex="67" placeholder ="Father Aadhar Number" id="father_aadhar_number" value="<?php if(isset($father_aadhar_number)) echo $father_aadhar_number; ?>" class="form-control"  data-type="adhaar-number" maxLength="14"  type="text">
                                             <span class ='text-danger' id='dadaadhar_chk'></span>
 
@@ -1000,7 +1001,7 @@ if($idupd>0)
                                     </div>
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Mother Aadhar Number</label>
+                                            <label for="disabledInput">Mother Aadhar Number</label><span class="required">*</span>
                                             <input  name="mother_aadhar_number" tabindex="68" placeholder ="Mother Aadhar Number" id="mother_aadhar_number" value="<?php if(isset($mother_aadhar_number)) echo $mother_aadhar_number; ?>" class="form-control"  data-type="adhaar-number" maxLength="14"  type="text">
                                             <span class ='text-danger' id='momaadhar_chk'></span>
 
@@ -1081,14 +1082,14 @@ if($idupd>0)
 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Father Mobile No</label>
+                                            <label for="disabledInput">Father Mobile No</label><span class="required">*</span>
                                             <input type="number" id="father_mobile_no" tabindex="80" name="father_mobile_no" class="form-control"  value="<?php if(isset($father_mobile_no)) echo $father_mobile_no; ?>" placeholder="Enter Father Mobile Number" onkeydown="javascript: return event.keyCode == 69 ? false : true" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;">
                                             <span id="dadmobile" class="text-danger"></span>
                                         </div>
                                     </div> 
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Mother Mobile No</label>
+                                            <label for="disabledInput">Mother Mobile No</label><span class="required">*</span>
                                             <input type="number" id="mother_mobile_no" tabindex="81" name="mother_mobile_no" class="form-control"  value="<?php if(isset($mother_mobile_no)) echo $mother_mobile_no; ?>" placeholder="Enter Mother Mobile Number" onkeydown="javascript: return event.keyCode == 69 ? false : true" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;">
                                             <span id="mommobile" class="text-danger"></span>
                                         </div>
@@ -1103,9 +1104,9 @@ if($idupd>0)
                                     </div>
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">SMS Sent No</label>
+                                            <label for="disabledInput">SMS Sent No</label><span class="required">*</span>
                                             <input type="number" id="sms_sent_no" tabindex="83" name="sms_sent_no" class="form-control"  value="<?php if(isset($sms_sent_no)) echo $sms_sent_no; ?>" placeholder="Enter SMS Sent Mobile Number" onkeydown="javascript: return event.keyCode == 69 ? false : true" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;">
-                                            <span id="smsmobile" class="text-danger"></span>
+                                            <span id="smsmobile" class="text-danger" style="display: none;">Enter 10 Digit Mobile Number</span>
 
                                         </div>
                                     </div> <br><br><br><br><br>

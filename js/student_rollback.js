@@ -44,7 +44,7 @@ $(document).ready(function () {
       });
     }else{
       $('#section').empty();
-      getStudentListForRollBack('','', 1); //1 =showing All students in initially.
+      // getStudentListForRollBack('','', 1); //1 =showing All students in initially.
     }
   });
 
@@ -84,7 +84,7 @@ $(document).ready(function () {
           var section = $("#section").val();
           getStudentListForRollBack(standard, section, 2)
         }else{
-          getStudentListForRollBack('', '', 1)
+          // getStudentListForRollBack('', '', 1)
         }
         // window.location.href= "student_rollback.php";
       }
@@ -96,7 +96,7 @@ $(document).ready(function () {
 
 $(function () {
   getStandardList(); //Get standard list from database.
-  getStudentListForRollBack('','', 1); //1 =showing All students in initially.
+  // getStudentListForRollBack('','', 1); //1 =showing All students in initially.
 
 })
 
