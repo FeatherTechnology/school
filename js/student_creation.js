@@ -219,16 +219,19 @@ $(document).ready(function () {
     if (male == false && female == false) {
       $('#genderCheck').show();
       gender_error = false;
-      return false;
+      return '1';
     } else if (male == false && female == true) {
       $('#genderCheck').hide();
       gender_error = true;
+      return '0';
     } else if (male == true && female == false) {
       $('#genderCheck').hide();
+      return '0';
       gender_error = true;
     } else if (male == true || female == true) {
       $('#genderCheck').hide();
       gender_error = true;
+      return '0';
     }
   }
 
@@ -463,25 +466,33 @@ $(document).ready(function () {
 
   // Submit Button 
   $('#SubmitStudentCreation').click(function () {
-    validateadmission_number();
-    validatestudent_name();
-    validategenderStatus();
-    validateMotherTongue();
-    validateStandard();
-    validatesection();
-    validatemedium();
-    validatestudentrollno();
-    validatestudentstype();
-    calculateAge();
-    validatereason();
+    var admissionNoValidation = validateadmission_number();
+    var stdNameValidation = validatestudent_name();
+    var genderValidation = validategenderStatus();
+    var mothertogueValidation = validateMotherTongue();
+    var stdValidation = validateStandard();
+    var sectionValidation = validatesection();
+    var mediumValidation = validatemedium();
+    var rollnoValidation = validatestudentrollno();
+    var stdtypeValidation = validatestudentstype();
+    // calculateAge();
+    // validatereason();
+    
+    // var mobnoValidation = mobno();
+      // var gudnoValidation = gaurdmobno();
+      // var smsnoValidation = smsmobno();
+    var momnoValidation = mommobile();
+    var dadnoValidation = dadmobile();
+    var smssentvalidation = smsmobile();
+    var dadaadharValidation = dadaadhaar();
+    var momaadharValidation = momaadhaar();
+      // var guardianaadharValidation = gaurdaadhar();
+    var appaadharValidation = appaadhaar();
+    
+    if(admissionNoValidation == '1' || stdNameValidation == '1' || genderValidation == '1' || mothertogueValidation == '1' || stdValidation == '1' || sectionValidation == '1' || mediumValidation == '1' || rollnoValidation == '1' || stdtypeValidation == '1' || momnoValidation == '1' || dadnoValidation == '1' || smssentvalidation == '1' || dadaadharValidation == '1' || momaadharValidation == '1' || appaadharValidation == '1'){
+      event.preventDefault();
+    }
 
-    if (admission_numberError == true && student_nameError == true && gender_error == true && mother_tongueError == true && standardError == true
-      && sectionError == true && mediumError == true && studentrollnoError == true && studentstypeError == true && reasonError == true) {
-      return true;
-    }
-    else {
-      return false;
-    }
   });
 
   $("#studentBulkDownload").click(function () {
@@ -520,19 +531,6 @@ $(document).ready(function () {
     }
   });
 
-  $("#SubmitStudentCreation").on('click', function () {
-    mobno();
-    gaurdmobno();
-    smsmobno();
-    mommobile();
-    dadmobile();
-    smsmobile();
-    dadaadhaar();
-    momaadhaar();
-    gaurdaadhar();
-    appaadhaar();
-  });
-
   $("#studentstype").change(function () {
     extracur();
   });
@@ -550,8 +548,7 @@ $(function(){ //ONLOAD Function
     });
 
     getStandardList(); //Get Standard List.
-    extracur();
-
+    
     // Modal Box 
     $.ajax({
       url: 'studentFile/ajaxResetTemporaryStudentTable.php',
@@ -563,7 +560,17 @@ $(function(){ //ONLOAD Function
         $("#updateddepartmentTable").html(html);
       }
     });
+    
+    setTimeout(() => {
+      extracur();
 
+      var stdidOnEdit = $('#stdidOnEdit').val();
+      if(stdidOnEdit > 0){
+        //readonly on edit page.
+        $('#standard').prop('disabled', true);
+      }
+
+    }, 1000);
 });
 
 function validateadmission_number() {
@@ -571,11 +578,12 @@ function validateadmission_number() {
   if (admission_numberValue.length == '') {
     $('#admission_numberCheck').show();
     admission_numberError = false;
-    return false;
+    return '1';
   }
   else {
     $('#admission_numberCheck').hide();
     admission_numberError = true;
+    return '0';
   }
 }
 
@@ -584,11 +592,12 @@ function validatestudent_name() {
   if (student_nameValue.length == '') {
     $('#student_nameCheck').show();
     student_nameError = false;
-    return false;
+    return '1';
   }
   else {
     $('#student_nameCheck').hide();
     student_nameError = true;
+    return '0';
   }
 }
 
@@ -597,11 +606,12 @@ function validateMotherTongue() {
   if (mother_tongueValue.length == '') {
     $('#mother_tongueCheck').show();
     mother_tongueError = false;
-    return false;
+    return '1';
   }
   else {
     $('#mother_tongueCheck').hide();
     mother_tongueError = true;
+    return '0';
   }
 }
 
@@ -610,11 +620,12 @@ function validateStandard() {
   if (standardValue.length == '') {
     $('#standardCheck').show();
     standardError = false;
-    return false;
+    return '1';
   }
   else {
     $('#standardCheck').hide();
     standardError = true;
+    return '0';
   }
 }
 
@@ -623,11 +634,12 @@ function validatesection() {
   if (sectionValue.length == '') {
     $('#sectionCheck').show();
     sectionError = false;
-    return false;
+    return '1';
   }
   else {
     $('#sectionCheck').hide();
     sectionError = true;
+    return '0';
   }
 }
 
@@ -636,11 +648,12 @@ function validatemedium() {
   if (mediumValue.length == '') {
     $('#mediumCheck').show();
     mediumError = false;
-    return false;
+    return '1';
   }
   else {
     $('#mediumCheck').hide();
     mediumError = true;
+    return '0';
   }
 }
 
@@ -649,11 +662,12 @@ function validatestudentrollno() {
   if (studentrollnoValue.length == '') {
     $('#studentrollnoCheck').show();
     studentrollnoError = false;
-    return false;
+    return '1';
   }
   else {
     $('#studentrollnoCheck').hide();
     studentrollnoError = true;
+    return '0';
   }
 }
 
@@ -662,11 +676,12 @@ function validatestudentstype() {
   if (studentstypeValue.length == '') {
     $('#studentstypeCheck').show();
     studentstypeError = false;
-    return false;
+    return '1';
   }
   else {
     $('#studentstypeCheck').hide();
     studentstypeError = true;
+    return '0';
   }
 }
 
@@ -675,11 +690,12 @@ function validatereason() {
   if (reasonValue.length == '') {
     $('#reasonCheck').show();
     reasonError = false;
-    return false;
+    return '1';
   }
   else {
     $('#reasonCheck').hide();
     reasonError = true;
+    return '0';
   }
 }
 
@@ -808,94 +824,80 @@ $('#sms_sent_no').blur(function () {
 });
 
 function mobno() {
-  var mobno = $('#telephone_number').val();
-  if (mobno.length == ' ') {
+  var telephoneno = $('#telephone_number').val();
+  if (telephoneno.length == '' || telephoneno.length < '10'){
     $('#mobile').text('');
-    $('#SubmitStudentCreation').prop('disabled', false);
-  } else {
-    if (mobno.length < '10') {
-      $('#mobile').text('Enter 10 Digit Mobile Number');
-      $('#SubmitStudentCreation').prop('disabled', true);
-    } else {
-      $('#mobile').text('');
-      $('#SubmitStudentCreation').prop('disabled', false);
+    $('#mobile').text('Enter 10 Digit Mobile Number');
+    return '1';
 
-    }
+  }else{
+    $('#mobile').text('');
+    return '0';
   }
 }
 
 function gaurdmobno() {
-  var mobno = $('#gaurdian_mobile').val();
-  if (mobno.length == ' ') {
+  var gaurdianno = $('#gaurdian_mobile').val();
+  if (gaurdianno.length == '' || gaurdianno.length < '10') {
     $('#gaurdmobile').text('');
-    $('#SubmitStudentCreation').prop('disabled', false);
+    $('#gaurdmobile').text('Enter 10 Digit Mobile Number');
+    return '1';
+
   } else {
-    if (mobno.length < '10') {
-      $('#gaurdmobile').text('Enter 10 Digit Mobile Number');
-      $('#SubmitStudentCreation').prop('disabled', true);
-    } else {
-      $('#gaurdmobile').text('');
-      $('#SubmitStudentCreation').prop('disabled', false);
-    }
+    $('#gaurdmobile').text('');
+    return '0';
   }
 }
 
 function smsmobno() {
-  var mobno = $('#gaurdian_mobile').val();
-  if (mobno == '') {
+  var guardiansmsno = $('#gaurdian_mobile').val();
+  if (guardiansmsno == '') {
     $('#sms_sent_no').val('');
+    return '1';
   } else {
     $('#sms_sent_no').val($('#gaurdian_mobile').val());
+    return '0';
   }
 }
 
 function mommobile() {
-  var mobno = $('#mother_mobile_no').val();
-  if (mobno.length == ' ') {
+  var mommbleno = $('#mother_mobile_no').val();
+  if (mommbleno.length == '' || mommbleno.length < '10') {
     $('#mommobile').text('');
-    $('#SubmitStudentCreation').prop('disabled', false);
+    $('#mommobile').text('Enter 10 Digit Mobile Number');
+    return '1';
+
   } else {
-    if (mobno.length < '10') {
-      $('#mommobile').text('Enter 10 Digit Mobile Number');
-      $('#SubmitStudentCreation').prop('disabled', true);
-    } else {
-      $('#mommobile').text('');
-      $('#SubmitStudentCreation').prop('disabled', false);
-    }
+    $('#mommobile').text('');
+    return '0';
   }
 }
 
 function dadmobile() {
-  var mobno = $('#father_mobile_no').val();
-  if (mobno.length == ' ') {
+  var dadmobleno = $('#father_mobile_no').val();
+  if (dadmobleno.length == '' || dadmobleno.length < '10') {
     $('#dadmobile').text('');
-    $('#SubmitStudentCreation').prop('disabled', false);
+    $('#dadmobile').text('Enter 10 Digit Mobile Number');
+    return '1';
+
   } else {
-    if (mobno.length < '10') {
-      $('#dadmobile').text('Enter 10 Digit Mobile Number');
-      $('#SubmitStudentCreation').prop('disabled', true);
-    } else {
-      $('#dadmobile').text('');
-      $('#SubmitStudentCreation').prop('disabled', false);
-    }
+    $('#dadmobile').text('');
+    return '0';
   }
 }
 
 function smsmobile() {
-  var mobno = $('#sms_sent_no').val();
-  if (mobno.length == ' ') {
-    $('#smsmobile').text('');
-    $('#SubmitStudentCreation').prop('disabled', false);
-  } else {
-    if (mobno.length < '10') {
-      $('#smsmobile').text('Enter 10 Digit Mobile Number');
-      $('#SubmitStudentCreation').prop('disabled', true);
-    } else {
-      $('#smsmobile').text('');
-      $('#SubmitStudentCreation').prop('disabled', false);
-    }
+  var smssentno = $('#sms_sent_no').val();
+  if (smssentno.length == '' || smssentno.length < '10') {
+    $('#smsmobile').show();
+    return '1';
+
+  }else{
+    $('#smsmobile').hide();
+    return '0';
   }
 }
+
 
 function validateEmail(email) {
   // Regular expression pattern for email validation
@@ -912,22 +914,14 @@ function extracur() {
   $.ajax({
     url: 'studentFile/ajaxextraactivity.php',
     type: 'post',
-    data: {
-      "mediums": mediums,
-      "standards": standards,
-      "studentstype": studentstype
-    },
+    data: { "mediums": mediums, "standards": standards, "studentstype": studentstype },
     dataType: 'json',
     success: function (response) {
-      var dropdown = $('#extra_curricular');
-      dropdown.empty();
-      for (var key in response) {
-        if (response.hasOwnProperty(key)) {
-          var record = response[key];
-          var isSelected = (extra_cur != '') ? (record.fees_id == extra_cur) : false;
-          var option = new Option(record.extra_particulars, record.fees_id, isSelected, isSelected);
-          dropdown.append(option);
-        }
+      $('#extra_curricular').empty();
+
+      for (var i = 0; i < response.length; i++) {
+        var selected = (extra_cur && extra_cur.includes(response[i].extra_fee_id)) ? 'selected' : '';
+        $('#extra_curricular').append("<option value='" + response[i].extra_fee_id + "' " + selected + ">" + response[i].extra_particulars + "</option>");
       }
     }
   })
@@ -973,65 +967,41 @@ function loadFile3(event) {
 };
 
 function appaadhaar() {
-  var aadhar_number = $('#aadhar_number').val();
-  if (aadhar_number.length == '') {
+  var appaadhar_number = $('#aadhar_number').val();
+  if (appaadhar_number.length == '' || appaadhar_number.length < 14) {
     $("#aadhar_chk").text('Enter valid Aadhaar number');
-    $('#SubmitStudentCreation').prop('disabled', true);
   } else {
-    if (aadhar_number.length < 14) {
-      $("#aadhar_chk").text('Enter valid Aadhaar number');
-      $('#SubmitStudentCreation').prop('disabled', true);
-    } else {
-      $("#aadhar_chk").text('');
-      $('#SubmitStudentCreation').prop('disabled', false);
-    }
+    $("#aadhar_chk").text('');
   }
 }
 
+
 function dadaadhaar() {
-  var aadhar_number = $('#father_aadhar_number').val();
-  if (aadhar_number.length == '') {
+  var dadaadhar_number = $('#father_aadhar_number').val();
+  if (dadaadhar_number.length == '' || dadaadhar_number.length < 14) {
     $("#dadaadhar_chk").text('');
-    $('#SubmitStudentCreation').prop('disabled', false);
+    $("#dadaadhar_chk").text('Enter valid Aadhaar number');
   } else {
-    if (aadhar_number.length < 14) {
-      $("#dadaadhar_chk").text('Enter valid Aadhaar number');
-      $('#SubmitStudentCreation').prop('disabled', true);
-    } else {
-      $("#dadaadhar_chk").text('');
-      $('#SubmitStudentCreation').prop('disabled', false);
-    }
+    $("#dadaadhar_chk").text('');
   }
 }
 
 function momaadhaar() {
-  var aadhar_number = $('#mother_aadhar_number').val();
-  if (aadhar_number.length == '') {
+  var momaadhar_number = $('#mother_aadhar_number').val();
+  if (momaadhar_number.length == '' || momaadhar_number.length < 14) {
     $("#momaadhar_chk").text('');
-    $('#SubmitStudentCreation').prop('disabled', false);
+    $("#momaadhar_chk").text('Enter valid Aadhaar number');
   } else {
-    if (aadhar_number.length < 14) {
-      $("#momaadhar_chk").text('Enter valid Aadhaar number');
-      $('#SubmitStudentCreation').prop('disabled', true);
-    } else {
       $("#momaadhar_chk").text('');
-      $('#SubmitStudentCreation').prop('disabled', false);
-    }
   }
 }
 
 function gaurdaadhar() {
-  var aadhar_number = $('#gaurdian_aadhar_number').val();
-  if (aadhar_number.length == '') {
+  var guardianaadhar_number = $('#gaurdian_aadhar_number').val();
+  if (guardianaadhar_number.length == '' || guardianaadhar_number.length < 14) {
     $("#gaurdaadhar_chk").text('');
-    $('#SubmitStudentCreation').prop('disabled', false);
+    $("#gaurdaadhar_chk").text('Enter valid Aadhaar number');
   } else {
-    if (aadhar_number.length < 14) {
-      $("#gaurdaadhar_chk").text('Enter valid Aadhaar number');
-      $('#SubmitStudentCreation').prop('disabled', true);
-    } else {
       $("#gaurdaadhar_chk").text('');
-      $('#SubmitStudentCreation').prop('disabled', false);
-    }
   }
 }

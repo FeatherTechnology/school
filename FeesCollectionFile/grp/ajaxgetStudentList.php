@@ -97,7 +97,7 @@ if($medium != '' && $standard != ''  && $section != ''){
 } else if($standard != ''){
 
   // make a query to fetch the section list
-  $sql = "SELECT section FROM student_creation WHERE standard = '$standard' AND school_id='$school_id' AND year_id ='$year_id' AND status = 0 "; 
+  $sql = "SELECT section FROM student_creation WHERE standard = '$standard' AND school_id='$school_id' AND year_id ='$year_id' AND status = 0 GROUP BY section "; 
   $result = mysqli_query($mysqli, $sql);
 
   // check if there are any sections in the result

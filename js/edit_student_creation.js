@@ -17,24 +17,26 @@ $(document).ready(function(){
         type: 'POST',
         data: formData,
         success: function (response) {
-            var pending = response.includes("pending");
-            var deleted = response.includes("successfully");
-            var notfound = response.includes("found");
+            var pending = response.includes("Pending");
+            var deleted = response.includes("Successfully");
+            // var notfound = response.includes("found");
             if(pending){
                 alert('Student cannot be deleted. Student fees are pending for the academic year.');
                 
             }else if(deleted){
                 alert('Student deleted successfully.');
 
-            }else if(notfound){
-                alert('Student name not found. Please make sure the student has paid fees.');
+            }
+            // else if(notfound){
+            //     alert('Student name not found. Please make sure the student has paid fees.');
 
-            }else{
+            // }
+            else{
                 alert(response);
             }
             
         // Redirect to the "edit_stduent_creation" page
-        window.location.href = 'edit_student_creation';
+        // window.location.href = 'edit_student_creation';
         },
         error: function (xhr, status, error) {
         // Handle error if the AJAX request fails

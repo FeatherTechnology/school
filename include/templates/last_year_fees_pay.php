@@ -75,6 +75,7 @@ if(isset($_GET['upd'])){
         $year_id = $getTempAdmissionDetails['year_id'];
         $medium = $getTempAdmissionDetails['medium'];
         $studentstype = $getTempAdmissionDetails['studentstype'];
+        $extra_curricular = $getTempAdmissionDetails['extra_curricular'];
     }
 }
 ?>
@@ -96,6 +97,7 @@ if(isset($_GET['upd'])){
                 <input type="hidden" class="form-control" name="student_year_id" id="student_year_id" value="<?php if(isset($year_id)) echo $year_id; ?>" >
                 <input type="hidden" class="form-control" name="student_medium" id="student_medium" value="<?php if(isset($medium)) echo $medium; ?>" >
                 <input type="hidden" class="form-control" name="students_type" id="students_type" value="<?php if(isset($studentstype)) echo $studentstype; ?>" >
+                <input type="hidden" class="form-control" name="student_extra_curricular" id="student_extra_curricular" value="<?php if(isset($extra_curricular)) echo $extra_curricular; ?>" >
                 <div class="row gutters">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
