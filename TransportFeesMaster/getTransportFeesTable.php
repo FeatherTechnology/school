@@ -38,17 +38,23 @@ if($CheckReceiptQry->rowCount() > 0){
 }
 
 $i=0;
-while($feeDetailsInfo = $feeDetailsQry->fetch()){
+while($transportFeeDetailsInfo = $feeDetailsQry->fetch()){
+    $transportConcessionQry = $connect->query("SELECT SUM(scholarship_amount) as transportTotalScholarshipAmnt FROM `fees_concession` WHERE `student_id`='$admissionFormId' && `fees_table_name`='transport' && `fees_id` = '".$transportFeeDetailsInfo['particulars_id']."' ");
+    $transportTotalScholarshipAmnt = '0';
+    if($transportConcessionQry->rowCount() > 0){
+        $transportTotalScholarshipAmnt = $transportConcessionQry->fetch()['transportTotalScholarshipAmnt'];
+    }
+    $transportAmount = $transportFeeDetailsInfo['due_amount'] - $transportTotalScholarshipAmnt;
 ?>
 <tr>
     <td>
-        <input type="hidden" class="form-control" name="areaCreationId[]" value="<?php echo $feeDetailsInfo['fees_id']; ?>">
-        <input type="hidden" class="form-control" name="particularId[]" value="<?php echo $feeDetailsInfo['particulars_id']; ?>">
-        <?php echo $feeDetailsInfo['particulars']; ?> 
+        <input type="hidden" class="form-control" name="areaCreationId[]" value="<?php echo $transportFeeDetailsInfo['fees_id']; ?>">
+        <input type="hidden" class="form-control" name="particularId[]" value="<?php echo $transportFeeDetailsInfo['particulars_id']; ?>">
+        <?php echo $transportFeeDetailsInfo['particulars']; ?> 
     </td>
-    <td><input type="number" class="form-control transportfeesamnt" name="transportFeeAmnt[]" value="<?php echo $feeDetailsInfo['due_amount']; ?>" readonly> </td>
+    <td><input type="number" class="form-control transportfeesamnt" name="transportFeeAmnt[]" value="<?php echo $transportAmount; ?>" readonly> </td>
     <td><input type="number" class="form-control transportfeesreceived" name="transportFeeReceived[]" value="0"> </td>
     <td><input type="number" class="form-control transportfeesscholarship" name="transportFeeScholarship[]" value="0"> </td>
-    <td><input type="number" class="form-control transportfeesbalance" name="transportFeeBalance[]" value="<?php echo $feeDetailsInfo['due_amount']; ?>" readonly> </td>
+    <td><input type="number" class="form-control transportfeesbalance" name="transportFeeBalance[]" value="<?php echo $transportAmount; ?>" readonly> </td>
 </tr>
 <?php } ?>

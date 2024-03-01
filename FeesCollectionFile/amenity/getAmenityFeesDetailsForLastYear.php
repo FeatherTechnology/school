@@ -28,17 +28,23 @@ if($CheckReceiptQry->rowCount() > 0){
 }
 
 $i=0;
-while($feeDetailsInfo = $feeDetailsQry->fetch()){
+while($amenityFeeDetailsInfo = $feeDetailsQry->fetch()){
+    $amenityConcessionQry = $connect->query("SELECT SUM(scholarship_amount) as amenityTotalScholarshipAmnt FROM `fees_concession` WHERE `student_id`='$admissionFormId' && `fees_table_name`='amenitytable' && `fees_id` = '".$amenityFeeDetailsInfo['amenity_fee_id']."' ");
+    $amenityTotalScholarshipAmnt = '0';
+    if($amenityConcessionQry->rowCount() > 0){
+        $amenityTotalScholarshipAmnt = $amenityConcessionQry->fetch()['amenityTotalScholarshipAmnt'];
+    }
+    $amenityAmount = $amenityFeeDetailsInfo['amenity_amount'] - $amenityTotalScholarshipAmnt;
 ?>
 <tr>
     <td>
-        <input type="hidden" class="form-control" name="amenityFeesMasterid[]" value="<?php echo $feeDetailsInfo['fees_id']; ?>" readonly>
-        <input type="hidden" class="form-control" name="amenityAmntid[]" value="<?php echo $feeDetailsInfo['amenity_fee_id']; ?>" readonly>
-        <?php echo $feeDetailsInfo['amenity_particulars']; ?> 
+        <input type="hidden" class="form-control" name="amenityFeesMasterid[]" value="<?php echo $amenityFeeDetailsInfo['fees_id']; ?>" readonly>
+        <input type="hidden" class="form-control" name="amenityAmntid[]" value="<?php echo $amenityFeeDetailsInfo['amenity_fee_id']; ?>" readonly>
+        <?php echo $amenityFeeDetailsInfo['amenity_particulars']; ?> 
     </td>
-    <td><input type="number" class="form-control amenityfees" name="amenityAmnt[]" value="<?php echo $feeDetailsInfo['amenity_amount']; ?>" readonly> </td>
+    <td><input type="number" class="form-control amenityfees" name="amenityAmnt[]" value="<?php echo $amenityAmount; ?>" readonly> </td>
     <td><input type="number" class="form-control amenityfeesreceived" name="amenityAmntReceived[]" value="0"> </td>
     <td><input type="number" class="form-control amenityfeesscholar" name="amenityAmntScholarship[]" value="0"> </td>
-    <td><input type="number" class="form-control amenityfeesbalance" name="amenityAmntBalance[]" value="<?php echo $feeDetailsInfo['amenity_amount']; ?>" readonly> </td>
+    <td><input type="number" class="form-control amenityfeesbalance" name="amenityAmntBalance[]" value="<?php echo $amenityAmount; ?>" readonly> </td>
 </tr>
 <?php } ?>

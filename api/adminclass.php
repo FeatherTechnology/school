@@ -560,20 +560,29 @@
 			if(isset($_POST['studentstype'])){
 				$studentstype = $_POST['studentstype'];
 			}
+			$referencecat ='';
 			if(isset($_POST['referencecat'])){
 				$referencecat = $_POST['referencecat'];
 			}
+			$refstaffid = '';
 			if(isset($_POST['refstaffid'])){
 				$refstaffid = $_POST['refstaffid'];
 			}
+			$refstudentid = '';
 			if(isset($_POST['refstudentid'])){
 				$refstudentid = $_POST['refstudentid'];
 			}
+			$refoldstudentid = '';
 			if(isset($_POST['refoldstudentid'])){
 				$refoldstudentid = $_POST['refoldstudentid'];
 			}
+			$referencecatname = '';
 			if(isset($_POST['referencecatname'])){
 				$referencecatname = $_POST['referencecatname'];
+			}
+			$referred_by = '';
+			if(isset($_POST['referred_by'])){
+				$referred_by = $_POST['referred_by'];
 			}
 			if(isset($_POST['concession_type'])){
 				$concession_type = $_POST['concession_type'];
@@ -875,6 +884,24 @@
 				}		
 			}
 
+			//Add referral details
+			if($referencecat != ''){
+
+				$getRefCodeQry = $mysqli->query("SELECT ref_code FROM referral_details WHERE ref_code != '' ORDER BY id DESC LIMIT 1");
+				if($getRefCodeQry->num_rows>0)
+				{
+					$r_no = $getRefCodeQry->fetch_assoc()["ref_code"];
+					$refCode = $r_no + 1;
+
+				}else{
+					$refCode = "REF1001";
+				}
+
+				$ref_student_id = ($refstudentid != '') ? $refstudentid : $refoldstudentid;
+				$referred_by_name = ($referred_by != '') ? $referred_by : $referencecatname;
+				$mysqli->query("INSERT INTO `referral_details`(`student_id`, `referral_type`, `ref_student_id`, `ref_staff_id`, `referred_by`, `ref_code`, `approved`) VALUES ('$stdLastInsertId','$referencecat','$ref_student_id','$refstaffid','$referred_by_name','$refCode','Pending')");
+			}
+
 			return $stdLastInsertId;
 
 		}
@@ -1041,6 +1068,7 @@
 			if(isset($_POST['religion'])){
 				$religion = $_POST['religion'];
 			}
+			$filltoo ='';
 			if(isset($_POST['filltoo'])){
 				$filltoo = $_POST['filltoo'];
 			}
@@ -1110,27 +1138,39 @@
 			if(isset($_POST['studentstype'])){
 				$studentstype = $_POST['studentstype'];
 			}
+			$referencecat = '';
 			if(isset($_POST['referencecat'])){
 				$referencecat = $_POST['referencecat'];
 			}
+			$refstaffid = '';
 			if(isset($_POST['refstaffid'])){
 				$refstaffid = $_POST['refstaffid'];
 			}
+			$refstudentid = '';
 			if(isset($_POST['refstudentid'])){
 				$refstudentid = $_POST['refstudentid'];
 			}
+			$refoldstudentid = '';
 			if(isset($_POST['refoldstudentid'])){
 				$refoldstudentid = $_POST['refoldstudentid'];
 			}
+			$referencecatname = '';
 			if(isset($_POST['referencecatname'])){
 				$referencecatname = $_POST['referencecatname'];
 			}
+			$referred_by = '';
+			if(isset($_POST['referred_by'])){
+				$referred_by = $_POST['referred_by'];
+			}
+			$concession_type = '';
 			if(isset($_POST['concession_type'])){
 				$concession_type = $_POST['concession_type'];
 			}
+			$concessiontypedetails = '';
 			if(isset($_POST['concessiontypedetails'])){
 				$concessiontypedetails = $_POST['concessiontypedetails'];
 			}
+			$facility = '';
 			if(isset($_POST['facility'])){
 				$facility = $_POST['facility'];
 			}
@@ -1164,6 +1204,7 @@
 			if(isset($_POST['mother_aadhar_number'])){
 				$mother_aadhar_number = $_POST['mother_aadhar_number'];
 			}
+			$occupation = '';
 			if(isset($_POST['occupation'])){
 				$occupation = $_POST['occupation'];
 			}
@@ -1179,6 +1220,7 @@
 			if(isset($_POST['telephone_number'])){
 				$telephone_number = $_POST['telephone_number'];
 			}
+			$lives_gaurdian = '';
 			if(isset($_POST['lives_gaurdian'])){
 				$lives_gaurdian = $_POST['lives_gaurdian'];
 			}
@@ -1399,15 +1441,14 @@
             if($certificate4 == '' && isset($_POST["updatecertificate4"])){
                 $certificate4 = $_POST["updatecertificate4"]; 
             } 
+			$extra_curricularstr = '';
 			if(isset($_POST['extra_curricular'])){
 				
 				$extra_curricular = $_POST['extra_curricular'];
-                 $extra_curricularstr = implode(",", $extra_curricular);
+                $extra_curricularstr = implode(",", $extra_curricular);
 			}
 			
-			// echo $extra_curricularstr ; die;
-			// medium='".strip_tags($medium)."',
-		   $tempStudentUpdaet = "UPDATE student_creation SET temp_admission_id = '".strip_tags($temp_admission_id)."', temp_no = '".strip_tags($temp_no)."', admission_number='".strip_tags($admission_number)."', 
+			$tempStudentUpdaet = "UPDATE student_creation SET temp_admission_id = '".strip_tags($temp_admission_id)."', temp_no = '".strip_tags($temp_no)."', admission_number='".strip_tags($admission_number)."', 
 			student_name='".strip_tags($student_name)."', sur_name='".strip_tags($sur_name)."', date_of_birth='".strip_tags($date_of_birth)."', 
 			gender='".strip_tags($gender)."', mother_tongue='".strip_tags($mother_tongue)."', aadhar_number='".strip_tags($aadhar_number)."',blood_group='".strip_tags($blood_group)."',
 			category='".strip_tags($category)."',castename='".strip_tags($castename)."',sub_caste='".strip_tags($sub_caste)."',nationality='".strip_tags($nationality)."',
@@ -1434,10 +1475,17 @@
 			title='".strip_tags($title)."',certificate='".strip_tags($certificate)."',title1='".strip_tags($title1)."',
 			certificate1='".strip_tags($certificate1)."',title2='".strip_tags($title2)."',certificate2='".strip_tags($certificate2)."',
 			title3='".strip_tags($title3)."',certificate3='".strip_tags($certificate3)."',title4='".strip_tags($title4)."',
-			certificate4='".strip_tags($certificate4)."', mother_image='".strip_tags($mother_image)."', medium='".strip_tags($medium)."',father_image='".strip_tags($father_image)."', extra_curricular='".strip_tags($extra_curricularstr)."', update_login_id='".strip_tags($userid)."', status = '0' WHERE student_id= '".strip_tags($id)."' AND school_id= '".strip_tags($school_id)."' AND year_id='".strip_tags($year_id)."' ";
+			certificate4='".strip_tags($certificate4)."', mother_image='".strip_tags($mother_image)."', medium='".strip_tags($medium)."',father_image='".strip_tags($father_image)."', extra_curricular='".strip_tags($extra_curricularstr)."', update_login_id='".strip_tags($userid)."', status = '0' WHERE student_id= '".strip_tags($id)."' ";
 			$updresult = $mysqli->query($tempStudentUpdaet )or die ("Error in in update Query!.".$mysqli->error);
-		
-	 	}
+
+			//Add referral details
+			if($referencecat != ''){
+				$ref_student_id = ($refstudentid != '') ? $refstudentid : $refoldstudentid;
+				$referred_by_name = ($referred_by != '') ? $referred_by : $referencecatname;
+				$mysqli->query("UPDATE `referral_details` SET `referral_type`='$referencecat',`ref_student_id`='$ref_student_id',`ref_staff_id`='$refstaffid',`referred_by`='$referred_by_name',`approved`='Pending' WHERE `student_id`='$id'");
+			}
+
+		}
 
 		//  Delete tempStudent
 		public function deleteStudentCreation($mysqli, $id, $userid){
@@ -2493,9 +2541,9 @@ public function updateStaffCreation($mysqli, $id, $userid,$school_id,$year_id){
 				return $detailrecords;
 			}
 			// get StaffList
-			public function getStaffList($mysqli,$school_id,$year_id) {
+			public function getStaffList($mysqli,$school_id) {
 
-				$qry = "SELECT * FROM staff_creation WHERE school_id='$school_id' AND year_id='$year_id' AND status=0 ORDER BY id DESC"; 
+				$qry = "SELECT * FROM staff_creation WHERE school_id='$school_id' AND status=0 ORDER BY id DESC"; 
 				$res =$mysqli->query($qry)or die("Error in Get All Records".$mysqli->error);
 				$detailrecords = array();
 				$i=0;
@@ -2504,7 +2552,7 @@ public function updateStaffCreation($mysqli, $id, $userid,$school_id,$year_id){
 					while($row = $res->fetch_object())
 					{
 						$detailrecords[$i]['staff_id']            = $row->id; 
-						$detailrecords[$i]['first_name']       	= strip_tags($row->first_name);
+						$detailrecords[$i]['first_name']       	= $row->first_name.' '.$row->last_name;
 						
 						$i++;
 					}
@@ -2553,8 +2601,7 @@ public function updateStaffCreation($mysqli, $id, $userid,$school_id,$year_id){
 				}
 			// get New StudentList
 			public function getNewTempStudentList($mysqli,$school_id,$year_id) {
-
-				$qry = "SELECT * FROM student_creation WHERE studentstype	 = 'NewStudent' AND school_id='$school_id' AND year_id='$year_id' AND status=0 ORDER BY temp_admission_id DESC"; 
+				$qry = "SELECT * FROM student_creation WHERE studentstype = '1' AND school_id='$school_id' AND year_id='$year_id' AND status=0 ORDER BY student_id DESC"; 
 				// SELECT * FROM temp_admission_student WHERE temp_student_type = 'New Student' AND school_id='$school_id' AND year_id='$year_id' AND status=0 ORDER BY temp_admission_id DESC
 				$res =$mysqli->query($qry)or die("Error in Get All Records".$mysqli->error);
 				$detailrecords = array();
@@ -2563,19 +2610,17 @@ public function updateStaffCreation($mysqli, $id, $userid,$school_id,$year_id){
 				{
 					while($row = $res->fetch_object())
 					{
-						$detailrecords[$i]['temp_admission_id']            = $row->temp_admission_id; 
+						$detailrecords[$i]['student_id']            = $row->student_id; 
 						$detailrecords[$i]['student_name']       	= strip_tags($row->student_name);
-						// $detailrecords[$i]['temp_student_name']       	= strip_tags($row->temp_student_name);
-						
 						$i++;
 					}
 				}
 				return $detailrecords;
 			}
+
 			// get Old StudentList
 			public function getOldTempStudentList($mysqli,$school_id,$year_id) {
-
-				$qry = "SELECT * FROM student_creation WHERE studentstype = 'OldStudent' AND school_id='$school_id' AND year_id='$year_id' AND status=0 ORDER BY temp_admission_id DESC";
+				$qry = "SELECT * FROM student_creation WHERE studentstype = '2' AND school_id='$school_id' AND year_id='$year_id' AND status=0 ORDER BY student_id DESC";
 				// SELECT * FROM temp_admission_student WHERE temp_student_type = 'Old Student' AND school_id='$school_id' AND year_id='$year_id' AND status=0 ORDER BY temp_admission_id DESC 
 				$res =$mysqli->query($qry)or die("Error in Get All Records".$mysqli->error);
 				$detailrecords = array();
@@ -2584,9 +2629,8 @@ public function updateStaffCreation($mysqli, $id, $userid,$school_id,$year_id){
 				{
 					while($row = $res->fetch_object())
 					{
-						$detailrecords[$i]['temp_admission_id']            = $row->temp_admission_id; 
+						$detailrecords[$i]['student_id']            = $row->student_id; 
 						$detailrecords[$i]['student_name']       	= strip_tags($row->student_name);
-						
 						$i++;
 					}
 				}
@@ -5708,9 +5752,158 @@ public function addPurchaseOrder($mysqli){
 
 	}
 
+	public function addFeesConcession($mysqli, $userid, $school_id, $year_id){
+		
+		if(isset($_POST['studentID'])){
+			$studentID = $_POST['studentID'];
+		} 
+		if(isset($_POST['concession_type'])){
+			$concession_type = $_POST['concession_type'];
+		} 
 
-}
+		//Group Table data//
+		if(isset($_POST['grpStudentid'])){
+			$grpStudentid = $_POST['grpStudentid'];
+		} 
+		$feesMasterid = [];
+		if(isset($_POST['feesMasterid'])){
+			$feesMasterid = $_POST['feesMasterid'];
+		} 
+		if(isset($_POST['grpid'])){
+			$grptablename = 'grptable';
+			$grpid = $_POST['grpid'];
+		}
+		if(isset($_POST['grpFeeScholarship'])){
+			$grpFeeScholarship = $_POST['grpFeeScholarship'];
+		} 
+		if(isset($_POST['grpscholarshipHeader'])){
+			$grpscholarshipHeader = $_POST['grpscholarshipHeader'];
+		} 
+		if(isset($_POST['grpFeeRemark'])){
+			$grpFeeRemark = $_POST['grpFeeRemark'];
+		} 
+		//Group Table data END//
+
+		//Extra Curricular Activity Table data//
+		if(isset($_POST['extraStudentid'])){
+			$extraStudentid = $_POST['extraStudentid'];
+		} 
+		$extraFeesMasterid = [];
+		if(isset($_POST['extraFeesMasterid'])){
+			$extraFeesMasterid = $_POST['extraFeesMasterid'];
+		} 
+		if(isset($_POST['extraAmntid'])){
+			$extratablename = 'extratable';
+			$extraAmntid = $_POST['extraAmntid'];
+		}
+		if(isset($_POST['extraAmntScholarship'])){
+			$extraAmntScholarship = $_POST['extraAmntScholarship'];
+		} 
+		if(isset($_POST['extrascholarshipHeader'])){
+			$extrascholarshipHeader = $_POST['extrascholarshipHeader'];
+		} 
+		if(isset($_POST['extraFeeRemark'])){
+			$extraFeeRemark = $_POST['extraFeeRemark'];
+		} 
+		//Extra Curricular Activity Table data END//
+
+		//Amenity Table data//
+		if(isset($_POST['amenityStudentid'])){
+			$amenityStudentid = $_POST['amenityStudentid'];
+		} 
+		$amenityFeesMasterid = [];
+		if(isset($_POST['amenityFeesMasterid'])){
+			$amenityFeesMasterid = $_POST['amenityFeesMasterid'];
+		} 
+		if(isset($_POST['amenityAmntid'])){
+			$amenitytablename = 'amenitytable';
+			$amenityAmntid = $_POST['amenityAmntid'];
+		}
+		if(isset($_POST['amenityAmntScholarship'])){
+			$amenityAmntScholarship = $_POST['amenityAmntScholarship'];
+		} 
+		if(isset($_POST['amenityscholarshipHeader'])){
+			$amenityscholarshipHeader = $_POST['amenityscholarshipHeader'];
+		} 
+		if(isset($_POST['amenityFeeRemark'])){
+			$amenityFeeRemark = $_POST['amenityFeeRemark'];
+		} 
+		//Amenity Table data END//
+
+		//Area Table data//
+		if(isset($_POST['areastudentid'])){
+			$areastudentid = $_POST['areastudentid'];
+		} 
+		$areaCreationId = [];
+		if(isset($_POST['areaCreationId'])){
+			$areaCreationId = $_POST['areaCreationId'];
+		} 
+		if(isset($_POST['particularId'])){
+			$particulartablename = 'transport';
+			$particularId = $_POST['particularId'];
+		}
+		if(isset($_POST['transportFeeScholarship'])){
+			$transportFeeScholarship = $_POST['transportFeeScholarship'];
+		} 
+		if(isset($_POST['transportscholarshipHeader'])){
+			$transportscholarshipHeader = $_POST['transportscholarshipHeader'];
+		} 
+		if(isset($_POST['transportFeeRemark'])){
+			$transportFeeRemark = $_POST['transportFeeRemark'];
+		} 
+		//Area Table data END//
+
+		if($concession_type == 'GeneralConcession' || $concession_type == 'ReferalConcession'){
+			//update the student_creation table
+			$mysqli->query("UPDATE `student_creation` SET `approval`='Approved', `update_login_id`='$userid', `updated_date`= now() WHERE `student_id`='$studentID'");
+		}
+		
+		if($concession_type == 'ReferalConcession'){
+
+			$mysqli->query("UPDATE `referral_details` SET `approved`='Approved' WHERE `student_id`='$studentID'");
+
+			if(isset($_POST['refertype'])){
+				$refertype = $_POST['refertype'];
+			}
+			if(isset($_POST['other_amount'])){
+				$other_amount = $_POST['other_amount'];
+			}
+			if(isset($_POST['given_date'])){
+				$given_date = $_POST['given_date'];
+			}
+			if($refertype  == 'Staff' || $refertype  == 'Agent' || $refertype  == 'Other'){
+				$mysqli->query("UPDATE `referral_details` SET `approved`='Approved',`others_amount`='$other_amount',`others_receiving_date`='$given_date' WHERE `student_id`='$studentID'");
+			}
+			//update the student_creation table
+			$mysqli->query("UPDATE `student_creation` SET `approval`='Approved', `update_login_id`='$userid', `updated_date`= now() WHERE `student_id`='$studentID'");
+		}
+
+		for($a = 0; $a < count($feesMasterid); $a++){
+			if($grpFeeScholarship[$a] > 0){
+				$insertFeesDetailsQry = $mysqli->query("INSERT INTO `fees_concession`( `student_id`, `scholarship_header`, `scholarship_amount`, `fees_master_id`, `fees_table_name`, `fees_id`, `remark`, `concession_type`, `academic_year`, `school_id`, `insert_login_id`) VALUES ('$grpStudentid[$a]','$grpscholarshipHeader','$grpFeeScholarship[$a]','$feesMasterid[$a]','$grptablename','$grpid[$a]','$grpFeeRemark[$a]','$concession_type','$year_id','$school_id','$userid')");
+			}
+		}
+
+		for($b = 0; $b < count($extraFeesMasterid); $b++){
+			if($extraAmntScholarship[$b] > 0){
+				$insertextraFeesDetailsQry = $mysqli->query("INSERT INTO `fees_concession`( `student_id`, `scholarship_header`, `scholarship_amount`, `fees_master_id`, `fees_table_name`, `fees_id`, `remark`, `concession_type`, `academic_year`, `school_id`, `insert_login_id`) VALUES ('$extraStudentid[$b]','$extrascholarshipHeader','$extraAmntScholarship[$b]','$extraFeesMasterid[$b]','$extratablename','$extraAmntid[$b]','$extraFeeRemark[$b]','$concession_type','$year_id','$school_id','$userid')");
+			}
+		}
+
+		for($c = 0; $c < count($amenityFeesMasterid); $c++){
+			if($amenityAmntScholarship[$c] > 0){
+				$insertamenityFeesDetailsQry = $mysqli->query("INSERT INTO `fees_concession`( `student_id`, `scholarship_header`, `scholarship_amount`, `fees_master_id`, `fees_table_name`, `fees_id`, `remark`, `concession_type`, `academic_year`, `school_id`, `insert_login_id`) VALUES ('$amenityStudentid[$c]','$amenityscholarshipHeader','$amenityAmntScholarship[$c]','$amenityFeesMasterid[$c]','$amenitytablename','$amenityAmntid[$c]','$amenityFeeRemark[$c]','$concession_type','$year_id','$school_id','$userid')");
+			}
+		}
+
+		for($d = 0; $d < count($areaCreationId); $d++){
+			if($transportFeeScholarship[$d] > 0){
+				$inserttransportFeesDetailsQry = $mysqli->query("INSERT INTO `fees_concession`( `student_id`, `scholarship_header`, `scholarship_amount`, `fees_master_id`, `fees_table_name`, `fees_id`, `remark`, `concession_type`, `academic_year`, `school_id`, `insert_login_id`) VALUES ('$areastudentid[$d]','$transportscholarshipHeader','$transportFeeScholarship[$d]','$areaCreationId[$d]','$particulartablename','$particularId[$d]','$transportFeeRemark[$d]','$concession_type','$year_id','$school_id','$userid')");
+			}
+		}
+
+	} //fees concession ends here ///////////
+
+
+}//admin  class ends here/////
 ?>
-
-
-

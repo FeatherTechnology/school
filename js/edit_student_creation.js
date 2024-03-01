@@ -26,17 +26,12 @@ $(document).ready(function(){
             }else if(deleted){
                 alert('Student deleted successfully.');
 
-            }
-            // else if(notfound){
-            //     alert('Student name not found. Please make sure the student has paid fees.');
-
-            // }
-            else{
+            }else{
                 alert(response);
             }
             
         // Redirect to the "edit_stduent_creation" page
-        // window.location.href = 'edit_student_creation';
+        window.location.href = 'edit_student_creation';
         },
         error: function (xhr, status, error) {
         // Handle error if the AJAX request fails

@@ -339,7 +339,13 @@ if($current_page == 'vendorcreation' || $current_page == 'auction_details') {
 			
 			if($current_page == 'temp_admission_pay_fees') { 
 				include "include/templates/temp_admission_pay_fees.php";
-			} ?>
+			}
+
+			//Reports => student reports
+			if($current_page == 'student_caste_report') { 
+				include "reports/caste_report/student_caste_report.php";
+			}
+			?>
 
 
 			

@@ -1,5 +1,6 @@
 <?php
 //Also using in fees_collection.
+//Also using in fees_concession.
 include '../../ajaxconfig.php';
 @session_start();
 if(isset($_SESSION["userid"])){
