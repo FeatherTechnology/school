@@ -186,7 +186,9 @@ $(document).ready(function () {
   // Get Reference Details
   $("#referencecat").change(function () {
     var referencecat = $("#referencecat").val();
+    $('#referred_by').val('');
     hide_show_referenceCat(referencecat)
+    setReferredByValue();
   });
 
   //form validation
@@ -535,6 +537,10 @@ $(document).ready(function () {
     extracur();
   });
 
+  $('#refstaffid, #refstudentid, #refoldstudentid').change(function(){
+      $('#referred_by').val($(this).find('option:selected').text().trim());
+  });
+
 }); //Document END.
 
 $(function(){ //ONLOAD Function
@@ -732,13 +738,13 @@ function hide_show_standard(standard) {
 }
 
 function hide_show_referenceCat(referencecat) {
-  if (referencecat == 'NewStudent') {
+  if (referencecat == 'New Student') {
     $("#reference_newstudent").show();
     $("#reference_oldstudent").hide();
     $("#reference_staff").hide();
     $("#reference_agent").hide();
 
-  } else if (referencecat == 'OldStudent') {
+  } else if (referencecat == 'Old Student') {
     $("#reference_newstudent").hide();
     $("#reference_oldstudent").show();
     $("#reference_staff").hide();
@@ -761,6 +767,13 @@ function hide_show_referenceCat(referencecat) {
     $("#reference_oldstudent").hide();
     $("#reference_staff").hide();
     $("#reference_agent").show();
+
+  } else{
+    $("#reference_newstudent").hide();
+    $("#reference_oldstudent").hide();
+    $("#reference_staff").hide();
+    $("#reference_agent").hide();
+    
   }
 }
 
@@ -1004,4 +1017,21 @@ function gaurdaadhar() {
   } else {
       $("#gaurdaadhar_chk").text('');
   }
+}
+
+function setReferredByValue(){
+  let referredBY = $('#referencecat').val();
+  let referenceName;
+  if(referredBY =='New Student'){
+      referenceName = $('#refstudentid option:selected').text().trim();
+
+  }else if(referredBY =='Old Student'){
+      referenceName = $('#refoldstudentid option:selected').text().trim();
+
+  }else if(referredBY =='Staff'){
+      referenceName = $('#refstaffid option:selected').text().trim();
+
+  }
+
+  $('#referred_by').val(referenceName);
 }

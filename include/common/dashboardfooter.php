@@ -813,6 +813,10 @@ if($current_page == 'stockstatement') { ?>
 if($current_page == 'temp_admission_pay_fees') { ?>
 <script src="js/temp_admission_pay_fees.js"></script>
 <?php }
+
+if($current_page == 'student_caste_report') { ?>
+<script src="js/student_caste_report.js"></script>
+<?php }
 ?> 
 
 <script src="js/logincreation.js"></script>

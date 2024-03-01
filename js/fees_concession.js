@@ -1,312 +1,310 @@
 // Document is ready
-$(document).ready(function(){ 
+$(document).ready(function () {
 
-// Listen for changes to the 'grp_concession_amount' input field
-// $('#grp_concession_amount').change(function() { 
-  // alert("fdfasdf")
-  // var concess = $(this).val();
-  // console.log(concess);
-  // // Get the values of 'grp_balance_amount' and 'grp_concession_amount'
-  // var grpBalanceAmount = parseFloat($('.amount_balance').val()) || 0;
-  // var grpConcessionAmount = parseFloat($('.grp_concession_amount').val()) || 0;
-
-  // // Calculate the new 'balance_amount' value
-  // var balanceAmount = grpBalanceAmount - grpConcessionAmount;
-
-  // // Update the 'grp_balance_amount' input field with the new value
-  // $('.grp_balance_amount').val(balanceAmount.toFixed(2));
-// });
-
-        $('input[name="concession_type"]').click(function(){
-          var value = $(this).val();
-          
-          if(value == "General Concession"){
-            $("#manual_concessionDiv").hide();
-            $("#general_concessionDiv").show();
-            $("#referal_concessionDiv").hide();
-
-          } else if(value == "Referal Concession"){
-            $("#manual_concessionDiv").hide();
-            $("#general_concessionDiv").hide();
-            $("#referal_concessionDiv").show();
-          }
-          else if(value == "Manual Concession"){
-            $("#manual_concessionDiv").show();
-            $("#general_concessionDiv").hide();
-            $("#referal_concessionDiv").hide();
-          }
-        });
-
-
-        $("#student_detailsDiv").hide();
-        $("#student_detailswithoutDiv").hide();
-
-        $("#student_id").change(function(){ 
-            var standard=$("#standard").val();
-            var medium=$("#medium").val();
-            var student_id=$("#student_id").val();
-            resetstockinfotable(medium,student_id,standard);   
-            $("#student_detailswithoutDiv").hide();
-            $("#student_detailsDiv").show();
-            $("#manual_concessionDiv").show();
-            $("#general_concessionDiv").hide();
-            $("#referal_concessionDiv").hide();
-        });
-        
-        $("#student_name1").change(function(){ 
-            var student_name1=$("#student_name1").val();
-            resetstockinfotables(student_name1); 
-            $("#student_detailswithoutDiv").show();
-            $("#student_detailsDiv").hide(); 
-            $("#manual_concessionDiv").show();
-            $("#general_concessionDiv").hide();
-            $("#referal_concessionDiv").hide();
-        });
-
-        function resetstockinfotable(){
-          var standard=$("#standard").val();
-          var medium=$("#medium").val();
-          var student_id=$("#student_id").val();
-          var payfeesid=$(".pay_fees_id").val();
-          $.ajax({
-          url: 'FeesConcession/ajaxResetConcessionTable.php',
-          type: 'POST',
-          data: {"standard":standard,"medium":medium,"student_id":student_id,"payfeesid":payfeesid},
-          cache: false,
-          success:function(html){
-              $("#updatedstockinfotable").empty();
-              $("#updatedstockinfotable").html(html);
-          }
-        });
-        }
-    // call the reset function to populate the table
-    resetstockinfotable();
-
-    function resetstockinfotables(){
-      var student_name1=$("#student_name1").val();
-      var payfeesid=$(".pay_fees_id").val();
-
-      $.ajax({
-      url: 'FeesConcession/ajaxResetConcessionTable.php',
-      type: 'POST',
-      data: {"student_name1":student_name1,"payfeesid":payfeesid},
-      cache: false,
-      success:function(html){
-          $("#updatedstockinfotable1").empty();
-          $("#updatedstockinfotable1").html(html);
-      }
-    });
-    }
-  // call the reset function to populate the table
-  resetstockinfotables();
-});
-
-
-     // listen for changes in the medium, standard, and section dropdowns
-$("#medium, #standard, #section").change(function(){ 
-
-  // get the selected values from the medium, standard, and section dropdowns
-  var medium = $("#medium").val(); 
-  var standard = $("#standard").val(); 
-  var section = $("#section").val(); 
-  
-  // check if both medium and standard dropdowns have a value selected
-  if(medium.length != 0 && standard.length != 0) {
-  
-    // make an AJAX request to fetch the section list
-    $.ajax({
-      url: 'FeesCollectionFile/grp/ajaxgetStudentList.php',
-      type: 'post',
-      data: {"medium":medium,"standard":standard},
-      dataType: 'json',
-      success:function(response){
+  $('input[name="concessiontype"]').click(function () {
+    var concessionType = $(this).val();
+    // clrDrpdwns(); //to all dropdown when change concession type.
+    // clrStudentNameDrpdwn();
+    
+    if (concessionType == "GeneralConcession") {
+      $("#generalconcessionDiv").show();
+      $("#referralconcessionDiv").hide();
+      $("#manualconcessionDiv").hide();
+      getGeneralConcession();
       
-        // clear the section dropdown and add a default option
-        $('#section').empty();
-        $('#section').append("<option value=''>Select Section</option>");
-        
-       // loop through the section list in the response and add options to the section dropdown
-          for (var i = 0; i < response.section.length; i++) { 
+    } else if (concessionType == "ReferalConcession") {
+      $("#generalconcessionDiv").hide();
+      $("#referralconcessionDiv").show();
+      $("#manualconcessionDiv").hide();
+      getReferralConcession();
+
+    } else if (concessionType == "ManualConcession") {
+      getStandardList(); //Getting standard list from database.
+      $("#generalconcessionDiv").hide();
+      $("#referralconcessionDiv").hide();
+      $("#manualconcessionDiv").show();
+
+    }
+  });
+
+  $("#medium, #standard").change(function () {
+    var medium = $("#medium").val();
+    var standard = $("#standard").val();
+    if (medium != '0' && standard != '0') {
+      $.ajax({
+        url: 'FeesCollectionFile/grp/ajaxgetStudentList.php',
+        type: 'post',
+        data: { "medium": medium, "standard": standard },
+        dataType: 'json',
+        success: function (response) {
+
+          $('#section').empty();
+          $('#section').append("<option value='0'>Select Section</option>");
+          for (var i = 0; i < response.section.length; i++) {
             $('#section').append("<option value='" + response.section[i] + "'>" + response.section[i] + "</option>");
           }
+        },
+      });
 
-          // set the value of the section dropdown to the selected section
-          $('#section').val(section);
+      $('#student_id').empty();
+      $('#student_id').append("<option value='0'>Select Student</option>");
 
-        
-        // check if section dropdown has a value selected
-        if(section.length != 0){
-        
-          // make an AJAX request to fetch the student names list
-          $.ajax({
-            url: 'FeesCollectionFile/grp/ajaxgetStudentList.php',
-            type: 'post',
-            data: { "section":section },
-            dataType: 'json',
-            success:function(response){
-            
-              $('#student_id').empty();
-              $('#student_id').append("<option value=''>Select Student</option>");
-              
-              // loop through the student_id list in the response and add options to the student_id dropdown
-              for (var i = 0; i < response.student_id.length; i++) { 
-                $('#student_id').append("<option value='" + response.student_id[i] + "'>" + response.student_name[i] + "</option>");
-              }
-          
-            }
-          });
-        }
-      },
-      error:function(jqXHR, textStatus, errorThrown){
-        console.log(errorThrown);
-      }
-    });
-    
-  } else {
-  
-    // if not, clear the section and student dropdowns and return
-    // $('#section').empty();
-    // $('#section').append("<option value=''>Select Section</option>");
-    $('#student_id').empty();
-    $('#student_id').append("<option value=''>Select Student</option>");
-    
-  }
-
-  $('#student_id','#student_name1').on('change', function() {
-    var student_id = $(this).val(); // get the selected student_id
-    var student_name1 = $(this).val(); // get the selected student_id
-
-    // make an AJAX request to fetch the corresponding student_name
-    $.ajax({
-      url: 'FeesCollectionFile/grp/ajaxgetStudentList.php',
-      type: 'post',
-      data: { "student_id":student_id, "student_name1":student_name1},
-      dataType: 'json',
-      success:function(response){ 
-        // console.log("response",response);
-        $("#student_name2").val(response['student_name2'] + " " + "Fee Detail for"); // update student_name2 field with the returned value
-      }
-    });
+      // clrStudentNameDrpdwn(); //to clear student name dropdown.
+    }//if END///
   });
+
+  $("#section").change(function () {
+    var section = $(this).val();
+    if (section != '0') {
+      var medium = $("#medium").val();
+      var standard = $("#standard").val();
+      $.ajax({
+        url: 'FeesCollectionFile/grp/ajaxgetStudentList.php',
+        type: 'post',
+        data: { "medium": medium, "standard": standard, "section": section },
+        dataType: 'json',
+        success: function (response) {
+
+          $('#student_id').empty();
+          $('#student_id').append("<option value='0'>Select Students</option>");
+          for (var i = 0; i < response.student_id.length; i++) {
+            $('#student_id').append("<option value='" + response.student_id[i] + "'>" + response.student_name[i] + "</option>");
+          }
+        }
+      });
+
+      // clrStudentNameDrpdwn(); //to clear student name dropdown.
+    }//if END///
+  });
+
+  $("#student_id, #student_name1").change(function () {
+    var studID = $(this).val();
+    getStudentFeesDetails(studID,'showManualConcessionSTUDDetails');
+    $("#showManualConcessionSTUDDetails").empty();
+  });
+  
+  $(document).on('click','#add_general_concession',function () {
+    let studentID = $(this).val();
+    $('#divtitle').text('Fee Details For '+$(this).parent().parent().find('td:eq(1)').text());
+    getStudentFeesDetails(studentID,'showGeneralConcessionDiv');
+    $("#showGeneralConcessionDiv").empty();
+  });
+
+  $(document).on('click','.rejectConcession',function () {
+    let rejectReason =  prompt("Are you sure to Reject this Concession?\nEnter reason here:");
     
-     //  Alert Message Grater Than Amount entered
-     $('.grp_concession_amount').on('change', function() { alert("sdfsdfasd")
-      var grp_concession_amount = parseInt($('.grp_concession_amount').val()); alert (grp_concession_amount)
-      var amount_balance = parseInt($('.amount_balance').val());
-      if (amount_balance >grp_concession_amount) {
-        alert('Fees collected is greater than total!');
-      } 
-    });
+    if(rejectReason){
+      var conCessionType = $('#concession_type:checked').val();
+      let StudentId = $(this).val();
+      $.ajax({
+        type: 'POST',
+        data: { "StudentId": StudentId, "rejectReason": rejectReason, "conCessionType": conCessionType},
+        url: 'FeesConcession/rejectConcession.php',
+        dataType: 'json',
+        success: function (result) {
+        if(result == '1'){
+          alert("Successfully  rejected the concession!");
+          
+        }else{
+          alert("Reject Failed. Please try again later!");
 
+        }
+        window.location.href = "fees_concession";
+        }
+      });
+    }else{
+        alert("Reject cancelled!")
+    }
+    
+  });
+  
+  $(document).on('click','#add_referral_concession',function () {
+    let studentID = $(this).val();
+    let refStudentId = $(this).data('id');
+    $('#divtitle').text('Fee Details For '+$(this).parent().parent().find('td:eq(2)').text());
+    let remark = $(this).parent().parent().find('td:eq(5)').text();
+    let referredName = $(this).parent().parent().find('td:eq(6)').text();
+    getReferralFeesDetails(studentID, remark, referredName, refStudentId);
+  });
+
+}); //Document END ///
+
+$(function () {
+  
 });
 
-
-function getBalance(e){
-  var grpBalanceAmount = e.parentElement.parentElement.querySelector('.amount_balance').value;
-  var grp_balance_amount = e.parentElement.parentElement.querySelector('.grp_balance_amount');
-  
-  if(parseInt(e.value) > parseInt(grpBalanceAmount)) {
-    alert("The entered value is greater than the fee amount.");
-    grp_balance_amount.value = 0;
-    e.value = 0;
-  } else {
-    grp_balance_amount.value = parseInt(grpBalanceAmount) - parseInt(e.value);
-  }
+function getStandardList() { //Getting standard list from database.
+  $.ajax({
+    type: 'POST',
+    data: {},
+    url: 'ajaxFiles/getStandardList.php',
+    dataType: 'json',
+    success: function (response) {
+      $('#standard').empty();
+      $('#standard').append("<option value='0'>Select Standard</option>");
+      for (var i = 0; i < response.length; i++) {
+        $('#standard').append("<option value='" + response[i]['std_id'] + "'>" + response[i]['std'] + "</option>");
+      }
+    }
+  })
 }
 
-function getExtraBalance(e){
-  var grpBalanceAmount = e.parentElement.parentElement.querySelector('.extra_amount').value;
-  var extra_balance_amount = e.parentElement.parentElement.querySelector('.extra_balance_amount');
-  
-  if(parseInt(e.value) > parseInt(grpBalanceAmount)) {
-    alert("The entered value is greater than the fee amount.");
-    extra_balance_amount.value = 0;
-    e.value = 0;
-  } else {
-    extra_balance_amount.value = parseInt(grpBalanceAmount) - parseInt(e.value);
-  }
+function clrStudentNameDrpdwn() {
+  $('#student_name1').val('0').trigger('change');
 }
 
-function getAmenityBalance(e){
-  var grpBalanceAmount = e.parentElement.parentElement.querySelector('.amenity_amount').value;
-  var amenity_balance_amount = e.parentElement.parentElement.querySelector('.amenity_balance_amount');
-  
-  if(parseInt(e.value) > parseInt(grpBalanceAmount)) {
-    alert("The entered value is greater than the fee amount.");
-    amenity_balance_amount.value = 0;
-    e.value = 0;
-  } else {
-    amenity_balance_amount.value = parseInt(grpBalanceAmount) - parseInt(e.value);
-  }
+function clrDrpdwns() {
+  $('#medium').val('0').trigger('change');
+  $('#standard').val('0').trigger('change');
+  $('#section').val('0').trigger('change');
+  $('#student_id').val('0').trigger('change');
 }
 
+function getGeneralConcession() {
+  $.ajax({
+    url: 'FeesConcession/getGeneralConcessionDetailsTable.php',
+    type: 'POST',
+    data: { },
+    cache: false,
+    success: function (html) {
+      $("#general_concession").empty();
+      $("#general_concession").html(html);
+    }
+  });
+}
 
-    //DataTabale 
+function getReferralConcession() {
+  $.ajax({
+    url: 'FeesConcession/getReferralConcessionDetailsTable.php',
+    type: 'POST',
+    data: { },
+    cache: false,
+    success: function (html) {
+      $("#referral_concession").empty();
+      $("#referral_concession").html(html);
+    }
+  });
+}
 
-    let example = $('#general_concessionTable1').DataTable({
-      // dom: 'lBfrtip', 
-       buttons: [
-         
-         {		 
-           extend:'colvis',
-           collectionLayout: 'fixed four-column',
-         }
+function getStudentFeesDetails(studentid, divid) {
+  var concessionType = $('#concession_type:checked').val();
+  $.ajax({
+    url: 'FeesConcession/getAllFeesDetails.php',
+    type: 'POST',
+    data: { "studentid": studentid, "concessionType": concessionType },
+    cache: false,
+    success: function (html) {
+      $("#"+divid).empty();
+      $("#"+divid).html(html);
 
-       ],	
-       "lengthMenu": [
-         [10, 25, 50, -1],
-         [10, 25, 50, "All"]
-       ]
-   });
+      functionAfterAjax();
+    }
+  });
+}
 
-   let example1 = $('#general_concessionTable').DataTable({
-    // dom: 'lBfrtip', 
-     buttons: [
-       
-       {		 
-         extend:'colvis',
-         collectionLayout: 'fixed four-column',
-       }
+function getReferralFeesDetails(studentid, refertype, refername, refStudentId) {
+  var concessionType = $('#concession_type:checked').val();
+  $.ajax({
+    url: 'FeesConcession/getAllFeesForReferral.php',
+    type: 'POST',
+    data: { "studentid": studentid, "concessionType": concessionType, "refertype": refertype, "refername": refername, "refStudentId": refStudentId },
+    cache: false,
+    success: function (html) {
+      $("#showGeneralConcessionDiv").empty();
+      $("#showGeneralConcessionDiv").html(html);
 
-     ],	
-     "lengthMenu": [
-       [10, 25, 50, -1],
-       [10, 25, 50, "All"]
-     ]
- });
+      functionAfterAjax();
+    }
+  });
+}
 
- let example2 = $('#referal_concessionTable').DataTable({
-  // dom: 'lBfrtip', 
-   buttons: [
-     
-     {		 
-       extend:'colvis',
-       collectionLayout: 'fixed four-column',
-     }
+function functionAfterAjax(){
 
-   ],	
-   "lengthMenu": [
-     [10, 25, 50, -1],
-     [10, 25, 50, "All"]
-   ]
-});
-let example3 = $('#referal_concessionTable1').DataTable({
-  // dom: 'lBfrtip', 
-   buttons: [
-     
-     {		 
-       extend:'colvis',
-       collectionLayout: 'fixed four-column',
-     }
+  //Check Amount, if 0 then set row as readonly
+  $('.grpfeesamnt, .extrafeesamnt, .amenityfees, .transportfeesamnt').each(function(){
+    var row = $(this).closest('tr');
+    if (parseFloat($(this).val()) <= 0) {
+        row.find('input').prop('readonly', true);
+    }
+  });
 
-   ],	
-   "lengthMenu": [
-     [10, 25, 50, -1],
-     [10, 25, 50, "All"]
-   ]
-});
-        
+  $('.grpfeesscholarship').keyup(function(){
+    var scholaramnt = parseInt($(this).parent().parent().find('.grpfeesscholarship').val());
+    var grpfeeamnt = parseInt($(this).parent().parent().find('.grpfeesamnt').val());
+    var balanceFees = grpfeeamnt - scholaramnt;
+    
+    if(scholaramnt > grpfeeamnt){
+      alert('Kindly Enter Less than or equal to Fees Amount');
+      $(this).val("0");
+      //To recalculate the balance to paid if amount entered greater value.
+      var scholaramnt = parseInt($(this).parent().parent().find('.grpfeesscholarship').val());
+      var grpfeeamnt = parseInt($(this).parent().parent().find('.grpfeesamnt').val());
+      var balanceFees = grpfeeamnt - (scholaramnt);
+      $(this).parent().parent().find('.grpfeesbalance').val(balanceFees);
+      
+    }else{
+      $(this).parent().parent().find('.grpfeesbalance').val(balanceFees);
+      
+    }
+  }); //Group fee calculation END.
 
- 
+  $('.extrafeesscholar').keyup(function(){
+    var extrascholaramnt = parseInt($(this).parent().parent().find('.extrafeesscholar').val());
+    var extrafeeamnt = parseInt($(this).parent().parent().find('.extrafeesamnt').val());
+    var extrabalanceFees = extrafeeamnt - extrascholaramnt;
+    
+    if(extrascholaramnt > extrafeeamnt){
+      alert('Kindly Enter Less than or equal to Fees Amount');
+      $(this).val("0");
+      //To recalculate the balance to paid if amount entered greater value.
+      var extrascholaramnt = parseInt($(this).parent().parent().find('.extrafeesscholar').val());
+      var extrafeeamnt = parseInt($(this).parent().parent().find('.extrafeesamnt').val());
+      var extrabalanceFees = extrafeeamnt - extrascholaramnt;
+      $(this).parent().parent().find('.extrafeesbalance').val(extrabalanceFees);
 
-	
+    }else{
+      $(this).parent().parent().find('.extrafeesbalance').val(extrabalanceFees);
+
+    }
+  }); //Extra curricular fee calculation END.
+
+  $('.amenityfeesscholar').keyup(function(){
+    var amenityscholaramnt = parseInt($(this).parent().parent().find('.amenityfeesscholar').val());
+    var amenityfeeamnt = parseInt($(this).parent().parent().find('.amenityfees').val());
+    var amenitybalanceFees = amenityfeeamnt - amenityscholaramnt;
+    
+    if(amenityscholaramnt > amenityfeeamnt){
+      alert('Kindly Enter Less than or equal to Fees Amount');
+      $(this).val("0");
+      //To recalculate the balance to paid if amount entered greater value.
+      var amenityscholaramnt = parseInt($(this).parent().parent().find('.amenityfeesscholar').val());
+      var amenityfeeamnt = parseInt($(this).parent().parent().find('.amenityfees').val());
+      var amenitybalanceFees = amenityfeeamnt - amenityscholaramnt;
+      $(this).parent().parent().find('.amenityfeesbalance').val(amenitybalanceFees);
+
+    }else{
+      $(this).parent().parent().find('.amenityfeesbalance').val(amenitybalanceFees);
+
+    }
+  }); //Amenity fee calculation END.
+  
+  $('.transportfeesscholarship').keyup(function(){
+    var transportscholaramnt = parseInt($(this).parent().parent().find('.transportfeesscholarship').val());
+    var transportfeeamnt = parseInt($(this).parent().parent().find('.transportfeesamnt').val());
+    var transportbalanceFees = transportfeeamnt - transportscholaramnt;
+    
+    if(transportscholaramnt > transportfeeamnt){
+      alert('Kindly Enter Less than or equal to Fees Amount');
+      $(this).val("0");
+      //To recalculate the balance to paid if amount entered greater value.
+      var transportscholaramnt = parseInt($(this).parent().parent().find('.transportfeesscholarship').val());
+      var transportfeeamnt = parseInt($(this).parent().parent().find('.transportfeesamnt').val());
+      var transportbalanceFees = transportfeeamnt - transportscholaramnt;
+      $(this).parent().parent().find('.transportfeesbalance').val(transportbalanceFees);
+      
+    }else{
+      $(this).parent().parent().find('.transportfeesbalance').val(transportbalanceFees);
+    }
+  }); //Group fee calculation END.
+
+} //after ajax function END.

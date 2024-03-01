@@ -23,7 +23,6 @@ if(isset($_POST['student_extra_curricular'])){
 $CheckReceiptQry = $connect->query("SELECT id FROM `admission_fees` WHERE admission_id = '$admissionFormId' order by id desc limit 1");
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
-    //(ecaf.extra_amount - afd.FeeReceived) as extra_amount
     $feeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as extra_amount, afd.fees_master_id as fees_id, afd.fees_id as extra_fee_id, ecaf.extra_particulars FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id JOIN extra_curricular_activities_fee ecaf ON afd.fees_id = ecaf.extra_fee_id WHERE af.id = '$get_temp_fees_id' && afd.fees_table_name = 'extratable' ");
 
 }else{
@@ -31,17 +30,23 @@ if($CheckReceiptQry->rowCount() > 0){
 }
 
 $i=0;
-while($feeDetailsInfo = $feeDetailsQry->fetch()){
+while($extraFeeDetailsInfo = $feeDetailsQry->fetch()){
+    $extraConcessionQry = $connect->query("SELECT SUM(scholarship_amount) as extraTotalScholarshipAmnt FROM `fees_concession` WHERE `student_id`='$admissionFormId' && `fees_table_name`='extratable' && `fees_id` = '".$extraFeeDetailsInfo['extra_fee_id']."' ");
+    $extraTotalScholarshipAmnt = '0';
+    if($extraConcessionQry->rowCount() > 0){
+        $extraTotalScholarshipAmnt = $extraConcessionQry->fetch()['extraTotalScholarshipAmnt'];
+    }
+    $extraAmount = $extraFeeDetailsInfo['extra_amount'] - $extraTotalScholarshipAmnt;
 ?>
 <tr>
     <td>
-        <input type="hidden" class="form-control" name="extraFeesMasterid[]" value="<?php echo $feeDetailsInfo['fees_id']; ?>">
-        <input type="hidden" class="form-control" name="extraAmntid[]" value="<?php echo $feeDetailsInfo['extra_fee_id']; ?>">
-        <?php echo $feeDetailsInfo['extra_particulars']; ?> 
+        <input type="hidden" class="form-control" name="extraFeesMasterid[]" value="<?php echo $extraFeeDetailsInfo['fees_id']; ?>">
+        <input type="hidden" class="form-control" name="extraAmntid[]" value="<?php echo $extraFeeDetailsInfo['extra_fee_id']; ?>">
+        <?php echo $extraFeeDetailsInfo['extra_particulars']; ?> 
     </td>
-    <td><input type="number" class="form-control extrafeesamnt" name="extraAmnt[]" value="<?php echo $feeDetailsInfo['extra_amount']; ?>" readonly> </td>
+    <td><input type="number" class="form-control extrafeesamnt" name="extraAmnt[]" value="<?php echo $extraAmount; ?>" readonly> </td>
     <td><input type="number" class="form-control extrafeesreceived" name="extraAmntReceived[]" value="0"> </td>
     <td><input type="number" class="form-control extrafeesscholar" name="extraAmntScholarship[]" value="0"> </td>
-    <td><input type="number" class="form-control extrafeesbalance" name="extraAmntBalance[]" value="<?php echo $feeDetailsInfo['extra_amount']; ?>" readonly> </td>
+    <td><input type="number" class="form-control extrafeesbalance" name="extraAmntBalance[]" value="<?php echo $extraAmount; ?>" readonly> </td>
 </tr>
 <?php } ?>

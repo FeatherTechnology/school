@@ -157,7 +157,7 @@ $(function () {
 });
 
 function getStandardList() { //Getting standard list from database.
-  var upd_std = $('#standardEdit').val();
+  // var upd_std = $('#standardEdit').val();
   $.ajax({
     type: 'POST',
     data: {},
@@ -168,9 +168,9 @@ function getStandardList() { //Getting standard list from database.
       $('#standard').append("<option value='0'>Select Standard</option>");
       for (var i = 0; i < response.length; i++) {
         var selected = '';
-        if (upd_std == response[i]['std_id']) {
-          selected = 'selected';
-        }
+        // if (upd_std == response[i]['std_id']) {
+        //   selected = 'selected';
+        // }
         $('#standard').append("<option value='" + response[i]['std_id'] + "'" + selected + ">" + response[i]['std'] + "</option>");
       }
     }

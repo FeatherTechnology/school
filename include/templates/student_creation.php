@@ -9,7 +9,7 @@ if(isset($_SESSION["userid"])){
 $StudentList = $userObj->getTempStudentList($mysqli,$school_id,$year_id);
 $NewStudentList = $userObj->getNewTempStudentList($mysqli,$school_id,$year_id);
 $OldStudentList = $userObj->getOldTempStudentList($mysqli,$school_id,$year_id);
-$StaffList = $userObj->getStaffList($mysqli,$school_id,$year_id);
+$StaffList = $userObj->getStaffList($mysqli,$school_id);
 $AreaList = $userObj->getAreaList($mysqli,$school_id,$year_id);
 $CastList = $userObj->getcastList($mysqli);
 // $extraCurricularList = $userObj->getExtrtaCurricularList($mysqli,$school_id,$year_id);
@@ -230,6 +230,11 @@ if($idupd>0)
              // Enable the text box for editing
             // $('#emisno').prop('readonly', false);
         }
+
+        setTimeout(() => {
+            setReferredByValue();
+        }, 2000);
+
     </script>
 
 <?php    
@@ -729,6 +734,7 @@ if($idupd>0)
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label for="inputReadOnly">Reference(if any)</label>
+                                            <input type="hidden" name="referred_by" id="referred_by" >
                                             <select class="select2 form-control" id="referencecat" tabindex="46" name="referencecat"><option value="">Select any...</option>
                                                 <option value="New Student"<?php  if(isset($referencecat)) { if($referencecat == "New Student") echo 'selected'; }?>>New Student</option>
                                                 <option value="Old Student"<?php  if(isset($referencecat)) { if($referencecat == "Old Student") echo 'selected'; }?>>Old Student</option>
@@ -756,7 +762,7 @@ if($idupd>0)
                                             <select class="select2  form-control RefStudentId refchoosen"  id="refstudentid" name="refstudentid"><option value="">Select a Student...</option>
                                             <?php if (sizeof($NewStudentList)>0) { 
                                                 for($j=0;$j<count($NewStudentList);$j++) { ?>
-                                                <option <?php if(isset($refstudentid)) { if($NewStudentList[$j]['temp_admission_id'] == $refstudentid)  echo 'selected'; }  ?> value="<?php echo $NewStudentList[$j]['temp_admission_id']; ?>">
+                                                <option <?php if(isset($refstudentid)) { if($NewStudentList[$j]['student_id'] == $refstudentid)  echo 'selected'; }  ?> value="<?php echo $NewStudentList[$j]['student_id']; ?>">
                                                 <?php echo $NewStudentList[$j]['student_name'];?></option>
                                                 <?php }} ?>
                                             </select>
@@ -768,8 +774,8 @@ if($idupd>0)
                                             <select class="select2  form-control" id="refoldstudentid" name="refoldstudentid"><option value="">Select a Student...</option>
                                             <?php if (sizeof($OldStudentList)>0) { 
                                                 for($j=0;$j<count($OldStudentList);$j++) { ?>
-                                                <option <?php if(isset($refoldstudentid)) { if($OldStudentList[$j]['temp_admission_id'] == $refoldstudentid)  echo 'selected'; }  ?> value="<?php echo $OldStudentList[$j]['temp_admission_id']; ?>">
-                                                <?php echo $OldStudentList[$j]['temp_student_name'];?></option>
+                                                <option <?php if(isset($refoldstudentid)) { if($OldStudentList[$j]['student_id'] == $refoldstudentid)  echo 'selected'; }  ?> value="<?php echo $OldStudentList[$j]['student_id']; ?>">
+                                                <?php echo $OldStudentList[$j]['student_name'];?></option>
                                                 <?php }} ?>
                                             </select>
                                         </div>

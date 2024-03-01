@@ -322,7 +322,7 @@ $billmodel = $userObj->getbilltype($mysqli, $userid);?>
 					<div class="sidebar-submenu">
 						<ul>
 						<li>
-								<a href="student_list_report"><i class="icon-file"></i>Student List</a>
+								<a href="student_caste_report"><i class="icon-file"></i>Student List</a>
 							</li>
 						<li>
 								<a href="fees_collection"><i class="icon-attach_money"></i>Fees Collection</a>
