@@ -1,23 +1,5 @@
 // Document is ready
 $(document).ready(function(){
-
-  // Get the current year
-  var currentYear = new Date().getFullYear();
-  var user_academic_year = $('#user_academic_year').val();
-  // Generate a list of academic years for the dropdown
-  let dropdown = document.getElementById('academic_year');
-  for (let i = currentYear; i >= currentYear - 4; i--) {
-    let option = document.createElement('option');
-    option.value = i + '-' + (i + 1);
-    option.text = i + '-' + (i + 1);
-    let selectValue = i + '-' + (i + 1);
-    let selected = '';
-    if(selectValue == user_academic_year){
-      selected = 'selected';
-    }
-    option.selected = selected;
-    dropdown.appendChild(option);
-  }
   
   $('input[name="payment_mode"]').click(function(){
     var value = $(this).val();
@@ -88,6 +70,7 @@ $(document).ready(function(){
 $(function(){
   getReceiptCode(); //Receipt Number;
   getFeesTableFunc();
+  getAcademicYearList(); //Get  Academic Year List.
 });
 
 function getFeesTableFunc(){
@@ -336,4 +319,26 @@ function getCollectedAmount(){
   });
 
   return totalAmount;
+}
+
+function getAcademicYearList(){ //Getting academic_year list from database.
+  $.ajax({
+      type: 'POST',
+      data: {},
+      url: 'ajaxFiles/getAcademicYearList.php',
+      dataType: 'json',
+      success:function(response){
+          $('#academic_year').empty();
+          $('#academic_year').append("<option value=''>Select Academic Year</option>");
+          var user_academic_year = $('#user_academic_year').val();
+          var selected = '';
+          for(var i=0; i <response.length; i++){
+            if (user_academic_year  == response[i]['academicyear']) {
+              selected  = 'selected';
+            }
+              
+              $('#academic_year').append("<option value='" +response[i]['academicyear']+ "' "+selected+">" +response[i]['academicyear']+ "</option>");
+          }
+      }
+  })
 }

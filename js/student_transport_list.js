@@ -1,18 +1,6 @@
 // Document is ready
 $(document).ready(function () {
-
-    // Get the current year
-    var currentYear = new Date().getFullYear();
-
-    // Generate a list of academic years for the dropdown
-    var dropdown = document.getElementById('academic_year');
-    for (var i = currentYear; i >= currentYear - 4; i--) {
-    var option = document.createElement('option');
-    option.value = i + '-' + (i + 1);
-    option.text = i + '-' + (i + 1);
-    dropdown.appendChild(option);
-    }
-
+    
     $('#standard').change(function(){
         let standardID = $(this).val();
         let academicYear = $('#academic_year').val();
@@ -61,6 +49,7 @@ $(document).ready(function () {
 
 $(function () {
   getStandardList(); //Getting standard list from database.
+  getAcademicYearList(); //Get  Academic Year List.
 });
 
 function getStandardList() { //Getting standard list from database.
@@ -76,5 +65,22 @@ function getStandardList() { //Getting standard list from database.
         $('#standard').append("<option value='" + response[i]['std_id'] + "'>" + response[i]['std'] + "</option>");
         }
     }
+    })
+}
+
+function getAcademicYearList(){ //Getting academic_year list from database.
+    $.ajax({
+        type: 'POST',
+        data: {},
+        url: 'ajaxFiles/getAcademicYearList.php',
+        dataType: 'json',
+        success:function(response){
+            $('#academic_year').empty();
+            $('#academic_year').append("<option value=''>Select Academic Year</option>");
+            for(var i=0; i <response.length; i++){
+                
+                $('#academic_year').append("<option value='" +response[i]['academicyear']+ "'>" +response[i]['academicyear']+ "</option>");
+            }
+        }
     })
 }
