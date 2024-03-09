@@ -30,7 +30,7 @@ if(isset($_POST['stdSection'])){
     <tbody>
 
 <?php
-$getStudentListQry = $connect->query("SELECT sc.student_name, std.standard, sc.section, sc.father_mobile_no, ac.area_name, sc.transportstopping, sc.busno, ac.transport_amount 
+$getStudentListQry = $connect->query("SELECT sc.student_name, std.standard, sc.section, sc.sms_sent_no, ac.area_name, sc.transportstopping, sc.busno, ac.transport_amount 
 FROM `student_creation` sc 
 JOIN standard_creation std ON sc.standard = std.standard_id 
 JOIN area_creation ac ON sc.transportarearefid = ac.area_id 
@@ -43,7 +43,7 @@ while($studentList = $getStudentListQry->fetchObject()){
         <td><?php echo $studentList->student_name; ?></td>
         <td><?php echo ($stdMedium == '1') ? 'Tamil' : 'English'; ?></td>
         <td><?php echo $studentList->standard.' - '.$studentList->section; ?></td>
-        <td><?php echo $studentList->father_mobile_no; ?></td>
+        <td><?php echo $studentList->sms_sent_no; ?></td>
         <td><?php echo $studentList->area_name; ?></td>
         <td><?php echo $studentList->transportstopping; ?></td>
         <td><?php echo $studentList->busno; ?></td>

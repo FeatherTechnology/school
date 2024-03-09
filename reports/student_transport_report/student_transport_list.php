@@ -47,7 +47,7 @@
                                 <div class="form-group">
                                     <label>Section</label>
                                     <select class="form-control" id="section" name="section" tabindex="4">
-                                        <option value="0">Select Section</option>
+                                        <option value="0">All</option>
                                     </select>
                                 </div>
                             </div><br><br><br><br><br><br>
