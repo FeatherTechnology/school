@@ -24,6 +24,7 @@ if(isset($_POST['stdSection'])){
             <th rowspan="2">Admission Number</th>
             <th rowspan="2">Student Name</th>
             <th rowspan="2">Standard & Section</th>
+            <th rowspan="2">Mobile No</th>
             <th rowspan="2">Last Year Pending</th>
             <th colspan="3">Pending Fees</th>
             <th rowspan="2">Book</th>
@@ -42,7 +43,7 @@ if(isset($_POST['stdSection'])){
     <tbody>
 
 <?php
-$getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype 
+$getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype, sc.sms_sent_no 
 FROM `student_creation` sc 
 JOIN standard_creation std ON sc.standard = std.standard_id
 WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' && sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' ");
@@ -106,6 +107,7 @@ while($studentList = $getStudentListQry->fetchObject()){
         <td><?php echo $studentList->admission_number; ?></td>
         <td><?php echo $studentList->student_name; ?></td>
         <td><?php echo $studentList->standard.' - '.$studentList->section; ?></td>
+        <td><?php echo $studentList->sms_sent_no; ?></td>
         <td><?php echo ($lsPending > 0 ) ? $lsPending : '0'; ?></td>
         <td><?php echo ($term_pending) ? $term_pending[0] : '0'; ?></td>
         <td><?php echo ($term_pending) ? $term_pending[1] : '0'; ?></td>

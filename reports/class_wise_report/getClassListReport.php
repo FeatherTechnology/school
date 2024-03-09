@@ -24,12 +24,13 @@ if(isset($_POST['stdSection'])){
         <th>Mother Name</th>
         <th>Admission Number</th>
         <th>Gender</th>
+        <th>Mobile No</th>
         <th>Address</th>
     </thead>
     <tbody>
 
 <?php
-$getStudentListQry = $connect->query("SELECT student_name, std.standard, section, father_name, mother_name, admission_number, gender, flat_no, street, area_locatlity, district, pincode FROM `student_creation` sc JOIN standard_creation std ON sc.standard = std.standard_id WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' && sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0'");
+$getStudentListQry = $connect->query("SELECT student_name, std.standard, section, father_name, mother_name, admission_number, gender, flat_no, street, area_locatlity, district, pincode, sms_sent_no FROM `student_creation` sc JOIN standard_creation std ON sc.standard = std.standard_id WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' && sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0'");
 while($studentList = $getStudentListQry->fetchObject()){
 ?>
     <tr>
@@ -40,6 +41,7 @@ while($studentList = $getStudentListQry->fetchObject()){
         <td><?php echo $studentList->mother_name; ?></td>
         <td><?php echo $studentList->admission_number; ?></td>
         <td><?php echo $studentList->gender; ?></td>
+        <td><?php echo $studentList->sms_sent_no; ?></td>
         <td><?php echo $studentList->flat_no.', '.$studentList->street.', '.$studentList->area_locatlity.', '.$studentList->district.', '.$studentList->pincode; ?></td>
     </tr>
 <?php } ?>

@@ -30,6 +30,7 @@ if($feeType == '1'){ //school
             <th rowspan="2">Admission Number</th>
             <th rowspan="2">Student Name</th>
             <th rowspan="2">Standard & Section</th>
+            <th rowspan="2">Mobile No</th>
             <th rowspan="2">Total Fee</th>
             <th rowspan="2">Paid Fee</th>
             <th rowspan="2">Concession</th>
@@ -46,7 +47,7 @@ if($feeType == '1'){ //school
     <tbody>
 
 <?php
-$getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype 
+$getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype, sc.sms_sent_no 
 FROM `student_creation` sc 
 JOIN standard_creation std ON sc.standard = std.standard_id
 WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' &&  sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' ");
@@ -89,6 +90,7 @@ while($studentList = $getStudentListQry->fetchObject()){
         <td><?php echo $studentList->admission_number; ?></td>
         <td><?php echo $studentList->student_name; ?></td>
         <td><?php echo $studentList->standard.' - '.$studentList->section; ?></td>
+        <td><?php echo $studentList->sms_sent_no; ?></td>
         <td><?php echo $total_fee; ?></td>
         <td><?php echo $paid_fee; ?></td>
         <td><?php echo $concession; ?></td>
@@ -112,6 +114,7 @@ $grnd_total_amount += $total_amount;
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
     <td>Grand Total</td>
     <td><?php echo $grnd_total_fee; ?></td>
     <td><?php echo $grnd_paid_fee; ?></td>
@@ -132,6 +135,7 @@ $grnd_total_amount += $total_amount;
             <th>Admission Number</th>
             <th>Student Name</th>
             <th>Standard & Section</th>
+            <th>Mobile No</th>
             <th>Total Fee</th>
             <th>Paid Fee</th>
             <th>Concession</th>
@@ -143,7 +147,7 @@ $grnd_total_amount += $total_amount;
     <tbody>
 
 <?php
-$getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype 
+$getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype, sc.sms_sent_no 
 FROM `student_creation` sc 
 JOIN standard_creation std ON sc.standard = std.standard_id
 WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' &&  sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' ");
@@ -181,6 +185,7 @@ while($studentList = $getStudentListQry->fetchObject()){
         <td><?php echo $studentList->admission_number; ?></td>
         <td><?php echo $studentList->student_name; ?></td>
         <td><?php echo $studentList->standard.' - '.$studentList->section; ?></td>
+        <td><?php echo $studentList->sms_sent_no; ?></td>
         <td><?php echo $total_fee; ?></td>
         <td><?php echo $paid_fee; ?></td>
         <td><?php echo $concession; ?></td>
@@ -197,6 +202,7 @@ $grnd_total_amount += $pending1;
 } ?>
 </tbody>
 <tr style="font-weight: bold;">
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -217,6 +223,7 @@ $grnd_total_amount += $pending1;
             <th>Admission Number</th>
             <th>Student Name</th>
             <th>Standard & Section</th>
+            <th>Mobile No</th>
             <th>Total Fee</th>
             <th>Paid Fee</th>
             <th>Concession</th>
@@ -227,7 +234,7 @@ $grnd_total_amount += $pending1;
     <tbody>
 
 <?php
-$getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype 
+$getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype, sc.sms_sent_no 
 FROM `student_creation` sc 
 JOIN standard_creation std ON sc.standard = std.standard_id
 WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' &&  sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' ");
@@ -287,6 +294,7 @@ while($studentList = $getStudentListQry->fetchObject()){
         <td><?php echo $studentList->admission_number; ?></td>
         <td><?php echo $studentList->student_name; ?></td>
         <td><?php echo $studentList->standard.' - '.$studentList->section; ?></td>
+        <td><?php echo $studentList->sms_sent_no; ?></td>
         <td><?php echo $total_fee; ?></td>
         <td><?php echo $paid_fee; ?></td>
         <td><?php echo $concession; ?></td>
@@ -301,6 +309,7 @@ $grnd_pending += $lsPending;
 } ?>
 </tbody>
 <tr style="font-weight: bold;">
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -322,6 +331,7 @@ $grnd_pending += $lsPending;
             <th>Admission Number</th>
             <th>Student Name</th>
             <th>Standard & Section</th>
+            <th>Mobile No</th>
             <th>Total Fee</th>
             <th>Paid Fee</th>
             <th>Concession</th>
@@ -332,7 +342,7 @@ $grnd_pending += $lsPending;
     <tbody>
 
 <?php
-$getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype 
+$getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype, sc.sms_sent_no 
 FROM `student_creation` sc 
 JOIN standard_creation std ON sc.standard = std.standard_id
 WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' &&  sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' ");
@@ -377,6 +387,7 @@ while($studentList = $getStudentListQry->fetchObject()){
         <td><?php echo $studentList->admission_number; ?></td>
         <td><?php echo $studentList->student_name; ?></td>
         <td><?php echo $studentList->standard.' - '.$studentList->section; ?></td>
+        <td><?php echo $studentList->sms_sent_no; ?></td>
         <td><?php echo $total_fee; ?></td>
         <td><?php echo $paid_fee; ?></td>
         <td><?php echo $concession; ?></td>
@@ -391,6 +402,7 @@ $grnd_pending += $transport_totals;
 } ?>
 </tbody>
 <tr style="font-weight: bold;">
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
