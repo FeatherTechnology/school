@@ -320,14 +320,65 @@ $billmodel = $userObj->getbilltype($mysqli, $userid);?>
 						<span class="menu-text"> Reporting </span>
 					</a>
 					<div class="sidebar-submenu">
+						<!-- Student report START -->
 						<ul>
-						<li>
-								<a href="student_caste_report"><i class="icon-file"></i>Student List</a>
-							</li>
-						<li>
-								<a href="fees_collection"><i class="icon-attach_money"></i>Fees Collection</a>
+							<li class="sidebar-dropdown1">
+								<a href="javascript:void(0)">
+									<i class="icon-book"></i>
+									<span class="menu-text" >Student Report</span>
+								</a>
+								<div class="sidebar-submenu1">
+									<ul>
+										<li>
+											<a href="student_caste_report"><i class="icon-file"></i>Student Caste List</a>	
+										</li>
+										<li>
+											<a href="class_wise_list"><i class="icon-file"></i>Class wise List</a>	
+										</li>
+										<li>
+											<a href="register_of_admission"><i class="icon-file"></i>Register of Admission</a>	
+										</li>
+										<li>
+											<a href="student_transport_list"><i class="icon-file"></i>Student Transport List</a>	
+										</li>
+									</ul>
+								</div>	
 							</li>
 						</ul>
+						<!-- Student report END -->
+
+						<!-- Fee Details START -->
+						<ul>
+							<li class="sidebar-dropdown1">
+								<a href="javascript:void(0)">
+									<i class="icon-book"></i>
+									<span class="menu-text" >Fee Details</span>
+								</a>
+								<div class="sidebar-submenu1">
+									<ul>
+										<li>
+											<a href="pending_fees_details"><i class="icon-file"></i>Pending Fee Details</a>	
+										</li>
+										<li>
+											<a href="all_type_pending_fees"><i class="icon-file"></i>All Type Pending Fee Details</a>	
+										</li>
+										<li>
+											<a href="fees_summary"><i class="icon-file"></i>Fees Summary</a>	
+										</li>
+										<li>
+											<a href="daily_fees_collection"><i class="icon-file"></i>Daily Fees Collection</a>	
+										</li>
+										<li>
+											<a href="monthwise_fees_summary"><i class="icon-file"></i>Month-wise Fees Summary</a>	
+										</li>
+										<li>
+											<a href="classwise_overall_pending"><i class="icon-file"></i>Class-wise Overall Pending</a>	
+										</li>
+									</ul>	
+								</div>	
+							</li>
+						</ul>
+						<!-- Fee Details END -->
 					</div>
 				</li>
 			</ul>

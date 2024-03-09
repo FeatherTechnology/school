@@ -7,7 +7,7 @@ if ($getPayFeesQry->num_rows > 0) {
     $receipt_number = $row["receipt_no"];
 
 } else {
-    $receipt_number = 1;
+    $receipt_number = 'GPR-1';
 }
 
 $getTempPayFeesQry = $mysqli->query("SELECT ReceiptNo FROM temp_admission_fees WHERE ReceiptNo != '' ORDER BY id DESC LIMIT 1  ");
@@ -16,10 +16,14 @@ if(mysqli_num_rows($getTempPayFeesQry) > 0){
     $receiptno = $getdata['ReceiptNo'];
 
 }else{
-    $receiptno = 1;
+    $receiptno = 'GPR-1';
 }
+
+
 $maxReceiptNo = max($receipt_number, $receiptno);
-$newReceiptNo = $maxReceiptNo + 1;
+$splited = explode('-', $maxReceiptNo);
+$numadded = $splited[1] + 1;
+$newReceiptNo = $splited[0]. '-' . $numadded;
 
 echo json_encode($newReceiptNo);
 ?>

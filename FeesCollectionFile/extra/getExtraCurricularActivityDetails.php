@@ -17,10 +17,9 @@ if(isset($_POST['tempStandard'])){
     $standardId = $_POST['tempStandard'];
 }
 
-$CheckReceiptQry = $connect->query("SELECT * FROM `temp_admission_fees` WHERE TempAdmissionId = '$tempAdmissionFormId' order by id desc limit 1");
+$CheckReceiptQry = $connect->query("SELECT taf.id FROM `temp_admission_fees` taf JOIN temp_admissionfees_details tafd ON taf.id = tafd.TempAdmFeeRefId WHERE taf.TempAdmissionId = '$tempAdmissionFormId' && tafd.FeesTableName = 'extratable' ORDER BY taf.id DESC LIMIT 1");
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
-    //(ecaf.extra_amount - tafd.FeeReceived) as extra_amount
     $feeDetailsQry = $connect->query("SELECT tafd.BalancetobePaid as extra_amount, tafd.FeesMasterId as fees_id, tafd.FeesId as extra_fee_id, ecaf.extra_particulars FROM `temp_admission_fees` taf JOIN temp_admissionfees_details tafd ON taf.id = tafd.TempAdmFeeRefId JOIN extra_curricular_activities_fee ecaf ON tafd.FeesId = ecaf.extra_fee_id WHERE taf.id = '$get_temp_fees_id' && tafd.FeesTableName = 'extratable' ");
 
 }else{

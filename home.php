@@ -345,6 +345,42 @@ if($current_page == 'vendorcreation' || $current_page == 'auction_details') {
 			if($current_page == 'student_caste_report') { 
 				include "reports/caste_report/student_caste_report.php";
 			}
+			//Class wise List.
+			if($current_page == 'class_wise_list') { 
+				include "reports/class_wise_report/class_wise_list.php";
+			}
+			//Register of Admission.
+			if($current_page == 'register_of_admission') { 
+				include "reports/register_of_admission/register_of_admission.php";
+			}
+			//Student transport List.
+			if($current_page == 'student_transport_list') { 
+				include "reports/student_transport_report/student_transport_list.php";
+			}
+			//Student Fees Details.
+			if($current_page == 'all_type_pending_fees') { 
+				include "reports/fees_details_report/all_type_pending_fees.php";
+			}
+			
+			if($current_page == 'pending_fees_details') { 
+				include "reports/fees_details_report/pending_fees_details.php";
+			}
+
+			if($current_page == 'fees_summary') { 
+				include "reports/fees_details_report/fees_summary.php";
+			}
+
+			if($current_page == 'daily_fees_collection') { 
+				include "reports/fees_details_report/daily_fees_collection.php";
+			}
+
+			if($current_page == 'monthwise_fees_summary') { 
+				include "reports/fees_details_report/monthwise_fees_summary.php";
+			}
+
+			if($current_page == 'classwise_overall_pending') { 
+				include "reports/fees_details_report/classwise_overall_pending.php";
+			}
 			?>
 
 

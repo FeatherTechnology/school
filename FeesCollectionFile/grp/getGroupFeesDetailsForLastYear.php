@@ -17,7 +17,7 @@ if(isset($_POST['standard'])){
     $standardId = $_POST['standard'];
 }
 
-$CheckReceiptQry = $connect->query("SELECT id FROM `admission_fees` WHERE admission_id = '$admissionFormId' && academic_year = '$academicYear' order by id desc limit 1");
+$CheckReceiptQry = $connect->query("SELECT af.id FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$admissionFormId' && af.academic_year = '$academicYear' && afd.fees_table_name = 'grptable' ORDER BY af.id DESC LIMIT 1");
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
     $feeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as grp_amount, afd.fees_master_id as fees_id, afd.fees_id as grp_course_id, gcf.grp_particulars FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id WHERE af.id = '$get_temp_fees_id' && af.academic_year = '$academicYear' && afd.fees_table_name = 'grptable' ");

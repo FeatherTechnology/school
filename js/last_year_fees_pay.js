@@ -114,7 +114,7 @@ function getFeesTableFunc(){
 function getReceiptCode(){
   // get Pay Reciept Code
   $.ajax({
-      url: "ajaxgetpaylastcode.php",
+      url: "ajaxFiles/ajaxgetpaylastcode.php",
       data: {},
       cache: false,
       type: "post",

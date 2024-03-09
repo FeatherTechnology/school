@@ -17,10 +17,9 @@ if(isset($_POST['standard'])){
     $standardId = $_POST['standard'];
 }
 
-$CheckReceiptQry = $connect->query("SELECT id FROM `admission_fees` WHERE admission_id = '$admissionFormId' && academic_year = '$academicYear' order by id desc limit 1");
+$CheckReceiptQry = $connect->query("SELECT afs.id FROM `admission_fees` afs JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id WHERE afs.admission_id = '$admissionFormId' && afs.academic_year = '$academicYear' && afd.fees_table_name = 'amenitytable' ORDER BY afs.id DESC LIMIT 1");
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
-    //(af.amenity_amount - afd.FeeReceived) as amenity_amount
     $feeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as amenity_amount, afd.fees_master_id as fees_id, afd.fees_id as amenity_fee_id, af.amenity_particulars FROM `admission_fees` afs JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id JOIN amenity_fee af ON afd.fees_id = af.amenity_fee_id WHERE afs.id = '$get_temp_fees_id' && afs.academic_year = '$academicYear' && afd.fees_table_name = 'amenitytable' ");
 
 }else{
