@@ -1,3 +1,11 @@
+<style>
+    .customizeTable{
+        display: block !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+    }
+</style>
+
 <!-- Page header start -->
 <div class="page-header">
     <ol class="breadcrumb">
@@ -31,83 +39,85 @@
 
         <div class="card">
             <div class="card-body">
-                <table class="table table-bordered table-responsive">
-                    <thead>
-                        <tr>
-                            <th rowspan="3">Standard</th>
-                            <th rowspan="3">Total</th>
-                            <th colspan="6" class="hidebc">BC</th>
-                            <th colspan="6" class="hidembc">MBC</th>
-                            <th colspan="6" class="hidesc">SC</th>
-                            <th colspan="6" class="hidest">ST</th>
-                            <th colspan="6" class="hideobc">OBC</th>
-                            <th colspan="6" class="hidednc">DNC</th>
-                            <th colspan="2" class="hidebcm">BCM</th>
-                        </tr>
-                        <tr>
-                            <th colspan="2" class="hidebc">Hindu</th>
-                            <th colspan="2" class="hidebc">Christian</th>
-                            <th colspan="2" class="hidebc">Muslim</th>
-                            <th colspan="2" class="hidembc">Hindu</th>
-                            <th colspan="2" class="hidembc">Christian</th>
-                            <th colspan="2" class="hidembc">Muslim</th>
-                            <th colspan="2" class="hidesc">Hindu</th>
-                            <th colspan="2" class="hidesc">Christian</th>
-                            <th colspan="2" class="hidesc">Muslim</th>
-                            <th colspan="2" class="hidest">Hindu</th>
-                            <th colspan="2" class="hidest">Christian</th>
-                            <th colspan="2" class="hidest">Muslim</th>
-                            <th colspan="2" class="hideobc">Hindu</th>
-                            <th colspan="2" class="hideobc">Christian</th>
-                            <th colspan="2" class="hideobc">Muslim</th>
-                            <th colspan="2" class="hidednc">Hindu</th>
-                            <th colspan="2" class="hidednc">Christian</th>
-                            <th colspan="2" class="hidednc">Muslim</th>
-                            <th colspan="2" class="hidebcm">Muslim</th>
-                        </tr>
-                        <tr>
-                            <th class="hidebc">Boys</th>
-                            <th class="hidebc">Girls</th>
-                            <th class="hidebc">Boys</th>
-                            <th class="hidebc">Girls</th>
-                            <th class="hidebc">Boys</th>
-                            <th class="hidebc">Girls</th>
-                            <th class="hidembc">Boys</th>
-                            <th class="hidembc">Girls</th>
-                            <th class="hidembc">Boys</th>
-                            <th class="hidembc">Girls</th>
-                            <th class="hidembc">Boys</th>
-                            <th class="hidembc">Girls</th>
-                            <th class="hidesc">Boys</th>
-                            <th class="hidesc">Girls</th>
-                            <th class="hidesc">Boys</th>
-                            <th class="hidesc">Girls</th>
-                            <th class="hidesc">Boys</th>
-                            <th class="hidesc">Girls</th>
-                            <th class="hidest">Boys</th>
-                            <th class="hidest">Girls</th>
-                            <th class="hidest">Boys</th>
-                            <th class="hidest">Girls</th>
-                            <th class="hidest">Boys</th>
-                            <th class="hidest">Girls</th>
-                            <th class="hideobc">Boys</th>
-                            <th class="hideobc">Girls</th>
-                            <th class="hideobc">Boys</th>
-                            <th class="hideobc">Girls</th>
-                            <th class="hideobc">Boys</th>
-                            <th class="hideobc">Girls</th>
-                            <th class="hidednc">Boys</th>
-                            <th class="hidednc">Girls</th>
-                            <th class="hidednc">Boys</th>
-                            <th class="hidednc">Girls</th>
-                            <th class="hidednc">Boys</th>
-                            <th class="hidednc">Girls</th>
-                            <th class="hidebcm">Boys</th>
-                            <th class="hidebcm">Girls</th>
-                        </tr>
-                    </thead>
-                    <tbody > </tbody>
-                </table>
+                <div class="customizeTable">
+                    <table class="table table-bordered table-striped" id="getStdCasteReport">
+                        <thead>
+                            <tr>
+                                <th rowspan="3" style="vertical-align: top;">Standard</th>
+                                <th rowspan="3" style="vertical-align: top;">Total</th>
+                                <th colspan="6" class="hidebc">BC</th>
+                                <th colspan="6" class="hidembc">MBC</th>
+                                <th colspan="6" class="hidesc">SC</th>
+                                <th colspan="6" class="hidest">ST</th>
+                                <th colspan="6" class="hideobc">OBC</th>
+                                <th colspan="6" class="hidednc">DNC</th>
+                                <th colspan="2" class="hidebcm">BCM</th>
+                            </tr>
+                            <tr>
+                                <th colspan="2" class="hidebc">Hindu</th>
+                                <th colspan="2" class="hidebc">Christian</th>
+                                <th colspan="2" class="hidebc">Muslim</th>
+                                <th colspan="2" class="hidembc">Hindu</th>
+                                <th colspan="2" class="hidembc">Christian</th>
+                                <th colspan="2" class="hidembc">Muslim</th>
+                                <th colspan="2" class="hidesc">Hindu</th>
+                                <th colspan="2" class="hidesc">Christian</th>
+                                <th colspan="2" class="hidesc">Muslim</th>
+                                <th colspan="2" class="hidest">Hindu</th>
+                                <th colspan="2" class="hidest">Christian</th>
+                                <th colspan="2" class="hidest">Muslim</th>
+                                <th colspan="2" class="hideobc">Hindu</th>
+                                <th colspan="2" class="hideobc">Christian</th>
+                                <th colspan="2" class="hideobc">Muslim</th>
+                                <th colspan="2" class="hidednc">Hindu</th>
+                                <th colspan="2" class="hidednc">Christian</th>
+                                <th colspan="2" class="hidednc">Muslim</th>
+                                <th colspan="2" class="hidebcm">Muslim</th>
+                            </tr>
+                            <tr>
+                                <th class="hidebc">Boys</th>
+                                <th class="hidebc">Girls</th>
+                                <th class="hidebc">Boys</th>
+                                <th class="hidebc">Girls</th>
+                                <th class="hidebc">Boys</th>
+                                <th class="hidebc">Girls</th>
+                                <th class="hidembc">Boys</th>
+                                <th class="hidembc">Girls</th>
+                                <th class="hidembc">Boys</th>
+                                <th class="hidembc">Girls</th>
+                                <th class="hidembc">Boys</th>
+                                <th class="hidembc">Girls</th>
+                                <th class="hidesc">Boys</th>
+                                <th class="hidesc">Girls</th>
+                                <th class="hidesc">Boys</th>
+                                <th class="hidesc">Girls</th>
+                                <th class="hidesc">Boys</th>
+                                <th class="hidesc">Girls</th>
+                                <th class="hidest">Boys</th>
+                                <th class="hidest">Girls</th>
+                                <th class="hidest">Boys</th>
+                                <th class="hidest">Girls</th>
+                                <th class="hidest">Boys</th>
+                                <th class="hidest">Girls</th>
+                                <th class="hideobc">Boys</th>
+                                <th class="hideobc">Girls</th>
+                                <th class="hideobc">Boys</th>
+                                <th class="hideobc">Girls</th>
+                                <th class="hideobc">Boys</th>
+                                <th class="hideobc">Girls</th>
+                                <th class="hidednc">Boys</th>
+                                <th class="hidednc">Girls</th>
+                                <th class="hidednc">Boys</th>
+                                <th class="hidednc">Girls</th>
+                                <th class="hidednc">Boys</th>
+                                <th class="hidednc">Girls</th>
+                                <th class="hidebcm">Boys</th>
+                                <th class="hidebcm">Girls</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentCasteDetailsTBODY"> </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

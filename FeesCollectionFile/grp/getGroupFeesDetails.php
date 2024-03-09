@@ -17,7 +17,7 @@ if(isset($_POST['tempStandard'])){
     $standardId = $_POST['tempStandard'];
 }
 
-$CheckReceiptQry = $connect->query("SELECT * FROM `temp_admission_fees` WHERE TempAdmissionId = '$tempAdmissionFormId' order by id desc limit 1");
+$CheckReceiptQry = $connect->query("SELECT taf.id FROM `temp_admission_fees` taf JOIN temp_admissionfees_details tafd ON taf.id = tafd.TempAdmFeeRefId WHERE taf.TempAdmissionId = '$tempAdmissionFormId' && tafd.FeesTableName = 'grptable' ORDER BY taf.id DESC LIMIT 1");
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
     //(gcf.grp_amount - tafd.FeeReceived) as grp_amount

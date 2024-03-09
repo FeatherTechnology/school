@@ -11,8 +11,7 @@ if($selectIC->num_rows>0)
     $receipt_number = $splited[0]. '-' . $rnosplit1;
 
 }else{
-    $initialapp = "TARC-101";
-    $receipt_number = $initialapp;
+    $receipt_number = "TARC-1";
 }
 
 echo json_encode($receipt_number);

@@ -817,6 +817,42 @@ if($current_page == 'temp_admission_pay_fees') { ?>
 if($current_page == 'student_caste_report') { ?>
 <script src="js/student_caste_report.js"></script>
 <?php }
+
+if($current_page == 'class_wise_list') { ?>
+<script src="js/class_wise_list.js"></script>
+<?php }
+
+if($current_page == 'register_of_admission') { ?>
+<script src="js/register_of_admission.js"></script>
+<?php }
+
+if($current_page == 'student_transport_list') { ?>
+<script src="js/student_transport_list.js"></script>
+<?php }
+
+if($current_page == 'all_type_pending_fees') { ?>
+<script src="js/all_type_pending_fees.js"></script>
+<?php }
+
+if($current_page == 'pending_fees_details') { ?>
+<script src="js/pending_fees_details.js"></script>
+<?php }
+
+if($current_page == 'fees_summary') { ?>
+<script src="js/fees_summary.js"></script>
+<?php }
+
+if($current_page == 'daily_fees_collection') { ?>
+<script src="js/daily_fees_collection.js"></script>
+<?php }
+
+if($current_page == 'monthwise_fees_summary') { ?>
+<script src="js/monthwise_fees_summary.js"></script>
+<?php }
+
+if($current_page == 'classwise_overall_pending') { ?>
+<script src="js/classwise_overall_pending.js"></script>
+<?php }
 ?> 
 
 <script src="js/logincreation.js"></script>
