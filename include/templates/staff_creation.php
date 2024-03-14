@@ -151,8 +151,14 @@ if ($idupd > 0) {
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12"> 
                                         <div class="form-group">
                                             <label for="staff_designation"> Designation </label> <span class="required">*</span>
-                                            <input type="text" class="form-control" tabindex="4" id="staff_designation" name="staff_designation"  placeholder="Enter Designation" onkeydown="return /[a-z ]/i.test(event.key)" value="<?php if(isset($designation)) echo $designation; ?>">
-                                            <span id="dsgnCheck" class="text-danger">Enter Designation </span>
+                                            <select  class="form-control" name="staff_designation" id="staff_designation" tabindex="4">
+                                                <option value=''>Select Designation</option>
+                                                <option value='Teaching' <?php if(isset($designation) && $designation == 'Teaching') echo 'selected'; ?>>Teaching</option>
+                                                <option value='Non-Teaching' <?php if(isset($designation) && $designation == 'Non-Teaching') echo 'selected'; ?>>Non Teaching</option>
+                                                <option value='Driver' <?php if(isset($designation) && $designation == 'Driver') echo 'selected'; ?>>Driver</option>
+                                            </select>
+                                            <!-- <input type="text" class="form-control" tabindex="4" id="staff_designation" name="staff_designation"  placeholder="Enter Designation" onkeydown="return /[a-z ]/i.test(event.key)" value="<?php if(isset($designation)) echo $designation; ?>"> -->
+                                            <span id="dsgnCheck" class="text-danger">Select Designation </span>
                                         </div>
                                     </div>
 

@@ -364,7 +364,7 @@ if($idupd>0)
                                     </div>
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Aadhar Number<span class="required">*</span></label></label>
+                                            <label for="disabledInput">Aadhar Number</label>
                                             <input  name="aadhar_number" tabindex="10" placeholder ="Aadhar Number" id="aadhar_number" class="form-control" value="<?php if(isset($aadhar_number)) echo $aadhar_number; ?>" data-type="adhaar-number"   type="text">
                                             <span class ='text-danger' id='aadhar_chk'></span>
                                         </div>
@@ -635,54 +635,7 @@ if($idupd>0)
                                             <span id="standardCheck" class="text-danger">Please Select Standard</span>
                                         </div>
                                     </div>
-                                    <div style="display:none" id="previous_school">
-                                    <div class="card-body">
-                                    <div class="row">
-                                        <!--Fields -->
-                                        <div class="col-md-12"> 
-                                            <div class="row">
-                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label class="label">School Name</label>
-                                            <input class="form-control CharOnly" id="previouschoolname" tabindex="36" maxlength="50" name="previouschoolname" type="text" value="<?php if(isset($previouschoolname)) echo $previouschoolname; ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label class="label">Place</label>
-                                            <input class="form-control CharOnly" id="previousplace" tabindex="37" maxlength="25" name="previousplace" type="text" value="<?php if(isset($previousplace)) echo $previousplace; ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label class="label">DOJ</label>
-                                            <input class="form-control date-picker DOJ" tabindex="38" data-date-format="dd/mm/yyyy" id="strpreviousdoj" name="strpreviousdoj" type="date" value="<?php if(isset($strpreviousdoj)) echo $strpreviousdoj; ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label class="label">DOL</label>
-                                            <input class="form-control date-picker DOL" tabindex="39" data-date-format="dd/mm/yyyy" id="strpreviousdol" name="strpreviousdol" type="date" value="<?php if(isset($strpreviousdol)) echo $strpreviousdol; ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label class="label">Time of TC handed over</label>
-                                            <input class="form-control AlphaNum" id="timeoftchandedover" tabindex="40" maxlength="20" name="timeoftchandedover" type="text" value="<?php if(isset($timeoftchandedover)) echo $timeoftchandedover; ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label class="label">Class attended</label>
-                                            <input class="form-control AlphaNum" id="previousclassattended" tabindex="41" maxlength="10" name="previousclassattended" type="text" value="<?php if(isset($previousclassattended)) echo $previousclassattended; ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group hidegroup">
-                                        <div class="col-sm-12">
-                                            <span class="text-danger"><i class="medium glyphicon glyphicon-file"></i> *Please attach a copy of the Previous School report and Marksheet in <b>Certificate Info</b>.</span>
-                                        </div>
-                                    </div></div></div></div></div>
-                                    </div>
+                                    
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label for="disabledInput">Section<span class="required">*</span></label>
@@ -727,6 +680,8 @@ if($idupd>0)
                                                 <option value="">Select a Type of Students...</option>
                                                 <option value="1"<?php  if(isset($studentstype)) { if($studentstype == "1") echo 'selected'; }?> >New Student</option>
                                                 <option value="2"<?php if(isset($studentstype)) { if($studentstype == "2") echo 'selected'; }?> >Old Student</option>
+                                                <option value="3"<?php if(isset($studentstype)) { if($studentstype == "3") echo 'selected'; }?> >Vijayadashami</option>
+                                                <option value="4"<?php if(isset($studentstype)) { if($studentstype == "4") echo 'selected'; }?> >All</option>
                                             </select>
                                             <span id="studentstypeCheck" class="text-danger">Please Select Student Type</span>
                                         </div>
@@ -888,10 +843,70 @@ if($idupd>0)
                                             </div>
                                         </div>
                                     </div>
+                                </div> </br>
+                                
+                                <!-- Previous school details START -->
+                                <div class="row" style="display:none" id="previous_school">
+                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <div class="card-title">Previous School Details</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12"></div>
+
+                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <label class="label">School Name</label>
+                                            <input class="form-control CharOnly" id="previouschoolname" tabindex="36" maxlength="50" name="previouschoolname" type="text" value="<?php if(isset($previouschoolname)) echo $previouschoolname; ?>" />
+                                        </div>
+                                    </div>
+        
+                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <label class="label">Place</label>
+                                            <input class="form-control CharOnly" id="previousplace" tabindex="37" maxlength="25" name="previousplace" type="text" value="<?php if(isset($previousplace)) echo $previousplace; ?>" />
+                                        </div>
+                                    </div>
+        
+                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <label class="label">DOJ</label>
+                                            <input class="form-control date-picker DOJ" tabindex="38" data-date-format="dd/mm/yyyy" id="strpreviousdoj" name="strpreviousdoj" type="date" value="<?php if(isset($strpreviousdoj)) echo $strpreviousdoj; ?>" />
+                                        </div>
+                                    </div>
+        
+                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <label class="label">DOL</label>
+                                            <input class="form-control date-picker DOL" tabindex="39" data-date-format="dd/mm/yyyy" id="strpreviousdol" name="strpreviousdol" type="date" value="<?php if(isset($strpreviousdol)) echo $strpreviousdol; ?>" />
+                                        </div>
+                                    </div>
+        
+                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <label class="label">Time of TC handed over</label>
+                                            <input class="form-control AlphaNum" id="timeoftchandedover" tabindex="40" maxlength="20" name="timeoftchandedover" type="text" value="<?php if(isset($timeoftchandedover)) echo $timeoftchandedover; ?>" />
+                                        </div>
+                                    </div>
+        
+                                    <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <label class="label">Class attended</label>
+                                            <input class="form-control AlphaNum" id="previousclassattended" tabindex="41" maxlength="10" name="previousclassattended" type="text" value="<?php if(isset($previousclassattended)) echo $previousclassattended; ?>" />
+                                        </div>
+                                    </div>
+        
+                                    <div class="form-group hidegroup">
+                                        <div class="col-sm-12">
+                                            <span class="text-danger"><i class="medium glyphicon glyphicon-file"></i> *Please attach a copy of the Previous School report and Marksheet in <b>Certificate Info</b>.</span>
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- Previous school details END -->
                             </div>
                         </div>
-                    </div>
+
+                    </div> <!--class info  tab content end-->
                 </div>
             </div>
         </div>
@@ -999,7 +1014,7 @@ if($idupd>0)
                                     </div>
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Father Aadhar Number</label><span class="required">*</span>
+                                            <label for="disabledInput">Father Aadhar Number</label>
                                             <input  name="father_aadhar_number" tabindex="67" placeholder ="Father Aadhar Number" id="father_aadhar_number" value="<?php if(isset($father_aadhar_number)) echo $father_aadhar_number; ?>" class="form-control"  data-type="adhaar-number" maxLength="14"  type="text">
                                             <span class ='text-danger' id='dadaadhar_chk'></span>
 
@@ -1007,7 +1022,7 @@ if($idupd>0)
                                     </div>
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="disabledInput">Mother Aadhar Number</label><span class="required">*</span>
+                                            <label for="disabledInput">Mother Aadhar Number</label>
                                             <input  name="mother_aadhar_number" tabindex="68" placeholder ="Mother Aadhar Number" id="mother_aadhar_number" value="<?php if(isset($mother_aadhar_number)) echo $mother_aadhar_number; ?>" class="form-control"  data-type="adhaar-number" maxLength="14"  type="text">
                                             <span class ='text-danger' id='momaadhar_chk'></span>
 

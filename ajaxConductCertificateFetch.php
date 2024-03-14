@@ -95,8 +95,8 @@ foreach ($result as $row) {
 	}
 	$id = $row['conduct_id'];
 	
-	$action="<a href='conduct_certificate&upd=$id' title='Edit details'><span class='icon-border_color'></span></a>&nbsp;&nbsp; 
-	<a href='conduct_certificate&del=$id' title='Delete details' class='delete_conduct'><span class='icon-trash-2'></span></a>";
+	$action="<a href='conduct_certificate&upd=$id' title='Edit details'><span class='icon-border_color'></span></a>&nbsp;&nbsp;";
+	// <a href='conduct_certificate&del=$id' title='Delete details' class='delete_conduct'><span class='icon-trash-2'></span></a>";
 
 	$sub_array[] = $action;
     $data[]      = $sub_array;

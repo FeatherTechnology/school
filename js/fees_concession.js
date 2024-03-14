@@ -130,7 +130,15 @@ $(document).ready(function () {
 }); //Document END ///
 
 $(function () {
-  
+  //When comes from the dashboard the type will trigger to show show table.
+  let typeid = $('#typeid').val();
+  if(typeid =='1'){
+    $('.general').trigger('click');
+
+  }else if(typeid =='2'){
+    $('.referral').trigger('click');
+  }
+
 });
 
 function getStandardList() { //Getting standard list from database.

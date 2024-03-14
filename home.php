@@ -121,8 +121,18 @@ if($current_page == 'vendorcreation' || $current_page == 'auction_details') {
 			</header>
 			<!-- Header end -->
 
-			<!-- School Creation -->
-			<?php if($current_page == 'school_creation') { 
+			<!-- Manage users -->
+			<?php 
+			if($current_page == 'edit_manage_users'){
+				include "include/templates/edit_manage_users.php";
+			}
+
+			if($current_page == 'manage_users'){
+				include "include/templates/manage_users.php";
+			}
+
+			//School Creation
+			if($current_page == 'school_creation') { 
 			include "include/templates/school_creation.php"; 
 			} 
 
@@ -358,28 +368,36 @@ if($current_page == 'vendorcreation' || $current_page == 'auction_details') {
 				include "reports/student_transport_report/student_transport_list.php";
 			}
 			//Student Fees Details.
-			if($current_page == 'all_type_pending_fees') { 
-				include "reports/fees_details_report/all_type_pending_fees.php";
+
+			if($current_page == 'daily_fees_collection') { 
+				include "reports/fees_details_report/daily_fees_collection.php";
+			}
+			if($current_page == 'day_end_report') { 
+				include "reports/fees_details_report/day_end_report.php";
+			}
+
+			if($current_page == 'overall_scholarship_fee_details') { 
+				include "reports/fees_details_report/overall_scholarship_fee_details.php";
 			}
 			
 			if($current_page == 'pending_fees_details') { 
 				include "reports/fees_details_report/pending_fees_details.php";
+			}
+			
+			if($current_page == 'all_type_pending_fees') { 
+				include "reports/fees_details_report/all_type_pending_fees.php";
+			}
+
+			if($current_page == 'classwise_overall_pending') { 
+				include "reports/fees_details_report/classwise_overall_pending.php";
 			}
 
 			if($current_page == 'fees_summary') { 
 				include "reports/fees_details_report/fees_summary.php";
 			}
 
-			if($current_page == 'daily_fees_collection') { 
-				include "reports/fees_details_report/daily_fees_collection.php";
-			}
-
 			if($current_page == 'monthwise_fees_summary') { 
 				include "reports/fees_details_report/monthwise_fees_summary.php";
-			}
-
-			if($current_page == 'classwise_overall_pending') { 
-				include "reports/fees_details_report/classwise_overall_pending.php";
 			}
 			?>
 

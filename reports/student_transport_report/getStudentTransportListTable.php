@@ -1,5 +1,9 @@
 <?php
 include "../../ajaxconfig.php";
+@session_start();
+if(isset($_SESSION['school_id'])){
+    $school_id = $_SESSION['school_id'];
+}
 
 if(isset($_POST['academicyear'])){
     $academicyear = $_POST['academicyear'];
@@ -34,7 +38,7 @@ $getStudentListQry = $connect->query("SELECT sc.student_name, std.standard, sc.s
 FROM `student_creation` sc 
 JOIN standard_creation std ON sc.standard = std.standard_id 
 JOIN area_creation ac ON sc.transportarearefid = ac.area_id 
-WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' && ('$stdStandard' = '0' || sc.standard = '$stdStandard') && ('$stdSection' = '0' || sc.section = '$stdSection') && sc.status = '0'");
+WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' && ('$stdStandard' = '0' || sc.standard = '$stdStandard') && ('$stdSection' = '0' || sc.section = '$stdSection') && sc.status = '0' && sc.school_id = '$school_id' ");
 $i=1;
 while($studentList = $getStudentListQry->fetchObject()){
 ?>

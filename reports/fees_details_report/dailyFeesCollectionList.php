@@ -1,5 +1,9 @@
 <?php
 include "../../ajaxconfig.php";
+@session_start();
+if(isset($_SESSION['school_id'])){
+    $school_id = $_SESSION['school_id'];
+}
 
 if(isset($_POST['feesFromDate'])){
     $feesFromDate = new DateTime($_POST['feesFromDate']);
@@ -49,7 +53,7 @@ if(isset($_POST['feesToDate'])){
     JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
     JOIN student_creation sc ON af.admission_id = sc.student_id 
     JOIN standard_creation std ON sc.standard = std.standard_id 
-    WHERE af.receipt_date ='$from_date' AND afd.fee_received > 0 
+    WHERE af.receipt_date ='$from_date' AND afd.fee_received > 0 AND sc.school_id = '$school_id'
     GROUP BY 
         af.receipt_no, 
         sc.admission_number, 
@@ -64,7 +68,7 @@ if(isset($_POST['feesToDate'])){
     JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id 
     JOIN student_creation sc ON taf.admission_id = sc.student_id 
     JOIN standard_creation std ON sc.standard = std.standard_id 
-    WHERE taf.receipt_date ='$from_date' AND tafd.fee_received > 0 
+    WHERE taf.receipt_date ='$from_date' AND tafd.fee_received > 0 AND sc.school_id = '$school_id'
     
     UNION
     
@@ -77,7 +81,7 @@ if(isset($_POST['feesToDate'])){
     JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id 
     JOIN student_creation sc ON lyf.admission_id = sc.student_id 
     JOIN standard_creation std ON sc.standard = std.standard_id 
-    WHERE lyf.receipt_date ='$from_date' AND lyfd.fee_received > 0 HAVING lastyearFees > 0 ");
+    WHERE lyf.receipt_date ='$from_date' AND lyfd.fee_received > 0  AND sc.school_id = '$school_id' HAVING lastyearFees > 0 ");
     
     while($feeCollection = $getFeeCollectionQry->fetchObject()){
 ?>

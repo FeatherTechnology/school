@@ -63,7 +63,8 @@ $(function(){
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
+            ],
+            sort: false
         });
     }, 1000);
 

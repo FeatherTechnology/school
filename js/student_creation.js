@@ -75,6 +75,8 @@ $(document).ready(function () {
         $("#district").val(response['temp_district']);
         $("#father_name").val(response['temp_father_name']);
         $("#mother_name").val(response['temp_mother_name']);
+        $("#father_mobile_no").val(response['temp_fathercontact_number']);
+        $("#mother_mobile_no").val(response['temp_mothercontact_number']);
         $("#temp_admission_id").val(response['temp_admission_id']);
 
         // Code to standard append a dropdown
@@ -486,12 +488,12 @@ $(document).ready(function () {
     var momnoValidation = mommobile();
     var dadnoValidation = dadmobile();
     var smssentvalidation = smsmobile();
-    var dadaadharValidation = dadaadhaar();
-    var momaadharValidation = momaadhaar();
+    // var dadaadharValidation = dadaadhaar();
+    // var momaadharValidation = momaadhaar();
       // var guardianaadharValidation = gaurdaadhar();
-    var appaadharValidation = appaadhaar();
+    // var appaadharValidation = appaadhaar();
     
-    if(admissionNoValidation == '1' || stdNameValidation == '1' || genderValidation == '1' || mothertogueValidation == '1' || stdValidation == '1' || sectionValidation == '1' || mediumValidation == '1' || rollnoValidation == '1' || stdtypeValidation == '1' || momnoValidation == '1' || dadnoValidation == '1' || smssentvalidation == '1' || dadaadharValidation == '1' || momaadharValidation == '1' || appaadharValidation == '1'){
+    if(admissionNoValidation == '1' || stdNameValidation == '1' || genderValidation == '1' || mothertogueValidation == '1' || stdValidation == '1' || sectionValidation == '1' || mediumValidation == '1' || rollnoValidation == '1' || stdtypeValidation == '1' || momnoValidation == '1' || dadnoValidation == '1' || smssentvalidation == '1' ){
       event.preventDefault();
     }
 
@@ -554,18 +556,7 @@ $(function(){ //ONLOAD Function
     });
 
     getStandardList(); //Get Standard List.
-    
-    // Modal Box 
-    $.ajax({
-      url: 'studentFile/ajaxResetTemporaryStudentTable.php',
-      type: 'POST',
-      data: {},
-      cache: false,
-      success: function(html){
-        $("#updateddepartmentTable").empty();
-        $("#updateddepartmentTable").html(html);
-      }
-    });
+    getResetTempAdmTable();// Get Temp Admission Table/
     
     setTimeout(() => {
       extracur();
@@ -1034,4 +1025,18 @@ function setReferredByValue(){
   }
 
   $('#referred_by').val(referenceName);
+}
+
+function getResetTempAdmTable(){
+  // Modal Box 
+  $.ajax({
+    url: 'studentFile/ajaxResetTemporaryStudentTable.php',
+    type: 'POST',
+    data: {},
+    cache: false,
+    success: function(html){
+      $("#updateddepartmentTable").empty();
+      $("#updateddepartmentTable").html(html);
+    }
+  });
 }

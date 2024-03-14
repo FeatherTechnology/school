@@ -39,6 +39,8 @@
                                 <option value="0">Select Option</option>
                                 <option value="1">New Student</option>
                                 <option value="2">Old Student</option>
+                                <option value="3">Vijayadashami</option>
+                                <option value="4">All</option>
                             </select>
                         </div>
                     </div><br><br><br><br><br><br>

@@ -49,6 +49,7 @@ $(document).ready(function () {
       var amount = $("#grp_amount").val();
       var fees_id = $("#grp_course_id").val();
       var date = $("#grp_date").val();
+      var type = '0';
       var ajaxUrl = 'FeesMasterModel1File/grp/ajaxInsertGrp.php';
       var insertOk = '#fees_detailsInsertOk';
       var insertNotOk = '#fees_detailsInsertNotOk';
@@ -61,6 +62,7 @@ $(document).ready(function () {
       var amount = $("#extra_amount").val();
       var fees_id = $("#extra_fee_id").val();
       var date = $("#extra_date").val();
+      var type = $("#extra_type").val();
       var ajaxUrl = 'FeesMasterModel1File/extra/ajaxInsertExtra.php';
       var insertOk = '#fees_detailsextraInsertOk';
       var insertNotOk = '#fees_detailsextraInsertNotOk';
@@ -73,6 +75,7 @@ $(document).ready(function () {
       var amount = $("#amenity_amount").val();
       var fees_id = $("#amenity_fee_id").val();
       var date = $("#amenity_date").val();
+      var type = '0';
       var ajaxUrl = 'FeesMasterModel1File/amenity/ajaxInsertAmenity.php';
       var insertOk = '#fees_detailsamenityInsertOk';
       var insertNotOk = '#fees_detailsamenityInsertNotOk';
@@ -84,7 +87,7 @@ $(document).ready(function () {
       $.ajax({
         url: ajaxUrl,
         type: 'POST',
-        data: { "fees_id": fees_id, "particulars": particulars, "amount": amount, "date": date, "academic_year": academic_year, "medium": medium, "student_type": student_type, "standard": standard },
+        data: { "fees_id": fees_id, "particulars": particulars, "amount": amount, "date": date, "type": type, "academic_year": academic_year, "medium": medium, "student_type": student_type, "standard": standard },
         cache: false,
         success: function (response) {
           var insresult = response.includes("Exists");
@@ -245,6 +248,7 @@ $(document).ready(function () {
         $("#extra_particulars").val(response['extra_particulars']);
         $("#extra_amount").val(response['extra_amount']);
         $("#extra_date").val(response['extra_date']);
+        $("#extra_type").val(response['extra_type']);
       }
     });
   });

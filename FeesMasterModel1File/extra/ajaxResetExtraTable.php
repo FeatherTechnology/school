@@ -25,12 +25,13 @@ if(isset($_POST['standard'])){
 			<th>Particulars</th>
 			<th>Fee Amount</th>
 			<th>Due Date</th>
+			<th>Type</th>
 			<th>Action</th>
 		</tr>
     </thead>
     <tbody>
         <?php
-        $extraFeeQry="SELECT ecaf.extra_fee_id, ecaf.extra_particulars, ecaf.extra_amount, ecaf.extra_date FROM fees_master fm JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id WHERE fm.academic_year = '$academic_year' AND fm.medium = '$medium' AND fm.student_type = '$student_type' AND fm.standard = '$standard' AND ecaf.status = '1' AND fm.school_id ='$school_id'";
+        $extraFeeQry="SELECT ecaf.extra_fee_id, ecaf.extra_particulars, ecaf.extra_amount, ecaf.extra_date, ecaf.type FROM fees_master fm JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id WHERE fm.academic_year = '$academic_year' AND ((fm.medium = '$medium' AND fm.student_type = '$student_type' AND fm.standard = '$standard') OR (ecaf.type ='common')) AND ecaf.status = '1' AND fm.school_id ='$school_id'";
         $extraFeeDetails=$mysqli->query($extraFeeQry);
         if($extraFeeDetails->num_rows>0){
         $i=1;
@@ -41,6 +42,7 @@ if(isset($_POST['standard'])){
         <td><?php echo $extra_data["extra_particulars"]; ?></td>
         <td><?php echo $extra_data["extra_amount"]; ?></td>
         <td><?php echo date('d-m-Y',strtotime($extra_data["extra_date"])); ?></td>
+        <td><?php echo $extra_data["type"]; ?></td>
         <td>
             <a id="edit_extra" value="<?php echo $extra_data["extra_fee_id"]; ?>"><span class='icon-border_color'></span></a> &nbsp;
             <a id="delete_extra" value="<?php echo $extra_data["extra_fee_id"]; ?>"><span class='icon-trash-2'></span></a>

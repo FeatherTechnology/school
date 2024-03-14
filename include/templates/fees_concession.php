@@ -5,6 +5,11 @@ if (isset($_SESSION["userid"])) {
     $school_id = $_SESSION["school_id"];
     $year_id = $_SESSION["academic_year"];
 }
+
+if(isset($_GET['typeid'])){
+    $typeid = $_GET['typeid'];
+}
+
 $StudentList = $userObj->getStudentList($mysqli, $school_id, $year_id);
 
 if (isset($_POST['SubmitFeesConcession'])) {
@@ -53,7 +58,8 @@ if (isset($_POST['SubmitFeesConcession'])) {
 <div class="main-container">
     <!--form start-->
     <form id="fees_concession_form" name="fees_concession_form" method="post" enctype="multipart/form-data">
-        <input type="hidden" class="form-control" value="<?php if (isset($school_id)) echo $school_id; ?>" id="id" name="id">
+        <input type="hidden" value="<?php if (isset($school_id)) echo $school_id; ?>" id="id" name="id">
+        <input type="hidden" value="<?php if (isset($typeid)) echo $typeid; ?>" id="typeid" name="typeid">
         <!-- Row start -->
         <div class="row gutters">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -66,8 +72,8 @@ if (isset($_POST['SubmitFeesConcession'])) {
                                     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12"></div>
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div class="form-group radiobtncls">
-                                            <input type="radio" tabindex="1" name="concessiontype" id="concession_type" value="GeneralConcession"> &nbsp;&nbsp; <label for="general_concession">General Concession </label> &nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input type="radio" tabindex="2" name="concessiontype" id="concession_type" value="ReferalConcession"> &nbsp;&nbsp; <label for="referal_concession">Referal Concession </label> &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="radio" tabindex="1" class="general" name="concessiontype" id="concession_type" value="GeneralConcession" > &nbsp;&nbsp; <label for="general_concession">General Concession </label> &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="radio" tabindex="2" class="referral" name="concessiontype" id="concession_type" value="ReferalConcession" > &nbsp;&nbsp; <label for="referal_concession">Referal Concession </label> &nbsp;&nbsp;&nbsp;&nbsp;
                                             <input type="radio" tabindex="3" name="concessiontype" id="concession_type" value="ManualConcession"> &nbsp;&nbsp; <label for="manual_concession">Manual Concession </label>
                                         </div>
                                     </div>

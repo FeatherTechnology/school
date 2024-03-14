@@ -1,5 +1,9 @@
 <?php
 include "../../ajaxconfig.php";
+@session_start();
+if(isset($_SESSION['school_id'])){
+    $school_id = $_SESSION['school_id'];
+}
 
 if(isset($_POST['academicyear'])){
     $academicyear = $_POST['academicyear'];
@@ -50,7 +54,7 @@ if($feeType == '1'){ //school
 $getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype, sc.sms_sent_no 
 FROM `student_creation` sc 
 JOIN standard_creation std ON sc.standard = std.standard_id
-WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' &&  sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' ");
+WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' &&  sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' && sc.school_id = '$school_id' ");
 $i=1;
 $grnd_total_fee = 0;
 $grnd_paid_fee = 0;
@@ -61,7 +65,7 @@ $grnd_pending3 = 0;
 $grnd_total_amount = 0;
 while($studentList = $getStudentListQry->fetchObject()){    
     $total_fee = 0; 
-    $getTotalFeesQry = $connect->query("SELECT SUM(gcf.grp_amount) AS totalFee  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' ");
+    $getTotalFeesQry = $connect->query("SELECT SUM(gcf.grp_amount) AS totalFee  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' && fm.school_id = '$school_id'");
     if($getTotalFeesQry->rowCount() > 0){
         $totalFeeInfo = $getTotalFeesQry->fetch();
         $total_fee = $totalFeeInfo['totalFee'];
@@ -75,7 +79,7 @@ while($studentList = $getStudentListQry->fetchObject()){
     }
     
 
-    $getTermPendingQry = $connect->query("SELECT COALESCE( ( gcf.grp_amount - (SELECT (SUM(afd.fee_received) + SUM(afd.scholarship)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = gcf.grp_course_id AND afd.fees_table_name = 'grptable' AND af.admission_id = '$studentList->student_id') ), 0) AS termPending, COALESCE(gcf.grp_amount,0) AS schoolPending  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' ORDER BY gcf.grp_course_id ASC");
+    $getTermPendingQry = $connect->query("SELECT COALESCE( ( gcf.grp_amount - (SELECT (SUM(afd.fee_received) + SUM(afd.scholarship)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = gcf.grp_course_id AND afd.fees_table_name = 'grptable' AND af.admission_id = '$studentList->student_id') ), 0) AS termPending, COALESCE(gcf.grp_amount,0) AS schoolPending  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' && fm.school_id = '$school_id' ORDER BY gcf.grp_course_id ASC");
     $term_pending = array();
     $school_pending = array();
     $total_amount =0;
@@ -94,9 +98,9 @@ while($studentList = $getStudentListQry->fetchObject()){
         <td><?php echo $total_fee; ?></td>
         <td><?php echo $paid_fee; ?></td>
         <td><?php echo $concession; ?></td>
-        <td><?php echo $pending1 = ($term_pending[0] == '0' && $paid_fee == '0') ? $school_pending[0] : $term_pending[0]; ?></td>
-        <td><?php echo $pending2 = ($term_pending[1] == '0' && $paid_fee == '0') ? $school_pending[1] : $term_pending[1]; ?></td>
-        <td><?php echo $pending3 = ($term_pending[2] == '0' && $paid_fee == '0') ? $school_pending[2] : $term_pending[2]; ?></td>
+        <td><?php echo $pending1 = ($term_pending) ? (($term_pending[0] == '0' && $paid_fee == '0') ? $school_pending[0] : $term_pending[0] ) : 0; ?></td>
+        <td><?php echo $pending2 = ($term_pending) ? (($term_pending[1] == '0' && $paid_fee == '0') ? $school_pending[1] : $term_pending[1] ) : 0; ?></td>
+        <td><?php echo $pending3 = ($term_pending) ? (($term_pending[2] == '0' && $paid_fee == '0') ? $school_pending[2] : $term_pending[2] ) : 0; ?></td>
         <td><?php echo $pending1 + $pending2 + $pending3; ?></td>
         <td></td>
     </tr>
@@ -150,7 +154,7 @@ $grnd_total_amount += $total_amount;
 $getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype, sc.sms_sent_no 
 FROM `student_creation` sc 
 JOIN standard_creation std ON sc.standard = std.standard_id
-WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' &&  sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' ");
+WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' &&  sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' && sc.school_id = '$school_id' ");
 $i=1;
 $grnd_total_fee = 0;
 $grnd_paid_fee = 0;
@@ -174,7 +178,7 @@ while($studentList = $getStudentListQry->fetchObject()){
         $concession = $paidFeeInfo['concession'];
     }
 
-    $getBookPendingQry = $connect->query("SELECT COALESCE(( ecaf.extra_amount - (SELECT (COALESCE(SUM(afd.fee_received), 0) + COALESCE(SUM(afd.scholarship), 0)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = ecaf.extra_fee_id AND afd.fees_table_name = 'extratable' AND af.admission_id = '$studentList->student_id') ), 0) AS bookPending, COALESCE(SUM(ecaf.extra_amount),0) AS extraPending FROM fees_master fm JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id WHERE FIND_IN_SET('$extra_id', ecaf.extra_fee_id) && fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' ORDER BY ecaf.extra_fee_id ASC");
+    $getBookPendingQry = $connect->query("SELECT COALESCE(( ecaf.extra_amount - (SELECT (COALESCE(SUM(afd.fee_received), 0) + COALESCE(SUM(afd.scholarship), 0)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = ecaf.extra_fee_id AND afd.fees_table_name = 'extratable' AND af.admission_id = '$studentList->student_id') ), 0) AS bookPending, COALESCE(SUM(ecaf.extra_amount),0) AS extraPending FROM fees_master fm JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id WHERE FIND_IN_SET('$extra_id', ecaf.extra_fee_id) && fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' && fm.school_id = '$school_id' ORDER BY ecaf.extra_fee_id ASC");
         $bookpending = $getBookPendingQry->fetch();
         $book_pending = $bookpending['bookPending'];
         $extra_pending = $bookpending['extraPending'];
@@ -237,7 +241,7 @@ $grnd_total_amount += $pending1;
 $getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype, sc.sms_sent_no 
 FROM `student_creation` sc 
 JOIN standard_creation std ON sc.standard = std.standard_id
-WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' &&  sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' ");
+WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' &&  sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' && sc.school_id = '$school_id' ");
 $i=1;
 $grnd_total_fee = 0;
 $grnd_paid_fee = 0;
@@ -276,7 +280,7 @@ while($studentList = $getStudentListQry->fetchObject()){
     $lsPending = $lastyearpending->total_balance_tobe_paid;
     
     $total_fee = 0; 
-    $getTotalFeesQry = $connect->query("SELECT COALESCE(SUM(gcf.grp_amount),0) AS totalFee  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '$lastyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' ");
+    $getTotalFeesQry = $connect->query("SELECT COALESCE(SUM(gcf.grp_amount),0) AS totalFee  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '$lastyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' && fm.school_id = '$school_id' ");
     if($getTotalFeesQry->rowCount() > 0){
         $totalFeeInfo = $getTotalFeesQry->fetch();
         $total_fee = $totalFeeInfo['totalFee'];
@@ -345,7 +349,7 @@ $grnd_pending += $lsPending;
 $getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype, sc.sms_sent_no 
 FROM `student_creation` sc 
 JOIN standard_creation std ON sc.standard = std.standard_id
-WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' &&  sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' ");
+WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' &&  sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' && sc.school_id = '$school_id' ");
 $i=1;
 $grnd_total_fee = 0;
 $grnd_paid_fee = 0;
@@ -369,7 +373,7 @@ while($studentList = $getStudentListQry->fetchObject()){
     }
     
 
-    $getTermPendingQry = $connect->query("SELECT COALESCE( ( gcf.grp_amount - (SELECT (SUM(afd.fee_received) + SUM(afd.scholarship)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = gcf.grp_course_id AND afd.fees_table_name = 'grptable' AND af.admission_id = '$studentList->student_id') ), 0) AS termPending  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' ORDER BY gcf.grp_course_id ASC");
+    $getTermPendingQry = $connect->query("SELECT COALESCE( ( gcf.grp_amount - (SELECT (SUM(afd.fee_received) + SUM(afd.scholarship)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = gcf.grp_course_id AND afd.fees_table_name = 'grptable' AND af.admission_id = '$studentList->student_id') ), 0) AS termPending  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' && fm.school_id = '$school_id' ORDER BY gcf.grp_course_id ASC");
     $term_pending = array();
     $total_amount = 0;
     while($termPendingInfo = $getTermPendingQry->fetch()){

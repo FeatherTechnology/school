@@ -1,6 +1,9 @@
 <?php
 include "../../ajaxconfig.php";
-
+@session_start();
+if(isset($_SESSION['school_id'])){
+    $school_id = $_SESSION['school_id'];
+}
 if(isset($_POST['academicyear'])){
     $academicyear = $_POST['academicyear'];
     $splityear = explode('-',$academicyear); 
@@ -57,7 +60,7 @@ while($standardList = $getStandardListQry->fetchObject()){
             student_creation
         WHERE
             standard = '$standardList->standard_id' AND year_id = '$academicyear' AND
-        status = 0
+        status = 0 AND school_id = '$school_id'
     )
     ) -(
     SELECT
@@ -71,14 +74,14 @@ while($standardList = $getStandardListQry->fetchObject()){
     JOIN student_creation sc ON
         sc.student_id = af.admission_id
     WHERE
-        afd.fees_id = gcf.grp_course_id && afd.fees_table_name = 'grptable' AND sc.standard = '$standardList->standard_id'
+        afd.fees_id = gcf.grp_course_id && afd.fees_table_name = 'grptable' AND sc.standard = '$standardList->standard_id' AND sc.school_id = '$school_id'
     ) AS termPending_for_standard
     FROM
         fees_master fm
     JOIN group_course_fee gcf ON
         fm.fees_id = gcf.fee_master_id
     WHERE
-        fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentType' && fm.standard = '$standardList->standard_id'
+        fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentType' && fm.standard = '$standardList->standard_id' && fm.school_id = '$school_id'
     ORDER BY gcf.grp_course_id ASC ");
     $term_pending = array();
     while($termPendingInfo = $getTermPendingQry->fetch()){
@@ -93,7 +96,7 @@ while($standardList = $getStandardListQry->fetchObject()){
         FROM
             student_creation
         WHERE
-            standard = '$standardList->standard_id' AND year_id = '$academicyear' AND  status = 0 AND extra_curricular = ecaf.extra_fee_id
+            standard = '$standardList->standard_id' AND year_id = '$academicyear' AND  status = 0  AND school_id = '$school_id' AND extra_curricular = ecaf.extra_fee_id
         )
     ) -(
         SELECT
@@ -112,7 +115,7 @@ while($standardList = $getStandardListQry->fetchObject()){
     FROM
         fees_master fm
     JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id
-    WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentType' && fm.standard = '$standardList->standard_id' ");
+    WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentType' && fm.standard = '$standardList->standard_id' && fm.school_id = '$school_id' ");
     if($getBookPendingQry->rowCount() > 0){
         $book_pending = $getBookPendingQry->fetch()['bookpending_for_standard'];
     }else{
@@ -127,7 +130,7 @@ while($standardList = $getStandardListQry->fetchObject()){
         FROM
             student_creation
         WHERE
-            standard = '$standardList->standard_id' AND year_id = '$academicyear' AND status = 0 AND transportarearefid = ac.area_id
+            standard = '$standardList->standard_id' AND studentstype = '$studentType' AND year_id = '$academicyear' AND status = 0 AND school_id = '$school_id' AND transportarearefid = ac.area_id
         )
     ) -(
         SELECT
@@ -140,7 +143,7 @@ while($standardList = $getStandardListQry->fetchObject()){
         JOIN transport_admission_fees taf JOIN student_creation sc ON
             sc.student_id = taf.admission_id
         WHERE
-            tafd.area_creation_particulars_id = acp.particulars_id AND sc.standard = '$standardList->standard_id'
+            tafd.area_creation_particulars_id = acp.particulars_id AND sc.standard = '$standardList->standard_id' AND sc.studentstype = '$studentType' AND sc.school_id = '$school_id'
     ) AS transport_pending
     FROM
         area_creation ac
@@ -149,7 +152,7 @@ while($standardList = $getStandardListQry->fetchObject()){
     JOIN student_creation sc ON
         sc.transportarearefid = ac.area_id
     WHERE
-        ac.year_id = '$academicyear' AND sc.standard = '$standardList->standard_id' AND sc.status = 0
+        ac.year_id = '$academicyear' AND sc.standard = '$standardList->standard_id' AND sc.studentstype = '$studentType' AND sc.status = 0 AND sc.school_id = '$school_id'
     ORDER BY acp.particulars_id ASC ");
     $transport_pending = array();
     while($transportPendingInfo = $getTransportPendingQry->fetch()){

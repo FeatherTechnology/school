@@ -57,7 +57,8 @@ if($idupd>0)
             $temp_admission_id                       = $getTempStudentCreationDetails['temp_admission_id'];
 			$temp_student_name                	 = $getTempStudentCreationDetails['temp_student_name'];
 			$temp_dob          		     = $getTempStudentCreationDetails['temp_dob'];
-			$temp_contact_number      			     = $getTempStudentCreationDetails['temp_contact_number'];
+			$temp_fathercontact_number      			     = $getTempStudentCreationDetails['temp_fathercontact_number'];
+			$temp_mothercontact_number      			     = $getTempStudentCreationDetails['temp_mothercontact_number'];
 			$temp_gender		         = $getTempStudentCreationDetails['temp_gender'];
 			$temp_category    			         = $getTempStudentCreationDetails['temp_category'];
 			$temp_standard                	 = $getTempStudentCreationDetails['temp_standard'];
@@ -225,6 +226,8 @@ if($idupd>0)
                                         <option value=''>Select Type</option> 
                                         <option value="1"  <?php  if(isset($temp_student_type) && $temp_student_type == "1"){ echo 'selected'; }?>>New Student</option> 
                                         <option value="2"  <?php  if(isset($temp_student_type) && $temp_student_type == "2"){ echo 'selected'; }?>>Old Student</option>
+                                        <option value="3"  <?php  if(isset($temp_student_type) && $temp_student_type == "3"){ echo 'selected'; }?>>Vijayadashami</option>
+                                        <option value="4"  <?php  if(isset($temp_student_type) && $temp_student_type == "4"){ echo 'selected'; }?>>All</option>
                                         </select>
                                         <span id="stdTypeCheck" class="text-danger" style="display: none;">Please Select the Student Type from the List </span>
                                         </div>
@@ -308,12 +311,23 @@ if($idupd>0)
 
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                         <div class="form-group">
-                                        <label for="temp_contact_number">Contact Number</label>
+                                        <label for="temp_fathercontact_number">Father Contact Number</label>
                                         </div>
                                     </div>
                                     <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12">
                                         <div class="form-group">
-                                        <input type="number" tabindex="22" onkeydown="javascript: return event.keyCode == 69 ? false : true"  onkeypress="if(this.value.length==10) return false;" id="temp_contact_number" name="temp_contact_number" class="form-control"  value="<?php if(isset($temp_contact_number)) echo $temp_contact_number; ?>" placeholder="Enter Contact Number">
+                                        <input type="number" tabindex="22" onkeydown="javascript: return event.keyCode == 69 ? false : true"  onkeypress="if(this.value.length==10) return false;" id="temp_fathercontact_number" name="temp_fathercontact_number" class="form-control"  value="<?php if(isset($temp_fathercontact_number)) echo $temp_fathercontact_number; ?>" placeholder="Enter Father Contact Number">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                        <div class="form-group">
+                                        <label for="temp_mothercontact_number">Mother Contact Number</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12">
+                                        <div class="form-group">
+                                        <input type="number" tabindex="22" onkeydown="javascript: return event.keyCode == 69 ? false : true"  onkeypress="if(this.value.length==10) return false;" id="temp_mothercontact_number" name="temp_mothercontact_number" class="form-control"  value="<?php if(isset($temp_mothercontact_number)) echo $temp_mothercontact_number; ?>" placeholder="Enter Mother Contact Number">
                                         </div>
                                     </div>
 
