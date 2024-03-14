@@ -12,24 +12,18 @@ if(isset($_SESSION["userid"])){
 		<li class="breadcrumb-item">Trust List</li>
 	</ol>
 	<?php
-$query = "SELECT * FROM trust_creation WHERE school_id=$school_id";
+$query = "SELECT * FROM trust_creation WHERE school_id=$school_id AND status = 0";
 $statement = $mysqli->prepare($query);
 
 $statement->execute();
 $result = $statement->get_result();
 
 $rowCount = $result->num_rows;
-// echo "Row count: " . $rowCount;
-if($rowCount  > 0){
-?>
-	<!-- <a href="trust_creation" id ="tabtrust">
-		<button type="button" tabindex="1"  class="btn btn-primary"><span class="icon-add"></span>&nbsp Add Trust</button>
-	</a> -->
-	<?php }else{ ?>
-		<a href="trust_creation" id ="tabtrust">
-		<button type="button" tabindex="1"  class="btn btn-primary"><span class="icon-add"></span>&nbsp Add Trust</button>
-	     </a>
-		<?php } ?>
+if($rowCount  <= 0){ ?>
+	<a href="trust_creation" id ="tabtrust">
+	<button type="button" tabindex="1"  class="btn btn-primary"><span class="icon-add"></span>&nbsp Add Trust</button>
+	</a>
+<?php } ?>
 </div>
 <!-- Page header end -->
 

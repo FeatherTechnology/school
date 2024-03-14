@@ -14,7 +14,7 @@ $column = array(
     'status',
     'id'
 );
-$query = "SELECT * FROM staff_creation  WHERE  school_id='$school_id' ";
+$query = "SELECT * FROM staff_creation  WHERE  school_id='$school_id' AND status =0 ";
 if($_POST['search']!="");
 {
     if (isset($_POST['search'])) {

@@ -45,10 +45,12 @@
                                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label>Students Type</label>
-                                            <select class="form-control select2 freezeFieldAfterClick" id="student_type" name="student_type" tabindex="3"> <!--1 = New Student, 2 = Old Student -->
-                                                <option>Select Type</option>
+                                            <select class="form-control select2 freezeFieldAfterClick" id="student_type" name="student_type" tabindex="3"> <!--1 = New Student, 2 = Old Student, 3 = Vijayadashami, 4 = All -->
+                                                <option value=''>Select Type</option>
                                                 <option value="1">New Student</option>
                                                 <option value="2">Old Student</option>
+                                                <option value="3">Vijayadashami</option>
+                                                <option value="4">All</option>
                                             </select>
                                         </div>
                                     </div>
@@ -165,7 +167,7 @@
 
                                     <div class="col-md-12 ">
                                         <div class="row">
-                                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-12">
                                                 <div class="form-group">
                                                     <label>Particulars</label>
                                                     <input type="hidden" name="extra_fee_id" id="extra_fee_id" class="extraCurField">
@@ -173,23 +175,34 @@
                                                     <span class="text-danger" id="extra_particularsCheck" style="display: none;">Enter Particulars</span>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-12">
                                                 <div class="form-group">
                                                     <label>Amount</label>
                                                     <input name="extra_amount" id="extra_amount" placeholder="Amount" class="form-control extraCurField" type="number" tabindex="12">
                                                     <span class="text-danger" id="extra_amountCheck" style="display: none;">Enter Amount</span>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-12">
                                                 <div class="form-group">
                                                     <label>Date</label>
                                                     <input name="extra_date" id="extra_date" class="form-control extraCurField" type="date" tabindex="13">
                                                     <span class="text-danger" id="extra_dateCheck" style="display: none;">Enter Date</span>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6 col-12">
+                                            <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-12">
                                                 <div class="form-group">
-                                                    <button style="margin-top:20px;" type="button" name="Submit_Extra" id="Submit_Extra" class="btn btn-primary" value="submit" tabindex="14">Save</button>
+                                                    <label>Type</label>
+                                                    <select class="form-control extraCurField" name="extra_type" id="extra_type" tabindex="14">
+                                                        <option value="">Select Type</option>
+                                                        <option value="common">Common</option>
+                                                        <option value="standardwise">Standard Wise</option>
+                                                    </select>
+                                                    <span class="text-danger" id="extra_typeCheck" style="display: none;">Select Type</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-1 col-lg-4 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    <button style="margin-top:20px;" type="button" name="Submit_Extra" id="Submit_Extra" class="btn btn-primary" value="submit" tabindex="15">Save</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -235,27 +248,27 @@
                                                 <div class="form-group">
                                                     <label>Particulars</label>
                                                     <input type="hidden" name="amenity_fee_id" id="amenity_fee_id" class="amenityField">
-                                                    <input name="amenity_particulars" id="amenity_particulars" placeholder="Particulars" class="form-control amenityField" type="text" tabindex="15">
+                                                    <input name="amenity_particulars" id="amenity_particulars" placeholder="Particulars" class="form-control amenityField" type="text" tabindex="16">
                                                     <span class="text-danger" id="amenity_particularsCheck" style="display: none;">Enter Particulars</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group">
                                                     <label>Amount</label>
-                                                    <input name="amenity_amount" id="amenity_amount" placeholder="Amount" class="form-control amenityField" type="number" tabindex="16">
+                                                    <input name="amenity_amount" id="amenity_amount" placeholder="Amount" class="form-control amenityField" type="number" tabindex="17">
                                                     <span class="text-danger" id="amenity_amountCheck" style="display: none;">Enter Amount</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group">
                                                     <label>Date</label>
-                                                    <input name="amenity_date" id="amenity_date" placeholder="Amount" class="form-control amenityField" type="date" tabindex="17">
+                                                    <input name="amenity_date" id="amenity_date" placeholder="Amount" class="form-control amenityField" type="date" tabindex="18">
                                                     <span class="text-danger" id="amenity_dateCheck" style="display: none;">Enter Date</span>
                                                 </div>
                                             </div>
                                             <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group">
-                                                    <button style="margin-top:20px;" type="button" name="Submit_Amenity" id="Submit_Amenity" class="btn btn-primary" value="submit" tabindex="18">Save</button>
+                                                    <button style="margin-top:20px;" type="button" name="Submit_Amenity" id="Submit_Amenity" class="btn btn-primary" value="submit" tabindex="19">Save</button>
                                                 </div>
                                             </div>
                                         </div>

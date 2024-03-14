@@ -1,9 +1,5 @@
-<?php 
-@session_start();
-if(isset($_SESSION["userid"])){
-    $userid = $_SESSION["userid"];
-}
-?>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 <!-- Page header start -->
 <div class="page-header">
     <ol class="breadcrumb">
@@ -14,40 +10,42 @@ if(isset($_SESSION["userid"])){
 
 <!-- Main container start -->
 <div class="main-container">
-	<!-- Row start -->
-	<form action="" method="post" name="vendorcreation" id="vendorcreation" >
-		<div class="row gutters">
-		<!-- General Info -->
-			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-				<div class="card">
-                    <div class="card-header">Today's Events</div>
-					<div class="card-body row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="table-container">
-                                <div class="table-responsive">
-                                    <table id="concession_table_info" class="table custom-table">
-                                        <thead>
-                                            <tr>
-                                                <th>S. No.</th>
-                                                <th>Student Name</th>
-                                                <th>Academic Year</th>
-                                                <th>Standard</th>
-                                                <th>Section</th>
-                                                <th>School Fees</th>
-                                                <th>Concession Amount</th>
-                                                <th>Balance Amount</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="studentchart" style="width: 765px; height: 500px;"></div>
                 </div>
             </div>
-		</div>
-	</form>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="staffchart" style="width: 765px; height: 500px;"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="studentFeeschart" style="width: 765px; height: 500px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="studentConcessionApprovalTable" style="width: 765px; height: 500px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

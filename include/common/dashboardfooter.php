@@ -409,39 +409,39 @@
 	});
 
 	//Area Creation
-	var concession_table_info = $('#concession_table_info').DataTable({
-		"order": [[ 0, "desc" ]],
-		'processing': true,
-		'serverSide': true,
-		'serverMethod': 'post',
-		//'searching': false, // Remove default Search Control
-		'ajax': {
-			'url':'ajaxConcessionApproval.php',
-			'data': function(data){
-                var search = $('#search').val();
-		  		data.search = search;
-			}
-		},
+	// var concession_table_info = $('#concession_table_info').DataTable({
+	// 	"order": [[ 0, "desc" ]],
+	// 	'processing': true,
+	// 	'serverSide': true,
+	// 	'serverMethod': 'post',
+	// 	//'searching': false, // Remove default Search Control
+	// 	'ajax': {
+	// 		'url':'ajaxConcessionApproval.php',
+	// 		'data': function(data){
+    //             var search = $('#search').val();
+	// 	  		data.search = search;
+	// 		}
+	// 	},
 		
-		// dom: 'lBfrtip', 
-		buttons: [		
-			{
-				extend: 'csv',
-				exportOptions: {
-					columns: [ 0, 1, 2 ,3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
-				}
-			},
-			{		 
-				extend:'colvis',
-				collectionLayout: 'fixed four-column',
-			}
+	// 	// dom: 'lBfrtip', 
+	// 	buttons: [		
+	// 		{
+	// 			extend: 'csv',
+	// 			exportOptions: {
+	// 				columns: [ 0, 1, 2 ,3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
+	// 			}
+	// 		},
+	// 		{		 
+	// 			extend:'colvis',
+	// 			collectionLayout: 'fixed four-column',
+	// 		}
 
-		],	
-		"lengthMenu": [
-			[10, 25, 50, -1],
-			[10, 25, 50, "All"]
-		]
-	});
+	// 	],	
+	// 	"lengthMenu": [
+	// 		[10, 25, 50, -1],
+	// 		[10, 25, 50, "All"]
+	// 	]
+	// });
 
 	//Conduct Certificate Fetch
 	var conduct_certificate_info = $('#conduct_certificate_info').DataTable({
@@ -652,6 +652,41 @@
 		]
 	});
 
+	//Manage User Data Fetch
+	var user_info = $('#user_info').DataTable({
+		"order": [[ 0, "desc" ]],
+		'processing': true,
+		'serverSide': true,
+		'serverMethod': 'post',
+		//'searching': false, // Remove default Search Control
+		'ajax': {
+			'url':'ajaxFiles/ajaxManageUsersInfo.php',
+			'data': function(data){
+                var search = $('#search').val();
+				data.search = search;
+			}
+		},
+		
+		// dom: 'lBfrtip', 
+		buttons: [		
+			{
+				extend: 'csv',
+				exportOptions: {
+					columns: [ 0, 1, 2 ,3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
+				}
+			},
+			{		 
+				extend:'colvis',
+				collectionLayout: 'fixed four-column',
+			}
+
+		],	
+		"lengthMenu": [
+			[10, 25, 50, -1],
+			[10, 25, 50, "All"]
+		]
+	});
+
 	$('#search').change(function(){
 		school_info.draw();
 		holiday_info.draw();
@@ -678,7 +713,12 @@
 });	
 </script>
 
-<?php if($current_page == 'school_creation') { ?>
+<?php 
+if($current_page == 'manage_users') { ?>
+<script src="js/manage_users.js"></script>
+<?php }
+
+if($current_page == 'school_creation') { ?>
 <script src="js/school_creation.js"></script>
 <?php }
 
@@ -830,28 +870,44 @@ if($current_page == 'student_transport_list') { ?>
 <script src="js/student_transport_list.js"></script>
 <?php }
 
-if($current_page == 'all_type_pending_fees') { ?>
-<script src="js/all_type_pending_fees.js"></script>
+if($current_page == 'daily_fees_collection') { ?>
+<script src="js/daily_fees_collection.js"></script>
+<?php }
+
+if($current_page == 'day_end_report') { ?>
+<script src="js/day_end_report.js"></script>
+<?php }
+
+if($current_page == 'overall_scholarship_fee_details') { ?>
+<script src="js/overall_scholarship_fee_details.js"></script>
 <?php }
 
 if($current_page == 'pending_fees_details') { ?>
 <script src="js/pending_fees_details.js"></script>
 <?php }
 
-if($current_page == 'fees_summary') { ?>
-<script src="js/fees_summary.js"></script>
+if($current_page == 'all_type_pending_fees') { ?>
+<script src="js/all_type_pending_fees.js"></script>
 <?php }
 
-if($current_page == 'daily_fees_collection') { ?>
-<script src="js/daily_fees_collection.js"></script>
+if($current_page == 'classwise_overall_pending') { ?>
+<script src="js/classwise_overall_pending.js"></script>
+<?php }
+
+if($current_page == 'fees_summary') { ?>
+<script src="js/fees_summary.js"></script>
 <?php }
 
 if($current_page == 'monthwise_fees_summary') { ?>
 <script src="js/monthwise_fees_summary.js"></script>
 <?php }
 
-if($current_page == 'classwise_overall_pending') { ?>
-<script src="js/classwise_overall_pending.js"></script>
+if($current_page == 'edit_transfer_certificate') { ?>
+<script src="js/edit_transfer_certificate.js"></script>
+<?php }
+
+if($current_page == 'dashboard') { ?>
+<script src="js/dashboard.js"></script>
 <?php }
 ?> 
 

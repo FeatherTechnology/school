@@ -19,29 +19,28 @@ if(isset($_POST['lusername'])) {
 	$res1 = $mysqli->query($getyearfromschool) or die("Error in Get All Records".$mysqli->error);
 	$row1 = $res1->fetch_object();
 	
-		 $year1 = $row1->year_id;
-				// Split the string into individual years
-			$yearsArray = explode(',', $year1);
-	
-			// Iterate through the years and add single quotes
-			$quotedYears = array();
-			foreach ($yearsArray as $year1) {
-			$quotedYears[] = "'" . trim($year1) . "'";
-			}
-	
-			// Convert the array of quoted years back to a string
+		$year1 = $row1->year_id;
+			// Split the string into individual years
+		$yearsArray = explode(',', $year1);
+
+		// Iterate through the years and add single quotes
+		$quotedYears = array();
+		foreach ($yearsArray as $year1) {
+		$quotedYears[] = "'" . trim($year1) . "'";
+		}
+
+		// Convert the array of quoted years back to a string
+		$quotedYearsString = implode(', ', $quotedYears);
+		$len = strlen($quotedYearsString);
+		if ($len > 11){
+			$quotedYearsStrings = implode(', ', $quotedYears);
+		}else{
 			$quotedYearsString = implode(', ', $quotedYears);
-			$len = strlen($quotedYearsString);
-			if ($len > 11){
-				$quotedYearsStrings = implode(', ', $quotedYears);
-			}else{
-				$quotedYearsString = implode(', ', $quotedYears);
-				$quotedYearsStrings = trim($quotedYearsString,"'");
-			}
+			$quotedYearsStrings = trim($quotedYearsString,"'");
+		}
 
 
-	$qry     = "SELECT u.fullname,u.user_name,u.user_id,u.school_id,s.school_name,a.year_id,a.academic_year FROM user u LEFT JOIN school_creation s ON s.school_id=u.school_id LEFT JOIN academic_year a ON a.academic_year IN ($year) = s.year_id IN ($quotedYearsStrings) WHERE u.user_name = '$username' AND u.user_password = '$password' AND u.status=0  AND u.school_id ='$school' AND a.academic_year='$year'"; 
-	// print_r($qry);
+	$qry = "SELECT u.fullname,u.user_name,u.user_id,u.school_id,s.school_name,a.year_id,a.academic_year FROM user u LEFT JOIN school_creation s ON s.school_id=u.school_id LEFT JOIN academic_year a ON a.academic_year IN ($year) = s.year_id IN ($quotedYearsStrings) WHERE u.user_name = '$username' AND u.user_password = '$password' AND u.status=0  AND u.school_id ='$school' AND a.academic_year='$year'"; 
 	$res = mysqli_query($mysqli, $qry)or die("Error in Get All Records".mysqli_error($mysqli)); 
 	$result = mysqli_fetch_array($res);
 	if ($mysqli->affected_rows>0)
@@ -55,74 +54,68 @@ if(isset($_POST['lusername'])) {
 		$_SESSION['academic_year']    = $result['academic_year']; 
 		$_SESSION['curdateFromIndexPage']    = date('Y-m-d'); 
 		?>
-		<script>location.href='<?php echo $HOSTPATH; ?>edit_school_creation';</script>  
+		<script>location.href='<?php echo $HOSTPATH; ?>dashboard';</script>  
 		<?php
 	}	
 	else
 	{ 
 		$msg="Enter Valid Email Id and Password";
 	} 
-
-	
 }
-
 ?>
 
 <?php include("include/common/accounthead.php"); ?>
 
-			<form  id="loginform" name="loginform" action="" method="post">
-				<div class="row justify-content-md-center">
-					<div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
-						<div class="login-screen">
-							<div class="login-box">
-								<a href="#" class="login-logo">
-									<h3 style="color: #5090c0; padding-left: 50px;">SCHOOL SOFTWARE</h3>
-									<!-- <img src="img/logo.png" alt="Auction Dashboard" /> -->
-								</a>
-								<span class="text-danger" id="cinnocheck">		 
-								<?php
-								if($msg != '')
-								{
-									echo $msg; 
-								}
-								?>
-								</span>
-								<h5>Welcome back,<br />Please Login to your Account.</h5>
-								<div class="form-group mt-4">
-									<input type="text" name="lusername" id="lusername"  tabindex="1"  class="form-control val" value="support@feathertechnology.in" placeholder="Enter Email" />
-									<span id="usernamecheck" class="text-danger"></span>    
-								</div>
-								<div class="form-group mt-4">
-									<input type="password" name="lpassword" id="lpassword"  tabindex="2"  class="form-control val" value="admin@123" placeholder="Enter Password" />
-									<span id="passwordcheck" class="text-danger"></span>    
-								</div>		
-								<div class="form-group mt-4">
-									<select class="school form-control val" id="school" tabindex="3" name="school" required>
-										<option></option>
-									</select>
-									<span id="scval" class="text-danger"></span>
-								</div>
-								<div class="form-group mt-4">
-									<select class="academic_year form-control val" tabindex="4" id="academic_year" name="year" required>
-										<option></option>
-									</select> 
-									<span id="yrval" class="text-danger"></span>
-								</div>
-								<div class="actions" style="margin-top: 60px;">
-									<button type="submit"  id="lbutton"  tabindex="5" name="lbutton" class="form-control btn btn-primary" >Login</button>
-								</div>
-								
-								<hr>
-
-							</div>
+	<form  id="loginform" name="loginform" action="" method="post">
+		<div class="row justify-content-md-center">
+			<div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
+				<div class="login-screen">
+					<div class="login-box">
+						<a href="#" class="login-logo">
+							<h3 style="color: #5090c0; padding-left: 50px;">SCHOOL SOFTWARE</h3>
+						</a>
+						<span class="text-danger" id="cinnocheck">		 
+						<?php
+						if($msg != '')
+						{
+							echo $msg; 
+						}
+						?>
+						</span>
+						<h5>Welcome back,<br />Please Login to your Account.</h5>
+						<div class="form-group mt-4">
+							<input type="text" name="lusername" id="lusername"  tabindex="1"  class="form-control val" value="support@feathertechnology.in" placeholder="Enter Email" />
+							<span id="usernamecheck" class="text-danger"></span>    
 						</div>
+						<div class="form-group mt-4">
+							<input type="password" name="lpassword" id="lpassword"  tabindex="2"  class="form-control val" value="admin@123" placeholder="Enter Password" />
+							<span id="passwordcheck" class="text-danger"></span>    
+						</div>		
+						<div class="form-group mt-4">
+							<select class="school form-control val" id="school" tabindex="3" name="school" required>
+								<option></option>
+							</select>
+							<span id="scval" class="text-danger"></span>
+						</div>
+						<div class="form-group mt-4">
+							<select class="academic_year form-control val" tabindex="4" id="academic_year" name="year" required>
+								<option></option>
+							</select> 
+							<span id="yrval" class="text-danger"></span>
+						</div>
+						<div class="actions" style="margin-top: 60px;">
+							<button type="submit"  id="lbutton"  tabindex="5" name="lbutton" class="form-control btn btn-primary" >Login</button>
+						</div>
+						
+						<hr>
+
 					</div>
 				</div>
-			</form>
+			</div>
+		</div>
+	</form>
 			
-			<?php $current_page = isset($_GET['page']) ? $_GET['page'] : null; ?>
+<?php $current_page = isset($_GET['page']) ? $_GET['page'] : null; ?>
 			
-
-	
 <?php include("include/common/dashboardfooter.php"); ?>
 		

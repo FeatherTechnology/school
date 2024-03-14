@@ -4,6 +4,10 @@
         width: 100% !important;
         overflow-x: auto !important;
     }
+
+    .highlightText{
+        font-weight: bold;
+    }
 </style>
 
 <!-- Page header start -->
@@ -44,13 +48,20 @@
                         <thead>
                             <tr>
                                 <th rowspan="3" style="vertical-align: top;">Standard</th>
-                                <th rowspan="3" style="vertical-align: top;">Total</th>
+                                <th rowspan="3" style="vertical-align: top;">Total No of Student</th>
+                                <th rowspan="3" style="vertical-align: top;" class="hidebc">Total No of BC</th>
                                 <th colspan="6" class="hidebc">BC</th>
+                                <th rowspan="3" style="vertical-align: top;" class="hidembc">Total No of MBC</th>
                                 <th colspan="6" class="hidembc">MBC</th>
+                                <th rowspan="3" style="vertical-align: top;" class="hidesc">Total No of SC</th>
                                 <th colspan="6" class="hidesc">SC</th>
+                                <th rowspan="3" style="vertical-align: top;" class="hidest">Total No of ST</th>
                                 <th colspan="6" class="hidest">ST</th>
+                                <th rowspan="3" style="vertical-align: top;" class="hideobc">Total No of OBC</th>
                                 <th colspan="6" class="hideobc">OBC</th>
+                                <th rowspan="3" style="vertical-align: top;" class="hidednc">Total No of DNC</th>
                                 <th colspan="6" class="hidednc">DNC</th>
+                                <th rowspan="3" style="vertical-align: top;" class="hidebcm">Total No of BCM</th>
                                 <th colspan="2" class="hidebcm">BCM</th>
                             </tr>
                             <tr>

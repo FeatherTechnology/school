@@ -1,5 +1,9 @@
 <?php
 include "../../ajaxconfig.php";
+@session_start();
+if(isset($_SESSION['school_id'])){
+    $school_id = $_SESSION['school_id'];
+}
 
 if(isset($_POST['feesFromDate'])){
     $feesFromDate = new DateTime($_POST['feesFromDate']);
@@ -36,19 +40,19 @@ if(isset($_POST['feesToDate'])){
     $from_date = $startdate->format('Y-m-d');
 
     //School fee
-    $getCollectedFeesQry = $connect->query("SELECT COALESCE(SUM(afd.fee_received),0) AS collectedFees FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.receipt_date ='$from_date' AND afd.fees_table_name ='grptable' ");
+    $getCollectedFeesQry = $connect->query("SELECT COALESCE(SUM(afd.fee_received),0) AS collectedFees FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.receipt_date ='$from_date' AND afd.fees_table_name ='grptable' AND af.school_id = '$school_id' ");
     $collectedFeesInfo = $getCollectedFeesQry->fetchObject();
     
     //Book feee
-    $getBookFeesQry = $connect->query("SELECT COALESCE(SUM(afd.fee_received),0) AS bookFees FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.receipt_date ='$from_date' AND afd.fees_table_name ='extratable' ");
+    $getBookFeesQry = $connect->query("SELECT COALESCE(SUM(afd.fee_received),0) AS bookFees FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.receipt_date ='$from_date' AND afd.fees_table_name ='extratable' AND af.school_id = '$school_id' ");
     $bookFeesInfo = $getBookFeesQry->fetchObject();
     
     //Transport fee
-    $getTransportFeesQry = $connect->query("SELECT COALESCE(SUM(tafd.fee_received),0) AS transportFees FROM `transport_admission_fees` taf JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id WHERE taf.receipt_date ='$from_date' ");
+    $getTransportFeesQry = $connect->query("SELECT COALESCE(SUM(tafd.fee_received),0) AS transportFees FROM `transport_admission_fees` taf JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id WHERE taf.receipt_date ='$from_date' AND taf.school_id = '$school_id' ");
     $transportFeesInfo = $getTransportFeesQry->fetchObject();
 
     //Last Year Fee
-    $getLastyearFeesQry = $connect->query("SELECT COALESCE(SUM(lyfd.fee_received),0) AS lastyearFees FROM `last_year_fees` lyf JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id WHERE lyf.receipt_date ='$from_date' ");
+    $getLastyearFeesQry = $connect->query("SELECT COALESCE(SUM(lyfd.fee_received),0) AS lastyearFees FROM `last_year_fees` lyf JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id WHERE lyf.receipt_date ='$from_date' AND lyf.school_id = '$school_id' ");
     $lastyearFeesInfo = $getLastyearFeesQry->fetchObject();
     ?>
 

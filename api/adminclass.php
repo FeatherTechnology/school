@@ -1,7 +1,552 @@
 <?php
 // require 'PHPMailerAutoload.php';
-  class admin 
+class admin 
 	{ 
+
+		// Add User
+		public function adduser($mysqli){
+
+			if(isset($_POST['school_name'])){
+				$school_name = $_POST['school_name'];
+			}
+			if(isset($_POST['user_role'])){
+				$user_role = $_POST['user_role'];
+			}
+			if(isset($_POST['title'])){
+				$title = $_POST['title'];
+			}
+			if(isset($_POST['first_name'])){
+				$first_name = $_POST['first_name'];
+			}
+			if(isset($_POST['last_name'])){
+				$last_name = $_POST['last_name'];
+			}
+			if(isset($_POST['full_name'])){
+				$full_name = $_POST['full_name'];
+			}
+			if(isset($_POST['email_id'])){
+				$email_id = $_POST['email_id'];
+			}
+			if(isset($_POST['user_name'])){
+				$user_name = $_POST['user_name'];
+			}
+			if(isset($_POST['password'])){
+				$password = $_POST['password'];
+				// $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
+			}
+			
+			if(isset($_POST['dashboard_module']) &&    $_POST['dashboard_module'] == 'Yes')		
+			{
+				$dashboard_module=0;
+			}else{
+				$dashboard_module=1;
+			}
+			if(isset($_POST['administration_module']) &&    $_POST['administration_module'] == 'Yes')		
+			{
+				$administration_module=0;
+			}else{
+				$administration_module=1;
+			}
+			if(isset($_POST['trust_creation']) &&    $_POST['trust_creation'] == 'Yes')		
+			{
+				$trust_creation=0;
+			}else{
+				$trust_creation=1;
+			}
+			if(isset($_POST['school_update']) &&    $_POST['school_update'] == 'Yes')		
+			{
+				$school_update=0;
+			}else{
+				$school_update=1;
+			}
+			if(isset($_POST['fees_master']) &&    $_POST['fees_master'] == 'Yes')		
+			{
+				$fees_master=0;
+			}else{
+				$fees_master=1;
+			}
+			if(isset($_POST['holiday_creation']) &&    $_POST['holiday_creation'] == 'Yes')		
+			{
+				$holiday_creation=0;
+			}else{
+				$holiday_creation=1;
+			}
+			if(isset($_POST['manage_users']) &&    $_POST['manage_users'] == 'Yes')		
+			{
+				$manage_users=0;
+			}else{
+				$manage_users=1;
+			}
+			if(isset($_POST['master_module']) &&    $_POST['master_module'] == 'Yes')		
+			{
+				$master_module=0;
+			}else{
+				$master_module=1;
+			}
+			if(isset($_POST['area_master']) &&    $_POST['area_master'] == 'Yes')		
+			{
+				$area_master=0;
+			}else{
+				$area_master=1;
+			}
+			if(isset($_POST['syllabus_sub_module']) &&    $_POST['syllabus_sub_module'] == 'Yes')		
+			{
+				$syllabus_sub_module=0;
+			}else{
+				$syllabus_sub_module=1;
+			}
+			if(isset($_POST['allocation']) &&    $_POST['allocation'] == 'Yes')		
+			{
+				$allocation=0;
+			}else{
+				$allocation=1;
+			}
+			if(isset($_POST['allocation_view']) &&    $_POST['allocation_view'] == 'Yes')		
+			{
+				$allocation_view=0;
+			}else{
+				$allocation_view=1;
+			}
+			if(isset($_POST['staff_module']) &&    $_POST['staff_module'] == 'Yes')		
+			{
+				$staff_module=0;
+			}else{
+				$staff_module=1;
+			}
+			if(isset($_POST['staff_creation']) &&    $_POST['staff_creation'] == 'Yes')		
+			{
+				$staff_creation=0;
+			}else{
+				$staff_creation=1;
+			}
+			if(isset($_POST['student_module']) &&    $_POST['student_module'] == 'Yes')		
+			{
+				$student_module=0;
+			}else{
+				$student_module=1;
+			}
+			if(isset($_POST['temp_admission_form']) &&    $_POST['temp_admission_form'] == 'Yes')		
+			{
+				$temp_admission_form=0;
+			}else{
+				$temp_admission_form=1;
+			}
+			if(isset($_POST['student_creation']) &&    $_POST['student_creation'] == 'Yes')		
+			{
+				$student_creation=0;
+			}else{
+				$student_creation=1;
+			}
+			if(isset($_POST['student_rollback']) &&    $_POST['student_rollback'] == 'Yes')		
+			{
+				$student_rollback=0;
+			}else{
+				$student_rollback=1;
+			}
+			if(isset($_POST['delete_student']) &&    $_POST['delete_student'] == 'Yes')		
+			{
+				$delete_student=0;
+			}else{
+				$delete_student=1;
+			}
+			if(isset($_POST['certificate_sub_module']) &&    $_POST['certificate_sub_module'] == 'Yes')		
+			{
+				$certificate_sub_module=0;
+			}else{
+				$certificate_sub_module=1;
+			}
+			if(isset($_POST['transfer']) &&    $_POST['transfer'] == 'Yes')		
+			{
+				$transfer=0;
+			}else{
+				$transfer=1;
+			}
+			if(isset($_POST['collection_module']) &&    $_POST['collection_module'] == 'Yes')		
+			{
+				$collection_module=0;
+			}else{
+				$collection_module=1;
+			}
+			if(isset($_POST['fees_concession']) &&    $_POST['fees_concession'] == 'Yes')		
+			{
+				$fees_concession=0;
+			}else{
+				$fees_concession=1;
+			}
+			if(isset($_POST['fees_collection']) &&    $_POST['fees_collection'] == 'Yes')		
+			{
+				$fees_collection=0;
+			}else{
+				$fees_collection=1;
+			}
+			if(isset($_POST['report_module']) &&    $_POST['report_module'] == 'Yes')		
+			{
+				$report_module=0;
+			}else{
+				$report_module=1;
+			}
+			if(isset($_POST['student_report_sub_module']) &&    $_POST['student_report_sub_module'] == 'Yes')		
+			{
+				$student_report_sub_module=0;
+			}else{
+				$student_report_sub_module=1;
+			}
+			if(isset($_POST['student_caste_report']) &&    $_POST['student_caste_report'] == 'Yes')		
+			{
+				$student_caste_report=0;
+			}else{
+				$student_caste_report=1;
+			}
+			if(isset($_POST['class_wise_list']) &&    $_POST['class_wise_list'] == 'Yes')		
+			{
+				$class_wise_list=0;
+			}else{
+				$class_wise_list=1;
+			}
+			if(isset($_POST['register_of_admission']) &&    $_POST['register_of_admission'] == 'Yes')		
+			{
+				$register_of_admission=0;
+			}else{
+				$register_of_admission=1;
+			}
+			if(isset($_POST['student_transport_list']) &&    $_POST['student_transport_list'] == 'Yes')		
+			{
+				$student_transport_list=0;
+			}else{
+				$student_transport_list=1;
+			}
+			if(isset($_POST['fee_details_sub_module']) &&    $_POST['fee_details_sub_module'] == 'Yes')		
+			{
+				$fee_details_sub_module=0;
+			}else{
+				$fee_details_sub_module=1;
+			}
+			if(isset($_POST['daily_fees_collection']) &&    $_POST['daily_fees_collection'] == 'Yes')		
+			{
+				$daily_fees_collection=0;
+			}else{
+				$daily_fees_collection=1;
+			}
+			if(isset($_POST['day_end_report']) &&    $_POST['day_end_report'] == 'Yes')		
+			{
+				$day_end_report=0;
+			}else{
+				$day_end_report=1;
+			}
+			if(isset($_POST['overall_scholarship_fee_details']) &&    $_POST['overall_scholarship_fee_details'] == 'Yes')		
+			{
+				$overall_scholarship_fee_details=0;
+			}else{
+				$overall_scholarship_fee_details=1;
+			}
+			if(isset($_POST['pending_fee_details']) &&    $_POST['pending_fee_details'] == 'Yes')		
+			{
+				$pending_fee_details=0;
+			}else{
+				$pending_fee_details=1;
+			}
+			if(isset($_POST['all_type_pending_fee_details']) &&    $_POST['all_type_pending_fee_details'] == 'Yes')		
+			{
+				$all_type_pending_fee_details=0;
+			}else{
+				$all_type_pending_fee_details=1;
+			}
+			if(isset($_POST['classwise_overall_pending']) &&    $_POST['classwise_overall_pending'] == 'Yes')		
+			{
+				$classwise_overall_pending=0;
+			}else{
+				$classwise_overall_pending=1;
+			}
+			if(isset($_POST['fees_summary']) &&    $_POST['fees_summary'] == 'Yes')		
+			{
+				$fees_summary=0;
+			}else{
+				$fees_summary=1;
+			}
+			if(isset($_POST['monthwise_fees_summary']) &&    $_POST['monthwise_fees_summary'] == 'Yes')		
+			{
+				$monthwise_fees_summary=0;
+			}else{
+				$monthwise_fees_summary=1;
+			}
+		
+			$userInsert="INSERT INTO `user`(`firstname`, `lastname`, `fullname`, `title`, `school_id`, `emailid`, `user_name`, `user_password`, `role`, `status`, `dashboard`, `administration_module`, `trust_creation`, `school_update`, `fees_master`, `holiday_creation`, `manage_users`, `master_module`, `area_master`, `syllabus_sub_module`, `allocation`, `allocation_view`, `staff_module`, `staff_creation`, `student_module`, `temp_admission_form`, `student_creation`, `student_rollback`, `delete_student`, `certificate_sub_module`, `transfer`, `collection_module`, `fees_concession`, `fees_collection`, `report_module`, `student_report_sub_module`, `student_caste_report`, `class_wise_list`, `register_of_admission`, `student_transport_list`, `fee_details_sub_module`, `daily_fees_collection`, `day_end_report`, `overall_scholarship_fee_details`, `pending_fee_details`, `all_type_pending_fee_details`, `classwise_overall_pending`, `fees_summary`, `monthwise_fees_summary`) VALUES ('$first_name','$last_name','$full_name','$title','$school_name','$email_id','$user_name','$password','$user_role','0','$dashboard_module','$administration_module','$trust_creation','$school_update','$fees_master','$holiday_creation','$manage_users','$master_module','$area_master','$syllabus_sub_module','$allocation','$allocation_view','$staff_module','$staff_creation','$student_module','$temp_admission_form','$student_creation','$student_rollback','$delete_student','$certificate_sub_module','$transfer','$collection_module','$fees_concession','$fees_collection','$report_module','$student_report_sub_module','$student_caste_report','$class_wise_list','$register_of_admission','$student_transport_list','$fee_details_sub_module','$daily_fees_collection','$day_end_report','$overall_scholarship_fee_details','$pending_fee_details','$all_type_pending_fee_details','$classwise_overall_pending','$fees_summary','$monthwise_fees_summary')";
+			$insresult=$mysqli->query($userInsert) or die("Error ".$mysqli->error);
+			
+		}
+
+		//UPdate user
+		public function updateuser($mysqli, $userid){
+
+			if(isset($_POST['school_name'])){
+				$school_name = $_POST['school_name'];
+			}
+			if(isset($_POST['user_role'])){
+				$user_role = $_POST['user_role'];
+			}
+			if(isset($_POST['title'])){
+				$title = $_POST['title'];
+			}
+			if(isset($_POST['first_name'])){
+				$first_name = $_POST['first_name'];
+			}
+			if(isset($_POST['last_name'])){
+				$last_name = $_POST['last_name'];
+			}
+			if(isset($_POST['full_name'])){
+				$full_name = $_POST['full_name'];
+			}
+			if(isset($_POST['email_id'])){
+				$email_id = $_POST['email_id'];
+			}
+			if(isset($_POST['user_name'])){
+				$user_name = $_POST['user_name'];
+			}
+			if(isset($_POST['password'])){
+				$password = $_POST['password'];
+				// $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
+			}
+			
+			if(isset($_POST['dashboard_module']) &&    $_POST['dashboard_module'] == 'Yes')		
+			{
+				$dashboard_module=0;
+			}else{
+				$dashboard_module=1;
+			}
+			if(isset($_POST['administration_module']) &&    $_POST['administration_module'] == 'Yes')		
+			{
+				$administration_module=0;
+			}else{
+				$administration_module=1;
+			}
+			if(isset($_POST['trust_creation']) &&    $_POST['trust_creation'] == 'Yes')		
+			{
+				$trust_creation=0;
+			}else{
+				$trust_creation=1;
+			}
+			if(isset($_POST['school_update']) &&    $_POST['school_update'] == 'Yes')		
+			{
+				$school_update=0;
+			}else{
+				$school_update=1;
+			}
+			if(isset($_POST['fees_master']) &&    $_POST['fees_master'] == 'Yes')		
+			{
+				$fees_master=0;
+			}else{
+				$fees_master=1;
+			}
+			if(isset($_POST['holiday_creation']) &&    $_POST['holiday_creation'] == 'Yes')		
+			{
+				$holiday_creation=0;
+			}else{
+				$holiday_creation=1;
+			}
+			if(isset($_POST['manage_users']) &&    $_POST['manage_users'] == 'Yes')		
+			{
+				$manage_users=0;
+			}else{
+				$manage_users=1;
+			}
+			if(isset($_POST['master_module']) &&    $_POST['master_module'] == 'Yes')		
+			{
+				$master_module=0;
+			}else{
+				$master_module=1;
+			}
+			if(isset($_POST['area_master']) &&    $_POST['area_master'] == 'Yes')		
+			{
+				$area_master=0;
+			}else{
+				$area_master=1;
+			}
+			if(isset($_POST['syllabus_sub_module']) &&    $_POST['syllabus_sub_module'] == 'Yes')		
+			{
+				$syllabus_sub_module=0;
+			}else{
+				$syllabus_sub_module=1;
+			}
+			if(isset($_POST['allocation']) &&    $_POST['allocation'] == 'Yes')		
+			{
+				$allocation=0;
+			}else{
+				$allocation=1;
+			}
+			if(isset($_POST['allocation_view']) &&    $_POST['allocation_view'] == 'Yes')		
+			{
+				$allocation_view=0;
+			}else{
+				$allocation_view=1;
+			}
+			if(isset($_POST['staff_module']) &&    $_POST['staff_module'] == 'Yes')		
+			{
+				$staff_module=0;
+			}else{
+				$staff_module=1;
+			}
+			if(isset($_POST['staff_creation']) &&    $_POST['staff_creation'] == 'Yes')		
+			{
+				$staff_creation=0;
+			}else{
+				$staff_creation=1;
+			}
+			if(isset($_POST['student_module']) &&    $_POST['student_module'] == 'Yes')		
+			{
+				$student_module=0;
+			}else{
+				$student_module=1;
+			}
+			if(isset($_POST['temp_admission_form']) &&    $_POST['temp_admission_form'] == 'Yes')		
+			{
+				$temp_admission_form=0;
+			}else{
+				$temp_admission_form=1;
+			}
+			if(isset($_POST['student_creation']) &&    $_POST['student_creation'] == 'Yes')		
+			{
+				$student_creation=0;
+			}else{
+				$student_creation=1;
+			}
+			if(isset($_POST['student_rollback']) &&    $_POST['student_rollback'] == 'Yes')		
+			{
+				$student_rollback=0;
+			}else{
+				$student_rollback=1;
+			}
+			if(isset($_POST['delete_student']) &&    $_POST['delete_student'] == 'Yes')		
+			{
+				$delete_student=0;
+			}else{
+				$delete_student=1;
+			}
+			if(isset($_POST['certificate_sub_module']) &&    $_POST['certificate_sub_module'] == 'Yes')		
+			{
+				$certificate_sub_module=0;
+			}else{
+				$certificate_sub_module=1;
+			}
+			if(isset($_POST['transfer']) &&    $_POST['transfer'] == 'Yes')		
+			{
+				$transfer=0;
+			}else{
+				$transfer=1;
+			}
+			if(isset($_POST['collection_module']) &&    $_POST['collection_module'] == 'Yes')		
+			{
+				$collection_module=0;
+			}else{
+				$collection_module=1;
+			}
+			if(isset($_POST['fees_concession']) &&    $_POST['fees_concession'] == 'Yes')		
+			{
+				$fees_concession=0;
+			}else{
+				$fees_concession=1;
+			}
+			if(isset($_POST['fees_collection']) &&    $_POST['fees_collection'] == 'Yes')		
+			{
+				$fees_collection=0;
+			}else{
+				$fees_collection=1;
+			}
+			if(isset($_POST['report_module']) &&    $_POST['report_module'] == 'Yes')		
+			{
+				$report_module=0;
+			}else{
+				$report_module=1;
+			}
+			if(isset($_POST['student_report_sub_module']) &&    $_POST['student_report_sub_module'] == 'Yes')		
+			{
+				$student_report_sub_module=0;
+			}else{
+				$student_report_sub_module=1;
+			}
+			if(isset($_POST['student_caste_report']) &&    $_POST['student_caste_report'] == 'Yes')		
+			{
+				$student_caste_report=0;
+			}else{
+				$student_caste_report=1;
+			}
+			if(isset($_POST['class_wise_list']) &&    $_POST['class_wise_list'] == 'Yes')		
+			{
+				$class_wise_list=0;
+			}else{
+				$class_wise_list=1;
+			}
+			if(isset($_POST['register_of_admission']) &&    $_POST['register_of_admission'] == 'Yes')		
+			{
+				$register_of_admission=0;
+			}else{
+				$register_of_admission=1;
+			}
+			if(isset($_POST['student_transport_list']) &&    $_POST['student_transport_list'] == 'Yes')		
+			{
+				$student_transport_list=0;
+			}else{
+				$student_transport_list=1;
+			}
+			if(isset($_POST['fee_details_sub_module']) &&    $_POST['fee_details_sub_module'] == 'Yes')		
+			{
+				$fee_details_sub_module=0;
+			}else{
+				$fee_details_sub_module=1;
+			}
+			if(isset($_POST['daily_fees_collection']) &&    $_POST['daily_fees_collection'] == 'Yes')		
+			{
+				$daily_fees_collection=0;
+			}else{
+				$daily_fees_collection=1;
+			}
+			if(isset($_POST['day_end_report']) &&    $_POST['day_end_report'] == 'Yes')		
+			{
+				$day_end_report=0;
+			}else{
+				$day_end_report=1;
+			}
+			if(isset($_POST['overall_scholarship_fee_details']) &&    $_POST['overall_scholarship_fee_details'] == 'Yes')		
+			{
+				$overall_scholarship_fee_details=0;
+			}else{
+				$overall_scholarship_fee_details=1;
+			}
+			if(isset($_POST['pending_fee_details']) &&    $_POST['pending_fee_details'] == 'Yes')		
+			{
+				$pending_fee_details=0;
+			}else{
+				$pending_fee_details=1;
+			}
+			if(isset($_POST['all_type_pending_fee_details']) &&    $_POST['all_type_pending_fee_details'] == 'Yes')		
+			{
+				$all_type_pending_fee_details=0;
+			}else{
+				$all_type_pending_fee_details=1;
+			}
+			if(isset($_POST['classwise_overall_pending']) &&    $_POST['classwise_overall_pending'] == 'Yes')		
+			{
+				$classwise_overall_pending=0;
+			}else{
+				$classwise_overall_pending=1;
+			}
+			if(isset($_POST['fees_summary']) &&    $_POST['fees_summary'] == 'Yes')		
+			{
+				$fees_summary=0;
+			}else{
+				$fees_summary=1;
+			}
+			if(isset($_POST['monthwise_fees_summary']) &&    $_POST['monthwise_fees_summary'] == 'Yes')		
+			{
+				$monthwise_fees_summary=0;
+			}else{
+				$monthwise_fees_summary=1;
+			}
+		
+			$updateUserQry = "UPDATE `user` SET `firstname`='$first_name',`lastname`='$last_name',`fullname`='$full_name',`title`='$title',`school_id`='$school_name',`emailid`='$email_id',`user_name`='$user_name',`user_password`='$password',`role`='$user_role',`status`='0',`dashboard`='$dashboard_module',`administration_module`='$administration_module',`trust_creation`='$trust_creation',`school_update`='$school_update',`fees_master`='$fees_master',`holiday_creation`='$holiday_creation',`manage_users`='$manage_users',`master_module`='$master_module',`area_master`='$area_master',`syllabus_sub_module`='$syllabus_sub_module',`allocation`='$allocation',`allocation_view`='$allocation_view',`staff_module`='$staff_module',`staff_creation`='$staff_creation',`student_module`='$student_module',`temp_admission_form`='$temp_admission_form',`student_creation`='$student_creation',`student_rollback`='$student_rollback',`delete_student`='$delete_student',`certificate_sub_module`='$certificate_sub_module',`transfer`='$transfer',`collection_module`='$collection_module',`fees_concession`='$fees_concession',`fees_collection`='$fees_collection',`report_module`='$report_module',`student_report_sub_module`='$student_report_sub_module',`student_caste_report`='$student_caste_report',`class_wise_list`='$class_wise_list',`register_of_admission`='$register_of_admission',`student_transport_list`='$student_transport_list',`fee_details_sub_module`='$fee_details_sub_module',`daily_fees_collection`='$daily_fees_collection',`day_end_report`='$day_end_report',`overall_scholarship_fee_details`='$overall_scholarship_fee_details',`pending_fee_details`='$pending_fee_details',`all_type_pending_fee_details`='$all_type_pending_fee_details',`classwise_overall_pending`='$classwise_overall_pending',`fees_summary`='$fees_summary',`monthwise_fees_summary`='$monthwise_fees_summary' WHERE `user_id`='$userid'";
+			$insresult=$mysqli->query($updateUserQry) or die("Error ".$mysqli->error);
+			
+		}
+
 
 		public function getuser($mysqli,$idupd) 
 		{
@@ -11,15 +556,66 @@
 			if ($mysqli->affected_rows>0)
 			{
 				$row = $res->fetch_object();	
-				$detailrecords['user_id']                    = $row->user_id; 
-				$detailrecords['fullname']       	           = strip_tags($row->fullname);
-				$detailrecords['user_name']       	        = strip_tags($row->user_name);
-				$detailrecords['user_password']              = strip_tags($row->user_password);		  	
-				$detailrecords['status']                     = strip_tags($row->status);		
-		
+				$detailrecords['user_id']                  = $row->user_id; 
+				$detailrecords['fullname']       	       = strip_tags($row->fullname);
+				$detailrecords['user_name']       	       = strip_tags($row->user_name);
+				$detailrecords['user_password']            = strip_tags($row->user_password);		  	
+				$detailrecords['status']                   = strip_tags($row->status);		
+				$detailrecords['firstname']                  = $row->firstname; 
+				$detailrecords['lastname']                  = $row->lastname; 
+				$detailrecords['title']                  = $row->title; 
+				$detailrecords['school_id']                  = $row->school_id; 
+				$detailrecords['emailid']                  = $row->emailid; 
+				$detailrecords['role']                  = $row->role; 
+				$detailrecords['dashboard']                  = $row->dashboard; 
+				$detailrecords['administration_module']                  = $row->administration_module; 
+				$detailrecords['trust_creation']                  = $row->trust_creation; 
+				$detailrecords['school_update']                  = $row->school_update; 
+				$detailrecords['fees_master']                  = $row->fees_master; 
+				$detailrecords['holiday_creation']                  = $row->holiday_creation; 
+				$detailrecords['manage_users']                  = $row->manage_users; 
+				$detailrecords['master_module']                  = $row->master_module; 
+				$detailrecords['area_master']                  = $row->area_master; 
+				$detailrecords['syllabus_sub_module']                  = $row->syllabus_sub_module; 
+				$detailrecords['allocation']                  = $row->allocation; 
+				$detailrecords['allocation_view']                  = $row->allocation_view; 
+				$detailrecords['staff_module']                  = $row->staff_module; 
+				$detailrecords['staff_creation']                  = $row->staff_creation; 
+				$detailrecords['student_module']                  = $row->student_module; 
+				$detailrecords['temp_admission_form']                  = $row->temp_admission_form; 
+				$detailrecords['student_creation']                  = $row->student_creation; 
+				$detailrecords['student_rollback']                  = $row->student_rollback; 
+				$detailrecords['delete_student']                  = $row->delete_student; 
+				$detailrecords['certificate_sub_module']                  = $row->certificate_sub_module; 
+				$detailrecords['transfer']                  = $row->transfer; 
+				$detailrecords['collection_module']                  = $row->collection_module; 
+				$detailrecords['fees_concession']                  = $row->fees_concession; 
+				$detailrecords['fees_collection']                  = $row->fees_collection; 
+				$detailrecords['report_module']                  = $row->report_module; 
+				$detailrecords['student_report_sub_module']                  = $row->student_report_sub_module; 
+				$detailrecords['student_caste_report']                  = $row->student_caste_report; 
+				$detailrecords['class_wise_list']                  = $row->class_wise_list; 
+				$detailrecords['register_of_admission']                  = $row->register_of_admission; 
+				$detailrecords['student_transport_list']                  = $row->student_transport_list; 
+				$detailrecords['fee_details_sub_module']                  = $row->fee_details_sub_module; 
+				$detailrecords['daily_fees_collection']                  = $row->daily_fees_collection; 
+				$detailrecords['day_end_report']                  = $row->day_end_report; 
+				$detailrecords['overall_scholarship_fee_details']                  = $row->overall_scholarship_fee_details; 
+				$detailrecords['pending_fee_details']                  = $row->pending_fee_details; 
+				$detailrecords['all_type_pending_fee_details']                  = $row->all_type_pending_fee_details; 
+				$detailrecords['classwise_overall_pending']                  = $row->classwise_overall_pending; 
+				$detailrecords['fees_summary']                  = $row->fees_summary; 
+				$detailrecords['monthwise_fees_summary']                  = $row->monthwise_fees_summary;				
 			}
 			return $detailrecords;
 		}
+
+	//  Delete User
+	public function deleteuser($mysqli, $id){
+
+		$userDelete = "UPDATE user set status='1' WHERE user_id = '".strip_tags($id)."' ";
+		$runQry = $mysqli->query($userDelete) or die("Error in delete query".$mysqli->error);
+	}
 
 		// Add school
 		public function addSchoolCreation($mysqli, $userid,$academic_year){
@@ -285,8 +881,11 @@
 			if(isset($_POST['temp_mother_name'])){
 				$temp_mother_name = $_POST['temp_mother_name'];
 			}
-			if(isset($_POST['temp_contact_number'])){
-				$temp_contact_number = $_POST['temp_contact_number'];
+			if(isset($_POST['temp_fathercontact_number'])){
+				$temp_fathercontact_number = $_POST['temp_fathercontact_number'];
+			}
+			if(isset($_POST['temp_mothercontact_number'])){
+				$temp_mothercontact_number = $_POST['temp_mothercontact_number'];
 			}
 			if(isset($_POST['temp_flat_no'])){
 				$temp_flat_no = $_POST['temp_flat_no'];
@@ -310,11 +909,11 @@
 			// 	$year_id = $_POST['year_id'];
 			// } 
 		
-			$tempStudentInsert="INSERT INTO temp_admission_student(temp_no,temp_student_name, temp_dob, temp_gender, temp_category, temp_standard, temp_student_type, temp_medium,temp_entrance_exam_date,temp_entrance_exam_mark, temp_src, temp_father_name, temp_mother_name, temp_contact_number, temp_flat_no, temp_street,
+			$tempStudentInsert="INSERT INTO temp_admission_student(temp_no,temp_student_name, temp_dob, temp_gender, temp_category, temp_standard, temp_student_type, temp_medium,temp_entrance_exam_date,temp_entrance_exam_mark, temp_src, temp_father_name, temp_mother_name, temp_fathercontact_number, temp_mothercontact_number, temp_flat_no, temp_street,
 			temp_district, temp_area, insert_login_id,school_id,year_id) 
 			VALUES('".strip_tags($temp_no)."','".strip_tags($temp_student_name)."','".strip_tags($temp_dob)."', '".strip_tags($temp_gender)."', '".strip_tags($temp_category)."', 
 			'".strip_tags($temp_standard)."', '".strip_tags($temp_student_type)."', '".strip_tags($temp_medium)."','".strip_tags($temp_entrance_exam_date)."','".strip_tags($temp_entrance_exam_mark)."',
-			'".strip_tags($temp_src)."','".strip_tags($temp_father_name)."','".strip_tags($temp_mother_name)."','".strip_tags($temp_contact_number)."','".strip_tags($temp_flat_no)."',
+			'".strip_tags($temp_src)."','".strip_tags($temp_father_name)."','".strip_tags($temp_mother_name)."','".strip_tags($temp_fathercontact_number)."','".strip_tags($temp_mothercontact_number)."', '".strip_tags($temp_flat_no)."',
 			'".strip_tags($temp_street)."',	'".strip_tags($temp_district)."','".strip_tags($temp_area)."', '".strip_tags($userid)."', '".strip_tags($school_id)."', '".strip_tags($year_id)."' )";
 
 			$insresult=$mysqli->query($tempStudentInsert) or die("Error ".$mysqli->error);
@@ -345,7 +944,8 @@
 			$detailrecords['temp_src']       			= $row->temp_src;
 			$detailrecords['temp_father_name']       	= $row->temp_father_name;
 			$detailrecords['temp_mother_name']       	= $row->temp_mother_name;
-			$detailrecords['temp_contact_number']       = $row->temp_contact_number;
+			$detailrecords['temp_fathercontact_number']       = $row->temp_fathercontact_number;
+			$detailrecords['temp_mothercontact_number']       = $row->temp_mothercontact_number;
 			$detailrecords['temp_flat_no']       		= $row->temp_flat_no;
 			$detailrecords['temp_street']       		= $row->temp_street;
 			$detailrecords['temp_district']       		= $row->temp_district;

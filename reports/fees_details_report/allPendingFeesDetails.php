@@ -1,5 +1,9 @@
 <?php
 include "../../ajaxconfig.php";
+@session_start();
+if(isset($_SESSION['school_id'])){
+    $school_id = $_SESSION['school_id'];
+}
 
 if(isset($_POST['academicyear'])){
     $academicyear = $_POST['academicyear'];
@@ -46,7 +50,7 @@ if(isset($_POST['stdSection'])){
 $getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype, sc.sms_sent_no 
 FROM `student_creation` sc 
 JOIN standard_creation std ON sc.standard = std.standard_id
-WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' && sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' ");
+WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' && sc.standard = '$stdStandard' && sc.section = '$stdSection' && sc.status = '0' && sc.school_id = '$school_id'");
 $i=1;
 while($studentList = $getStudentListQry->fetchObject()){
     $getLastYearPending = $connect->query("SELECT SUM(pending) as total_balance_tobe_paid
@@ -80,7 +84,7 @@ while($studentList = $getStudentListQry->fetchObject()){
     $lastyearpending = $getLastYearPending->fetchObject();
     $lsPending = $lastyearpending->total_balance_tobe_paid;
 
-    $getTermPendingQry = $connect->query("SELECT ( gcf.grp_amount - (SELECT (SUM(afd.fee_received) + SUM(afd.scholarship)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = gcf.grp_course_id AND afd.fees_table_name = 'grptable' AND af.admission_id = '$studentList->student_id') ) AS termPending  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' ORDER BY gcf.grp_course_id ASC");
+    $getTermPendingQry = $connect->query("SELECT ( gcf.grp_amount - (SELECT (SUM(afd.fee_received) + SUM(afd.scholarship)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = gcf.grp_course_id AND afd.fees_table_name = 'grptable' AND af.admission_id = '$studentList->student_id') ) AS termPending  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' && fm.school_id = '$school_id' ORDER BY gcf.grp_course_id ASC");
     $term_pending = array();
     while($termPendingInfo = $getTermPendingQry->fetch()){
         $term_pending[] = $termPendingInfo['termPending'];
