@@ -50,7 +50,12 @@
                                     </tfoot> -->
                                     <tbody>
                                         <?php
-                                        $ctselect = "SELECT * FROM student_creation WHERE status = 1 AND deleted_student = 1";
+                                        @session_start();
+                                        if(isset($_SESSION['school_id'])){
+                                            $school_id = $_SESSION['school_id'];
+                                        }
+
+                                        $ctselect = "SELECT * FROM student_creation WHERE status = 1 AND deleted_student = 1 AND school_id = '$school_id'";
                                         $ctresult = $mysqli->query($ctselect);
                                         if ($ctresult->num_rows > 0) {
                                             $i = 1;

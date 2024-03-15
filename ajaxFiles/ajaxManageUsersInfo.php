@@ -4,6 +4,7 @@ include('../ajaxconfig.php');
 
 if(isset($_SESSION["userid"])){
     $userid = $_SESSION["userid"];
+    $school_id = $_SESSION['school_id'];
 }
 
 $column = array(
@@ -13,7 +14,7 @@ $column = array(
     'role'
 );
 
-$query = "SELECT * FROM user WHERE 1 ";
+$query = "SELECT * FROM user WHERE school_id ='$school_id' ";
 if($_POST['search']!="")
 {
     if (isset($_POST['search'])) {
@@ -28,10 +29,10 @@ if($_POST['search']!="")
         }
         else{	
             $query .= "
-            OR user_id LIKE  '%".$_POST['search']."%'
+            AND (user_id LIKE  '%".$_POST['search']."%'
             OR fullname LIKE '%".$_POST['search']."%'
             OR user_name LIKE '%".$_POST['search']."%'
-            OR role LIKE '%".$_POST['search']."%' ";
+            OR role LIKE '%".$_POST['search']."%') ";
         }
     }
 }

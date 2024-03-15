@@ -4,7 +4,7 @@ class admin
 	{ 
 
 		// Add User
-		public function adduser($mysqli){
+		public function adduser($mysqli, $userid){
 
 			if(isset($_POST['school_name'])){
 				$school_name = $_POST['school_name'];
@@ -270,13 +270,13 @@ class admin
 				$monthwise_fees_summary=1;
 			}
 		
-			$userInsert="INSERT INTO `user`(`firstname`, `lastname`, `fullname`, `title`, `school_id`, `emailid`, `user_name`, `user_password`, `role`, `status`, `dashboard`, `administration_module`, `trust_creation`, `school_update`, `fees_master`, `holiday_creation`, `manage_users`, `master_module`, `area_master`, `syllabus_sub_module`, `allocation`, `allocation_view`, `staff_module`, `staff_creation`, `student_module`, `temp_admission_form`, `student_creation`, `student_rollback`, `delete_student`, `certificate_sub_module`, `transfer`, `collection_module`, `fees_concession`, `fees_collection`, `report_module`, `student_report_sub_module`, `student_caste_report`, `class_wise_list`, `register_of_admission`, `student_transport_list`, `fee_details_sub_module`, `daily_fees_collection`, `day_end_report`, `overall_scholarship_fee_details`, `pending_fee_details`, `all_type_pending_fee_details`, `classwise_overall_pending`, `fees_summary`, `monthwise_fees_summary`) VALUES ('$first_name','$last_name','$full_name','$title','$school_name','$email_id','$user_name','$password','$user_role','0','$dashboard_module','$administration_module','$trust_creation','$school_update','$fees_master','$holiday_creation','$manage_users','$master_module','$area_master','$syllabus_sub_module','$allocation','$allocation_view','$staff_module','$staff_creation','$student_module','$temp_admission_form','$student_creation','$student_rollback','$delete_student','$certificate_sub_module','$transfer','$collection_module','$fees_concession','$fees_collection','$report_module','$student_report_sub_module','$student_caste_report','$class_wise_list','$register_of_admission','$student_transport_list','$fee_details_sub_module','$daily_fees_collection','$day_end_report','$overall_scholarship_fee_details','$pending_fee_details','$all_type_pending_fee_details','$classwise_overall_pending','$fees_summary','$monthwise_fees_summary')";
+			$userInsert="INSERT INTO `user`(`firstname`, `lastname`, `fullname`, `title`, `school_id`, `emailid`, `user_name`, `user_password`, `role`, `status`, `dashboard`, `administration_module`, `trust_creation`, `school_update`, `fees_master`, `holiday_creation`, `manage_users`, `master_module`, `area_master`, `syllabus_sub_module`, `allocation`, `allocation_view`, `staff_module`, `staff_creation`, `student_module`, `temp_admission_form`, `student_creation`, `student_rollback`, `delete_student`, `certificate_sub_module`, `transfer`, `collection_module`, `fees_concession`, `fees_collection`, `report_module`, `student_report_sub_module`, `student_caste_report`, `class_wise_list`, `register_of_admission`, `student_transport_list`, `fee_details_sub_module`, `daily_fees_collection`, `day_end_report`, `overall_scholarship_fee_details`, `pending_fee_details`, `all_type_pending_fee_details`, `classwise_overall_pending`, `fees_summary`, `monthwise_fees_summary`, `insert_login_id`) VALUES ('$first_name','$last_name','$full_name','$title','$school_name','$email_id','$user_name','$password','$user_role','0','$dashboard_module','$administration_module','$trust_creation','$school_update','$fees_master','$holiday_creation','$manage_users','$master_module','$area_master','$syllabus_sub_module','$allocation','$allocation_view','$staff_module','$staff_creation','$student_module','$temp_admission_form','$student_creation','$student_rollback','$delete_student','$certificate_sub_module','$transfer','$collection_module','$fees_concession','$fees_collection','$report_module','$student_report_sub_module','$student_caste_report','$class_wise_list','$register_of_admission','$student_transport_list','$fee_details_sub_module','$daily_fees_collection','$day_end_report','$overall_scholarship_fee_details','$pending_fee_details','$all_type_pending_fee_details','$classwise_overall_pending','$fees_summary','$monthwise_fees_summary', '$userid')";
 			$insresult=$mysqli->query($userInsert) or die("Error ".$mysqli->error);
 			
 		}
 
 		//UPdate user
-		public function updateuser($mysqli, $userid){
+		public function updateuser($mysqli, $manage_user_id, $userid){
 
 			if(isset($_POST['school_name'])){
 				$school_name = $_POST['school_name'];
@@ -542,7 +542,7 @@ class admin
 				$monthwise_fees_summary=1;
 			}
 		
-			$updateUserQry = "UPDATE `user` SET `firstname`='$first_name',`lastname`='$last_name',`fullname`='$full_name',`title`='$title',`school_id`='$school_name',`emailid`='$email_id',`user_name`='$user_name',`user_password`='$password',`role`='$user_role',`status`='0',`dashboard`='$dashboard_module',`administration_module`='$administration_module',`trust_creation`='$trust_creation',`school_update`='$school_update',`fees_master`='$fees_master',`holiday_creation`='$holiday_creation',`manage_users`='$manage_users',`master_module`='$master_module',`area_master`='$area_master',`syllabus_sub_module`='$syllabus_sub_module',`allocation`='$allocation',`allocation_view`='$allocation_view',`staff_module`='$staff_module',`staff_creation`='$staff_creation',`student_module`='$student_module',`temp_admission_form`='$temp_admission_form',`student_creation`='$student_creation',`student_rollback`='$student_rollback',`delete_student`='$delete_student',`certificate_sub_module`='$certificate_sub_module',`transfer`='$transfer',`collection_module`='$collection_module',`fees_concession`='$fees_concession',`fees_collection`='$fees_collection',`report_module`='$report_module',`student_report_sub_module`='$student_report_sub_module',`student_caste_report`='$student_caste_report',`class_wise_list`='$class_wise_list',`register_of_admission`='$register_of_admission',`student_transport_list`='$student_transport_list',`fee_details_sub_module`='$fee_details_sub_module',`daily_fees_collection`='$daily_fees_collection',`day_end_report`='$day_end_report',`overall_scholarship_fee_details`='$overall_scholarship_fee_details',`pending_fee_details`='$pending_fee_details',`all_type_pending_fee_details`='$all_type_pending_fee_details',`classwise_overall_pending`='$classwise_overall_pending',`fees_summary`='$fees_summary',`monthwise_fees_summary`='$monthwise_fees_summary' WHERE `user_id`='$userid'";
+			$updateUserQry = "UPDATE `user` SET `firstname`='$first_name',`lastname`='$last_name',`fullname`='$full_name',`title`='$title',`school_id`='$school_name',`emailid`='$email_id',`user_name`='$user_name',`user_password`='$password',`role`='$user_role',`status`='0',`dashboard`='$dashboard_module',`administration_module`='$administration_module',`trust_creation`='$trust_creation',`school_update`='$school_update',`fees_master`='$fees_master',`holiday_creation`='$holiday_creation',`manage_users`='$manage_users',`master_module`='$master_module',`area_master`='$area_master',`syllabus_sub_module`='$syllabus_sub_module',`allocation`='$allocation',`allocation_view`='$allocation_view',`staff_module`='$staff_module',`staff_creation`='$staff_creation',`student_module`='$student_module',`temp_admission_form`='$temp_admission_form',`student_creation`='$student_creation',`student_rollback`='$student_rollback',`delete_student`='$delete_student',`certificate_sub_module`='$certificate_sub_module',`transfer`='$transfer',`collection_module`='$collection_module',`fees_concession`='$fees_concession',`fees_collection`='$fees_collection',`report_module`='$report_module',`student_report_sub_module`='$student_report_sub_module',`student_caste_report`='$student_caste_report',`class_wise_list`='$class_wise_list',`register_of_admission`='$register_of_admission',`student_transport_list`='$student_transport_list',`fee_details_sub_module`='$fee_details_sub_module',`daily_fees_collection`='$daily_fees_collection',`day_end_report`='$day_end_report',`overall_scholarship_fee_details`='$overall_scholarship_fee_details',`pending_fee_details`='$pending_fee_details',`all_type_pending_fee_details`='$all_type_pending_fee_details',`classwise_overall_pending`='$classwise_overall_pending',`fees_summary`='$fees_summary',`monthwise_fees_summary`='$monthwise_fees_summary', `update_login_id`='$userid', `updated_date`=now() WHERE `user_id`='$manage_user_id'";
 			$insresult=$mysqli->query($updateUserQry) or die("Error ".$mysqli->error);
 			
 		}
@@ -611,9 +611,9 @@ class admin
 		}
 
 	//  Delete User
-	public function deleteuser($mysqli, $id){
+	public function deleteuser($mysqli, $id, $userid){
 
-		$userDelete = "UPDATE user set status='1' WHERE user_id = '".strip_tags($id)."' ";
+		$userDelete = "UPDATE user set status = '1', delete_login_id = '$userid', updated_date = now() WHERE user_id = '".strip_tags($id)."' ";
 		$runQry = $mysqli->query($userDelete) or die("Error in delete query".$mysqli->error);
 	}
 
@@ -2216,67 +2216,71 @@ public function getTrustCreation($mysqli, $id){
 }
 
 // update trust
-public function updateTrustCreation($mysqli, $id, $userid,$academic_year){
+public function updateTrustCreation($mysqli, $id, $userid, $academic_year){
 
-	if(isset($_POST['trust_name'])){
-		$trust_name = $_POST['trust_name'];
+	$checkinsertedTrustQry = $mysqli->query("SELECT * FROM trust_creation WHERE status ='0' ");
+	if($mysqli->affected_rows == '0'){ //to check already a trust is active or not because creation access to create one trust. 
+
+		if(isset($_POST['trust_name'])){
+			$trust_name = $_POST['trust_name'];
+		}
+		if(isset($_POST['contact_person'])){
+			$contact_person = $_POST['contact_person'];
+		}
+		if(isset($_POST['contact_number'])){
+			$contact_number = $_POST['contact_number'];
+		}
+		if(isset($_POST['address1'])){
+			$address1 = $_POST['address1'];
+		}
+		if(isset($_POST['address2'])){
+			$address2 = $_POST['address2'];
+		}
+		if(isset($_POST['address3'])){
+			$address3 = $_POST['address3'];
+		}
+		if(isset($_POST['place'])){
+			$place = $_POST['place'];
+		}
+		if(isset($_POST['pincode'])){
+			$pincode = $_POST['pincode'];
+		}
+		if(isset($_POST['email_id'])){
+			$email_id = $_POST['email_id'];
+		}
+		if(isset($_POST['website'])){
+			$website = $_POST['website'];
+		}
+		if(isset($_POST['pan_number'])){
+			$pan_number = $_POST['pan_number'];
+		}
+		if(isset($_POST['tan_number'])){
+			$tan_number = $_POST['tan_number'];
+		}
+		if(isset($_POST['userid'])){
+			$userid = $_POST['userid'];
+		}
+		if(isset($_POST['academic_year'])){
+			$academic_year = $_POST['academic_year'];
+		}
+		$trust_logo = '';
+		if(!empty($_FILES['trust_logo']['name']))		
+		{
+			$trust_logo = $_FILES['trust_logo']['name'];
+			$trust_logo_tmp = $_FILES['trust_logo']['tmp_name'];
+			$trust_logofolder="uploads/trust_creation/".$trust_logo ;
+			move_uploaded_file($trust_logo_tmp, $trust_logofolder);
+		} 
+		if($trust_logo == '' && isset($_POST["updateimage"])){
+			$trust_logo = $_POST["updateimage"];
+		}
+			$updateTrustCreationQry = "UPDATE trust_creation SET trust_name = '".strip_tags($trust_name)."', contact_person='".strip_tags($contact_person)."', contact_number='".strip_tags($contact_number)."', address1='".strip_tags($address1)."', address2='".strip_tags($address2)."', address3='".strip_tags($address3)."', place='".strip_tags($place)."', 
+		pincode='".strip_tags($pincode)."', email_id='".strip_tags($email_id)."', website='".strip_tags($website)."', pan_number='".strip_tags($pan_number)."', 
+		tan_number='".strip_tags($tan_number)."', update_login_id='".strip_tags($userid)."', trust_logo='".strip_tags($trust_logo)."',academic_year='".strip_tags($academic_year)."', status = '0' 
+		WHERE trust_id= '".strip_tags($id)."' ";
+		$updresult = $mysqli->query($updateTrustCreationQry)or die ("Error in in update Query!.".$mysqli->error);
 	}
-	if(isset($_POST['contact_person'])){
-		$contact_person = $_POST['contact_person'];
-	}
-	if(isset($_POST['contact_number'])){
-		$contact_number = $_POST['contact_number'];
-	}
-	if(isset($_POST['address1'])){
-		$address1 = $_POST['address1'];
-	}
-	if(isset($_POST['address2'])){
-		$address2 = $_POST['address2'];
-	}
-	if(isset($_POST['address3'])){
-		$address3 = $_POST['address3'];
-	}
-	if(isset($_POST['place'])){
-		$place = $_POST['place'];
-	}
-	if(isset($_POST['pincode'])){
-		$pincode = $_POST['pincode'];
-	}
-	if(isset($_POST['email_id'])){
-		$email_id = $_POST['email_id'];
-	}
-	if(isset($_POST['website'])){
-		$website = $_POST['website'];
-	}
-	if(isset($_POST['pan_number'])){
-		$pan_number = $_POST['pan_number'];
-	}
-	if(isset($_POST['tan_number'])){
-		$tan_number = $_POST['tan_number'];
-	}
-	if(isset($_POST['userid'])){
-		$userid = $_POST['userid'];
-	}
-	if(isset($_POST['academic_year'])){
-		$academic_year = $_POST['academic_year'];
-	}
-	$trust_logo = '';
-	if(!empty($_FILES['trust_logo']['name']))		
-	{
-		$trust_logo = $_FILES['trust_logo']['name'];
-		$trust_logo_tmp = $_FILES['trust_logo']['tmp_name'];
-		$trust_logofolder="uploads/trust_creation/".$trust_logo ;
-		move_uploaded_file($trust_logo_tmp, $trust_logofolder);
-	} 
-	if($trust_logo == '' && isset($_POST["updateimage"])){
-		$trust_logo = $_POST["updateimage"];
-	}
-		$updateTrustCreation = "UPDATE trust_creation SET trust_name = '".strip_tags($trust_name)."', contact_person='".strip_tags($contact_person)."', contact_number='".strip_tags($contact_number)."', address1='".strip_tags($address1)."', address2='".strip_tags($address2)."', address3='".strip_tags($address3)."', place='".strip_tags($place)."', 
-	pincode='".strip_tags($pincode)."', email_id='".strip_tags($email_id)."', website='".strip_tags($website)."', pan_number='".strip_tags($pan_number)."', 
-	tan_number='".strip_tags($tan_number)."', update_login_id='".strip_tags($userid)."', trust_logo='".strip_tags($trust_logo)."',academic_year='".strip_tags($academic_year)."', status = '0' 
-	WHERE trust_id= '".strip_tags($id)."' ";
-	$updresult = $mysqli->query($updateTrustCreation)or die ("Error in in update Query!.".$mysqli->error);
-	} 
+} 
 	
 
 //  delete Bidder
@@ -5240,7 +5244,7 @@ public function addPayLastYearfeesCreation($mysqli, $userid){
 }
 
 // Add Conduct Certificate creation
-public function addTransferCertificateCreation($mysqli,$userid){
+public function addTransferCertificateCreation($mysqli,$userid, $school_id){
 
 	if(isset($_POST['serial_number'])){
 		$serial_number = $_POST['serial_number'];
@@ -5325,13 +5329,13 @@ public function addTransferCertificateCreation($mysqli,$userid){
 	
 	$inserttrustQry="INSERT INTO transfer_certificate(serial_number, certificate_number, transfer_date, tmr_code, admission_number, school_name, district_educational, revenue_district,
 	student_name,parents_name,nationality,caste, gender, admission_date, register_words, personal_identification,date_first_admission, standard, 
-	promotion,scholarship, medical_inspection, date_school, conduct, date_parents, date_of_transfer_certificate, insert_login_id) 
+	promotion,scholarship, medical_inspection, date_school, conduct, date_parents, date_of_transfer_certificate, school_id, insert_login_id) 
 	VALUES('".strip_tags($serial_number)."', '".strip_tags($certificate_number)."', '".strip_tags($transfer_date)."', '".strip_tags($tmr_code)."', 
 	'".strip_tags($admission_number)."', '".strip_tags($school_name)."','".strip_tags($district_educational)."','".strip_tags($revenue_district)."',
 	'".strip_tags($student_name)."','".strip_tags($parents_name)."','".strip_tags($nationality)."','".strip_tags($caste)."', '".strip_tags($gender)."',
 	'".strip_tags($admission_date)."', '".strip_tags($register_words)."', '".strip_tags($personal_identification)."', '".strip_tags($date_first_admission)."', '".strip_tags($standard)."',
 	'".strip_tags($promotion)."', '".strip_tags($scholarship)."', '".strip_tags($medical_inspection)."', '".strip_tags($date_school)."',
-	'".strip_tags($conduct)."', '".strip_tags($date_parents)."', '".strip_tags($date_of_transfer_certificate)."','".strip_tags($userid)."')"; 
+	'".strip_tags($conduct)."', '".strip_tags($date_parents)."', '".strip_tags($date_of_transfer_certificate)."', '".$school_id."', '".strip_tags($userid)."')"; 
 	$inserttrust = $mysqli->query($inserttrustQry);
 	
 	return true;
@@ -5379,7 +5383,7 @@ public function getTransferCertificateCreation($mysqli, $id){
 }
 
 // Update Area Creation
-public function updateTransferCertificateCreation($mysqli, $id, $userid){
+public function updateTransferCertificateCreation($mysqli, $id, $userid, $school_id){
 
 	if(isset($_POST['serial_number'])){
 		$serial_number = $_POST['serial_number'];
@@ -5468,9 +5472,7 @@ public function updateTransferCertificateCreation($mysqli, $id, $userid){
 	date_first_admission='".strip_tags($date_first_admission)."',standard='".strip_tags($standard)."',promotion='".strip_tags($promotion)."',
 	scholarship='".strip_tags($scholarship)."',medical_inspection='".strip_tags($medical_inspection)."',date_school='".strip_tags($date_school)."',
 	conduct='".strip_tags($conduct)."',date_parents='".strip_tags($date_parents)."',date_of_transfer_certificate='".strip_tags($date_of_transfer_certificate)."',
-	update_login_id='".strip_tags($userid)."', 
-	status = '0' 
-	WHERE transfer_id = '".strip_tags($id)."' ";
+	school_id = '".$school_id."', update_login_id='".strip_tags($userid)."', status = '0' WHERE transfer_id = '".strip_tags($id)."' ";
 	$updresult = $mysqli->query($updateCondutCertificateCreation)or die ("Error in in update Query!.".$mysqli->error);
 	} 
 	

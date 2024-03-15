@@ -4,6 +4,7 @@ include('ajaxconfig.php');
 
 if(isset($_SESSION["userid"])){
     $userid = $_SESSION["userid"];
+    $school_id = $_SESSION['school_id'];
 }
 
 $column = array(
@@ -19,7 +20,7 @@ $column = array(
     'status'
 );
 
-$query = "SELECT * FROM transfer_certificate WHERE 1";
+$query = "SELECT * FROM transfer_certificate WHERE school_id = '$school_id' ";
 
 if($_POST['search']!="");
 {
@@ -37,7 +38,7 @@ if($_POST['search']!="");
         else{	
             $query .= "
             
-            OR serial_number LIKE  '%".$_POST['search']."%'
+            AND (serial_number LIKE  '%".$_POST['search']."%'
             OR tmr_code LIKE '%".$_POST['search']."%'
             OR admission_number	LIKE '%".$_POST['search']."%'
             OR certificate_number LIKE '%".$_POST['search']."%'
@@ -45,7 +46,7 @@ if($_POST['search']!="");
             OR school_name LIKE '%".$_POST['search']."%'
             OR district_educational LIKE '%".$_POST['search']."%'
             OR revenue_district LIKE '%".$_POST['search']."%'
-            OR status LIKE '%".$_POST['search']."%' ";
+            OR status LIKE '%".$_POST['search']."%') ";
         }
     }
 }

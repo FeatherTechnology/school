@@ -1,5 +1,10 @@
 <?php
 include '../ajaxconfig.php';
+
+@session_start();
+if(isset($_SESSION['school_id'])){
+    $school_id = $_SESSION['school_id'];
+}
 ?>
 
 <table class="table custom-table pending_for_approval">
@@ -19,7 +24,7 @@ include '../ajaxconfig.php';
     </thead>
     <tbody>
         <?php 
-        $generalConcessionQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, sc.flat_no, sc.street, sc.area_locatlity, sc.district, sc.pincode, stdc.standard, sc.concession_type FROM `student_creation` sc JOIN standard_creation stdc ON sc.standard = stdc.standard_id WHERE sc.concession_type !='' && sc.status = '0' && (sc.approval = '' || sc.approval IS NULL)  ");
+        $generalConcessionQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, sc.flat_no, sc.street, sc.area_locatlity, sc.district, sc.pincode, stdc.standard, sc.concession_type FROM `student_creation` sc JOIN standard_creation stdc ON sc.standard = stdc.standard_id WHERE sc.concession_type !='' && sc.status = '0' && (sc.approval = '' || sc.approval IS NULL)  && sc.school_id = '$school_id' ");
         while($studentConcession = $generalConcessionQry->fetchobject()){
         ?>
         <tr>
@@ -56,7 +61,7 @@ include '../ajaxconfig.php';
     </thead>
     <tbody>
     <?php 
-        $generalConcessionQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, sc.flat_no, sc.street, sc.area_locatlity, sc.district, sc.pincode, stdc.standard, sc.concession_type FROM `student_creation` sc JOIN standard_creation stdc ON sc.standard = stdc.standard_id WHERE sc.concession_type !='' && sc.status = '0' && sc.approval = 'Approved' ");
+        $generalConcessionQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, sc.flat_no, sc.street, sc.area_locatlity, sc.district, sc.pincode, stdc.standard, sc.concession_type FROM `student_creation` sc JOIN standard_creation stdc ON sc.standard = stdc.standard_id WHERE sc.concession_type !='' && sc.status = '0' && sc.approval = 'Approved' && sc.school_id = '$school_id'");
         while($studentConcession = $generalConcessionQry->fetchobject()){
         ?>
         <tr>

@@ -3,60 +3,8 @@
 if (isset($_SESSION["userid"])) {
     $userid = $_SESSION["userid"];
 }
-$id = 0;
-if (isset($_POST['submitsubject_creation']) && $_POST['submitsubject_creation'] != '') {
-    if (isset($_POST['id']) && $_POST['id'] > 0 && is_numeric($_POST['id'])) {
-        $id = $_POST['id'];
-        $updateSubjectDetailsmaster = $userObj->updateSubjectDetails($mysqli, $id, $userid);
 ?>
-        <script>
-            location.href = '<?php echo $HOSTPATH; ?>syllabus_allocation&msc=2';
-        </script>
-    <?php    } else {
-        $addSubjectDetails = $userObj->addSubjectDetails($mysqli, $userid);
-    ?>
-        <script>
-            location.href = '<?php echo $HOSTPATH; ?>syllabus_allocation&msc=1';
-        </script>
-    <?php
-    }
-}
 
-$del = 0;
-if (isset($_GET['del'])) {
-    $del = $_GET['del'];
-}
-if ($del > 0) {
-    $deleteSubjectDetails = $userObj->deleteSubjectDetails($mysqli, $del, $userid);
-    ?>
-    <script>
-        location.href = '<?php echo $HOSTPATH; ?>syllabus_allocation&msc=3';
-    </script>
-
-<?php } ?>
-
-<style>
-    /* .dataTables_length {
-        display: none;
-    }
-
-    .dataTables_filter {
-        display: none;
-    }
-
-    .dataTables_info {
-        display: none;
-    }
-
-    .dataTables_paginate {
-        display: none;
-    }
-
-    div.dt-buttons {
-        position: relative;
-        float: right;
-    } */
-</style>
 <!-- Page header start -->
 <div class="page-header">
     <ol class="breadcrumb">

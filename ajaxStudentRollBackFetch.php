@@ -1,5 +1,9 @@
 <?php
 include 'ajaxconfig.php';
+@session_start();
+if(isset($_SESSION['school_id'])){
+    $school_id = $_SESSION['school_id'];
+}
 
 if(isset($_POST['type'])){
     $type = $_POST['type'];  
@@ -12,10 +16,10 @@ if(isset($_POST['section'])){
 }
 
 if($type == '1'){
-    $ctselect="SELECT sc.student_id, sc.admission_number, sc.student_name, sc.section, stdc.standard, sc.standard as std_id FROM student_creation sc JOIN standard_creation stdc ON sc.standard = stdc.standard_id WHERE sc.deleted_student = '0' AND sc.standard NOT IN (13, 19, 20, 21, 22, 23) "; 
+    $ctselect="SELECT sc.student_id, sc.admission_number, sc.student_name, sc.section, stdc.standard, sc.standard as std_id FROM student_creation sc JOIN standard_creation stdc ON sc.standard = stdc.standard_id WHERE sc.deleted_student = '0' AND sc.school_id = '$school_id' AND sc.standard NOT IN (13, 19, 20, 21, 22, 23) "; 
 
 }else{
-    $ctselect="SELECT sc.student_id, sc.admission_number, sc.student_name, sc.section, stdc.standard, sc.standard as std_id FROM student_creation sc JOIN standard_creation stdc ON sc.standard = stdc.standard_id WHERE sc.standard ='".$standard."' AND sc.section ='".$section."' AND sc.deleted_student = '0' AND sc.standard NOT IN (13, 19, 20, 21, 22, 23)"; 
+    $ctselect="SELECT sc.student_id, sc.admission_number, sc.student_name, sc.section, stdc.standard, sc.standard as std_id FROM student_creation sc JOIN standard_creation stdc ON sc.standard = stdc.standard_id WHERE sc.standard ='".$standard."' AND sc.section ='".$section."' AND sc.deleted_student = '0' AND sc.school_id = '$school_id' AND sc.standard NOT IN (13, 19, 20, 21, 22, 23)"; 
 
 }
 $ctresult=$mysqli->query($ctselect);

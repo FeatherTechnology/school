@@ -6,7 +6,7 @@ if(isset($_POST["subject_id"])){
 }
 $isdel = '';
 
-$ctqry=$mysqli->query("SELECT * FROM subject_details WHERE paper_name = '".$subject_id."' ");
+$ctqry=$mysqli->query("SELECT * FROM subject_details WHERE subject_id = '".$subject_id."' ");
 while($row=$ctqry->fetch_assoc()){
 	$isdel=$row["paper_name"];
 }
