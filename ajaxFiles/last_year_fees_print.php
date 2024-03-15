@@ -1,5 +1,22 @@
 <?php
 include "../ajaxconfig.php";
+@session_start();
+if(isset($_SESSION["userid"])){
+    $school_id = $_SESSION["school_id"];
+} 
+
+//get school name by using session id.
+$getschoolDetailsQry=$mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id' ");
+while ($schoolInfo=$getschoolDetailsQry->fetch_assoc()) {
+	$school_name     =$schoolInfo["school_name"]; 
+	$address1  =$schoolInfo["address1"];
+	$address2  =$schoolInfo["address2"];
+	$district  =$schoolInfo["district"];
+	$state     =$schoolInfo["state"];
+	$pincode  =$schoolInfo["pincode"];
+	$contact_number  =$schoolInfo["contact_number"];
+	$email_id     =$schoolInfo["email_id"];
+} 
 
 if(isset($_POST['lastYearFeesid'])){
     $lastYearFeesid = $_POST['lastYearFeesid'];
@@ -95,9 +112,9 @@ function AmountInWords($amount)
     <table class="table table-bordered table-responsive">
     <tr>
         <td style="text-align: center;"> <img src="img/Logo.png" height="100px" width="100px" alt="Logo"> </td>
-        <td style="text-align: center;"> VIDHYA PARTHI NATIONAL ACADEMY </br>
-            SEELAPADI,Dindigul-624005 </br>
-            <span style="margin-right: 5px;">&#x260E;</span> - 09597575922  <span style="margin-right: 5px;">&#x1F4E7;</span>- vpnacbse@gmail.com 
+        <td style="text-align: center;"> <?php if(isset($school_name)) echo $school_name; ?> </br>
+        <?php if(isset($address1)) echo $address1,', '; if(isset($address2)) echo $address2,', '; if(isset($district)) echo $district,', </br>'; if(isset($state)) echo $state,'-'; if(isset($pincode)) echo $pincode; ?> </br>
+            <span style="margin-right: 5px;">&#x260E;</span> - <?php if(isset($contact_number)) echo $contact_number; ?>  <span style="margin-right: 5px;">&#x1F4E7;</span>- <?php if(isset($email_id)) echo $email_id; ?>
         </td>
         <td class="first-row"> Receipt No. <?php echo $tempfeesDetails['receipt_no'];?></br> 
             Manual Rcpt.No </br> 

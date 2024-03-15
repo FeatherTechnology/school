@@ -43,7 +43,7 @@ $amenity_fees_amount = '' ;
 $amenity_fees_date = '' ;
 $amenity_fees_Status='';
 
-$selectClass=$mysqli->query("SELECT fm.academic_year, fm.medium, fm.student_type, fm.standard, af.amenity_particulars, af.amenity_amount, af.amenity_date, af.status  FROM `fees_master` fm JOIN `amenity_fee` af ON fm.fees_id = af.fee_master_id WHERE fm.academic_year = '".$academic_year."' AND fm.medium = '".$medium."' AND fm.student_type = '".$student_type."' AND fm.standard = '".$standard."' AND af.amenity_particulars = '".$amenity_particulars."' AND af.amenity_amount = '".$amenity_amount."' AND af.amenity_date = '".$amenity_date."' ");
+$selectClass=$mysqli->query("SELECT fm.academic_year, fm.medium, fm.student_type, fm.standard, af.amenity_particulars, af.amenity_amount, af.amenity_date, af.status  FROM `fees_master` fm JOIN `amenity_fee` af ON fm.fees_id = af.fee_master_id WHERE fm.academic_year = '".$academic_year."' AND fm.medium = '".$medium."' AND fm.student_type = '".$student_type."' AND fm.standard = '".$standard."' AND fm.school_id = '".$school_id."' AND af.amenity_particulars = '".$amenity_particulars."' AND af.amenity_amount = '".$amenity_amount."' AND af.amenity_date = '".$amenity_date."' ");
 if(mysqli_num_rows($selectClass)>0){
 	$row=$selectClass->fetch_assoc();	
 		$amenity_academic_year    = $row["academic_year"];
@@ -71,7 +71,7 @@ if($amenity_academic_year == $academic_year && $amenity_medium == $medium && $am
 		}
 	
 	}else{ 
-		$feeMasterrowcnt=$mysqli->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."' order by fees_id desc ");
+		$feeMasterrowcnt=$mysqli->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."' AND fm.school_id = '".$school_id."' order by fees_id desc ");
 
 		if(mysqli_num_rows($feeMasterrowcnt) > 0){
 			$fee_master_last_id = $feeMasterrowcnt->fetch_assoc()['fees_id'];

@@ -43,7 +43,7 @@ $grpc_amount = '' ;
 $grpc_date = '' ;
 $grp_Status='';
 
-$selectClass=$mysqli->query("SELECT fm.academic_year, fm.medium, fm.student_type, fm.standard, gcf.grp_particulars, gcf.grp_amount, gcf.grp_date, gcf.status  FROM `fees_master` fm JOIN `group_course_fee` gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '".$academic_year."' AND fm.medium = '".$medium."' AND fm.student_type = '".$student_type."' AND fm.standard = '".$standard."' AND gcf.grp_particulars = '".$grp_particulars."' AND gcf.grp_amount = '".$grp_amount."' AND gcf.grp_date = '".$grp_date."' ");
+$selectClass=$mysqli->query("SELECT fm.academic_year, fm.medium, fm.student_type, fm.standard, gcf.grp_particulars, gcf.grp_amount, gcf.grp_date, gcf.status  FROM `fees_master` fm JOIN `group_course_fee` gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '".$academic_year."' AND fm.medium = '".$medium."' AND fm.student_type = '".$student_type."' AND fm.standard = '".$standard."' AND fm.school_id = '".$school_id."' AND gcf.grp_particulars = '".$grp_particulars."' AND gcf.grp_amount = '".$grp_amount."' AND gcf.grp_date = '".$grp_date."' ");
 if(mysqli_num_rows($selectClass)>0){
 	$row=$selectClass->fetch_assoc();
 		$grp_academic_year    = $row["academic_year"];
@@ -71,7 +71,7 @@ if($grp_academic_year == $academic_year && $grp_medium == $medium && $grp_studen
 		}
     
 	}else{ 
-		$feeMasterrowcnt=$mysqli->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."' order by fees_id desc ");
+		$feeMasterrowcnt=$mysqli->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."' AND fm.school_id = '".$school_id."' order by fees_id desc ");
 
 		if(mysqli_num_rows($feeMasterrowcnt) > 0){
 			$fee_master_last_id = $feeMasterrowcnt->fetch_assoc()['fees_id'];

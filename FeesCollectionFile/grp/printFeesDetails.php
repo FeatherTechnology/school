@@ -82,15 +82,16 @@ while($row=$qry->fetch_assoc()){
 	$section=$row["section"];
 } 
 
-$getbrc=$mysqli->query("SELECT * FROM school_creation WHERE status = 0 AND school_id = '$school_id' AND FIND_IN_SET('$year_id', year_id) > 0");
-// SELECT * FROM school_creation WHERE status=0 AND school_id='$school_id' AND year_id='$year_id'
-while ($brc=$getbrc->fetch_assoc()) {
-	$address1  =$brc["address1"];
-	$address2  =$brc["address2"];
-	$district  =$brc["district"];
-	$state     =$brc["state"];
-	$email_id     =$brc["email_id"];
-	$school_name     =$brc["school_name"]; 
+$getbrc=$mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id'");
+while ($schoolInfo=$getbrc->fetch_assoc()) {
+	$school_name     =$schoolInfo["school_name"]; 
+	$address1  =$schoolInfo["address1"];
+	$address2  =$schoolInfo["address2"];
+	$district  =$schoolInfo["district"];
+	$state     =$schoolInfo["state"];
+	$pincode  =$schoolInfo["pincode"];
+	$contact_number  =$schoolInfo["contact_number"];
+	$email_id     =$schoolInfo["email_id"];
 } 
 ?>
 
@@ -110,9 +111,10 @@ while ($brc=$getbrc->fetch_assoc()) {
 	<tr>
 	
 		<td><img src="img/Logo.png" height="50px" width="50px" alt="testing"></td>
-		<td style="text-align: center;"><b style="font-size:20px;"><?php echo $school_name;?></b><br><?php echo $address1;?>&nbsp;&nbsp;<?php echo $address2; ?> &nbsp;<?php echo $district; ?>&nbsp;&nbsp;
-		<br><span class="icon-mail"></span><?php echo $email_id;?>			
-		</td>
+		<td style="text-align: center;"> <?php if(isset($school_name)) echo $school_name; ?> </br>
+        <?php if(isset($address1)) echo $address1,', '; if(isset($address2)) echo $address2,', '; if(isset($district)) echo $district,', </br>'; if(isset($state)) echo $state,'-'; if(isset($pincode)) echo $pincode; ?> </br>
+            <span style="margin-right: 5px;">&#x260E;</span> - <?php if(isset($contact_number)) echo $contact_number; ?>  <span style="margin-right: 5px;">&#x1F4E7;</span>- <?php if(isset($email_id)) echo $email_id; ?>
+        </td>
 		<td>
 			Receipt Number: <?php echo $receipt_number; ?><br>
 			Manual Rcpt.No:<BR>

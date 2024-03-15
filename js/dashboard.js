@@ -60,20 +60,22 @@ function drawColColors() {
 
 
 function drawChart() {
-  console.log('response')
-
   $.ajax({
     type: 'POST',
     url: 'ajaxFiles/getFeeDetailsForDashboard.php',
     dataType: 'json',
     success:function(response){
-      console.log(response.totalFee)
-      let totalFees = parseInt(response.totalFee);
-      let paidFees = parseInt(response.paidFee);
-      let todayFeecollected = parseInt(response.todayscollection);
+      let totalFees = parseInt(response.totalFee) || 0;
+      let paidFees = parseInt(response.paidFee) || 0;
+      let todayFeecollected = parseInt(response.todayscollection) || 0;
       let pendingFees = totalFees - paidFees;
 
-      //Student Donut chart.
+      // Replace zero values with a small non-zero value
+      // totalFees = totalFees === 0 ? 0.1 : totalFees;
+      // pendingFees = pendingFees === 0 ? 0.1 : pendingFees;
+      // paidFees = paidFees === 0 ? 0.1 : paidFees;
+      // todayFeecollected = todayFeecollected === 0 ? 0.1 : todayFeecollected;
+
         var data = google.visualization.arrayToDataTable([
           ['Task', 'Count'],
           ['Total Fee', totalFees],

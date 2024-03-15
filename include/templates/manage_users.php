@@ -1,14 +1,19 @@
 <?php
+@session_start();
+if(isset($_SESSION["userid"])){
+    $userid = $_SESSION["userid"];
+} 
+
 if(isset($_POST['submitusers']))
 {
     if(isset($_POST['manage_user_id']) && $_POST['manage_user_id'] >0 && is_numeric($_POST['manage_user_id'])){		
         $manage_user_id = $_POST['manage_user_id']; 	
-        $updatecustomer = $userObj->updateuser($mysqli, $manage_user_id);  
+        $updatecustomer = $userObj->updateuser($mysqli, $manage_user_id, $userid);  
         ?>
         <script>location.href='<?php echo $HOSTPATH; ?>edit_manage_users&msc=2';</script> 
 
 <?php } else{
-        $addcustomer = $userObj->adduser($mysqli);   
+        $addcustomer = $userObj->adduser($mysqli, $userid);   
         ?>
         <script>location.href='<?php echo $HOSTPATH; ?>edit_manage_users&msc=1';</script> 
         <?php
@@ -84,7 +89,7 @@ if(isset($_GET['del']))
 }
 if($del>0)
 {
-    $deleteuser = $userObj->deleteuser($mysqli,$del); 
+    $deleteuser = $userObj->deleteuser($mysqli,$del,$userid); 
     ?>
     <script>location.href='<?php echo $HOSTPATH; ?>edit_manage_users&msc=3';</script>
     <?php   

@@ -1,5 +1,9 @@
 <?php
 include '../ajaxconfig.php';
+@session_start();
+if(isset($_SESSION['school_id'])){
+    $school_id = $_SESSION['school_id'];
+}
 ?>
 
 <table class="table custom-table referral_pending_for_approval">
@@ -41,7 +45,7 @@ include '../ajaxconfig.php';
         LEFT JOIN 
             referral_details rd ON sc.student_id = rd.student_id
         WHERE 
-        sc.referencecat != '' AND sc.status = '0' AND (sc.approval = '' || sc.approval IS NULL) ");
+        sc.referencecat != '' AND sc.status = '0' AND (sc.approval = '' || sc.approval IS NULL) && sc.school_id = '$school_id'");
         while($studentConcession = $generalConcessionQry->fetchobject()){
         ?>
         <tr>
@@ -99,7 +103,7 @@ include '../ajaxconfig.php';
         LEFT JOIN 
             referral_details rd ON sc.student_id = rd.student_id
         WHERE 
-        sc.referencecat != '' AND sc.status = '0' AND sc.approval = 'Approved' ");
+        sc.referencecat != '' AND sc.status = '0' AND sc.approval = 'Approved' && sc.school_id = '$school_id'");
         while($studentConcession = $generalConcessionQry->fetchobject()){
         ?>
         <tr>

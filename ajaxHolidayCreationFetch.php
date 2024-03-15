@@ -4,6 +4,7 @@ include('ajaxconfig.php');
 
 if(isset($_SESSION["userid"])){
     $userid = $_SESSION["userid"];
+    $school_id = $_SESSION['school_id'];
 }
 
 $column = array(
@@ -14,7 +15,7 @@ $column = array(
     'status'
 );
 
-$query = "SELECT * FROM holiday_creation WHERE 1";
+$query = "SELECT * FROM holiday_creation WHERE school_id = '".$school_id."' ";
 
 if($_POST['search']!="");
 {
@@ -32,10 +33,10 @@ if($_POST['search']!="");
         else{	
             $query .= "
             
-            OR holiday_name LIKE  '%".$_POST['search']."%'
+            AND (holiday_name LIKE  '%".$_POST['search']."%'
             OR holiday_date LIKE '%".$_POST['search']."%'
             OR comments LIKE '%".$_POST['search']."%'
-            OR status LIKE '%".$_POST['search']."%' ";
+            OR status LIKE '%".$_POST['search']."%' ) ";
         }
     }
 }

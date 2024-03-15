@@ -1,5 +1,23 @@
 <?php
 include "../ajaxconfig.php";
+@session_start();
+if(isset($_SESSION["userid"])){
+    $school_id = $_SESSION["school_id"];
+} 
+
+//get school name by using session id.
+$getschoolDetailsQry=$mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id' ");
+while ($schoolInfo=$getschoolDetailsQry->fetch_assoc()) {
+	$session_school_name     =$schoolInfo["school_name"]; 
+	$address1  =$schoolInfo["address1"];
+	$address2  =$schoolInfo["address2"];
+	$district  =$schoolInfo["district"];
+	$state     =$schoolInfo["state"];
+	$pincode  =$schoolInfo["pincode"];
+	$contact_number  =$schoolInfo["contact_number"];
+	$email_id     =$schoolInfo["email_id"];
+} 
+
 if (isset($_POST['tcID'])) {
     $tcID = $_POST['tcID'];
 }
@@ -74,10 +92,10 @@ tr td {
             <table width="95%">
                 <tr>
                     <td rowspan="3" width="15%" valign="top" align="right" style="font-family:'Bookman Old Style';font-size:16px; color:black"><img height="100px" width="100px" src="img/Logo.png" alt="LOGO" /> </td>
-                    <td width="85%" colspan="3" align="center" style="font-family:'Bookman Old Style';font-size:32px; color:black"><b>VIDHYA PARTHI NATIONAL ACADEMY</b></td>
+                    <td width="85%" colspan="3" align="center" style="font-family:'Bookman Old Style';font-size:32px; color:black"><b><?php if(isset($session_school_name)) echo $session_school_name; ?></b></td>
                 </tr>
                 <tr>
-                    <td width="85%" colspan="3" align="center" style="font-family:'Bookman Old Style';font-size:14px; color:black">SEELAPADI, , Dindigul 624005</td>
+                    <td width="85%" colspan="3" align="center" style="font-family:'Bookman Old Style';font-size:14px; color:black"> <?php if(isset($address1)) echo $address1,', '; if(isset($address2)) echo $address2,', '; if(isset($district)) echo $district,','; if(isset($state)) echo $state,'-'; if(isset($pincode)) echo $pincode; ?></td>
                 </tr>
                 <tr>
                     <td width="85%" colspan="3" align="center" style="font-family:'Bookman Old Style';font-size:24px; color:black;"><b style="border:2px black solid;">&nbsp;&nbsp; TRANSFER CERTIFICATE &nbsp;&nbsp;</b></td>

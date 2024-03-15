@@ -46,7 +46,7 @@ $extrac_amount = '' ;
 $extrac_date = '' ;
 $extra_Status='';
 
-$selectClass=$mysqli->query("SELECT fm.academic_year, fm.medium, fm.student_type, fm.standard, ecaf.extra_particulars, ecaf.extra_amount, ecaf.extra_date, ecaf.status  FROM `fees_master` fm JOIN `extra_curricular_activities_fee` ecaf ON fm.fees_id = ecaf.fee_master_id WHERE fm.academic_year = '".$academic_year."' AND fm.medium = '".$medium."' AND fm.student_type = '".$student_type."' AND fm.standard = '".$standard."' AND ecaf.extra_particulars = '".$extra_particulars."' AND ecaf.extra_amount = '".$extra_amount."' AND ecaf.extra_date = '".$extra_date."' AND ecaf.type = '".$extra_type."' ");
+$selectClass=$mysqli->query("SELECT fm.academic_year, fm.medium, fm.student_type, fm.standard, ecaf.extra_particulars, ecaf.extra_amount, ecaf.extra_date, ecaf.status  FROM `fees_master` fm JOIN `extra_curricular_activities_fee` ecaf ON fm.fees_id = ecaf.fee_master_id WHERE fm.academic_year = '".$academic_year."' AND fm.medium = '".$medium."' AND fm.student_type = '".$student_type."' AND fm.standard = '".$standard."' AND fm.school_id = '".$school_id."' AND ecaf.extra_particulars = '".$extra_particulars."' AND ecaf.extra_amount = '".$extra_amount."' AND ecaf.extra_date = '".$extra_date."' AND ecaf.type = '".$extra_type."' ");
 if(mysqli_num_rows($selectClass)>0){
 	$row=$selectClass->fetch_assoc();
 		$extra_academic_year    = $row["academic_year"];
@@ -75,7 +75,7 @@ if($extra_academic_year == $academic_year && $extra_medium == $medium && $extra_
 		}
     
 	}else{
-		$feeMasterrowcnt=$mysqli->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."' order by fees_id desc ");
+		$feeMasterrowcnt=$mysqli->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."' AND fm.school_id = '".$school_id."' order by fees_id desc ");
 
 		if(mysqli_num_rows($feeMasterrowcnt) > 0){
 			$fee_master_last_id = $feeMasterrowcnt->fetch_assoc()['fees_id'];

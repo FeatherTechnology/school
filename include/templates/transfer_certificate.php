@@ -2,6 +2,7 @@
 @session_start();
 if (isset($_SESSION["userid"])) {
     $userid = $_SESSION["userid"];
+    $school_id = $_SESSION['school_id'];
 }
 
 $StudentAdmissionList = $userObj->getAdmissionNoDetails($mysqli);
@@ -10,14 +11,14 @@ $id = 0;
 if (isset($_POST['SubmitTransferCertificate']) && $_POST['SubmitTransferCertificate'] != '') {
     if (isset($_POST['id']) && $_POST['id'] > 0 && is_numeric($_POST['id'])) {
         $id = $_POST['id'];
-        $updateTransferCertificateCreation = $userObj->updateTransferCertificateCreation($mysqli, $id, $userid);
+        $updateTransferCertificateCreation = $userObj->updateTransferCertificateCreation($mysqli, $id, $userid, $school_id);
 ?>
         <script>
             location.href = '<?php echo $HOSTPATH; ?>edit_transfer_certificate&msc=2';
         </script>
     <?php
     } else {
-        $addTransferCertificateCreation = $userObj->addTransferCertificateCreation($mysqli, $userid);
+        $addTransferCertificateCreation = $userObj->addTransferCertificateCreation($mysqli, $userid, $school_id);
     ?>
         <script>
             location.href = '<?php echo $HOSTPATH; ?>edit_transfer_certificate&msc=1';
