@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 06, 2024 at 01:31 PM
+-- Generation Time: Mar 15, 2024 at 09:17 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -29,10 +29,26 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `academic_year` (
   `year_id` int(11) NOT NULL,
+  `period_from` date DEFAULT NULL,
+  `period_to` date DEFAULT NULL,
   `academic_year` varchar(150) DEFAULT NULL,
-  `key_status` int(11) NOT NULL DEFAULT 0,
-  `status` int(11) NOT NULL DEFAULT 0
+  `status` int(11) NOT NULL DEFAULT 0,
+  `insert_login_id` varchar(150) NOT NULL,
+  `update_login_id` varchar(150) DEFAULT NULL,
+  `created_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `academic_year`
+--
+
+INSERT INTO `academic_year` (`year_id`, `period_from`, `period_to`, `academic_year`, `status`, `insert_login_id`, `update_login_id`, `created_date`, `updated_date`) VALUES
+(1, '2019-04-01', '2020-03-31', '2019-2020', 0, '1', NULL, '2024-03-09 16:42:07', NULL),
+(2, '2020-04-01', '2021-03-31', '2020-2021', 0, '1', NULL, '2024-03-09 16:42:07', NULL),
+(3, '2021-04-01', '2022-03-31', '2021-2022', 0, '1', NULL, '2024-03-09 16:42:07', NULL),
+(4, '2022-04-01', '2023-03-31', '2022-2023', 0, '1', NULL, '2024-03-09 16:42:07', NULL),
+(5, '2023-04-01', '2024-03-31', '2023-2024', 0, '1', NULL, '2024-03-09 16:42:07', NULL);
 
 -- --------------------------------------------------------
 
@@ -47,6 +63,33 @@ CREATE TABLE `accountsgroup` (
   `status` int(11) DEFAULT 0,
   `order_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `accountsgroup`
+--
+
+INSERT INTO `accountsgroup` (`Id`, `AccountsName`, `ParentId`, `status`, `order_id`) VALUES
+(1, 'Capital Account', 0, 0, 1),
+(2, 'Current Liabilities', 0, 0, 2),
+(3, 'Current Assets', 0, 0, 4),
+(4, 'Purchase Accounts', 0, 0, 5),
+(5, 'Direct Income', 0, 0, 6),
+(6, 'Direct Expenses', 0, 0, 7),
+(7, 'Indirect Income', 0, 0, 8),
+(8, 'Indirect Expenses', 0, 0, 9),
+(9, 'Profit & Loss A/c', 0, 0, 10),
+(10, 'Diff. in Opening Balances', 0, 0, 11),
+(11, 'Reserve & Surplus', 1, 0, 12),
+(12, 'Sundry Creditors', 2, 0, 13),
+(13, 'Loans(Liability)', 2, 0, 14),
+(14, 'Bank OD', 2, 0, 15),
+(15, 'Opening Stock', 3, 0, 16),
+(16, 'Cash-in-hand', 3, 0, 17),
+(17, 'Bank Accounts', 3, 0, 18),
+(18, 'Investments', 3, 0, 19),
+(19, 'Loans and Advances', 3, 0, 20),
+(40, 'Sundry Debtors', 3, 0, 35),
+(42, 'Fixed Assets', 0, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -259,6 +302,448 @@ CREATE TABLE `cast_details` (
   `status` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `cast_details`
+--
+
+INSERT INTO `cast_details` (`cast_id`, `cast_name`, `status`) VALUES
+(1, 'Adi Andhra', 0),
+(2, 'Adi Dravida', 0),
+(3, 'Adi Karnataka', 0),
+(4, 'Ajila', 0),
+(5, 'Arunthathiyar', 0),
+(6, 'Ayyanavar', 0),
+(7, 'Baira', 0),
+(8, 'Bakuda', 0),
+(9, 'Bandi', 0),
+(10, 'Bellara', 0),
+(11, 'Bharatar', 0),
+(12, 'Chakkiliyan', 0),
+(13, 'Chalavadi', 0),
+(14, 'Chamar, Muchi', 0),
+(15, 'Chandala', 0),
+(16, 'Cheruman', 0),
+(17, 'Devendrakulathan', 0),
+(18, 'Dom, Dombara, Paidi, Pane', 0),
+(19, 'Domban', 0),
+(20, 'Godagali', 0),
+(21, 'Godda', 0),
+(22, 'Gosangi', 0),
+(23, 'Holeya', 0),
+(24, 'Jaggali', 0),
+(25, 'Jambuvulu', 0),
+(26, 'Kadaiyan', 0),
+(27, 'Kakkalan', 0),
+(28, 'Kalladi', 0),
+(29, 'Kanakkan, Padanna', 0),
+(30, 'Karimpalan', 0),
+(31, 'Kavara', 0),
+(32, 'Koliyan', 0),
+(33, 'Koosa', 0),
+(34, 'Kootan, Koodan', 0),
+(35, 'Kudumban', 0),
+(36, 'Kuravan Sidhanar', 0),
+(37, 'Madari', 0),
+(38, 'Madiga', 0),
+(39, 'Maila', 0),
+(40, 'Mala', 0),
+(41, 'Mannan', 0),
+(42, 'Mavilan', 0),
+(43, 'Moger', 0),
+(44, 'Mundala', 0),
+(45, 'Nalakeyava', 0),
+(46, 'Nayadi', 0),
+(47, 'Padannan', 0),
+(48, 'Pagadai', 0),
+(49, 'Pallan', 0),
+(50, 'Palluvan', 0),
+(51, 'Pambada', 0),
+(52, 'Panan', 0),
+(53, 'Panchama', 0),
+(54, 'Pannadi', 0),
+(55, 'Panniandi', 0),
+(56, 'Paraiyan, Parayan, Sambavar', 0),
+(57, 'Paravan', 0),
+(58, 'Pathiyan', 0),
+(59, 'Pulayan, Cheramar', 0),
+(60, 'Puthirai Vannan', 0),
+(61, 'Raneyar', 0),
+(62, 'Samagara', 0),
+(63, 'Samban', 0),
+(64, 'Sapari', 0),
+(65, 'Semman', 0),
+(66, 'Thandan', 0),
+(67, 'Thoti', 0),
+(68, 'Tiruvalluvar', 0),
+(69, 'Vallon', 0),
+(70, 'Valluvan', 0),
+(71, 'Vannan', 0),
+(72, 'Vathiriyan', 0),
+(73, 'Velen', 0),
+(74, 'Vetan', 0),
+(75, 'Vettiyan', 0),
+(76, 'Vettuvan', 0),
+(77, 'Adiyan', 0),
+(78, 'Aranadan', 0),
+(79, 'Eravallan', 0),
+(80, 'Irular', 0),
+(81, 'Kadar', 0),
+(82, 'Kammara', 0),
+(83, 'Kanikaran', 0),
+(84, 'Kanikkar', 0),
+(85, 'Kaniyan', 0),
+(86, 'Kanyan', 0),
+(87, 'Kattunayakan', 0),
+(88, 'Kochu Velan', 0),
+(89, 'Konda Kapus', 0),
+(90, 'Kondareddis', 0),
+(91, 'Koraga', 0),
+(92, 'Kota', 0),
+(93, 'Kudiya', 0),
+(94, 'Kurichchan', 0),
+(95, 'Kurumans', 0),
+(96, 'Kurumbas', 0),
+(97, 'Madugar', 0),
+(98, 'Maha Malasar', 0),
+(99, 'Malai Arayan', 0),
+(100, 'Malai Pandaram', 0),
+(101, 'MalaiVedan', 0),
+(102, 'Malakkuravan', 0),
+(103, 'Malasar', 0),
+(104, 'Malayali', 0),
+(105, 'Malayekandi', 0),
+(106, 'Mannan', 0),
+(107, 'Melakudi', 0),
+(108, 'Muduvan', 0),
+(109, 'Muthuvan', 0),
+(110, 'Palleyan', 0),
+(111, 'Palliyan', 0),
+(112, 'Palliyar', 0),
+(113, 'Paniyan', 0),
+(114, 'Sholaga', 0),
+(115, 'Toda', 0),
+(116, 'Uraly', 0),
+(117, 'Agamudayarincludingor', 0),
+(118, 'ThuluvaVellala', 0),
+(119, 'ThozhuVellala', 0),
+(120, 'AgaramVellanChettiar', 0),
+(121, 'Alwar', 0),
+(122, 'Alavar', 0),
+(123, 'Azhavar', 0),
+(124, 'Servai', 0),
+(125, 'Nulayar', 0),
+(126, 'ArchakaraiVellala', 0),
+(127, 'Aryavathi', 0),
+(128, 'AyiraVaisyar', 0),
+(129, 'Badagar', 0),
+(130, 'Billava', 0),
+(131, 'Bondil', 0),
+(132, 'Boyas', 0),
+(133, 'Pedda', 0),
+(134, 'Boyar', 0),
+(135, 'Oddars', 0),
+(136, 'Kaloddars', 0),
+(137, 'NellorepetOddars', 0),
+(138, 'SooramariOddars', 0),
+(139, 'Chakkala', 0),
+(140, 'Chavalakarar', 0),
+(141, 'Chettu', 0),
+(142, 'Chetty', 0),
+(143, 'Chowdry', 0),
+(144, 'Donga Dasarisl', 0),
+(145, 'Devangar,', 0),
+(146, 'Sedar', 0),
+(147, 'Dombs', 0),
+(148, 'Enadi', 0),
+(149, 'Ezhavathy', 0),
+(150, 'Ezhuthachar', 0),
+(151, 'Ezhuva', 0),
+(152, 'Gangavar', 0),
+(153, 'Gavara', 0),
+(154, 'Gavarai', 0),
+(155, 'Vadugar', 0),
+(156, 'Vaduvar', 0),
+(157, 'Gounder', 0),
+(158, 'Gowda', 0),
+(159, 'Hegde', 0),
+(160, 'Idiga', 0),
+(161, 'IllathuPillaimar', 0),
+(162, 'Illuvar', 0),
+(163, 'Ezhuvar', 0),
+(164, 'Illathar', 0),
+(165, 'Jhetty', 0),
+(166, 'Jogis', 0),
+(167, 'Kabbera', 0),
+(168, 'Kaikolar', 0),
+(169, 'Sengunthar', 0),
+(170, 'Kaladi', 0),
+(171, 'KalariKurup', 0),
+(172, 'KalariPanicker', 0),
+(173, 'Kalingi', 0),
+(174, 'Kallar', 0),
+(175, 'KootappalKallars', 0),
+(176, 'PiramalaiKallars', 0),
+(177, 'PeriyasooriyurKallars', 0),
+(178, 'KallarKulaThondaman', 0),
+(179, 'KalveliGounder', 0),
+(180, 'Kambar', 0),
+(181, 'Kammalar', 0),
+(182, 'Viswakarmala', 0),
+(183, 'Viswakarma', 0),
+(184, 'Kani,', 0),
+(185, 'KaniyarPanikkar', 0),
+(186, 'Kanisu', 0),
+(187, 'KaniyalaVellalar', 0),
+(188, 'KannadaSaineegar', 0),
+(189, 'Kannadiyar', 0),
+(190, 'KannadiyaNaidu', 0),
+(191, 'KarpooraChettiar', 0),
+(192, 'Karuneegar', 0),
+(193, 'KasukkaraChettiar', 0),
+(194, 'Katesar', 0),
+(195, 'Pattamkatti', 0),
+(196, 'Kavuthiyar', 0),
+(197, 'KeralaMudali', 0),
+(198, 'Kharvi', 0),
+(199, 'Khatri', 0),
+(200, 'KonguVaishnava', 0),
+(201, 'KonguVellalar', 0),
+(202, 'KoppalaVelama', 0),
+(203, 'Koteyar', 0),
+(204, 'Krishnanvaka', 0),
+(205, 'KudikaraVellalar', 0),
+(206, 'Kudumbi', 0),
+(207, 'KugaVellalar', 0),
+(208, 'Kunchidigar', 0),
+(209, 'Lambadi', 0),
+(210, 'Lingayat', 0),
+(211, 'Jangama', 0),
+(212, 'Mahratta(Non-Brahmin)(includingNamdevMahratta)', 0),
+(213, 'Malayar', 0),
+(214, 'Male', 0),
+(215, 'Maniagar', 0),
+(216, 'Maravars', 0),
+(217, 'Moondru mandai Embathunalu UrSozhia Vellalar', 0),
+(218, 'Mooppan', 0),
+(219, 'Muthuraja', 0),
+(220, 'Muthuracha', 0),
+(221, 'Muttiriyar', 0),
+(222, 'Mutharaiyar', 0),
+(223, 'Nadar', 0),
+(224, 'Gramani', 0),
+(225, 'ChiristianGramani', 0),
+(226, 'ChristianShanar', 0),
+(227, 'ChiristianNadar', 0),
+(228, 'Shanar', 0),
+(229, 'Nagaram', 0),
+(230, 'Naikkar', 0),
+(231, 'NangudiVellalar', 0),
+(232, 'NanjilMudali', 0),
+(233, 'Odar', 0),
+(234, 'Odiya', 0),
+(235, 'OottruvalanattuVellalar', 0),
+(236, 'OPSVellalar', 0),
+(237, 'Ovachar', 0),
+(238, 'PaiyurKottaVellalar', 0),
+(239, 'Pamulu', 0),
+(240, 'Panar', 0),
+(241, 'Omitted', 0),
+(242, 'Kathikarar (in Kanyakumari District)', 0),
+(243, 'PannirandamChettiar', 0),
+(244, 'UthamaChettiar', 0),
+(245, 'Parkavakulam', 0),
+(246, 'Perike', 0),
+(247, 'PerikeBalija', 0),
+(248, 'Perumkollar', 0),
+(249, 'PodikaraVellalar', 0),
+(250, 'PooluvaGounder', 0),
+(251, 'Poraya', 0),
+(252, 'Pulavar (in Coimbatoreand Erode Districts)', 0),
+(253, 'Pulluvar', 0),
+(254, 'Pooluvar', 0),
+(255, 'Pusala', 0),
+(256, 'Reddy', 0),
+(257, 'Ganjam', 0),
+(258, 'SadhuChetty', 0),
+(259, 'Sakkaravar', 0),
+(260, 'Kavathi', 0),
+(261, 'Salivagana', 0),
+(262, 'Saliyar', 0),
+(263, 'Adhaviyar', 0),
+(264, 'Pattariyar', 0),
+(265, 'Pattusaliyar', 0),
+(266, 'Padmasaliyar', 0),
+(267, 'Savalakkarar', 0),
+(268, 'Senaithalaivar', 0),
+(269, 'Illaivaniar', 0),
+(270, 'Senaikudiyar', 0),
+(271, 'Sourashtra', 0),
+(272, 'Patnulkarar', 0),
+(273, 'Sozhiavellalar', 0),
+(274, 'Srisayar', 0),
+(275, 'SundaramChetty', 0),
+(276, 'ThogattaVeerakshatriya', 0),
+(277, 'Tholkollar', 0),
+(278, 'TholuvaNaicker', 0),
+(279, 'VetalakaraNaicker', 0),
+(280, 'Thoriyar', 0),
+(281, 'Ukkirakula Kshatriya Naicker', 0),
+(282, 'Uppara', 0),
+(283, 'Sagara', 0),
+(284, 'Uppillia', 0),
+(285, 'UraliGounder', 0),
+(286, 'UrikkaraNayakkar', 0),
+(287, 'Vallambar', 0),
+(288, 'Valmiki', 0),
+(289, 'Vaniyar', 0),
+(290, 'Vania Chettiar', 0),
+(291, 'Veduvar', 0),
+(292, 'Vedar', 0),
+(293, 'Veerasaiva', 0),
+(294, 'Velar', 0),
+(295, 'VellanChettiar', 0),
+(296, 'VeluthodathuNair', 0),
+(297, 'Vokkaligar', 0),
+(298, 'WynadChetty', 0),
+(299, 'Yadhava', 0),
+(300, 'Yavana', 0),
+(301, 'Yerukula', 0),
+(302, 'Orphansand', 0),
+(303, 'Destitutechildren', 0),
+(304, 'SerakulaVellalar', 0),
+(305, 'VirakodiVellala', 0),
+(306, 'Vallanattu Chettiar', 0),
+(307, 'APandiyaVellalar', 0),
+(308, 'Dommars', 0),
+(309, 'Ansar', 0),
+(310, 'Dekkani Muslims', 0),
+(311, 'Dudekula', 0),
+(312, 'Labbais', 0),
+(313, 'Rowthar', 0),
+(314, 'Marakayar', 0),
+(315, 'Mapilla', 0),
+(316, 'Sheik', 0),
+(317, 'Syed', 0),
+(318, 'Ambalakarar', 0),
+(319, 'Andipandaram', 0),
+(320, 'Bestha,', 0),
+(321, 'Siviar', 0),
+(322, 'Bhatraju ', 0),
+(323, 'Boyar,', 0),
+(324, 'Oddar', 0),
+(325, 'Dasari', 0),
+(326, 'Dommara', 0),
+(327, 'Eravallar', 0),
+(328, 'Isaivellalar', 0),
+(329, 'Jambuvanodai', 0),
+(330, 'Jangam', 0),
+(331, 'Jogi', 0),
+(332, 'Kongu Chettiar', 0),
+(333, 'Koracha', 0),
+(334, 'Kulala ', 0),
+(335, 'Kunnuvar Mannadi', 0),
+(336, 'Kurumba', 0),
+(337, 'Kuruhini Chetty', 0),
+(338, 'Maruthuvar', 0),
+(339, 'Pronopakari', 0),
+(340, 'Velakatalanair', 0),
+(341, 'Mangala,', 0),
+(342, 'Navithar', 0),
+(343, 'Velakattalavar,', 0),
+(344, 'Mond Golla', 0),
+(345, 'Moundadan Chetty', 0),
+(346, 'Mahendra,', 0),
+(347, 'Medara', 0),
+(348, 'Mutlakampatti', 0),
+(349, 'Narikoravar', 0),
+(350, 'Nokkar', 0),
+(351, 'Vanniakula Kshatriya', 0),
+(352, 'Paravar', 0),
+(353, 'Meenavar', 0),
+(354, 'Mukkuvar or', 0),
+(355, 'Mukayar', 0),
+(356, 'Punnan Vettuva Gounder', 0),
+(357, 'Pannayar', 0),
+(358, 'Sathatha Srivaishnava', 0),
+(359, 'Sozhia Chetty', 0),
+(360, 'Telugupatty Chetty', 0),
+(361, 'Thottia Naicker', 0),
+(362, 'Thondaman', 0),
+(363, 'Valaiyar', 0),
+(364, 'Vannar', 0),
+(365, 'Vettaikarar', 0),
+(366, 'Vettuva Gounder', 0),
+(367, 'Yogeeswarar', 0),
+(368, 'Attur Kilnad Koravars', 0),
+(369, 'Attur Melnad Koravars', 0),
+(370, 'Appanad Kondayam kottai Maravar', 0),
+(371, 'Ambalakarar', 0),
+(372, 'Ambalakkarar', 0),
+(373, 'Boyas', 0),
+(374, 'Battu Turkas', 0),
+(375, 'C.K. Koravars', 0),
+(376, 'Chakkala', 0),
+(377, 'Changyampudi Koravars', 0),
+(378, 'Chettinad Valayars', 0),
+(379, 'Dombs', 0),
+(380, 'Dobba Koravars', 0),
+(381, 'Donga Boya', 0),
+(382, 'Donga Ur.Korachas', 0),
+(383, 'Devagudi Talayaris', 0),
+(384, 'Dobbai Korachas', 0),
+(385, 'Dabi Koravars', 0),
+(386, 'Donga Dasaris', 0),
+(387, 'Gorrela Dodda Boya', 0),
+(388, 'Gudu Dasaris', 0),
+(389, 'Gandarvakottai Koravars', 0),
+(390, 'Gandarvakottai Kallars', 0),
+(391, 'Inji Koravars', 0),
+(392, 'Jogis', 0),
+(393, 'Jambavanodai', 0),
+(394, 'Kaladis', 0),
+(395, 'Kal Oddars', 0),
+(396, 'Koravars', 0),
+(397, 'Kalinji Dabikoravars', 0),
+(398, 'Kootappal Kallars', 0),
+(399, 'Kala Koravars', 0),
+(400, 'Kalavathila Boyas', 0),
+(401, 'Kepmaris', 0),
+(402, 'Maravars', 0),
+(403, 'Monda Koravars', 0),
+(404, 'Monda Golla', 0),
+(405, 'Mutlakampatti', 0),
+(406, 'Nokkars', 0),
+(407, 'Nellorepet Oddars', 0),
+(408, 'Oddars', 0),
+(409, 'Pedda Boyas', 0),
+(410, 'Ponnai Koravars (', 0),
+(411, 'Piramalai Kallars', 0),
+(412, 'Peria Suriyur Kallars', 0),
+(413, 'Padayachi', 0),
+(414, 'Punnan Vettuva Gounder', 0),
+(415, 'Servai', 0),
+(416, 'Salem Melnad Koravars', 0),
+(417, 'Salem Uppu Koravars', 0),
+(418, 'Sakkaraithamadai Koravars', 0),
+(419, 'Saranga Palli Koravars', 0),
+(420, 'Sooramari Oddars', 0),
+(421, 'Sembanad Maravars', 0),
+(422, 'Thalli Koravars', 0),
+(423, 'Telungapattti Chettis', 0),
+(424, 'Thottia Naickers', 0),
+(425, 'Thogamalai Koravars', 0),
+(426, 'Kepmaris', 0),
+(427, 'Uppukoravars or', 0),
+(428, 'Settipalli Koravars', 0),
+(429, 'Urali Gounders', 0),
+(430, 'Wayalpad or Nawalpeta Korachas', 0),
+(431, 'Vaduvarpatti Koravars', 0),
+(432, 'Valayars', 0),
+(433, 'Vettaikarar', 0),
+(434, 'Vetta Koravars (Salem and Namakkal Districts)', 0),
+(435, 'Varaganeri Koravars', 0),
+(436, 'Vettuva Gounder', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -327,8 +812,31 @@ CREATE TABLE `extra_curricular_activities_fee` (
   `extra_particulars` varchar(150) NOT NULL,
   `extra_amount` varchar(50) NOT NULL,
   `extra_date` varchar(50) NOT NULL,
+  `type` varchar(50) NOT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
   `extra_id_used` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fees_concession`
+--
+
+CREATE TABLE `fees_concession` (
+  `id` int(11) NOT NULL,
+  `student_id` varchar(255) NOT NULL,
+  `scholarship_header` varchar(100) NOT NULL,
+  `scholarship_amount` varchar(255) NOT NULL,
+  `fees_master_id` varchar(255) NOT NULL,
+  `fees_table_name` varchar(150) NOT NULL,
+  `fees_id` varchar(255) NOT NULL,
+  `remark` varchar(255) NOT NULL,
+  `concession_type` varchar(50) NOT NULL,
+  `academic_year` varchar(100) NOT NULL,
+  `school_id` varchar(100) NOT NULL,
+  `insert_login_id` varchar(255) NOT NULL,
+  `created_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -1081,6 +1589,25 @@ CREATE TABLE `purpose` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `referral_details`
+--
+
+CREATE TABLE `referral_details` (
+  `id` int(11) NOT NULL,
+  `student_id` varchar(255) NOT NULL,
+  `referral_type` varchar(100) NOT NULL,
+  `ref_student_id` varchar(255) DEFAULT NULL,
+  `ref_staff_id` varchar(255) DEFAULT NULL,
+  `referred_by` varchar(255) NOT NULL,
+  `ref_code` varchar(255) NOT NULL,
+  `approved` varchar(50) NOT NULL,
+  `others_amount` varchar(255) DEFAULT NULL,
+  `others_receiving_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `school_creation`
 --
 
@@ -1112,7 +1639,7 @@ CREATE TABLE `school_creation` (
 --
 
 INSERT INTO `school_creation` (`school_id`, `school_name`, `school_login_name`, `district`, `address1`, `address2`, `address3`, `state`, `pincode`, `contact_number`, `email_id`, `web_url`, `school_logo`, `status`, `year_id`, `insert_login_id`, `update_login_id`, `delete_login_id`, `created_date`, `updated_date`) VALUES
-(1, 'VIDHYA PARTHI NATIONAL ACADEMY', 'VIDHYA PARTHI NATIONAL ACADEMY', 'Dindigul', 'SEELAPADI', '', NULL, '1', '624005', '9597575922', 'vpnacbse@gmail.com', 'www.vpnacbse.com', 'tree-736885__480.jpg', 0, '2023-2024', 1, 1, NULL, '2023-12-02 14:43:44', '2023-12-02 14:43:44');
+(1, 'ABCD', 'ABCD', 'Pondy', 'Pondy', '', NULL, '1', '600015', '8220091100', 'feather@gmail.com', '', 'tree-736885__480.jpg', 0, '2023-2024', 1, 1, NULL, '2023-12-02 14:43:44', '2023-12-02 14:43:44');
 
 -- --------------------------------------------------------
 
@@ -1187,6 +1714,35 @@ CREATE TABLE `standard_creation` (
   `updated_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `standard_creation`
+--
+
+INSERT INTO `standard_creation` (`standard_id`, `standard`, `status`, `insert_login_id`, `update_login_id`, `delete_login_id`, `created_date`, `updated_date`) VALUES
+(1, 'PRE.K.G', 0, 1, NULL, NULL, '2023-12-02 16:18:16', NULL),
+(2, 'L.K.G', 0, 1, NULL, NULL, '2023-12-02 16:18:16', NULL),
+(3, 'U.K.G', 0, 1, NULL, NULL, '2023-12-02 16:18:16', NULL),
+(4, 'I', 0, 1, NULL, NULL, '2023-12-02 16:18:16', NULL),
+(5, 'II', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(6, 'III', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(7, 'IV', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(8, 'V', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(9, 'VI', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(10, 'VII', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(11, 'VIII', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(12, 'IX', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(13, 'X', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(14, 'XI_Maths_Biology', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(15, 'XI_Maths_ComputerScience', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(16, 'XI_Biology_ComputerScience', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(17, 'XI_Commerce_ComputerScience', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(18, 'XI_All', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(19, 'XII_Maths_Biology', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(20, 'XII_Maths_ComputerScience', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(21, 'XII_Biology_ComputerScience', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(22, 'XII_Commerce_ComputerScience', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL),
+(23, 'XII_All', 0, 1, NULL, NULL, '2023-12-02 16:18:17', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -1199,6 +1755,14 @@ CREATE TABLE `state_creation` (
   `state_code` int(11) NOT NULL DEFAULT 0,
   `status` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `state_creation`
+--
+
+INSERT INTO `state_creation` (`id`, `state`, `state_code`, `status`) VALUES
+(1, 'Tamil Nadu', 0, 0),
+(2, 'Pondicherry', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1289,14 +1853,17 @@ CREATE TABLE `student_creation` (
   `studentrollno` varchar(250) DEFAULT NULL,
   `emisno` varchar(250) DEFAULT NULL,
   `studentstype` varchar(250) DEFAULT NULL,
-  `referencecat` varchar(250) DEFAULT NULL,
-  `refstaffid` varchar(250) DEFAULT NULL,
-  `refstudentid` varchar(255) DEFAULT NULL,
-  `refoldstudentid` varchar(250) DEFAULT NULL,
-  `referencecatname` varchar(250) DEFAULT NULL,
-  `concession_type` varchar(250) DEFAULT NULL,
-  `concessiontypedetails` varchar(250) DEFAULT NULL,
-  `facility` varchar(250) DEFAULT NULL,
+  `referencecat` text DEFAULT NULL,
+  `refstaffid` text DEFAULT NULL,
+  `refstudentid` text DEFAULT NULL,
+  `refoldstudentid` text DEFAULT NULL,
+  `referencecatname` text DEFAULT NULL,
+  `concession_type` text DEFAULT NULL,
+  `concessiontypedetails` text DEFAULT NULL,
+  `concession_remark` varchar(255) DEFAULT NULL,
+  `concession_reject_reason` varchar(255) DEFAULT NULL,
+  `approval` varchar(100) DEFAULT NULL,
+  `facility` text DEFAULT NULL,
   `roomcatogoryfeeid` varchar(250) DEFAULT NULL,
   `advancefee` varchar(250) DEFAULT NULL,
   `roomrent` varchar(250) DEFAULT NULL,
@@ -1366,6 +1933,7 @@ CREATE TABLE `subject_details` (
   `paper_name` varchar(255) DEFAULT NULL,
   `max_mark` varchar(255) DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT 0,
+  `school_id` int(11) NOT NULL,
   `insert_login_id` int(11) DEFAULT NULL,
   `update_login_id` int(11) DEFAULT NULL,
   `delete_login_id` int(11) DEFAULT NULL,
@@ -1470,7 +2038,8 @@ CREATE TABLE `temp_admission_student` (
   `temp_src` varchar(250) DEFAULT NULL,
   `temp_father_name` varchar(250) DEFAULT NULL,
   `temp_mother_name` varchar(250) DEFAULT NULL,
-  `temp_contact_number` varchar(250) DEFAULT NULL,
+  `temp_fathercontact_number` varchar(250) DEFAULT NULL,
+  `temp_mothercontact_number` varchar(50) DEFAULT NULL,
   `temp_flat_no` varchar(250) DEFAULT NULL,
   `temp_street` varchar(250) DEFAULT NULL,
   `temp_district` varchar(250) DEFAULT NULL,
@@ -1514,6 +2083,7 @@ CREATE TABLE `transfer_certificate` (
   `standard` varchar(250) DEFAULT NULL,
   `promotion` varchar(250) DEFAULT NULL,
   `scholarship` varchar(250) DEFAULT NULL,
+  `school_id` int(11) NOT NULL,
   `insert_login_id` int(11) DEFAULT NULL,
   `update_login_id` int(11) DEFAULT NULL,
   `delete_login_id` int(11) DEFAULT NULL,
@@ -1690,6 +2260,14 @@ CREATE TABLE `trust_creation` (
   `updated_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `trust_creation`
+--
+
+INSERT INTO `trust_creation` (`trust_id`, `trust_name`, `contact_person`, `contact_number`, `address1`, `address2`, `address3`, `place`, `pincode`, `email_id`, `website`, `pan_number`, `tan_number`, `trust_logo`, `status`, `school_id`, `academic_year`, `insert_login_id`, `update_login_id`, `delete_login_id`, `created_date`, `updated_date`) VALUES
+(1, 'XYZ', 'ABC', '9597575922', 'Kamaraj salai', 'Pondicherry', 'Tamilnadu', 'Pondicherry', '600015', '', '', '', '', 'hoc2022-banner.png', 0, '1', '2023-2024', 1, 1, 1, '2023-12-02 12:55:05', '2023-12-02 12:55:05'),
+(2, 'Auro', 'ABC', '8527419632', 'Pondy', '', '', 'Pondy', '600045', '', '', '', '', '', 1, '1', '2023-2024', 1, NULL, 1, '2024-03-15 12:59:41', '2024-03-15 12:59:41');
+
 -- --------------------------------------------------------
 
 --
@@ -1708,17 +2286,59 @@ CREATE TABLE `user` (
   `user_password` varchar(255) DEFAULT NULL,
   `role` varchar(50) DEFAULT NULL,
   `status` varchar(255) DEFAULT '0',
-  `Createddate` datetime NOT NULL DEFAULT current_timestamp()
+  `dashboard` int(11) NOT NULL DEFAULT 0,
+  `administration_module` int(11) NOT NULL,
+  `trust_creation` int(11) DEFAULT NULL,
+  `school_update` int(11) NOT NULL,
+  `fees_master` int(11) NOT NULL,
+  `holiday_creation` int(11) NOT NULL,
+  `manage_users` int(11) DEFAULT NULL,
+  `master_module` int(11) NOT NULL,
+  `area_master` int(11) NOT NULL,
+  `syllabus_sub_module` int(11) NOT NULL,
+  `allocation` int(11) NOT NULL,
+  `allocation_view` int(11) NOT NULL,
+  `staff_module` int(11) NOT NULL,
+  `staff_creation` int(11) NOT NULL,
+  `student_module` int(11) NOT NULL,
+  `temp_admission_form` int(11) NOT NULL,
+  `student_creation` int(11) NOT NULL,
+  `student_rollback` int(11) NOT NULL,
+  `delete_student` int(11) NOT NULL,
+  `certificate_sub_module` int(11) DEFAULT NULL,
+  `transfer` int(11) NOT NULL,
+  `collection_module` int(11) NOT NULL,
+  `fees_concession` int(11) NOT NULL,
+  `fees_collection` int(11) NOT NULL,
+  `report_module` int(11) NOT NULL,
+  `student_report_sub_module` int(11) NOT NULL,
+  `student_caste_report` int(11) NOT NULL,
+  `class_wise_list` int(11) NOT NULL,
+  `register_of_admission` int(11) NOT NULL,
+  `student_transport_list` int(11) NOT NULL,
+  `fee_details_sub_module` int(11) NOT NULL,
+  `daily_fees_collection` int(11) NOT NULL,
+  `day_end_report` int(11) NOT NULL,
+  `overall_scholarship_fee_details` int(11) NOT NULL,
+  `pending_fee_details` int(11) NOT NULL,
+  `all_type_pending_fee_details` int(11) NOT NULL,
+  `classwise_overall_pending` int(11) NOT NULL,
+  `fees_summary` int(11) NOT NULL,
+  `monthwise_fees_summary` int(11) NOT NULL,
+  `insert_login_id` int(11) NOT NULL,
+  `update_login_id` int(11) DEFAULT NULL,
+  `delete_login_id` int(11) DEFAULT NULL,
+  `Createddate` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `firstname`, `lastname`, `fullname`, `title`, `school_id`, `emailid`, `user_name`, `user_password`, `role`, `status`, `Createddate`) VALUES
-(1, 'Super', 'Admin', 'Super Admin', 'Super Admin', 1, 'support@feathertechnology.in', 'support@feathertechnology.in', 'admin@123', '1', '0', '2021-04-17 17:08:00'),
-(18, 'Admin2', 'admin', 'Super Admin2', 'test', 7, 'support1@feathertechnology.in', 'support1@feathertechnology.in', 'admin@123', '1', '0', '2022-11-09 11:19:58'),
-(19, 'Super', 'User', 'SuperUser', 'test', 8, 'support2@feathertechnology.in\n', 'support2@feathertechnology.in', 'admin@123', '1', '0', '2023-06-09 03:53:34');
+INSERT INTO `user` (`user_id`, `firstname`, `lastname`, `fullname`, `title`, `school_id`, `emailid`, `user_name`, `user_password`, `role`, `status`, `dashboard`, `administration_module`, `trust_creation`, `school_update`, `fees_master`, `holiday_creation`, `manage_users`, `master_module`, `area_master`, `syllabus_sub_module`, `allocation`, `allocation_view`, `staff_module`, `staff_creation`, `student_module`, `temp_admission_form`, `student_creation`, `student_rollback`, `delete_student`, `certificate_sub_module`, `transfer`, `collection_module`, `fees_concession`, `fees_collection`, `report_module`, `student_report_sub_module`, `student_caste_report`, `class_wise_list`, `register_of_admission`, `student_transport_list`, `fee_details_sub_module`, `daily_fees_collection`, `day_end_report`, `overall_scholarship_fee_details`, `pending_fee_details`, `all_type_pending_fee_details`, `classwise_overall_pending`, `fees_summary`, `monthwise_fees_summary`, `insert_login_id`, `update_login_id`, `delete_login_id`, `Createddate`, `updated_date`) VALUES
+(1, 'Super', 'Admin', 'Super Admin', 'Super Admin', 1, 'support@feathertechnology.in', 'support@feathertechnology.in', 'admin@123', '1', '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, '2021-04-17 17:08:00', NULL),
+(2, 'Rodan', 'Fields', 'Rodan Fields', 'Admin', 1, 'rodan@gmail.com', 'rodan@gmail.com', 'Asdf@1234', '1', '0', 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, NULL, '2024-03-14 15:21:24', '2024-03-15');
 
 --
 -- Indexes for dumped tables
@@ -1819,6 +2439,12 @@ ALTER TABLE `deleted_student_creation`
 --
 ALTER TABLE `extra_curricular_activities_fee`
   ADD PRIMARY KEY (`extra_fee_id`);
+
+--
+-- Indexes for table `fees_concession`
+--
+ALTER TABLE `fees_concession`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `fees_master`
@@ -1945,6 +2571,12 @@ ALTER TABLE `purchaseorderref`
 --
 ALTER TABLE `purpose`
   ADD PRIMARY KEY (`purposeid`);
+
+--
+-- Indexes for table `referral_details`
+--
+ALTER TABLE `referral_details`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `school_creation`
@@ -2075,13 +2707,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `academic_year`
 --
 ALTER TABLE `academic_year`
-  MODIFY `year_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `year_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `accountsgroup`
 --
 ALTER TABLE `accountsgroup`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `admission_fees`
@@ -2141,7 +2773,7 @@ ALTER TABLE `billsettings`
 -- AUTO_INCREMENT for table `cast_details`
 --
 ALTER TABLE `cast_details`
-  MODIFY `cast_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cast_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=437;
 
 --
 -- AUTO_INCREMENT for table `conduct_certificate`
@@ -2166,6 +2798,12 @@ ALTER TABLE `deleted_student_creation`
 --
 ALTER TABLE `extra_curricular_activities_fee`
   MODIFY `extra_fee_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `fees_concession`
+--
+ALTER TABLE `fees_concession`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `fees_master`
@@ -2294,6 +2932,12 @@ ALTER TABLE `purpose`
   MODIFY `purposeid` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `referral_details`
+--
+ALTER TABLE `referral_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `school_creation`
 --
 ALTER TABLE `school_creation`
@@ -2309,13 +2953,13 @@ ALTER TABLE `staff_creation`
 -- AUTO_INCREMENT for table `standard_creation`
 --
 ALTER TABLE `standard_creation`
-  MODIFY `standard_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `standard_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `state_creation`
 --
 ALTER TABLE `state_creation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `stock_issuance`
@@ -2405,13 +3049,13 @@ ALTER TABLE `transport_fees_ref`
 -- AUTO_INCREMENT for table `trust_creation`
 --
 ALTER TABLE `trust_creation`
-  MODIFY `trust_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `trust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
