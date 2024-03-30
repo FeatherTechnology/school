@@ -68,7 +68,7 @@ if (isset($_GET['upd'])) {
     $getTempAdmissionDetails = $userObj->getStudentCreation($mysqli, $admission_id);
 
     if ($getTempAdmissionDetails > 0) {
-        $temp_no = $getTempAdmissionDetails['temp_no'];
+        $studentrollno = $getTempAdmissionDetails['studentrollno'];
         $student_name = $getTempAdmissionDetails['student_name'];
         $standard_name = $getTempAdmissionDetails['standard_name'];
         $stdid = $getTempAdmissionDetails['standard'];
@@ -133,7 +133,7 @@ if (isset($_GET['upd'])) {
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="register_number" id="register_number" value="<?php if (isset($temp_no)) echo $temp_no; ?>" readonly>
+                                    <input type="text" class="form-control" name="register_number" id="register_number" value="<?php if (isset($studentrollno)) echo $studentrollno; ?>" readonly>
                                 </div>
                             </div>
 

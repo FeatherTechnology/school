@@ -120,6 +120,61 @@
 		</div>
 	</div>
 	<!-- Row end -->
+	<div class="card">
+		<div class="card-header">
+			<div class="card-title">Bulk Import <i class="icon-stars"></i>
+			</div>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<!--Fields -->
+				<div class="col-md-8"> 
+					<div class="row">
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+							<button  type="button" class="btn btn-primary" name="studentBulkDownload" id="studentBulkDownload" ><span class="icon-download"></span>Download</button>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#studentBulkUploadModal"><span class="icon-upload"></span>Upload</button>
+
+							<!-- Modal -->
+							<div class="modal fade" id="studentBulkUploadModal" tabindex="-1" role="dialog" aria-labelledby="vCenterModalTitle" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content" style="background-color: white">
+										<div class="modal-header">
+											<h5 class="modal-title" id="vCenterModalTitle">Student Excel Upload</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.reload();">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										
+										<div class="modal-body">
+											<form method="post" enctype="multipart/form-data" name="studnet_form_bulk" id="studnet_form_bulk">
+												<div class="row">
+													<div class="col-xl-3 col-lg-3 col-md-4 col-sm-4 col-12"></div>
+													<div class="col-xl-6 col-lg-6 col-md-4 col-sm-4 col-12">
+														<div class="form-group">
+															<div id="insertsuccess" style="color: green; font-weight: bold;">Excel Data Added Successfully</div>
+															<div id="notinsertsuccess" style="color: red; font-weight: bold;">Problem Importing Excel Data or Duplicate Entry found</div>
+															<label class="label">Select Excel</label>
+															<input type="file" name="stundentExcelfile" id="stundentExcelfile" class="form-control" >
+														</div>
+													</div> 
+												</div>
+											</form>
+										</div>
+
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary" id="submitstudentBulkUpload" name="submitstudentBulkUpload">Upload</button>
+											<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload();">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </div>
 <!-- Modal -->
 <div class="modal fade noscroll" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="basicModalLabel" aria-hidden="true">

@@ -303,51 +303,6 @@ $(document).ready(function () {
     });
   });
 
-  //Student Bulk Import Excel upload
-  $("#insertsuccess").hide();
-  $("#notinsertsuccess").hide();
-  $("#submitwithpobulkbtn").click(function () {
-
-    var file_data = $('#file').prop('files')[0];
-    var withpo_bulk = new FormData();
-    withpo_bulk.append('file', file_data);
-
-    if (file.files.length == 0) {
-      alert("Please Select Excel File");
-      return false;
-    }
-
-    $.ajax({
-      type: 'POST',
-      url: 'studentFile/ajaxstudentbulkupload.php',
-      data: withpo_bulk,
-      dataType: 'json',
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function () {
-        $('#file').attr("disabled", true);
-        $('#submitwithpobulkbtn').attr("disabled", true);
-      },
-      success: function (data) {
-        if (data == 0) {
-          $("#notinsertsuccess").hide();
-          $("#insertsuccess").show();
-          $("#file").val('');
-        } else if (data == 1) {
-          $("#insertsuccess").hide();
-          $("#notinsertsuccess").show();
-          $("#file").val('');
-        }
-      },
-      complete: function () {
-        $('#file').attr("disabled", false);
-        $('#submitwithpobulkbtn').attr("disabled", false);
-        document.getElementById("withpo_upload_form").reset();
-      }
-    });
-  });
-
   // Age Validation
 
   $('#date_of_birth').on('change', function () {
@@ -485,22 +440,18 @@ $(document).ready(function () {
     // var mobnoValidation = mobno();
       // var gudnoValidation = gaurdmobno();
       // var smsnoValidation = smsmobno();
-    var momnoValidation = mommobile();
-    var dadnoValidation = dadmobile();
+    // var momnoValidation = mommobile();
+    // var dadnoValidation = dadmobile();
     var smssentvalidation = smsmobile();
     // var dadaadharValidation = dadaadhaar();
     // var momaadharValidation = momaadhaar();
       // var guardianaadharValidation = gaurdaadhar();
     // var appaadharValidation = appaadhaar();
     
-    if(admissionNoValidation == '1' || stdNameValidation == '1' || genderValidation == '1' || mothertogueValidation == '1' || stdValidation == '1' || sectionValidation == '1' || mediumValidation == '1' || rollnoValidation == '1' || stdtypeValidation == '1' || momnoValidation == '1' || dadnoValidation == '1' || smssentvalidation == '1' ){
+    if(admissionNoValidation == '1' || stdNameValidation == '1' || genderValidation == '1' || mothertogueValidation == '1' || stdValidation == '1' || sectionValidation == '1' || mediumValidation == '1' || rollnoValidation == '1' || stdtypeValidation == '1' || smssentvalidation == '1' ){
       event.preventDefault();
     }
 
-  });
-
-  $("#studentBulkDownload").click(function () {
-    window.location.href = 'uploads/downloadfiles/Bulk_Import_Excel_Formate.xlsx'
   });
 
   $('#gaurdian_email_id').blur(function () {

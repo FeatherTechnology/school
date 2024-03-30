@@ -75,25 +75,48 @@ if($extra_academic_year == $academic_year && $extra_medium == $medium && $extra_
 		}
     
 	}else{
-		$feeMasterrowcnt=$mysqli->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."' AND fm.school_id = '".$school_id."' order by fees_id desc ");
-
-		if(mysqli_num_rows($feeMasterrowcnt) > 0){
-			$fee_master_last_id = $feeMasterrowcnt->fetch_assoc()['fees_id'];
-
-			$insertClass=$mysqli->query("UPDATE `fees_master` SET `extra_status`='1',`update_login_id`='$user_id',`updated_date`='$curdate' WHERE `fees_id`='$fee_master_last_id' ");
-
-		}else{
-			$insertClass=$mysqli->query("INSERT INTO fees_master(academic_year,medium,student_type,standard,extra_status,insert_login_id,school_id) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."', '".strip_tags($student_type)."','".strip_tags($standard)."','1','".strip_tags($user_id)."','".strip_tags($school_id)."')");
-			$fee_master_last_id = mysqli_insert_id($mysqli);
+		if($student_type =='1'){//new
+			$student_type1 = "2"; //old
+			$student_type2 = "4"; //both
+		
+		}else if($student_type =='2'){//old
+			$student_type1 = "1"; //new
+			$student_type2 = "4"; //both
 			
+		}else if($student_type =='3'){//vijayadhashami
+			$student_type1 = ""; 
+			$student_type2 = ""; 
+		
+		}else if($student_type =='4'){//All
+			$student_type1 = "1"; //new
+			$student_type2 = "2"; //old
 		}
 
-		$insertExtraFees = $mysqli->query("INSERT INTO `extra_curricular_activities_fee`( `fee_master_id`, `extra_particulars`, `extra_amount`, `extra_date`, `type`) VALUES ('".strip_tags($fee_master_last_id)."','".strip_tags($extra_particulars)."','".strip_tags($extra_amount)."','".strip_tags($extra_date)."', '".strip_tags($extra_type)."' )");
-
-		if($insertClass && $insertExtraFees){
-			$message="Fees Insert Succesfully";
+		$getFeeMasterDetailsQry = $mysqli->query("SELECT * FROM `fees_master` fm WHERE fm.academic_year = '".$academic_year."' AND fm.medium = '".$medium."' AND (fm.student_type = '".$student_type1."' OR fm.student_type = '".$student_type2."') AND fm.standard = '".$standard."' AND fm.school_id = '".$school_id."' ");
+		if(mysqli_num_rows($getFeeMasterDetailsQry)>0){
+			$message ="StudentType Already saved!";
 		}else{
-			$message="Fees Insert Failed";
+
+			$feeMasterrowcnt=$mysqli->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."' AND school_id = '".$school_id."' order by fees_id desc ");
+
+			if(mysqli_num_rows($feeMasterrowcnt) > 0){
+				$fee_master_last_id = $feeMasterrowcnt->fetch_assoc()['fees_id'];
+
+				$insertClass=$mysqli->query("UPDATE `fees_master` SET `extra_status`='1',`update_login_id`='$user_id',`updated_date`='$curdate' WHERE `fees_id`='$fee_master_last_id' ");
+
+			}else{
+				$insertClass=$mysqli->query("INSERT INTO fees_master(academic_year,medium,student_type,standard,extra_status,insert_login_id,school_id) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."', '".strip_tags($student_type)."','".strip_tags($standard)."','1','".strip_tags($user_id)."','".strip_tags($school_id)."')");
+				$fee_master_last_id = mysqli_insert_id($mysqli);
+				
+			}
+
+			$insertExtraFees = $mysqli->query("INSERT INTO `extra_curricular_activities_fee`( `fee_master_id`, `extra_particulars`, `extra_amount`, `extra_date`, `type`) VALUES ('".strip_tags($fee_master_last_id)."','".strip_tags($extra_particulars)."','".strip_tags($extra_amount)."','".strip_tags($extra_date)."', '".strip_tags($extra_type)."' )");
+
+			if($insertClass && $insertExtraFees){
+				$message="Fees Insert Succesfully";
+			}else{
+				$message="Fees Insert Failed";
+			}
 		}
     }
 }

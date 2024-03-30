@@ -50,7 +50,7 @@
                                                 <option value="1">New Student</option>
                                                 <option value="2">Old Student</option>
                                                 <option value="3">Vijayadashami</option>
-                                                <option value="4">All</option>
+                                                <option value="4">All [NEW & OLD]</option>
                                             </select>
                                         </div>
                                     </div>
@@ -80,6 +80,10 @@
                                 <div class="card-body">
                                     <!-- alert messages -->
                                     <div id="fees_detailsInsertNotOk" class="unsuccessalert">Group/Course Fees Already Exists, Please Enter a Different Name!
+                                        <span class="custclosebtn" onclick="this.parentElement.style.display='none';"><span class="icon-squared-cross"></span></span>
+                                    </div>
+
+                                    <div id="fees_details_already_inserted" class="unsuccessalert">Student Type Already Exists
                                         <span class="custclosebtn" onclick="this.parentElement.style.display='none';"><span class="icon-squared-cross"></span></span>
                                     </div>
 
@@ -145,6 +149,10 @@
                                 <div class="card-body">
                                     <!-- alert messages -->
                                     <div id="fees_detailsextraInsertNotOk" class="unsuccessalert">Extra Curricular Activities Fees Already Exists, Please Enter a Different Name!
+                                        <span class="custclosebtn" onclick="this.parentElement.style.display='none';"><span class="icon-squared-cross"></span></span>
+                                    </div>
+
+                                    <div id="fees_details_already_inserted_extra" class="unsuccessalert">Student Type Already Exists
                                         <span class="custclosebtn" onclick="this.parentElement.style.display='none';"><span class="icon-squared-cross"></span></span>
                                     </div>
 
@@ -225,6 +233,10 @@
                                         <span class="custclosebtn" onclick="this.parentElement.style.display='none';"><span class="icon-squared-cross"></span></span>
                                     </div>
 
+                                    <div id="fees_details_already_inserted_amenity" class="unsuccessalert">Student Type Already Exists
+                                        <span class="custclosebtn" onclick="this.parentElement.style.display='none';"><span class="icon-squared-cross"></span></span>
+                                    </div>
+
                                     <div id="fees_detailsamenityInsertOk" class="successalert">Amenity Fees Added Succesfully!<span class="custclosebtn" onclick="this.parentElement.style.display='none';"><span class="icon-squared-cross"></span></span>
                                     </div>
 
@@ -281,6 +293,70 @@
 
                     </div> <!-- card body END-->
                 </div> <!-- Card END-->
+
+                <!-- Bulk  Upload Documents START -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Bulk Import <i class="icon-stars"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!--Fields -->
+                            <div class="col-md-8"> 
+                                <button  type="button" class="btn btn-primary" name="fees_master_bulk_upload"  id="fees_master_bulk_upload"> <span class="icon-download"></span> Download</button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#feesMasterBulkUploadModal"><span class="icon-upload"></span>Upload</button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="feesMasterBulkUploadModal" tabindex="-1" role="dialog" aria-labelledby="vCenterModalTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content" style="background-color: white">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="vCenterModalTitle">Fees Master Excel Upload</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.reload();">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            
+                                            <div class="modal-body">
+                                                <form method="post" enctype="multipart/form-data">
+                                                    <div class="row">
+                                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-12">
+                                                            <div class="form-group">
+                                                                <label for="feestype">Fees Type</label>
+                                                                <select class="form-control" name="fees_type" id="fees_type">
+                                                                    <option value=''>Select Fees Type</option>
+                                                                    <option value='1'>Group Fees</option>
+                                                                    <option value='2'>Extra Curricular Activities</option>
+                                                                    <option value='3'>Amenity Fee</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-12">
+                                                            <div class="form-group">
+                                                                <div id="insertsuccess" style="color: green; font-weight: bold; display:none;">Excel Data Added Successfully</div>
+                                                                <div id="notinsertsuccess" style="color: red; font-weight: bold; display:none;">Problem Importing Excel Data or Duplicate Entry found</div>
+                                                                <label class="label">Select Excel</label>
+                                                                <input type="file" name="feesMasterExcelfile" id="feesMasterExcelfile" class="form-control" >
+                                                            </div>
+                                                        </div> 
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" id="submitfeesMasterBulkUpload" name="submitfeesMasterBulkUpload">Upload</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload();">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal END -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Bulk  Upload Documents END -->
             </div>
         </div>
     </form>

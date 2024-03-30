@@ -159,6 +159,53 @@ $(document).ready(function(){
     });
     //Modal Box for Assertion Name END
 
+    $("#studentBulkDownload").click(function () {
+        window.location.href = 'uploads/downloadfiles/studentCreationBulkUpload.xlsx'
+    });
+    
+    //Student Bulk Import Excel upload
+    $("#insertsuccess").hide();
+    $("#notinsertsuccess").hide();
+    $("#submitstudentBulkUpload").click(function () {
+
+    var file_data = $('#stundentExcelfile').prop('files')[0];
+    var withstudent_bulk = new FormData();
+    withstudent_bulk.append('file', file_data);
+
+    if (stundentExcelfile.files.length == 0) {
+        alert("Please Select Excel File");
+        return false;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: 'studentFile/ajaxstudentbulkupload.php',
+        data: withstudent_bulk,
+        dataType: 'json',
+        contentType: false,
+        cache: false,
+        processData: false,
+        beforeSend: function () {
+        $('#stundentExcelfile').attr("disabled", true);
+        $('#submitstudentBulkUpload').attr("disabled", true);
+        },
+        success: function (data) {
+        if (data == 0) {
+            $("#notinsertsuccess").hide();
+            $("#insertsuccess").show();
+            $("#stundentExcelfile").val('');
+        } else if (data == 1) {
+            $("#insertsuccess").hide();
+            $("#notinsertsuccess").show();
+            $("#stundentExcelfile").val('');
+        }
+        },
+        complete: function () {
+        $('#stundentExcelfile').attr("disabled", false);
+        $('#submitstudentBulkUpload').attr("disabled", false);
+        }
+    });
+    });
 
 }); //Document END.
 

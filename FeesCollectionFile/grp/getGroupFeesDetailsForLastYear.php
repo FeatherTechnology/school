@@ -17,13 +17,21 @@ if(isset($_POST['standard'])){
     $standardId = $_POST['standard'];
 }
 
+if($studentType =="1" || $studentType =="2"){
+    $student_type_cndtn = "(fm.student_type = '$studentType' || fm.student_type = '4')";
+    
+}else{
+    $student_type_cndtn = "(fm.student_type = '$studentType')";
+
+}
+
 $CheckReceiptQry = $connect->query("SELECT af.id FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$admissionFormId' && af.academic_year = '$academicYear' && afd.fees_table_name = 'grptable' ORDER BY af.id DESC LIMIT 1");
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
-    $feeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as grp_amount, afd.fees_master_id as fees_id, afd.fees_id as grp_course_id, gcf.grp_particulars FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id WHERE af.id = '$get_temp_fees_id' && af.academic_year = '$academicYear' && afd.fees_table_name = 'grptable' ");
+    $feeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as grp_amount, afd.fees_master_id as fees_id, afd.fees_id as grp_course_id, gcf.grp_particulars FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id WHERE af.id = '$get_temp_fees_id' && af.academic_year = '$academicYear' && afd.fees_table_name = 'grptable' && gcf.status ='1' ");
 
 }else{
-    $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, gcf.*  FROM `fees_master` fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && fm.student_type = '$studentType' && fm.standard = '$standardId' ");
+    $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, gcf.*  FROM `fees_master` fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$standardId' && gcf.status ='1' ");
 
 }
 

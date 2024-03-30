@@ -20,20 +20,19 @@ if(isset($_POST['standard'])){
 $CheckReceiptQry = $connect->query("SELECT id FROM `transport_admission_fees` WHERE admission_id = '$admissionFormId' && academic_year = '$academicYear' order by id desc limit 1");
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
-    //(gcf.grp_amount - afd.FeeReceived) as grp_amount
     $feeDetailsQry = $connect->query("SELECT tafd.balance_tobe_paid as due_amount, tafd.area_creation_id as fees_id, tafd.area_creation_particulars_id as particulars_id, ac.area_name, acp.particulars 
     FROM `transport_admission_fees` taf 
     JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id 
     JOIN area_creation ac ON tafd.area_creation_id = ac.area_id
     JOIN area_creation_particulars acp ON tafd.area_creation_particulars_id = acp.particulars_id 
-    WHERE taf.id = '$get_temp_fees_id' && taf.academic_year = '$academicYear' ");
+    WHERE taf.id = '$get_temp_fees_id' && taf.academic_year = '$academicYear' AND ac.status = '0' ");
 
 }else{
     $feeDetailsQry = $connect->query("SELECT ac.area_id as fees_id, acp.particulars_id as particulars_id, ac.area_name, acp.particulars, acp.due_amount  
     FROM student_creation sc
     JOIN area_creation ac ON sc.transportarearefid = ac.area_id
     JOIN area_creation_particulars acp ON ac.area_id = acp.area_creation_id
-    WHERE sc.student_id = '$admissionFormId' ");
+    WHERE sc.student_id = '$admissionFormId' AND ac.status = '0' ");
 
 }
 
