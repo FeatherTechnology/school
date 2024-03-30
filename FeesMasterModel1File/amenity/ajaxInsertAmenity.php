@@ -71,24 +71,47 @@ if($amenity_academic_year == $academic_year && $amenity_medium == $medium && $am
 		}
 	
 	}else{ 
-		$feeMasterrowcnt=$mysqli->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."' AND fm.school_id = '".$school_id."' order by fees_id desc ");
-
-		if(mysqli_num_rows($feeMasterrowcnt) > 0){
-			$fee_master_last_id = $feeMasterrowcnt->fetch_assoc()['fees_id'];
-
-			$insertClass=$mysqli->query("UPDATE `fees_master` SET `amenity_status`='1',`update_login_id`='$user_id',`updated_date`='$curdate' WHERE `fees_id`='$fee_master_last_id' ");
-
-		}else{
-		$insertClass=$mysqli->query("INSERT INTO fees_master(academic_year,medium,student_type,standard,amenity_status,insert_login_id,school_id) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."', '".strip_tags($student_type)."','".strip_tags($standard)."','1','".strip_tags($user_id)."','".strip_tags($school_id)."') ");
-		$fee_master_last_id = mysqli_insert_id($mysqli);
+		if($student_type =='1'){//new
+			$student_type1 = "2"; //old
+			$student_type2 = "4"; //both
+		
+		}else if($student_type =='2'){//old
+			$student_type1 = "1"; //new
+			$student_type2 = "4"; //both
+			
+		}else if($student_type =='3'){//vijayadhashami
+			$student_type1 = ""; 
+			$student_type2 = ""; 
+		
+		}else if($student_type =='4'){//All
+			$student_type1 = "1"; //new
+			$student_type2 = "2"; //old
 		}
 
-		$insertAmenityFees = $mysqli->query("INSERT INTO `amenity_fee`( `fee_master_id`, `amenity_particulars`, `amenity_amount`, `amenity_date`) VALUES ('".strip_tags($fee_master_last_id)."','".strip_tags($amenity_particulars)."','".strip_tags($amenity_amount)."','".strip_tags($amenity_date)."' )");
-
-		if($insertClass && $insertAmenityFees){
-			$message="Amenity Fees Insert Succesfully";
+		$getFeeMasterDetailsQry = $mysqli->query("SELECT * FROM `fees_master` fm WHERE fm.academic_year = '".$academic_year."' AND fm.medium = '".$medium."' AND (fm.student_type = '".$student_type1."' OR fm.student_type = '".$student_type2."') AND fm.standard = '".$standard."' AND fm.school_id = '".$school_id."' ");
+		if(mysqli_num_rows($getFeeMasterDetailsQry)>0){
+			$message ="StudentType Already saved!";
 		}else{
-			$message="Amenity Fees Insert Failed";
+
+			$feeMasterrowcnt=$mysqli->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."' AND school_id = '".$school_id."' order by fees_id desc ");
+
+			if(mysqli_num_rows($feeMasterrowcnt) > 0){
+				$fee_master_last_id = $feeMasterrowcnt->fetch_assoc()['fees_id'];
+
+				$insertClass=$mysqli->query("UPDATE `fees_master` SET `amenity_status`='1',`update_login_id`='$user_id',`updated_date`='$curdate' WHERE `fees_id`='$fee_master_last_id' ");
+
+			}else{
+			$insertClass=$mysqli->query("INSERT INTO fees_master(academic_year,medium,student_type,standard,amenity_status,insert_login_id,school_id) VALUES('".strip_tags($academic_year)."','".strip_tags($medium)."', '".strip_tags($student_type)."','".strip_tags($standard)."','1','".strip_tags($user_id)."','".strip_tags($school_id)."') ");
+			$fee_master_last_id = mysqli_insert_id($mysqli);
+			}
+
+			$insertAmenityFees = $mysqli->query("INSERT INTO `amenity_fee`( `fee_master_id`, `amenity_particulars`, `amenity_amount`, `amenity_date`) VALUES ('".strip_tags($fee_master_last_id)."','".strip_tags($amenity_particulars)."','".strip_tags($amenity_amount)."','".strip_tags($amenity_date)."' )");
+
+			if($insertClass && $insertAmenityFees){
+				$message="Amenity Fees Insert Succesfully";
+			}else{
+				$message="Amenity Fees Insert Failed";
+			}
 		}
     }
 }

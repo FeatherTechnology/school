@@ -1,4 +1,4 @@
-<table class="table table-responsive">
+<table class="table table-responsive" id="general_concession_table">
     <thead>
         <tr>
             <th colspan="7"> Student Concession List Pending for Approval</th>
@@ -42,7 +42,7 @@
 </table>
         </br></br>
 
-<table class="table table-responsive">
+<table class="table table-responsive" id="referral_concession_table">
     <thead>
         <tr>
             <th colspan="8"> Student Referral List Pending for Approval</th>
@@ -101,3 +101,21 @@
             <?php } ?>
     </tbody>
 </table>
+
+<script>
+    $(function(){
+        $('#general_concession_table').DataTable({
+            order: [[0, "asc"]],
+            lengthMenu: [5, 10, 25, 50, 'All'],
+            // paging: false, // Disable paging
+            // filter: false,  // Disable Search
+        });
+
+        $('#referral_concession_table').DataTable({
+            order: [[0, "asc"]],
+            lengthMenu: [5, 10, 25, 50, 'All'],
+            // paging: false, // Disable paging
+            // filter: false,  // Disable Search
+        });
+    });
+</script>

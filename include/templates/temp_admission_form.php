@@ -227,7 +227,7 @@ if($idupd>0)
                                         <option value="1"  <?php  if(isset($temp_student_type) && $temp_student_type == "1"){ echo 'selected'; }?>>New Student</option> 
                                         <option value="2"  <?php  if(isset($temp_student_type) && $temp_student_type == "2"){ echo 'selected'; }?>>Old Student</option>
                                         <option value="3"  <?php  if(isset($temp_student_type) && $temp_student_type == "3"){ echo 'selected'; }?>>Vijayadashami</option>
-                                        <option value="4"  <?php  if(isset($temp_student_type) && $temp_student_type == "4"){ echo 'selected'; }?>>All</option>
+                                        <option value="4"  <?php  if(isset($temp_student_type) && $temp_student_type == "4"){ echo 'selected'; }?>>All [NEW & OLD]</option>
                                         </select>
                                         <span id="stdTypeCheck" class="text-danger" style="display: none;">Please Select the Student Type from the List </span>
                                         </div>

@@ -681,7 +681,7 @@ if($idupd>0)
                                                 <option value="1"<?php  if(isset($studentstype)) { if($studentstype == "1") echo 'selected'; }?> >New Student</option>
                                                 <option value="2"<?php if(isset($studentstype)) { if($studentstype == "2") echo 'selected'; }?> >Old Student</option>
                                                 <option value="3"<?php if(isset($studentstype)) { if($studentstype == "3") echo 'selected'; }?> >Vijayadashami</option>
-                                                <option value="4"<?php if(isset($studentstype)) { if($studentstype == "4") echo 'selected'; }?> >All</option>
+                                                <option value="4"<?php if(isset($studentstype)) { if($studentstype == "4") echo 'selected'; }?> >All [NEW & OLD]</option>
                                             </select>
                                             <span id="studentstypeCheck" class="text-danger">Please Select Student Type</span>
                                         </div>
@@ -1398,70 +1398,7 @@ if($idupd>0)
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row gutters">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Bulk Import <i class="icon-stars"></i>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <!--Fields -->
-                            <div class="col-md-8"> 
-                                <div class="row">
-                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" id="withpo_btnfield">
-                                        <button  type="button" onclick="submitgrnbtn1(this)" id="studentBulkDownload" tabindex="114" name="studentBulkDownload" class="btn btn-primary">
-                                        <span class="icon-download"></span>Download</button>
 
-                                        <!-- <button  tabindex="14" type="button" onclick="grnupload()" id="poupload" name="poupload" class="btn btn-primary"><span class="icon-upload"></span>
-                                        Upload</button> -->
-
-                                        <button type="button" id="poupload" name="poupload" data-toggle="modal" data-target="#withpoBulkModal"  tabindex="115" class="btn btn-primary"><span class="icon-upload"></span>Upload</button>
-
-                                                <!-- Modal -->
-                                            <form name="wtpo_upload_form" id="withpo_upload_form" method="post" enctype="multipart/form-data">
-                                                <div class="modal fade" id="withpoBulkModal" tabindex="-1" role="dialog" aria-labelledby="vCenterModalTitle" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                                        <div class="modal-content" style="background-color: white">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="vCenterModalTitle">Student Excel Upload</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <form action="" method="post" enctype="multipart/form-data" name="withpobulk" id="withpobulk">
-                                                                    <div class="row">
-                                                                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-4 col-12"></div>
-                                                                        <div class="col-xl-6 col-lg-6 col-md-4 col-sm-4 col-12">
-                                                                            <div class="form-group">
-                                                                                <div id="insertsuccess" style="color: green; font-weight: bold;">Excel Data Added Successfully</div>
-                                                                                <div id="notinsertsuccess" style="color: red; font-weight: bold;">Problem Importing Excel Data or Duplicate Entry found</div>
-                                                                                <label class="label">Select Excel</label>
-                                                                                <input type="file" name="file" id="file" class="form-control" >
-                                                                            </div>
-                                                                        </div> 
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-primary" id="submitwithpobulkbtn" name="submitwithpobulkbtn">Upload</button>
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                </div>
-                            </div>
-                          
                             <div class="col-md-12"> 
                                 <div class="row">
                                     <div class="col-md-12">
@@ -1473,6 +1410,7 @@ if($idupd>0)
                                     </div>
                                 </div>
                             </div> 
+
                         </div>
                     </div>
                 </div>

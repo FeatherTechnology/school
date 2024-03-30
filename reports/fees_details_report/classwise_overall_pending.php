@@ -32,7 +32,9 @@
                         </div>
                     </div>
 
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12"></div>
+                    
+                    <!-- <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Student Type</label>
                             <select class="form-control" id="student_type" name="student_type" tabindex="4">
@@ -43,7 +45,8 @@
                                 <option value="4">All</option>
                             </select>
                         </div>
-                    </div><br><br><br><br><br><br>
+                    </div> -->
+                    <br><br><br><br><br><br>
 
                     <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 col-12"></div>
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">

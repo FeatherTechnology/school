@@ -55,6 +55,7 @@ $(document).ready(function () {
       var insertNotOk = '#fees_detailsInsertNotOk';
       var updateOk = '#fees_detailsUpdateOk';
       var insertfail = '#fees_detailsInsertFailed';
+      var alreadyInserted = '#fees_details_already_inserted';
 
     } else if (this.id == "Submit_Extra") {
       var clrfield = ".extraCurField";
@@ -68,6 +69,7 @@ $(document).ready(function () {
       var insertNotOk = '#fees_detailsextraInsertNotOk';
       var updateOk = '#fees_detailsextraUpdateOk';
       var insertfail = '#fees_detailsextraInsertFailed';
+      var alreadyInserted = '#fees_details_already_inserted_extra';
 
     } else if (this.id == "Submit_Amenity") {
       var clrfield = ".amenityField";
@@ -81,6 +83,7 @@ $(document).ready(function () {
       var insertNotOk = '#fees_detailsamenityInsertNotOk';
       var updateOk = '#fees_detailsamenityUpdateOk';
       var insertfail = '#fees_detailsamenityInsertFailed';
+      var alreadyInserted = '#fees_details_already_inserted_amenity';
     }
 
     if (particulars != "" && amount != "" && date != "") {
@@ -93,6 +96,7 @@ $(document).ready(function () {
           var insresult = response.includes("Exists");
           var updresult = response.includes("Updated");
           var failed = response.includes("Failed");
+          var studentType = response.includes("StudentType");
           if (insresult) {
             $(insertNotOk).show();
             setTimeout(function () {
@@ -108,6 +112,12 @@ $(document).ready(function () {
             $(insertfail).show();
             setTimeout(function () {
               $(insertfail).fadeOut('fast');
+            }, 2000);
+
+          } else if(studentType){
+            $(alreadyInserted).show();
+            setTimeout(function () {
+              $(alreadyInserted).fadeOut('fast');
             }, 2000);
 
           } else {
@@ -362,6 +372,60 @@ $(document).ready(function () {
       });
     }
   });
+
+  //Bulk Upload START
+  $("#fees_master_bulk_upload").click(function () {
+    window.location.href = 'uploads/downloadfiles/feesMasterBulkUpload.xlsx'
+  });
+
+  //Student Bulk Import Excel upload
+  $("#submitfeesMasterBulkUpload").click(function () {
+
+  var feesType = $('#fees_type').val();
+  var file_data = $('#feesMasterExcelfile').prop('files')[0];
+  var feesData = new FormData();
+  feesData.append('file', file_data);
+  feesData.append('feesType', feesType);
+
+  if (feesMasterExcelfile.files.length == 0 || feesType =='') {
+      alert("Please Select All Fields");
+      return false;
+  }
+
+  $.ajax({
+    type: 'POST',
+    url: 'ajaxFiles/ajaxFeesMasterBulkUpload.php',
+    data: feesData,
+    dataType: 'json',
+    contentType: false,
+    cache: false,
+    processData: false,
+    beforeSend: function () {
+    $('#feesMasterExcelfile').attr("disabled", true);
+    $('#fees_type').attr("disabled", true);
+    $('#submitfeesMasterBulkUpload').attr("disabled", true);
+    },
+    success: function (data) {
+      if (data == 0) {
+        $("#notinsertsuccess").hide();
+        $("#insertsuccess").show();
+        $("#fees_type").val('');
+        $("#feesMasterExcelfile").val('');
+      } else if (data == 1) {
+        $("#insertsuccess").hide();
+        $("#notinsertsuccess").show();
+        $("#fees_type").val('');
+        $("#feesMasterExcelfile").val('');
+      }
+    },
+    complete: function () {
+      $('#fees_type').attr("disabled", false);
+      $('#feesMasterExcelfile').attr("disabled", false);
+      $('#submitfeesMasterBulkUpload').attr("disabled", false);
+    }
+  });
+  });
+  //Bulk Upload END
 
 }); //Document END.
 

@@ -19,6 +19,14 @@ $medium = $studentInfo['medium'];
 $studentType = $studentInfo['studentstype'];
 $standardId = $studentInfo['standard'];
 $studentExtraCurricular  = $studentInfo['extra_curricular'];
+
+if($studentType =="1" || $studentType =="2"){
+    $student_type_cndtn = "(fm.student_type = '$studentType' || fm.student_type = '4')";
+    
+}else{
+    $student_type_cndtn = "(fm.student_type = '$studentType')";
+
+}
 ?>
 
 <input type="hidden" name="studentID" value="<?php if(isset($studentid)) echo $studentid; ?>" >
@@ -44,7 +52,7 @@ if($checkAdmFeesForGrp->rowCount() > 0){
     $grpFeeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as grp_amount, afd.fees_master_id as fees_id, afd.fees_id as grp_course_id, gcf.grp_particulars, (gcf.grp_amount - afd.balance_tobe_paid) as paidAmnt FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id WHERE af.id = '$get_fees_id_grp' && afd.fees_table_name = 'grptable' ");
 
 }else{
-    $grpFeeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, gcf.*, '0' as paidAmnt  FROM `fees_master` fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && fm.student_type = '$studentType' && fm.standard = '$standardId' ");
+    $grpFeeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, gcf.*, '0' as paidAmnt  FROM `fees_master` fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$standardId' ");
     
 }
 
@@ -95,7 +103,7 @@ if($CheckAdmFeesForExtra->rowCount() > 0){
     $extraFeeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as extra_amount, afd.fees_master_id as fees_id, afd.fees_id as extra_fee_id, ecaf.extra_particulars, (ecaf.extra_amount - afd.balance_tobe_paid) as paidAmnt FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id JOIN extra_curricular_activities_fee ecaf ON afd.fees_id = ecaf.extra_fee_id WHERE af.id = '$get_fees_id_extra' && afd.fees_table_name = 'extratable' ");
 
 }else{
-    $extraFeeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, ecaf.*, '0' as paidAmnt FROM `fees_master` fm JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && fm.student_type = '$studentType' && fm.standard = '$standardId' && FIND_IN_SET(ecaf.extra_fee_id,'$studentExtraCurricular') ");
+    $extraFeeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, ecaf.*, '0' as paidAmnt FROM `fees_master` fm JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$standardId' && FIND_IN_SET(ecaf.extra_fee_id,'$studentExtraCurricular') ");
 }
 
 while($extraFeeDetailsInfo = $extraFeeDetailsQry->fetch()){
@@ -145,7 +153,7 @@ if($CheckAdmFeesForAmenity->rowCount() > 0){
     $amenityFeeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as amenity_amount, afd.fees_master_id as fees_id, afd.fees_id as amenity_fee_id, af.amenity_particulars, (af.amenity_amount - afd.balance_tobe_paid) as paidAmnt FROM `admission_fees` afs JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id JOIN amenity_fee af ON afd.fees_id = af.amenity_fee_id WHERE afs.id = '$get_fees_id_amenity' && afd.fees_table_name = 'amenitytable' ");
 
 }else{
-    $amenityFeeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, af.*, '0' as paidAmnt  FROM `fees_master` fm JOIN amenity_fee af ON fm.fees_id = af.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && fm.student_type = '$studentType' && fm.standard = '$standardId' ");
+    $amenityFeeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, af.*, '0' as paidAmnt  FROM `fees_master` fm JOIN amenity_fee af ON fm.fees_id = af.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$standardId' ");
 }
 
 while($amenityFeeDetailsInfo = $amenityFeeDetailsQry->fetch()){

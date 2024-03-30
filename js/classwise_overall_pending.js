@@ -23,12 +23,12 @@ $(document).ready(function(){
     $('#classwise_overall_pending_list').click(function(){
         let academicyear = $('#academic_year').val();
         let stdMedium = $('#medium').val();
-        let student_type = $('#student_type').val();
+        // let student_type = $('#student_type').val();
 
-        if(academicyear !='0' && stdMedium !='0' && student_type != '0' ){
+        if(academicyear !='0' && stdMedium !='0' ){
             $.ajax({
                 type: 'POST',
-                data: {"academicyear": academicyear, "stdMedium": stdMedium, "studentType": student_type},
+                data: {"academicyear": academicyear, "stdMedium": stdMedium},
                 url: 'reports/fees_details_report/clswiseOverallPending.php',
                 success: function(response){
                     $('#listCard').show();

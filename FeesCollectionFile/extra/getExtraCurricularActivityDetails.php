@@ -20,10 +20,10 @@ if(isset($_POST['tempStandard'])){
 $CheckReceiptQry = $connect->query("SELECT taf.id FROM `temp_admission_fees` taf JOIN temp_admissionfees_details tafd ON taf.id = tafd.TempAdmFeeRefId WHERE taf.TempAdmissionId = '$tempAdmissionFormId' && tafd.FeesTableName = 'extratable' ORDER BY taf.id DESC LIMIT 1");
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
-    $feeDetailsQry = $connect->query("SELECT tafd.BalancetobePaid as extra_amount, tafd.FeesMasterId as fees_id, tafd.FeesId as extra_fee_id, ecaf.extra_particulars FROM `temp_admission_fees` taf JOIN temp_admissionfees_details tafd ON taf.id = tafd.TempAdmFeeRefId JOIN extra_curricular_activities_fee ecaf ON tafd.FeesId = ecaf.extra_fee_id WHERE taf.id = '$get_temp_fees_id' && tafd.FeesTableName = 'extratable' ");
+    $feeDetailsQry = $connect->query("SELECT tafd.BalancetobePaid as extra_amount, tafd.FeesMasterId as fees_id, tafd.FeesId as extra_fee_id, ecaf.extra_particulars FROM `temp_admission_fees` taf JOIN temp_admissionfees_details tafd ON taf.id = tafd.TempAdmFeeRefId JOIN extra_curricular_activities_fee ecaf ON tafd.FeesId = ecaf.extra_fee_id WHERE taf.id = '$get_temp_fees_id' && tafd.FeesTableName = 'extratable' && ecaf.status ='1' ");
 
 }else{
-    $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, ecaf.*  FROM `fees_master` fm JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$tempMedium' && fm.student_type = '$tempStudentType' && fm.standard = '$standardId' ");
+    $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, ecaf.*  FROM `fees_master` fm JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$tempMedium' && fm.student_type = '$tempStudentType' && fm.standard = '$standardId' && ecaf.status ='1' ");
 }
 
 $i=0;
