@@ -88,6 +88,12 @@ $(document).ready(function(){
         var isChecked = $(this).is(":checked");
         $(".collection-checkbox").prop("disabled", !isChecked).prop("checked", isChecked);
     });
+
+    //SMS module
+    $("#sms_module").on("change", function() {
+        var isChecked = $(this).is(":checked");
+        $(".sms-checkbox").prop("disabled", !isChecked).prop("checked", isChecked);
+    });
     
     // Report module enable disable
     var reportCheckbox = document.getElementById("report_module");
@@ -124,6 +130,7 @@ $(function(){
         var studentSubModule = document.getElementById('student_module');
         var certificateSubModule = document.getElementById('certificate_sub_module');
         var collectionModule = document.getElementById('collection_module');
+        var smsModule = document.getElementById('sms_module');
         var reportModule = document.getElementById('report_module');
         var studentReportSubModule = document.getElementById('student_report_sub_module');
         var feeDetailssubModule = document.getElementById('fee_details_sub_module');
@@ -137,6 +144,7 @@ $(function(){
         const certifiactecheckbox = document.querySelectorAll("input.student-certificate-checkbox"); checkbox(certifiactecheckbox, studentSubModule);}
         if(certificateSubModule.checked){const checkboxesToEnable = document.querySelectorAll("input.certificate-sub-checkbox"); checkbox(checkboxesToEnable,certificateSubModule);}
         if(collectionModule.checked){const checkboxesToEnable = document.querySelectorAll("input.collection-checkbox");checkbox(checkboxesToEnable,collectionModule);}
+        if(smsModule.checked){const checkboxesToEnable = document.querySelectorAll("input.sms-checkbox");checkbox(checkboxesToEnable,smsModule);}
         if(reportModule.checked){const checkboxesToEnable = document.querySelectorAll("input.report-sub-checkbox");checkbox(checkboxesToEnable,reportModule);}
         if(studentReportSubModule.checked){const checkboxesToEnable = document.querySelectorAll("input.studentreport-sub-checkbox");checkbox(checkboxesToEnable,studentReportSubModule);}
         if(feeDetailssubModule.checked){const checkboxesToEnable = document.querySelectorAll("input.feedetailsreport-sub-checkbox");checkbox(checkboxesToEnable,feeDetailssubModule);}

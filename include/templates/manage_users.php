@@ -64,6 +64,12 @@ if($idupd>0)
         $collection_module                  = $getmanageuserdetails['collection_module']; 
         $fees_concession                  = $getmanageuserdetails['fees_concession']; 
         $fees_collection                  = $getmanageuserdetails['fees_collection']; 
+        $sms_module                  = $getmanageuserdetails['sms_module']; 
+        $birthday_wishes                  = $getmanageuserdetails['birthday_wishes']; 
+        $tamil_birthday_wishes                  = $getmanageuserdetails['tamil_birthday_wishes']; 
+        $student_general_message                  = $getmanageuserdetails['student_general_message']; 
+        $staff_general_message                  = $getmanageuserdetails['staff_general_message']; 
+        $home_work                  = $getmanageuserdetails['home_work']; 
         $report_module                  = $getmanageuserdetails['report_module']; 
         $student_report_sub_module                  = $getmanageuserdetails['student_report_sub_module']; 
         $student_caste_report                  = $getmanageuserdetails['student_caste_report']; 
@@ -403,6 +409,54 @@ if($del>0)
                 </div>
             </div>
             <!-- Collection module end -->
+            <hr>
+
+            <!-- SMS module end -->
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" tabindex="32" value="Yes" <?php if(isset($sms_module) && $sms_module==0){ echo'checked'; } ?>  class="custom-control-input" id="sms_module" name="sms_module">
+                <label class="custom-control-label" for="sms_module">
+                    <h5>SMS</h5>
+                </label>
+            </div>
+            <br>
+
+            <div class="row">
+                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" value="Yes" <?php if(isset($birthday_wishes) && $birthday_wishes==0){ echo'checked'; } ?> tabindex="34" class="custom-control-input sms-checkbox" id="birthday_wishes" name="birthday_wishes" disabled>
+                        <label class="custom-control-label" for="birthday_wishes">Birthday Wishes</label>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" value="Yes" <?php if(isset($tamil_birthday_wishes) && $tamil_birthday_wishes==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input sms-checkbox" id="tamil_birthday_wishes" name="tamil_birthday_wishes" disabled>
+                        <label class="custom-control-label" for="tamil_birthday_wishes">Tamil Birthday Wishes</label>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" value="Yes" <?php if(isset($student_general_message) && $student_general_message==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input sms-checkbox" id="student_general_message" name="student_general_message" disabled>
+                        <label class="custom-control-label" for="student_general_message">Student General Message</label>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" value="Yes" <?php if(isset($staff_general_message) && $staff_general_message==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input sms-checkbox" id="staff_general_message" name="staff_general_message" disabled>
+                        <label class="custom-control-label" for="staff_general_message">Staff General Message</label>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" value="Yes" <?php if(isset($home_work) && $home_work==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input sms-checkbox" id="home_work" name="home_work" disabled>
+                        <label class="custom-control-label" for="home_work">Home Work</label>
+                    </div>
+                </div>
+            </div>
+            <!-- SMS module end -->
             <hr>
             
             <!-- Report Module Start -->

@@ -29,6 +29,12 @@ if (sizeof($getmanageuserdetails)>0) {
 	$collection_module                  = $getmanageuserdetails['collection_module']; 
 	$fees_concession                  = $getmanageuserdetails['fees_concession']; 
 	$fees_collection                  = $getmanageuserdetails['fees_collection']; 
+	$sms_module                  = $getmanageuserdetails['sms_module']; 
+	$birthday_wishes                  = $getmanageuserdetails['birthday_wishes']; 
+	$tamil_birthday_wishes                  = $getmanageuserdetails['tamil_birthday_wishes']; 
+	$student_general_message                  = $getmanageuserdetails['student_general_message']; 
+	$staff_general_message                  = $getmanageuserdetails['staff_general_message']; 
+	$home_work                  = $getmanageuserdetails['home_work']; 
 	$report_module                  = $getmanageuserdetails['report_module']; 
 	$student_report_sub_module                  = $getmanageuserdetails['student_report_sub_module']; 
 	$student_caste_report                  = $getmanageuserdetails['student_caste_report']; 
@@ -145,18 +151,10 @@ if (sizeof($getmanageuserdetails)>0) {
 	.sidenav a {font-size: 18px;}
 	}
 </style>
-<?php
-// $billmodel = $userObj->getbilltype($mysqli, $userid);
-?>
+
 <!-- Sidebar wrapper start -->
 <nav id="sidebar" class="sidebar-wrapper" style="background-color:#1b6aaa;">
-	<!-- Sidebar brand start  -->
-	<!-- <div class="sidebar-brand" style="background-color: #1b6aaa">
-		<a href="javascript:void(0)" class="logo">
-			<h2 class="ml-4" style="color: white">School</h2>
-			
-		</a>
-	</div> -->
+
 	<div class="sidebar-menu sidebar-brand" style="background-color: #1b6aaa">
 			<ul>
                 <li class="sidebar">
@@ -172,58 +170,37 @@ if (sizeof($getmanageuserdetails)>0) {
 		<div class="sidebar-menu">
 			<ul>
 				<li>									
-					<a href="dashboard"><i class="icon-record_voice_over"></i>Dashboard</a>
+					<a href="dashboard"><i class="icon-devices_other"></i>Dashboard</a>
 				</li>	
 				<?php if(isset($administration_module) && $administration_module ==0){ ?>
 				<li class="sidebar-dropdown">
 					<a href="javascript:void(0)">
-						<i class="icon-record_voice_over"></i>
+						<i class="icon-cog"></i>
 						<span class="menu-text">Administration</span>
 					</a>
 					<div class="sidebar-submenu">
 						<ul>	
 						<?php if(isset($trust_creation) && $trust_creation ==0){ ?>
 							<li>
-								<a href="edit_trust_creation"><i class="icon-user"></i>Trust Creation</a>
+								<a href="edit_trust_creation"><i class="icon-shield"></i>Trust Creation</a>
 							</li>	
 						<?php } if(isset($school_update) && $school_update ==0){ ?>		
 							<li>									
 								<a href="edit_school_creation"><i class="icon-school"></i>School Update</a>
 							</li>
 						<?php } if(isset($fees_master) && $fees_master ==0){ ?>
-							
 							<li>
 								<a href="fees_master_model1"><i><span class="icon-attach_money"></span></i>Fees Master</a>
-								<!-- <?php #if(isset($billmodel)){ if($billmodel == "model1"){ ?>
-									<a href="fees_master_model1"><i><span class="icon-attach_money"></span></i>Fees Master</a>
-								<?php #}else if($billmodel == "model2"){ ?>
-									<a href="fees_master_model2"><i><span class="icon-attach_money"></span></i>Fees Master</a>
-								<?php #} else if($billmodel == "model3"){ ?>
-									<a href="fees_master_model3"><i><span class="icon-attach_money"></span></i>Fees Master</a>
-								<?php #} else if($billmodel == "model4"){ ?>
-									<a href="fees_master_model3"><i><span class="icon-attach_money"></span></i>Fees Master</a>
-								<?php #} } ?> -->
 							</li>
 						<?php } if(isset($holiday_creation) && $holiday_creation ==0){ ?>
 							<li>									
-								<a href="holiday_creation"><i><span class="icon-near_me"></span></i>Holiday Info</a>
+								<a href="holiday_creation"><i class="icon-calendar"></i>Holiday Info</a>
 							</li>
 						<?php } if(isset($manage_users) && $manage_users ==0){ ?>
 							<li>									
-								<a href="edit_manage_users"><i><span class="icon-near_me"></span></i>Manage Users</a>
+								<a href="edit_manage_users"><i class="icon-person"></i>Manage Users</a>
 							</li>
 						<?php } ?>
-							<!-- <li>									
-								<a href="finance_creation"><i><span class="icon-attach_money"></span></i>Finance Creation
-								</a>
-							</li> -->
-							<!-- <li>
-								<a href="configurationsetting"><i class="icon-cog"></i>Configuration Setting</a>
-							</li>
-							<li>									
-								<a href="backup_restore"><i><span class="icon-database"></span></i>Backup & Restore
-								</a>
-							</li> -->
 						</ul>
 					</div>
 				</li>
@@ -231,7 +208,7 @@ if (sizeof($getmanageuserdetails)>0) {
 
 				<li class="sidebar-dropdown">
 					<a href="javascript:void(0)">
-						<i class="icon-edit1"></i>
+						<i class="icon-book"></i>
 						<span class="menu-text">Master</span>
 					</a>
 					<div class="sidebar-submenu">
@@ -250,12 +227,12 @@ if (sizeof($getmanageuserdetails)>0) {
 									<ul>
 									<?php if(isset($allocation) && $allocation ==0){ ?>
 										<li>
-											<a href="syllabus_allocation"><i><span class="icon-pie_chart_outlined"></span></i>Allocation
+											<a href="syllabus_allocation"><i class="icon-monitor"></i>Allocation
 											</a>	
 										</li>
 									<?php } if(isset($allocation_view) && $allocation_view ==0){ ?>
 										<li>
-											<a href="syllabus_report"><i><span class="icon-bug_report"></span></i>Allocation View
+											<a href="syllabus_report"><i><span class="icon-eye"></span></i>Allocation View
 											</a>	
 										</li>
 									<?php } ?>
@@ -270,7 +247,7 @@ if (sizeof($getmanageuserdetails)>0) {
 			<?php } if(isset($staff_module) && $staff_module ==0){ ?>
 				<li class="sidebar-dropdown">
 					<a href="javascript:void(0)">
-						<i class="icon-user"></i>
+						<i class="icon-person"></i>
 						<span class="menu-text"> Staff </span>
 					</a>
 					<div class="sidebar-submenu">
@@ -320,21 +297,6 @@ if (sizeof($getmanageuserdetails)>0) {
 											<a href="edit_transfer_certificate"><i><span class="icon-file-text"></span></i>Transfer</a>
 										</li>
 									<?php } ?>
-										<!-- <li>									
-											<a href="study_certificate"><i><span class="icon-file-text"></span></i>Study</a>
-										</li>
-										<li>									
-											<a href="marksheet_certificate"><i><span class="icon-file-text"></span></i>Mark</a>
-										</li>
-										<li>									
-											<a href="edit_student_bonafide"><i><span class="icon-file-text"></span></i>Bonafide</a>
-										</li> -->
-										<!-- <li>									
-											<a href="edit_conduct_certificate"><i><span class="icon-file-text"></span></i>Conduct</a>
-										</li> -->
-										<!-- <li>									
-											<a href="course_completion"><i><span class="icon-file-text"></span></i>Course Compeletion</a>
-										</li> -->
 									</ul>
 								</div>	
 							</li>
@@ -345,7 +307,7 @@ if (sizeof($getmanageuserdetails)>0) {
 			<?php } if(isset($collection_module) && $collection_module ==0){ ?>
 				<li class="sidebar-dropdown">
 					<a href="javascript:void(0)">
-						<i class="icon-attach_money"></i>
+						<i class="icon-wallet"></i>
 						<span class="menu-text"> Collection </span>
 					</a>
 					<div class="sidebar-submenu">
@@ -362,34 +324,45 @@ if (sizeof($getmanageuserdetails)>0) {
 						</ul>
 					</div>
 				</li>
-			<?php } ?>
-			<!-- <li class="sidebar-dropdown">
-				<a href="javascript:void(0)">
-					<i class="icon-truck"></i>
-					<span class="menu-text"> Inventory </span>
-				</a>
-				<div class="sidebar-submenu">
-					<ul>
-						<li>
-							<a href="item_creation"><i><span class="icon-filter_tilt_shift"></span></i>Item Master</a>
-						</li>
-						<li>
-							<a href="purchase_order"><i><span class="icon-filter_tilt_shift"></span></i>Stock Inward Entry</a>
-						</li>
-						<li>
-							<a href="stock_issuance"><i><span class="icon-filter_tilt_shift"></span></i>Stock Issuance</a>
-						</li>
-						<li>
-							<a href="stockstatement"><i><span class="icon-filter_tilt_shift"></span></i>Stock Movement</a>
-						</li>
-						
-					</ul>
-				</div>
-			</li> -->
-			<?php if(isset($report_module) && $report_module ==0){ ?>
+			<?php } if(isset($sms_module) && $sms_module ==0){ ?>
+				<!-- SMS Module START -->
 				<li class="sidebar-dropdown">
 					<a href="javascript:void(0)">
-						<i class="icon-list"></i>
+						<i class="icon-message"></i>
+						<span class="menu-text"> SMS </span>
+					</a>
+					<div class="sidebar-submenu">
+						<ul>
+						<?php if(isset($birthday_wishes) && $birthday_wishes ==0){ ?>
+							<li>
+								<a href="edit_birthday_wishes"><i class="icon-cake"></i>Birthday Wishes</a>
+							</li>
+						<?php } if(isset($tamil_birthday_wishes) && $tamil_birthday_wishes ==0){ ?>
+							<li>
+								<a href="edit_tamil_birthday_wishes"><i class="icon-gift"></i>Tamil Birthday Wishes</a>
+							</li>
+						<?php } if(isset($student_general_message) && $student_general_message ==0){ ?>
+							<li>
+								<a href="edit_general_message"><i class="icon-chat_bubble"></i>Student General Message</a>
+							</li>
+						<?php } if(isset($staff_general_message) && $staff_general_message ==0){ ?>
+							<li>
+								<a href="edit_staff_general_message"><i class="icon-user-check"></i>Staff General Message</a>
+							</li>
+						<?php } if(isset($home_work) && $home_work ==0){ ?>
+							<li>
+								<a href="edit_home_work"><i class="icon-pencil"></i>Home Work</a>
+							</li>
+						<?php }  ?>
+						</ul>
+					</div>
+				</li>
+				<!-- SMS Module END -->
+
+			<?php }  if(isset($report_module) && $report_module ==0){ ?>
+				<li class="sidebar-dropdown">
+					<a href="javascript:void(0)">
+						<i class="icon-folder"></i>
 						<span class="menu-text"> Reporting </span>
 					</a>
 					<div class="sidebar-submenu">
@@ -398,26 +371,26 @@ if (sizeof($getmanageuserdetails)>0) {
 						<ul>
 							<li class="sidebar-dropdown1">
 								<a href="javascript:void(0)">
-									<i class="icon-book"></i>
+									<i class="icon-file-text"></i>
 									<span class="menu-text" >Student Report</span>
 								</a>
 								<div class="sidebar-submenu1">
 									<ul>
 									<?php if(isset($student_caste_report) && $student_caste_report ==0){ ?>
 										<li>
-											<a href="student_caste_report"><i class="icon-file"></i>Student Caste List</a>	
+											<a href="student_caste_report"><i class="icon-pie-chart"></i>Student Caste List</a>	
 										</li>
 									<?php } if(isset($class_wise_list) && $class_wise_list ==0){ ?>
 										<li>
-											<a href="class_wise_list"><i class="icon-file"></i>Class wise List</a>	
+											<a href="class_wise_list"><i class="icon-list"></i>Class wise List</a>	
 										</li>
 									<?php } if(isset($register_of_admission) && $register_of_admission ==0){ ?>
 										<li>
-											<a href="register_of_admission"><i class="icon-file"></i>Register of Admission</a>	
+											<a href="register_of_admission"><i class="icon-documents"></i>Register of Admission</a>	
 										</li>
 									<?php } if(isset($student_transport_list) && $student_transport_list ==0){ ?>
 										<li>
-											<a href="student_transport_list"><i class="icon-file"></i>Student Transport List</a>	
+											<a href="student_transport_list"><i class="icon-airport_shuttle"></i>Student Transport List</a>	
 										</li>
 									<?php } ?>
 									</ul>
@@ -438,11 +411,11 @@ if (sizeof($getmanageuserdetails)>0) {
 									<ul>
 									<?php if(isset($daily_fees_collection) && $daily_fees_collection ==0){ ?>
 										<li>
-											<a href="daily_fees_collection"><i class="icon-file"></i>Daily Fees Collection</a>	
+											<a href="daily_fees_collection"><i class="icon-dollar-sign"></i>Daily Fees Collection</a>	
 										</li>
 									<?php } if(isset($day_end_report) && $day_end_report ==0){ ?>
 										<li>
-											<a href="day_end_report"><i class="icon-file"></i>Day End Report</a>	
+											<a href="day_end_report"><i class="icon-sunset"></i>Day End Report</a>	
 										</li>
 									<?php } if(isset($overall_scholarship_fee_details) && $overall_scholarship_fee_details ==0){ ?>
 										<li>

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2024 at 09:17 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Apr 26, 2024 at 06:13 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `school_empty`
+-- Database: `school_demo_db`
 --
 
 -- --------------------------------------------------------
@@ -44,11 +44,12 @@ CREATE TABLE `academic_year` (
 --
 
 INSERT INTO `academic_year` (`year_id`, `period_from`, `period_to`, `academic_year`, `status`, `insert_login_id`, `update_login_id`, `created_date`, `updated_date`) VALUES
-(1, '2019-04-01', '2020-03-31', '2019-2020', 0, '1', NULL, '2024-03-09 16:42:07', NULL),
-(2, '2020-04-01', '2021-03-31', '2020-2021', 0, '1', NULL, '2024-03-09 16:42:07', NULL),
-(3, '2021-04-01', '2022-03-31', '2021-2022', 0, '1', NULL, '2024-03-09 16:42:07', NULL),
-(4, '2022-04-01', '2023-03-31', '2022-2023', 0, '1', NULL, '2024-03-09 16:42:07', NULL),
-(5, '2023-04-01', '2024-03-31', '2023-2024', 0, '1', NULL, '2024-03-09 16:42:07', NULL);
+(1, '2019-04-01', '2020-03-31', '2019-2020', 0, '1', NULL, '2024-03-09 03:19:37', NULL),
+(2, '2020-04-01', '2021-03-31', '2020-2021', 0, '1', NULL, '2024-03-09 03:19:37', NULL),
+(3, '2021-04-01', '2022-03-31', '2021-2022', 0, '1', NULL, '2024-03-09 03:19:37', NULL),
+(4, '2022-04-01', '2023-03-31', '2022-2023', 0, '1', NULL, '2024-03-09 03:19:37', NULL),
+(5, '2023-04-01', '2024-03-31', '2023-2024', 0, '1', NULL, '2024-03-09 03:19:37', NULL),
+(6, '2024-04-01', '2025-03-31', '2024-2025', 0, '1', NULL, '2024-04-12 00:21:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -63,33 +64,6 @@ CREATE TABLE `accountsgroup` (
   `status` int(11) DEFAULT 0,
   `order_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `accountsgroup`
---
-
-INSERT INTO `accountsgroup` (`Id`, `AccountsName`, `ParentId`, `status`, `order_id`) VALUES
-(1, 'Capital Account', 0, 0, 1),
-(2, 'Current Liabilities', 0, 0, 2),
-(3, 'Current Assets', 0, 0, 4),
-(4, 'Purchase Accounts', 0, 0, 5),
-(5, 'Direct Income', 0, 0, 6),
-(6, 'Direct Expenses', 0, 0, 7),
-(7, 'Indirect Income', 0, 0, 8),
-(8, 'Indirect Expenses', 0, 0, 9),
-(9, 'Profit & Loss A/c', 0, 0, 10),
-(10, 'Diff. in Opening Balances', 0, 0, 11),
-(11, 'Reserve & Surplus', 1, 0, 12),
-(12, 'Sundry Creditors', 2, 0, 13),
-(13, 'Loans(Liability)', 2, 0, 14),
-(14, 'Bank OD', 2, 0, 15),
-(15, 'Opening Stock', 3, 0, 16),
-(16, 'Cash-in-hand', 3, 0, 17),
-(17, 'Bank Accounts', 3, 0, 18),
-(18, 'Investments', 3, 0, 19),
-(19, 'Loans and Advances', 3, 0, 20),
-(40, 'Sundry Debtors', 3, 0, 35),
-(42, 'Fixed Assets', 0, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -113,8 +87,8 @@ CREATE TABLE `admission_fees` (
   `school_id` int(11) NOT NULL,
   `insert_login_id` int(11) NOT NULL,
   `update_login_id` int(11) DEFAULT NULL,
-  `created_on` date NOT NULL DEFAULT current_timestamp(),
-  `updated_on` date DEFAULT NULL
+  `created_on` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_on` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -146,8 +120,8 @@ CREATE TABLE `admission_fees_denomination` (
   `neft_bank_name` varchar(150) DEFAULT NULL,
   `insert_login_id` int(11) NOT NULL,
   `update_login_id` int(11) DEFAULT NULL,
-  `created_on` date NOT NULL DEFAULT current_timestamp(),
-  `updated_on` date NOT NULL
+  `created_on` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -161,7 +135,7 @@ CREATE TABLE `admission_fees_details` (
   `admission_fees_ref_id` varchar(100) NOT NULL,
   `fees_master_id` varchar(255) NOT NULL,
   `fees_table_name` varchar(100) NOT NULL,
-  `fees_id` int(255) NOT NULL,
+  `fees_id` int(11) NOT NULL,
   `fee_received` varchar(150) NOT NULL,
   `balance_tobe_paid` varchar(150) NOT NULL,
   `scholarship` varchar(150) NOT NULL
@@ -175,9 +149,9 @@ CREATE TABLE `admission_fees_details` (
 
 CREATE TABLE `amenity_fee` (
   `amenity_fee_id` int(11) NOT NULL,
-  `fee_master_id` int(50) NOT NULL,
+  `fee_master_id` int(11) NOT NULL,
   `amenity_particulars` varchar(150) NOT NULL,
-  `amenity_amount` int(50) NOT NULL,
+  `amenity_amount` int(11) NOT NULL,
   `amenity_date` varchar(50) NOT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
   `amenity_id_used` int(11) NOT NULL DEFAULT 0
@@ -237,8 +211,8 @@ CREATE TABLE `attachment` (
   `status` int(11) NOT NULL DEFAULT 0,
   `insert_login_id` int(11) NOT NULL,
   `update_login_id` int(11) DEFAULT NULL,
-  `created_date` date NOT NULL DEFAULT current_timestamp(),
-  `updated_date` date DEFAULT NULL
+  `created_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -808,7 +782,7 @@ CREATE TABLE `deleted_student_creation` (
 
 CREATE TABLE `extra_curricular_activities_fee` (
   `extra_fee_id` int(11) NOT NULL,
-  `fee_master_id` int(50) NOT NULL,
+  `fee_master_id` int(11) NOT NULL,
   `extra_particulars` varchar(150) NOT NULL,
   `extra_amount` varchar(50) NOT NULL,
   `extra_date` varchar(50) NOT NULL,
@@ -991,6 +965,24 @@ CREATE TABLE `fees_master_model4` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `general_message`
+--
+
+CREATE TABLE `general_message` (
+  `id` int(11) NOT NULL,
+  `standard_id` varchar(50) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `char_count` varchar(150) NOT NULL,
+  `status` int(11) NOT NULL,
+  `userid` varchar(50) NOT NULL,
+  `school_id` int(11) NOT NULL,
+  `academic_year` varchar(50) NOT NULL,
+  `created_on` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `group_course_fee`
 --
 
@@ -1042,6 +1034,23 @@ CREATE TABLE `holiday_creation` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `home_work_message`
+--
+
+CREATE TABLE `home_work_message` (
+  `id` int(11) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `char_count` varchar(150) NOT NULL,
+  `status` int(11) NOT NULL,
+  `userid` varchar(50) NOT NULL,
+  `school_id` int(11) NOT NULL,
+  `academic_year` varchar(50) NOT NULL,
+  `created_on` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `item_creation`
 --
 
@@ -1085,8 +1094,8 @@ CREATE TABLE `last_year_fees` (
   `school_id` int(11) NOT NULL,
   `insert_login_id` int(11) NOT NULL,
   `update_login_id` int(11) DEFAULT NULL,
-  `created_on` date NOT NULL DEFAULT current_timestamp(),
-  `updated_on` date NOT NULL
+  `created_on` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -1118,8 +1127,8 @@ CREATE TABLE `last_year_fees_denomination` (
   `neft_bank_name` varchar(150) DEFAULT NULL,
   `insert_login_id` int(11) NOT NULL,
   `update_login_id` int(11) DEFAULT NULL,
-  `created_on` date NOT NULL DEFAULT current_timestamp(),
-  `updated_on` date NOT NULL
+  `created_on` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -1644,6 +1653,36 @@ INSERT INTO `school_creation` (`school_id`, `school_name`, `school_login_name`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sms_template`
+--
+
+CREATE TABLE `sms_template` (
+  `sms_template_id` int(11) NOT NULL,
+  `template_name` varchar(255) NOT NULL,
+  `template_id` varchar(255) NOT NULL,
+  `template` varchar(255) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 0,
+  `insert_login_id` int(11) NOT NULL,
+  `update_login_id` int(11) NOT NULL,
+  `delete_login_id` int(11) NOT NULL,
+  `created_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_date` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sms_template`
+--
+
+INSERT INTO `sms_template` (`sms_template_id`, `template_name`, `template_id`, `template`, `status`, `insert_login_id`, `update_login_id`, `delete_login_id`, `created_date`, `updated_date`) VALUES
+(1, 'working day', '0', 'அன்பார்ந்த பெற்றோர்களுக்கு, வணக்கம் 🙏. நாளை {#var#} , பள்ளி முழு வேலை நாள் என்பதை, தெரிவித்துக் கொள்கிறோம். நன்றி . தலைமை ஆசிரியர் -VPHSS', 0, 1, 0, 0, '2024-04-25 16:47:10', '2024-04-25 16:47:10'),
+(2, 'scholarship alert', '1707171404603580718', '{#var#} வகுப்பு மாணவர்களின் கவனத்திற்கு, \"{#var#} \" படிவத்தை பூர்த்தி செய்து சமர்பிக்ககாத மாணவர்கள் தாமதமின்றி பூர்த்தி செய்து சமர்ப்பிக்குமாறு அன்புடன் கேட்டுக்கொள்கிறோம். தலைமையாசிரியர் வித்யா பார்த்தி மேல்நிலைப்பள்ளி திண்டுக்கல்.- VPHSS', 0, 1, 0, 0, '2024-04-25 16:47:10', '2024-04-25 16:47:10'),
+(3, 'From VPHSS BW', '0', 'Dear student {#var#}, today is a {#var#} for you. vidhya parthi higher secondary school {#var#}.', 0, 1, 0, 0, '2024-04-25 16:51:08', '2024-04-25 16:51:08'),
+(4, 'From VPHSS TBW', '0', 'அன்புள்ள மாணவர் {#var#}, இன்று உங்களுக்கு {#var#} வித்யா பார்த்தி மேல்நிலைப்பள்ளி சார்பாக {#var#}. {#var#}. -VPHSS', 0, 1, 0, 0, '2024-04-25 16:51:08', '2024-04-25 16:51:08'),
+(5, 'leave', '0', 'அன்பார்ந்த பெற்றோர்களுக்கு, வணக்கம் 🙏. நாளை {#var#} , பள்ளி விடுமுறை என்பதை, தெரிவித்துக் கொள்கிறோம். நன்றி. -தலைமை ஆசிரியர் -VPHSS', 0, 1, 0, 0, '2024-04-25 16:56:48', '2024-04-25 16:56:48');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `staff_creation`
 --
 
@@ -1695,6 +1734,24 @@ CREATE TABLE `staff_creation` (
   `delete_login_id` int(11) DEFAULT NULL,
   `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_date` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `staff_general_message`
+--
+
+CREATE TABLE `staff_general_message` (
+  `id` int(11) NOT NULL,
+  `staff_designation` varchar(100) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `char_count` varchar(150) NOT NULL,
+  `status` int(11) NOT NULL,
+  `userid` varchar(50) NOT NULL,
+  `school_id` int(11) NOT NULL,
+  `academic_year` varchar(50) NOT NULL,
+  `created_on` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -1802,6 +1859,23 @@ CREATE TABLE `stock_issuance_ref` (
   `total` varchar(255) DEFAULT '0',
   `stock_issuance_id` int(11) NOT NULL,
   `createddate` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `student_birthday_wishes`
+--
+
+CREATE TABLE `student_birthday_wishes` (
+  `id` int(11) NOT NULL,
+  `message` varchar(250) NOT NULL,
+  `char_count` int(255) NOT NULL,
+  `status` int(11) NOT NULL,
+  `userid` varchar(150) NOT NULL,
+  `school_id` int(11) NOT NULL,
+  `academic_year` varchar(50) NOT NULL,
+  `created_on` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -1949,10 +2023,10 @@ CREATE TABLE `subject_details` (
 
 CREATE TABLE `temp_admissionfees_details` (
   `id` int(11) NOT NULL,
-  `TempAdmFeeRefId` int(255) NOT NULL,
+  `TempAdmFeeRefId` int(11) NOT NULL,
   `FeesMasterId` varchar(255) DEFAULT NULL,
   `FeesTableName` varchar(100) DEFAULT NULL,
-  `FeesId` int(255) NOT NULL,
+  `FeesId` int(11) NOT NULL,
   `FeeReceived` varchar(150) NOT NULL,
   `BalancetobePaid` varchar(150) NOT NULL,
   `Scholarship` varchar(150) NOT NULL
@@ -1980,8 +2054,8 @@ CREATE TABLE `temp_admission_fees` (
   `school_id` int(11) DEFAULT NULL,
   `insert_login_id` int(11) NOT NULL,
   `update_login_id` int(11) NOT NULL,
-  `created_on` date NOT NULL DEFAULT current_timestamp(),
-  `updated_on` date NOT NULL
+  `created_on` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -2013,8 +2087,8 @@ CREATE TABLE `temp_admission_fees_denomination` (
   `NeftBankName` varchar(150) DEFAULT NULL,
   `insert_login_id` int(11) NOT NULL,
   `update_login_id` int(11) NOT NULL,
-  `created_on` date NOT NULL DEFAULT current_timestamp(),
-  `updated_on` date NOT NULL
+  `created_on` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -2116,8 +2190,8 @@ CREATE TABLE `transport_admission_fees` (
   `school_id` int(11) NOT NULL,
   `insert_login_id` int(11) NOT NULL,
   `update_login_id` int(11) DEFAULT NULL,
-  `created_on` date NOT NULL DEFAULT current_timestamp(),
-  `updated_on` date NOT NULL
+  `created_on` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -2149,8 +2223,8 @@ CREATE TABLE `transport_admission_fees_denomination` (
   `neft_bank_name` varchar(255) DEFAULT NULL,
   `insert_login_id` int(11) NOT NULL,
   `update_login_id` int(11) DEFAULT NULL,
-  `created_on` date NOT NULL DEFAULT current_timestamp(),
-  `updated_on` date NOT NULL
+  `created_on` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -2265,8 +2339,7 @@ CREATE TABLE `trust_creation` (
 --
 
 INSERT INTO `trust_creation` (`trust_id`, `trust_name`, `contact_person`, `contact_number`, `address1`, `address2`, `address3`, `place`, `pincode`, `email_id`, `website`, `pan_number`, `tan_number`, `trust_logo`, `status`, `school_id`, `academic_year`, `insert_login_id`, `update_login_id`, `delete_login_id`, `created_date`, `updated_date`) VALUES
-(1, 'XYZ', 'ABC', '9597575922', 'Kamaraj salai', 'Pondicherry', 'Tamilnadu', 'Pondicherry', '600015', '', '', '', '', 'hoc2022-banner.png', 0, '1', '2023-2024', 1, 1, 1, '2023-12-02 12:55:05', '2023-12-02 12:55:05'),
-(2, 'Auro', 'ABC', '8527419632', 'Pondy', '', '', 'Pondy', '600045', '', '', '', '', '', 1, '1', '2023-2024', 1, NULL, 1, '2024-03-15 12:59:41', '2024-03-15 12:59:41');
+(1, 'XYZ', 'ABC', '9597575922', 'Kamaraj salai', 'Pondicherry', 'Tamilnadu', 'Pondy', '600015', '', '', '', '', 'hoc2022-banner.png', 0, '1', '2023-2024', 1, 1, 1, '2023-12-02 12:55:05', '2023-12-02 12:55:05');
 
 -- --------------------------------------------------------
 
@@ -2286,7 +2359,7 @@ CREATE TABLE `user` (
   `user_password` varchar(255) DEFAULT NULL,
   `role` varchar(50) DEFAULT NULL,
   `status` varchar(255) DEFAULT '0',
-  `dashboard` int(11) NOT NULL DEFAULT 0,
+  `dashboard` int(11) DEFAULT 0,
   `administration_module` int(11) NOT NULL,
   `trust_creation` int(11) DEFAULT NULL,
   `school_update` int(11) NOT NULL,
@@ -2310,6 +2383,12 @@ CREATE TABLE `user` (
   `collection_module` int(11) NOT NULL,
   `fees_concession` int(11) NOT NULL,
   `fees_collection` int(11) NOT NULL,
+  `sms_module` int(11) NOT NULL,
+  `birthday_wishes` int(11) NOT NULL,
+  `tamil_birthday_wishes` int(11) NOT NULL,
+  `student_general_message` int(11) NOT NULL,
+  `staff_general_message` int(11) NOT NULL,
+  `home_work` int(11) NOT NULL,
   `report_module` int(11) NOT NULL,
   `student_report_sub_module` int(11) NOT NULL,
   `student_caste_report` int(11) NOT NULL,
@@ -2336,9 +2415,8 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `firstname`, `lastname`, `fullname`, `title`, `school_id`, `emailid`, `user_name`, `user_password`, `role`, `status`, `dashboard`, `administration_module`, `trust_creation`, `school_update`, `fees_master`, `holiday_creation`, `manage_users`, `master_module`, `area_master`, `syllabus_sub_module`, `allocation`, `allocation_view`, `staff_module`, `staff_creation`, `student_module`, `temp_admission_form`, `student_creation`, `student_rollback`, `delete_student`, `certificate_sub_module`, `transfer`, `collection_module`, `fees_concession`, `fees_collection`, `report_module`, `student_report_sub_module`, `student_caste_report`, `class_wise_list`, `register_of_admission`, `student_transport_list`, `fee_details_sub_module`, `daily_fees_collection`, `day_end_report`, `overall_scholarship_fee_details`, `pending_fee_details`, `all_type_pending_fee_details`, `classwise_overall_pending`, `fees_summary`, `monthwise_fees_summary`, `insert_login_id`, `update_login_id`, `delete_login_id`, `Createddate`, `updated_date`) VALUES
-(1, 'Super', 'Admin', 'Super Admin', 'Super Admin', 1, 'support@feathertechnology.in', 'support@feathertechnology.in', 'admin@123', '1', '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, '2021-04-17 17:08:00', NULL),
-(2, 'Rodan', 'Fields', 'Rodan Fields', 'Admin', 1, 'rodan@gmail.com', 'rodan@gmail.com', 'Asdf@1234', '1', '0', 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, NULL, '2024-03-14 15:21:24', '2024-03-15');
+INSERT INTO `user` (`user_id`, `firstname`, `lastname`, `fullname`, `title`, `school_id`, `emailid`, `user_name`, `user_password`, `role`, `status`, `dashboard`, `administration_module`, `trust_creation`, `school_update`, `fees_master`, `holiday_creation`, `manage_users`, `master_module`, `area_master`, `syllabus_sub_module`, `allocation`, `allocation_view`, `staff_module`, `staff_creation`, `student_module`, `temp_admission_form`, `student_creation`, `student_rollback`, `delete_student`, `certificate_sub_module`, `transfer`, `collection_module`, `fees_concession`, `fees_collection`, `sms_module`, `birthday_wishes`, `tamil_birthday_wishes`, `student_general_message`, `staff_general_message`, `home_work`, `report_module`, `student_report_sub_module`, `student_caste_report`, `class_wise_list`, `register_of_admission`, `student_transport_list`, `fee_details_sub_module`, `daily_fees_collection`, `day_end_report`, `overall_scholarship_fee_details`, `pending_fee_details`, `all_type_pending_fee_details`, `classwise_overall_pending`, `fees_summary`, `monthwise_fees_summary`, `insert_login_id`, `update_login_id`, `delete_login_id`, `Createddate`, `updated_date`) VALUES
+(1, 'Super', 'Admin', 'Super Admin', 'Super Admin', 1, 'support@feathertechnology.in', 'support@feathertechnology.in', 'admin@123', '1', '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, NULL, '2021-04-17 17:08:00', '2024-04-22');
 
 --
 -- Indexes for dumped tables
@@ -2471,6 +2549,12 @@ ALTER TABLE `fees_master_model4`
   ADD PRIMARY KEY (`fees_id`);
 
 --
+-- Indexes for table `general_message`
+--
+ALTER TABLE `general_message`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `group_course_fee`
 --
 ALTER TABLE `group_course_fee`
@@ -2487,6 +2571,12 @@ ALTER TABLE `grp_classification`
 --
 ALTER TABLE `holiday_creation`
   ADD PRIMARY KEY (`holiday_id`);
+
+--
+-- Indexes for table `home_work_message`
+--
+ALTER TABLE `home_work_message`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `item_creation`
@@ -2585,9 +2675,21 @@ ALTER TABLE `school_creation`
   ADD PRIMARY KEY (`school_id`);
 
 --
+-- Indexes for table `sms_template`
+--
+ALTER TABLE `sms_template`
+  ADD PRIMARY KEY (`sms_template_id`);
+
+--
 -- Indexes for table `staff_creation`
 --
 ALTER TABLE `staff_creation`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `staff_general_message`
+--
+ALTER TABLE `staff_general_message`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -2613,6 +2715,12 @@ ALTER TABLE `stock_issuance`
 --
 ALTER TABLE `stock_issuance_ref`
   ADD PRIMARY KEY (`stock_issuance_ref_id`);
+
+--
+-- Indexes for table `student_birthday_wishes`
+--
+ALTER TABLE `student_birthday_wishes`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `student_creation`
@@ -2707,13 +2815,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `academic_year`
 --
 ALTER TABLE `academic_year`
-  MODIFY `year_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `year_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `accountsgroup`
 --
 ALTER TABLE `accountsgroup`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `admission_fees`
@@ -2830,6 +2938,12 @@ ALTER TABLE `fees_master_model4`
   MODIFY `fees_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `general_message`
+--
+ALTER TABLE `general_message`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `group_course_fee`
 --
 ALTER TABLE `group_course_fee`
@@ -2846,6 +2960,12 @@ ALTER TABLE `grp_classification`
 --
 ALTER TABLE `holiday_creation`
   MODIFY `holiday_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `home_work_message`
+--
+ALTER TABLE `home_work_message`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `item_creation`
@@ -2944,9 +3064,21 @@ ALTER TABLE `school_creation`
   MODIFY `school_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `sms_template`
+--
+ALTER TABLE `sms_template`
+  MODIFY `sms_template_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `staff_creation`
 --
 ALTER TABLE `staff_creation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `staff_general_message`
+--
+ALTER TABLE `staff_general_message`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -2972,6 +3104,12 @@ ALTER TABLE `stock_issuance`
 --
 ALTER TABLE `stock_issuance_ref`
   MODIFY `stock_issuance_ref_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `student_birthday_wishes`
+--
+ALTER TABLE `student_birthday_wishes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `student_creation`
@@ -3049,13 +3187,13 @@ ALTER TABLE `transport_fees_ref`
 -- AUTO_INCREMENT for table `trust_creation`
 --
 ALTER TABLE `trust_creation`
-  MODIFY `trust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `trust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

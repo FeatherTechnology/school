@@ -85,22 +85,18 @@ if(isset($_POST['lusername'])) {
 						<h5>Welcome back,<br />Please Login to your Account.</h5>
 						<div class="form-group mt-4">
 							<input type="text" name="lusername" id="lusername"  tabindex="1"  class="form-control val" value="support@feathertechnology.in" placeholder="Enter Email" />
-							<span id="usernamecheck" class="text-danger"></span>    
+							<span id="usernamecheck" class="text-danger" style="display: none;"></span>    
 						</div>
 						<div class="form-group mt-4">
 							<input type="password" name="lpassword" id="lpassword"  tabindex="2"  class="form-control val" value="admin@123" placeholder="Enter Password" />
-							<span id="passwordcheck" class="text-danger"></span>    
+							<span id="passwordcheck" class="text-danger" style="display: none;"></span>    
 						</div>		
 						<div class="form-group mt-4">
-							<select class="school form-control val" id="school" tabindex="3" name="school" required>
-								<option></option>
-							</select>
+							<select class="school form-control val" id="school" tabindex="3" name="school" required></select>
 							<span id="scval" class="text-danger"></span>
 						</div>
 						<div class="form-group mt-4">
-							<select class="academic_year form-control val" tabindex="4" id="academic_year" name="year" required>
-								<option></option>
-							</select> 
+							<select class="academic_year form-control val" tabindex="4" id="academic_year" name="year" required></select> 
 							<span id="yrval" class="text-danger"></span>
 						</div>
 						<div class="actions" style="margin-top: 60px;">

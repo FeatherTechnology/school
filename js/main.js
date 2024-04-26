@@ -1,4 +1,3 @@
-
 // Todays Date
 $(function() {
 	var interval = setInterval(function() {
@@ -8,7 +7,6 @@ $(function() {
 	}, 100);
 });
 
-
 $(function() {
 	var interval = setInterval(function() {
 		var momentNow = moment();
@@ -16,15 +14,10 @@ $(function() {
 	}, 100);
 });
 
-
-
-
 // Loading
 $(function() {
 	$("#loading-wrapper").fadeOut(3000);
 });
-
-
 
 // Textarea characters left
 $(function() {
@@ -46,14 +39,10 @@ $(function() {
 	});
 });
 
-
-
 // Todo list
 $('.todo-body').on('click', 'li.todo-list', function() {
 	$(this).toggleClass('done');
 });
-
-
 
 // Tasks
 (function($) {
@@ -68,131 +57,18 @@ $('.todo-body').on('click', 'li.todo-list', function() {
 	});
 })(jQuery);
 
-
-
 // Tasks Important Active
 $('.task-actions').on('click', '.important', function() {
 	$(this).toggleClass('active');
 });
-
-
 
 // Tasks Important Active
 $('.task-actions').on('click', '.star', function() {
 	$(this).toggleClass('active');
 });
 
-
-
-// Countdown
-$(document).ready(function(){
-	
-  countdown();
-  setInterval(countdown, 1000);
-  function countdown () {
-  var now = moment(), // get the current moment
-    // May 28, 2013 @ 12:00AM
-    then = moment([2020, 10, 7]),
-    // get the difference from now to then in ms
-    ms = then.diff(now, 'milliseconds', true);
-    // If you need years, uncomment this line and make sure you add it to the concatonated phrase
-    /*
-    years = Math.floor(moment.duration(ms).asYears());
-    then = then.subtract('years', years);
-    */
-    // update the duration in ms
-    ms = then.diff(now, 'milliseconds', true);
-    // get the duration as months and round down
-    // months = Math.floor(moment.duration(ms).asMonths());
- 
-    // // subtract months from the original moment (not sure why I had to offset by 1 day)
-    // then = then.subtract('months', months).subtract('days', 1);
-    // update the duration in ms
-    ms = then.diff(now, 'milliseconds', true);
-    days = Math.floor(moment.duration(ms).asDays());
- 
-    then = then.subtract(days, 'days');
-    // update the duration in ms
-    ms = then.diff(now, 'milliseconds', true);
-    hours = Math.floor(moment.duration(ms).asHours());
- 
-    then = then.subtract(hours, 'hours');
-    // update the duration in ms
-    ms = then.diff(now, 'milliseconds', true);
-    minutes = Math.floor(moment.duration(ms).asMinutes());
- 
-    then = then.subtract(minutes, 'minutes');
-    // update the duration in ms
-    ms = then.diff(now, 'milliseconds', true);
-    seconds = Math.floor(moment.duration(ms).asSeconds());
-    
-    // concatonate the variables
-    diff = '<div class="num">' + days + ' <span class="text"> Days Left</span></div>';
-    $('#daysLeft').html(diff);
-  }
- 
-});
-$(document).ready(function(){
-
-	// Get the current URL
-	var currentUrl = window.location.href;
-	// Extract the pathname from the URL
-	var pathname = new URL(currentUrl).pathname;
-	// If you only want the page name without any directory structure
-	var pageName = pathname.split('/').pop();
-	// Now, pageName contains the name of the current page
-	
-	if(pageName == 'index' || pageName == '' || pageName == 'index.php'){
-		
-		var mail = $('#lusername').val();
-		$.ajax({
-			url: "ajaxgetschooldata.php",
-			data: { "mail":mail },
-			cache: false,
-			type: "post",
-			dataType: "json",
-			success: function (data) {
-				$('#school').text('');
-				$('#school').val('');
-				var option = $('<option></option>').val('').text('Select School');
-				$('#school').append(option);
-				for(var a=0; a<=data.school.length-1; a++){
-					
-					var option = $('<option ></option>').val(data.school[a]['school_id']).text(data.school[a]['school_name']);
-					$('#school').append(option);
-					}
-			
-			}
-			});
-		passcheck();
-
-	}
-});
-
-
-
-// Bootstrap JS ***********
-
-// Tooltip
-// $(function () {
-// 	$('[data-toggle="tooltip"]').tooltip()
-// })
-
-// $(function () {
-// 	$('[data-toggle="popover"]').popover()
-// })
-
-
-
-
-
-
-
-
-
 // Custom Sidebar JS
 jQuery(function ($) {
-
 	// Dropdown menu
 	$(".sidebar-dropdown > a").click(function () {
 		$(".sidebar-submenu").slideUp(200);
@@ -206,14 +82,10 @@ jQuery(function ($) {
 		}
 	});
 
-
-
 	//toggle sidebar
 	$("#toggle-sidebar").click(function () {
 		$(".page-wrapper").toggleClass("toggled");
 	});
-
-
 
 	// Pin sidebar on click
 	$("#pin-sidebar").click(function () {
@@ -236,32 +108,23 @@ jQuery(function ($) {
 		}
 	});
 
-
-
 	// Pinned sidebar
 	$(function() {
 		$(".page-wrapper").hasClass("pinned");
 		$("#sidebar").hover(
 			function () {
-				// console.log("mouseenter");
 				$(".page-wrapper").addClass("sidebar-hovered");
 			},
 			function () {
-				// console.log("mouseout");
 				$(".page-wrapper").removeClass("sidebar-hovered");
 			}
 		)
 	});
 
-
-
-
 	// Toggle sidebar overlay
 	$("#overlay").click(function () {
 		$(".page-wrapper").toggleClass("toggled");
 	});
-
-
 
 	// Added by Srinu 
 	$(function(){
@@ -281,163 +144,17 @@ jQuery(function ($) {
 		});
 	});
 	
-// Dropdown sub menu
-$(".sidebar-submenu1").slideUp(200);
-$(".sidebar-dropdown1 > a").click(function () { 
+	// Dropdown sub menu
 	$(".sidebar-submenu1").slideUp(200);
-	if ($(this).parent().hasClass("active")) {
-		$(".sidebar-dropdown1").removeClass("active");
-		$(this).parent().removeClass("active");
-	} else {
-		$(".sidebar-dropdown1").removeClass("active");
-		$(this).next(".sidebar-submenu1").slideDown(200);
-		$(this).parent().addClass("active");
-	}
-});
-
-});
-$(document).ready(function () {
-	$("#lbutton").click(function() {
-		var val1 = $(this).val();
-		var mail = $("#lusername").val();
-		var pass = $("#lpassword").val();
-		var school = $("#school").val();
-		var academic_year = $("#academic_year").val();
-		$.ajax({
-			url: "ajaxvalidlogindata.php",
-			data: {"mail":mail,
-			       "pass":pass,
-				   "school":school,
-				   "academic_year":academic_year,
-		           },
-			cache: false,
-			type: "post",
-			dataType: "json",
-			success: function (data) {
-					
-			
-			}
-			});
-			passcheck();
-			mailcheck();
-	  });
-
-
-$("#school").change(function(){
-var school = $(this).val();
-// console.log("school",school);
-$.ajax({
-	url: "ajaxgetyeardata.php",
-	data: {"school":school},
-	cache: false,
-	type: "post",
-	dataType: "json",
-	success: function (data) {
-	
-	$('#academic_year').text('');
-	$('#academic_year').val('');
-	var option = $('<option></option>').val('').text('Select Academic Year');
-	$('#academic_year').append(option);
-	for(var a=0; a<=data.year.length-1; a++){
-		
-		var option = $('<option ></option>').val(data.year[a]['academic_year']).text(data.year[a]['academic_year']);
-		$('#academic_year').append(option);
+	$(".sidebar-dropdown1 > a").click(function () { 
+		$(".sidebar-submenu1").slideUp(200);
+		if ($(this).parent().hasClass("active")) {
+			$(".sidebar-dropdown1").removeClass("active");
+			$(this).parent().removeClass("active");
+		} else {
+			$(".sidebar-dropdown1").removeClass("active");
+			$(this).next(".sidebar-submenu1").slideDown(200);
+			$(this).parent().addClass("active");
 		}
-	
-	
-	}
 	});
-
-});
-
-$("#lusername").keyup(function() { 
-	var mail = $(this).val();
-	$.ajax({
-		url: "ajaxgetschooldata.php",
-		data: { "mail":mail },
-		cache: false,
-		type: "post",
-		dataType: "json",
-		success: function (data) {
-		
-		$('#school').text('');
-		$('#school').val('');
-		var option = $('<option></option>').val('').text('Select School');
-		$('#school').append(option);
-		// console.log("ifffff",data.school);
-		for (var a = 0; a <= data.school.length - 1; a++) {
-			var option = $('<option></option>').val(data.school[a]['school_id']).text(data.school[a]['school_name']);
-			$('#school').append(option);
-		}
-		
-		
-		}
-		});
-	passcheck();
-});
-
-$("#lpassword").keyup(function() { 
-	
-	mailcheck();
-});
-function mailcheck(){
-	var mail = $("#lusername").val();
-	var len = mail.length;
-	if(len == 0){
-		$('#passwordcheck').text('');
-		$('#passwordcheck').text('Enter Login Email Address And Enter Password');
-	}else{
-		var val = $('#lpassword').val();
-		$.ajax({
-		   url: "ajaxvalidpassdata.php",
-		   data: {"mail":mail,
-				  "val":val
-				  },
-		   cache: false,
-		   type: "post",
-		   dataType: "json",
-		   success: function (data) {
-			if(data != ''){
-				$('#passwordcheck').text('');
-			}else{
-				
-				$('#passwordcheck').show();
-
-				$('#passwordcheck').text('');
-				$('#passwordcheck').text('Enter Valid Password');
-			}	
-			   
-		   
-		   }
-		   });
-	}
-}
-function passcheck(){
- 	var mail = $("#lusername").val();
-	var len = mail.length;
-	if(len == 0){
-		$('#usernamecheck').text('');
-		$('#usernamecheck').text('Enter Login Email Address');
-	}else{
-		$.ajax({
-			url: "ajaxvaliduserdata.php",
-			data: {"mail":mail
-				   },
-			cache: false,
-			type: "post",
-			dataType: "json",
-			success: function (data) {
-				if(data != ''){
-					$('#usernamecheck').text('');
-				}else{
-					$('#usernamecheck').show();
-
-					$('#usernamecheck').text('');
-					$('#usernamecheck').text('Enter Valid Login Email Address');
-	            }	
-			
-			}
-			});
-	}
-}
 });

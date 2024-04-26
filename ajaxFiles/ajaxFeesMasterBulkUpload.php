@@ -66,7 +66,54 @@ if(in_array($_FILES["file"]["type"],$allowedFileType)){
 
                 $standard_list = "";
                 if(isset($Row[3])) {
-                $standard_list = mysqli_real_escape_string($mysqli,$Row[3]);
+                    $standard_name = mysqli_real_escape_string($mysqli,$Row[3]);
+                    if($standard_name == 'PRE.K.G'){
+                        $standard_list = "1";
+                    }else if($standard_name == 'L.K.G'){
+                        $standard_list = "2";
+                    }else if($standard_name == 'U.K.G'){
+                        $standard_list = "3";
+                    }else if($standard_name == 'I'){
+                        $standard_list = "4";
+                    }else if($standard_name == 'II'){
+                        $standard_list = "5";
+                    }else if($standard_name == 'III'){
+                        $standard_list = "6";
+                    }else if($standard_name == 'IV'){
+                        $standard_list = "7";
+                    }else if($standard_name == 'V'){
+                        $standard_list = "8";
+                    }else if($standard_name == 'VI'){
+                        $standard_list = "9";
+                    }else if($standard_name == 'VII'){
+                        $standard_list = "10";
+                    }else if($standard_name == 'VIII'){
+                        $standard_list = "11";
+                    }else if($standard_name == 'IX'){
+                        $standard_list = "12";
+                    }else if($standard_name == 'X'){
+                        $standard_list = "13";
+                    }else if($standard_name == 'XI_Maths_Biology'){
+                        $standard_list = "14";
+                    }else if($standard_name == 'XI_Maths_ComputerScience'){
+                        $standard_list = "15";
+                    }else if($standard_name == 'XI_Biology_ComputerScience'){
+                        $standard_list = "16";
+                    }else if($standard_name == 'XI_Commerce_ComputerScience'){
+                        $standard_list = "17";
+                    }else if($standard_name == 'XI_All'){
+                        $standard_list = "18";
+                    }else if($standard_name == 'XII_Maths_Biology'){
+                        $standard_list = "19";
+                    }else if($standard_name == 'XII_Maths_ComputerScience'){
+                        $standard_list = "20";
+                    }else if($standard_name == 'XII_Biology_ComputerScience'){
+                        $standard_list = "21";
+                    }else if($standard_name == 'XII_Commerce_ComputerScience'){
+                        $standard_list = "22";
+                    }else{
+                        $standard_list = "23";
+                    }
                 }
                 
                 $particulars = "";
