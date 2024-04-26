@@ -399,6 +399,26 @@ if($current_page == 'vendorcreation' || $current_page == 'auction_details') {
 			if($current_page == 'monthwise_fees_summary') { 
 				include "reports/fees_details_report/monthwise_fees_summary.php";
 			}
+
+			if($current_page == 'edit_birthday_wishes') { 
+				include "include/templates/edit_birthday_wishes.php";
+			}
+
+			if($current_page == 'edit_tamil_birthday_wishes') { 
+				include "include/templates/edit_tamil_birthday_wishes.php";
+			}
+
+			if($current_page == 'edit_general_message') { 
+				include "include/templates/edit_general_message.php";
+			}
+
+			if($current_page == 'edit_staff_general_message') { 
+				include "include/templates/edit_staff_general_message.php";
+			}
+
+			if($current_page == 'edit_home_work') { 
+				include "include/templates/edit_home_work.php";
+			}
 			?>
 
 

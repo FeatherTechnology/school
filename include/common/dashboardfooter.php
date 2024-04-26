@@ -8,21 +8,9 @@
 <script src="js/xlsx.js"></script>
 <script src="vendor/apex/apexcharts.min.js"></script>
 
-
-<!-- Slimscroll JS -->
-<!-- <script src="vendor/slimscroll/slimscroll.min.js"></script>
-<script src="vendor/slimscroll/custom-scrollbar.js"></script> -->
- 
-<!-- Daterange -->
-<!-- <script src="vendor/daterange/daterange.js"></script>
-<script src="vendor/daterange/custom-daterange.js"></script> -->
-
 <script src="vendor/bs-select/bs-select.min.js"></script>
 <!-- Font -->
 <script src="js/main.js"></script>
-
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>   -->
-
 <script src="https://getbootstrap.com/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
 <script src="https://getbootstrap.com/docs/5.0/assets/js/docs.min.js"></script>	
@@ -32,41 +20,6 @@
 <script type="text/javascript" language="javascript">
 
     $(document).ready(function() {
-
-		// var syllabus_allocation = $('#syllabus_allocation').DataTable({
-			
-		// 	"order": [[ 0, "desc" ]],
-		// 	'processing': true,
-		// 	'serverSide': true,
-		// 	'serverMethod': 'post',
-		// 	//'searching': false, // Remove default Search Control
-		// 	'ajax': {
-		// 		'url':'ajaxSchoolCreationFetch1.php',
-		// 		'data': function(data){
-		// 			var class_id = $("#class_id").val();
-		// 			data.class_id = class_id;
-		// 		}
-		// 	},
-			
-		// 	// dom: 'lBfrtip', 
-		// 	buttons: [		
-		// 		{
-		// 			extend: 'csv',
-		// 			exportOptions: {
-		// 				columns: [ 0, 1, 2 ,3, 4, 5, 6, 7, 8, 9 ]
-		// 			}
-		// 		},
-		// 		{		 
-		// 			extend:'colvis',
-		// 			collectionLayout: 'fixed four-column',
-		// 		}
-
-		// 	],	
-		// 	"lengthMenu": [
-		// 		[10, 25, 50, -1],
-		// 		[10, 25, 50, "All"]
-		// 	]
-		// });
 
     	var school_info = $('#school_info').DataTable({
 			"order": [[ 0, "desc" ]],
@@ -261,31 +214,8 @@
 			]
 		});
 
-		//Select Student for Roll Back Process
-
-		// var student_rollback_info = $('#student_rollback_info').DataTable({
-		// 	"order": [[ 0, "asc" ]],
-		// 	'processing': true,
-		// 	'serverSide': true,
-		// 	'serverMethod': 'post',
-		// 	//'searching': false, // Remove default Search Control
-		// 	'ajax': {
-		// 		'url':'ajaxStudentRollBackFetch.php',
-		// 		'data': function(data){
-		// 			var search = $('#search').val();
-		// 			data.search = search;
-		// 		}
-		// 	},
-			
-		// 	"lengthMenu": [
-		// 		[10, 25, 50, -1],
-		// 		[10, 25, 50, "All"]
-		// 	]
-		// });
-
-		// 		// Staff Creation
-
-				var staff_info = $('#staff_info').DataTable({
+		// Staff Creation
+			var staff_info = $('#staff_info').DataTable({
 			"order": [[ 0, "desc" ]],
 			'processing': true,
 			'serverSide': true,
@@ -407,41 +337,6 @@
 			[10, 25, 50, "All"]
 		]
 	});
-
-	//Area Creation
-	// var concession_table_info = $('#concession_table_info').DataTable({
-	// 	"order": [[ 0, "desc" ]],
-	// 	'processing': true,
-	// 	'serverSide': true,
-	// 	'serverMethod': 'post',
-	// 	//'searching': false, // Remove default Search Control
-	// 	'ajax': {
-	// 		'url':'ajaxConcessionApproval.php',
-	// 		'data': function(data){
-    //             var search = $('#search').val();
-	// 	  		data.search = search;
-	// 		}
-	// 	},
-		
-	// 	// dom: 'lBfrtip', 
-	// 	buttons: [		
-	// 		{
-	// 			extend: 'csv',
-	// 			exportOptions: {
-	// 				columns: [ 0, 1, 2 ,3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
-	// 			}
-	// 		},
-	// 		{		 
-	// 			extend:'colvis',
-	// 			collectionLayout: 'fixed four-column',
-	// 		}
-
-	// 	],	
-	// 	"lengthMenu": [
-	// 		[10, 25, 50, -1],
-	// 		[10, 25, 50, "All"]
-	// 	]
-	// });
 
 	//Conduct Certificate Fetch
 	var conduct_certificate_info = $('#conduct_certificate_info').DataTable({
@@ -909,9 +804,31 @@ if($current_page == 'edit_transfer_certificate') { ?>
 if($current_page == 'dashboard') { ?>
 <script src="js/dashboard.js"></script>
 <?php }
-?> 
 
-<script src="js/logincreation.js"></script>
+if($current_page == 'edit_birthday_wishes') { ?>
+<script src="js/edit_birthday_wishes.js"></script>
+<?php }
+
+if($current_page == 'edit_tamil_birthday_wishes') { ?>
+<script src="js/edit_tamil_birthday_wishes.js"></script>
+<?php }
+
+if($current_page == 'edit_general_message') { ?>
+<script src="js/edit_general_message.js"></script>
+<?php }
+
+if($current_page == 'edit_staff_general_message') { ?>
+<script src="js/edit_staff_general_message.js"></script>
+<?php }
+
+if($current_page == 'edit_home_work') { ?>
+<script src="js/edit_home_work.js"></script>
+<?php }
+
+if($current_page == 'index' || $current_page == '' || $current_page == 'index.php'){ ?>
+	<script src="js/logincreation.js"></script>
+<?php } ?> 
+
 <!-- Slimscroll JS -->
 <script src="vendor/slimscroll/slimscroll.min.js"></script>
 <script src="vendor/slimscroll/custom-scrollbar.js"></script>
