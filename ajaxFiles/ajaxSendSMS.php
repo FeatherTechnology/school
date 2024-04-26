@@ -1,4 +1,3 @@
-<meta charset="utf-8">
 <?php
 if(isset($_POST['content'])){
     $message = $_POST['content'];
@@ -10,8 +9,8 @@ if(isset($_POST['TemplateId'])){
     $templateid = $_POST['TemplateId'];
 }
 
-echo $message;
-die;
+// echo $message;
+// die;
 
 	// Account details
     $apiKey = '21400|AA7XvnY94a2UUJ2JjRmK0slM0J95M2GYhG9jMyLk';
