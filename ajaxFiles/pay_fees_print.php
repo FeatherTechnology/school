@@ -110,7 +110,7 @@ function AmountInWords($amount)
 <div id="printReceiptTable">
     <table class="table table-bordered table-responsive">
     <tr>
-        <td style="text-align: center;"> <img src="img/Logo.png" height="100px" width="100px" alt="Logo"> </td>
+        <td style="text-align: center;"> <img src="img/img11.jpg" height="100px" width="100px" alt="Logo"> </td>
         <td style="text-align: center;"> <?php if(isset($school_name)) echo $school_name; ?> </br>
         <?php if(isset($address1)) echo $address1,', '; if(isset($address2)) echo $address2,', '; if(isset($district)) echo $district,', </br>'; if(isset($state)) echo $state,'-'; if(isset($pincode)) echo $pincode; ?> </br>
             <span style="margin-right: 5px;">&#x260E;</span> - <?php if(isset($contact_number)) echo $contact_number; ?>  <span style="margin-right: 5px;">&#x1F4E7;</span>- <?php if(isset($email_id)) echo $email_id; ?>
