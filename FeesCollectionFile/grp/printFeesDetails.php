@@ -110,7 +110,7 @@ while ($schoolInfo=$getbrc->fetch_assoc()) {
 <table rules="all" style="width: 100%;border-style: double;border: 1px solid black;margin: auto;">
 	<tr>
 	
-		<td><img src="img/Logo.png" height="50px" width="50px" alt="testing"></td>
+		<td><img src="img/img11.jpg" height="50px" width="50px" alt="testing"></td>
 		<td style="text-align: center;"> <?php if(isset($school_name)) echo $school_name; ?> </br>
         <?php if(isset($address1)) echo $address1,', '; if(isset($address2)) echo $address2,', '; if(isset($district)) echo $district,', </br>'; if(isset($state)) echo $state,'-'; if(isset($pincode)) echo $pincode; ?> </br>
             <span style="margin-right: 5px;">&#x260E;</span> - <?php if(isset($contact_number)) echo $contact_number; ?>  <span style="margin-right: 5px;">&#x1F4E7;</span>- <?php if(isset($email_id)) echo $email_id; ?>

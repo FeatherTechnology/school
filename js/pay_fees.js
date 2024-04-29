@@ -329,8 +329,8 @@ function getAcademicYearList(){ //Getting academic_year list from database.
           $('#academic_year').empty();
           $('#academic_year').append("<option value=''>Select Academic Year</option>");
           var user_academic_year = $('#user_academic_year').val();
-          var selected = '';
           for(var i=0; i <response.length; i++){
+            var selected = '';
             if (user_academic_year  == response[i]['academicyear']) {
               selected  = 'selected';
             }

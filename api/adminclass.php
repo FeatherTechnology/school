@@ -5875,21 +5875,21 @@ public function addPurchaseOrder($mysqli){
 		}
 
 		for($a = 0; $a < count($feesMasterid); $a++){
-			if($grpFeeReceived[$a] > 0 || $grpFeeScholarship[$a] > 0){
+			// if($grpFeeReceived[$a] > 0 || $grpFeeScholarship[$a] > 0){
 				$insertFeesDetailsQry = $mysqli->query("INSERT INTO `temp_admissionfees_details`( `TempAdmFeeRefId`, `FeesMasterId`, `FeesTableName`, `FeesId`, `FeeReceived`, `BalancetobePaid`, `Scholarship`) VALUES ('$tempFeesLastInsertId','$feesMasterid[$a]','$grptablename','$grpid[$a]','$grpFeeReceived[$a]','$grpFeeBalance[$a]','$grpFeeScholarship[$a]')");
-			}
+			// }
 		}
 
 		for($b = 0; $b < count($extraFeesMasterid); $b++){
-			if($extraAmntReceived[$b] > 0 || $extraAmntScholarship[$b] > 0 ){
+			// if($extraAmntReceived[$b] > 0 || $extraAmntScholarship[$b] > 0 ){
 				$insertextraFeesDetailsQry = $mysqli->query("INSERT INTO `temp_admissionfees_details`( `TempAdmFeeRefId`, `FeesMasterId`, `FeesTableName`, `FeesId`, `FeeReceived`, `BalancetobePaid`, `Scholarship`) VALUES ('$tempFeesLastInsertId','$extraFeesMasterid[$b]','$extratablename','$extraAmntid[$b]','$extraAmntReceived[$b]','$extraAmntBalance[$b]','$extraAmntScholarship[$b]')");
-			}
+			// }
 		}
 
 		for($c = 0; $c < count($amenityFeesMasterid); $c++){
-			if($amenityAmntReceived[$c] > 0 || $amenityAmntScholarship[$c] > 0 ){
+			// if($amenityAmntReceived[$c] > 0 || $amenityAmntScholarship[$c] > 0 ){
 				$insertamenityFeesDetailsQry = $mysqli->query("INSERT INTO `temp_admissionfees_details`( `TempAdmFeeRefId`, `FeesMasterId`, `FeesTableName`, `FeesId`, `FeeReceived`, `BalancetobePaid`, `Scholarship`) VALUES ('$tempFeesLastInsertId','$amenityFeesMasterid[$c]','$amenitytablename','$amenityAmntid[$c]','$amenityAmntReceived[$c]','$amenityAmntBalance[$c]','$amenityAmntScholarship[$c]')");
-			}
+			// }
 		}
 		if($insertTempFeesQry){
 			return $tempFeesLastInsertId;
@@ -6079,21 +6079,21 @@ public function addPurchaseOrder($mysqli){
 		}
 
 		for($a = 0; $a < count($feesMasterid); $a++){
-			if($grpFeeReceived[$a] > 0 || $grpFeeScholarship[$a] > 0){
+			// if($grpFeeReceived[$a] > 0 || $grpFeeScholarship[$a] > 0){
 				$insertFeesDetailsQry = $mysqli->query("INSERT INTO `admission_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$feesMasterid[$a]','$grptablename','$grpid[$a]','$grpFeeReceived[$a]','$grpFeeBalance[$a]','$grpFeeScholarship[$a]')");
-			}
+			// }
 		}
 		
 		for($b = 0; $b < count($extraFeesMasterid); $b++){
-			if($extraAmntReceived[$b] > 0 || $extraAmntScholarship[$b] > 0){
+			// if($extraAmntReceived[$b] > 0 || $extraAmntScholarship[$b] > 0){
 				$insertextraFeesDetailsQry = $mysqli->query("INSERT INTO `admission_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$extraFeesMasterid[$b]','$extratablename','$extraAmntid[$b]','$extraAmntReceived[$b]','$extraAmntBalance[$b]','$extraAmntScholarship[$b]')");
-			}
+			// }
 		}
 		
 		for($c = 0; $c < count($amenityFeesMasterid); $c++){
-			if($amenityAmntReceived[$c] > 0 || $amenityAmntScholarship[$c] > 0){
+			// if($amenityAmntReceived[$c] > 0 || $amenityAmntScholarship[$c] > 0){
 				$insertamenityFeesDetailsQry = $mysqli->query("INSERT INTO `admission_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$amenityFeesMasterid[$c]','$amenitytablename','$amenityAmntid[$c]','$amenityAmntReceived[$c]','$amenityAmntBalance[$c]','$amenityAmntScholarship[$c]')");
-			}
+			// }
 		}
 		if($insertPayFeesQry){
 			return $FeesLastInsertId;
@@ -6284,21 +6284,21 @@ public function addPurchaseOrder($mysqli){
 		}
 
 		for($a = 0; $a < count($feesMasterid); $a++){
-			if($grpFeeReceived[$a] > 0 || $grpFeeScholarship[$a] > 0){
+			// if($grpFeeReceived[$a] > 0 || $grpFeeScholarship[$a] > 0){
 				$insertFeesDetailsQry = $mysqli->query("INSERT INTO `last_year_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$feesMasterid[$a]','$grptablename','$grpid[$a]','$grpFeeReceived[$a]','$grpFeeBalance[$a]','$grpFeeScholarship[$a]')");
-			}
+			// }
 		}
 
 		for($b = 0; $b < count($extraFeesMasterid); $b++){
-			if($extraAmntReceived[$b] > 0 || $extraAmntScholarship[$b] > 0){
+			// if($extraAmntReceived[$b] > 0 || $extraAmntScholarship[$b] > 0){
 				$insertextraFeesDetailsQry = $mysqli->query("INSERT INTO `last_year_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$extraFeesMasterid[$b]','$extratablename','$extraAmntid[$b]','$extraAmntReceived[$b]','$extraAmntBalance[$b]','$extraAmntScholarship[$b]')");
-			}
+			// }
 		}
 
 		for($c = 0; $c < count($amenityFeesMasterid); $c++){
-			if($amenityAmntReceived[$c] > 0 || $amenityAmntScholarship[$c] > 0 ){
+			// if($amenityAmntReceived[$c] > 0 || $amenityAmntScholarship[$c] > 0 ){
 				$insertamenityFeesDetailsQry = $mysqli->query("INSERT INTO `last_year_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$amenityFeesMasterid[$c]','$amenitytablename','$amenityAmntid[$c]','$amenityAmntReceived[$c]','$amenityAmntBalance[$c]','$amenityAmntScholarship[$c]')");
-			}
+			// }
 		}
 		
 		if($insertPayFeesQry){
