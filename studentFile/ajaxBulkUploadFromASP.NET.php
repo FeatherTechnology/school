@@ -817,21 +817,23 @@ if (isset($_FILES["file"]["type"])) {
 */
 
                 //Area creation /// Area creation particulars  START/////
-                $getAreaCreationQry = $connect->query("SELECT area_id FROM area_creation WHERE area_name ='$ac_areaname' AND transport_amount = '$ac_fee_amount' AND school_id ='$school_id' AND year_id ='$academic_year' ");
-                if ($getAreaCreationQry->rowCount() == '0') {
-
-                    $insertAreaCreation = $mysqli->query("INSERT INTO area_creation(area_name, no_of_terms, transport_amount, school_id, year_id, insert_login_id ) VALUES('" . $ac_areaname . "', '3', '" . $ac_fee_amount . "', '" . $school_id . "', '" . $academic_year . "', '" . $userid . "')");
-                    $area_last_id = $mysqli->insert_id;
-
-                    $acp_fee_particulars = ['Bus Fee I Term', 'Bus Fee II Term', 'Bus Fee III Term'];
-                    $acp_feeAmnnt = intval($ac_fee_amount) / 3;
-                    $acp_due_date = ['2023-08-31', '2023-11-30', '2024-01-31'];
-
-                    for ($i = 0; $i < 3; $i++) {
-                        $insertacp = $mysqli->query("INSERT INTO `area_creation_particulars`( `area_creation_id`, `particulars`, `due_amount`, `due_date`) VALUES ('$area_last_id','$acp_fee_particulars[$i]','$acp_feeAmnnt','$acp_due_date[$i]')");
+                if($ac_areaname !=''){
+                    $getAreaCreationQry = $connect->query("SELECT area_id FROM area_creation WHERE area_name ='$ac_areaname' AND transport_amount = '$ac_fee_amount' AND school_id ='$school_id' AND year_id ='$academic_year' ");
+                    if ($getAreaCreationQry->rowCount() == '0') {
+    
+                        $insertAreaCreation = $mysqli->query("INSERT INTO area_creation(area_name, no_of_terms, transport_amount, school_id, year_id, insert_login_id ) VALUES('" . $ac_areaname . "', '3', '" . $ac_fee_amount . "', '" . $school_id . "', '" . $academic_year . "', '" . $userid . "')");
+                        $area_last_id = $mysqli->insert_id;
+    
+                        $acp_fee_particulars = ['Bus Fee I Term', 'Bus Fee II Term', 'Bus Fee III Term'];
+                        $acp_feeAmnnt = intval($ac_fee_amount) / 3;
+                        $acp_due_date = ['2023-08-31', '2023-11-30', '2024-01-31'];
+    
+                        for ($i = 0; $i < 3; $i++) {
+                            $insertacp = $mysqli->query("INSERT INTO `area_creation_particulars`( `area_creation_id`, `particulars`, `due_amount`, `due_date`) VALUES ('$area_last_id','$acp_fee_particulars[$i]','$acp_feeAmnnt','$acp_due_date[$i]')");
+                        }
+                    } else {
+                        $area_last_id = $getAreaCreationQry->fetch()['area_id'];
                     }
-                } else {
-                    $area_last_id = $getAreaCreationQry->fetch()['area_id'];
                 }
                 //Area creation /// Area creation particulars  END/////
 
@@ -850,7 +852,7 @@ if (isset($_FILES["file"]["type"])) {
 
                 //Fees Master START///
 
-                $feesMasterRowCnt = $mysqli->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '" . $academic_year . "' AND medium = '" . $getMedium . "' AND student_type = '" . $getStudentType . "' AND standard = '" . $standard . "' AND school_id = '" . $school_id . "' order by fees_id desc ");
+                $feesMasterRowCnt = $mysqli->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '" . $academic_year . "' AND medium = '" . $getMedium . "' AND student_type = '" . $getStudentType . "' AND standard = '" . $standard . "' AND school_id = '" . $school_id . "' ");
 
                 if (mysqli_num_rows($feesMasterRowCnt) > 0) {
                     $fee_master_last_id = $feesMasterRowCnt->fetch_assoc()['fees_id'];
@@ -917,18 +919,20 @@ if (isset($_FILES["file"]["type"])) {
                     $receiptno = 'GPR-1';
                 }
 
-                $maxReceiptNo = max($receipt_number, $receiptno);
-                $splited = explode('-', $maxReceiptNo);
-                $numadded = $splited[1] + 1;
-                $newReceiptNo = $splited[0] . '-' . $numadded;
+                    $maxReceiptNo = max($receipt_number, $receiptno);
+                    $splited = explode('-', $maxReceiptNo);
+                    $numadded = $splited[1] + 1;
+                    $newReceiptNo = $splited[0] . '-' . $numadded;
 
-                $getAdmissioncntQry = $connect->query("SELECT `id` FROM `admission_fees` WHERE `admission_id` ='$student_last_id' AND `receipt_date` ='$af_receipt_date' AND `academic_year` ='$academic_year' AND `balance_tobe_paid` = '$af_balancetobepaid' ");
-                if ($getAdmissioncntQry->rowCount() > 0) {
-                    $FeesLastInsertId = $getAdmissioncntQry->fetch()['id'];
-                } else {
-                    $insertPayFeesQry = $mysqli->query("INSERT INTO `admission_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `other_charges`, `other_charges_received`, `scholarship`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `created_on`) VALUES ('$student_last_id','$newReceiptNo','$af_receipt_date','$academic_year','$af_other_charges','$af_othercharges_received','$af_scholarship','$af_total_feetobecollected','$af_final_amounttobecollected','$af_collected','$af_balancetobepaid','$school_id','$userid',now())");
-
-                    $FeesLastInsertId = $mysqli->insert_id;
+                if($af_receipt_date !=''){
+                    $getAdmissioncntQry = $connect->query("SELECT `id` FROM `admission_fees` WHERE `admission_id` ='$student_last_id' AND `receipt_date` ='$af_receipt_date' AND `academic_year` ='$academic_year' AND `balance_tobe_paid` = '$af_balancetobepaid' ");
+                    if ($getAdmissioncntQry->rowCount() > 0) {
+                        $FeesLastInsertId = $getAdmissioncntQry->fetch()['id'];
+                    } else {
+                        $insertPayFeesQry = $mysqli->query("INSERT INTO `admission_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `other_charges`, `other_charges_received`, `scholarship`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `created_on`) VALUES ('$student_last_id','$newReceiptNo','$af_receipt_date','$academic_year','$af_other_charges','$af_othercharges_received','$af_scholarship','$af_total_feetobecollected','$af_final_amounttobecollected','$af_collected','$af_balancetobepaid','$school_id','$userid',now())");
+    
+                        $FeesLastInsertId = $mysqli->insert_id;
+                    }
                 }
                 //Admission Fees END///
 
@@ -986,13 +990,15 @@ if (isset($_FILES["file"]["type"])) {
                 }
 
 
-                $getTransportcntQry = $connect->query("SELECT `id` FROM `transport_admission_fees` WHERE `admission_id` ='$student_last_id' AND `receipt_date` ='$taf_receipt_date' AND `academic_year` ='$academic_year' AND `balance_tobe_paid` = '$taf_balancetopaid' ");
-                if ($getTransportcntQry->rowCount() > 0) {
-                    $transportLastInsertId = $getTransportcntQry->fetch()['id'];
-                } else {
-                    $insertPayFeesQry = $mysqli->query("INSERT INTO `transport_admission_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `created_on`)VALUES ('$student_last_id','$trans_receipt_number','$taf_receipt_date','$academic_year','$taf_totalfees','$taf_finalAmnt','$taf_fees_collected','$taf_balancetopaid','$school_id','$userid',now())");
-
-                    $transportLastInsertId = $mysqli->insert_id;
+                if($taf_receipt_date !=''){
+                    $getTransportcntQry = $connect->query("SELECT `id` FROM `transport_admission_fees` WHERE `admission_id` ='$student_last_id' AND `receipt_date` ='$taf_receipt_date' AND `academic_year` ='$academic_year' AND `balance_tobe_paid` = '$taf_balancetopaid' ");
+                    if ($getTransportcntQry->rowCount() > 0) {
+                        $transportLastInsertId = $getTransportcntQry->fetch()['id'];
+                    } else {
+                        $insertPayFeesQry = $mysqli->query("INSERT INTO `transport_admission_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `created_on`)VALUES ('$student_last_id','$trans_receipt_number','$taf_receipt_date','$academic_year','$taf_totalfees','$taf_finalAmnt','$taf_fees_collected','$taf_balancetopaid','$school_id','$userid',now())");
+    
+                        $transportLastInsertId = $mysqli->insert_id;
+                    }
                 }
                 //Transport Fees END///
 
@@ -1002,10 +1008,11 @@ if (isset($_FILES["file"]["type"])) {
                 // if ($afd_fee_received > '0') {
 
                     $getAreaCreationQry = $mysqli->query("SELECT particulars_id FROM area_creation_particulars WHERE area_creation_id = '$area_last_id' AND particulars = '$tafd_particulars' ");
-                    $area_particular_id = $getAreaCreationQry->fetch_assoc()['particulars_id'];
-
-                    $insertFeesDetailsQry = $mysqli->query("
-                    INSERT INTO `transport_admission_fees_details`(`admission_fees_ref_id`, `area_creation_id`, `area_creation_particulars_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$transportLastInsertId','$area_last_id','$area_particular_id','$tafd_fees_recieved','$tafd_balancetodo','$tafd_scholarship')");
+                    if(mysqli_num_rows($getAreaCreationQry)>0){
+                        $area_particular_id = $getAreaCreationQry->fetch_assoc()['particulars_id'];
+    
+                        $insertFeesDetailsQry = $mysqli->query("INSERT INTO `transport_admission_fees_details`(`admission_fees_ref_id`, `area_creation_id`, `area_creation_particulars_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$transportLastInsertId','$area_last_id','$area_particular_id','$tafd_fees_recieved','$tafd_balancetodo','$tafd_scholarship')");
+                    }
                 // }
                 //Transport Fees Details END///
 

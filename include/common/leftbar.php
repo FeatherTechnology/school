@@ -350,9 +350,9 @@ if (sizeof($getmanageuserdetails)>0) {
 								<a href="edit_staff_general_message"><i class="icon-user-check"></i>Staff General Message</a>
 							</li>
 						<?php } if(isset($home_work) && $home_work ==0){ ?>
-							<li>
+							<!-- <li>
 								<a href="edit_home_work"><i class="icon-pencil"></i>Home Work</a>
-							</li>
+							</li> -->
 						<?php }  ?>
 						</ul>
 					</div>

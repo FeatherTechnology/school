@@ -209,12 +209,12 @@ class admin
 			}else{
 				$staff_general_message=1;
 			}
-			if(isset($_POST['home_work']) &&    $_POST['home_work'] == 'Yes')		
-			{
-				$home_work=0;
-			}else{
-				$home_work=1;
-			}
+			// if(isset($_POST['home_work']) &&    $_POST['home_work'] == 'Yes')		
+			// {
+			// 	$home_work=0;
+			// }else{
+			// 	$home_work=1;
+			// }
 			if(isset($_POST['report_module']) &&    $_POST['report_module'] == 'Yes')		
 			{
 				$report_module=0;
@@ -306,7 +306,7 @@ class admin
 				$monthwise_fees_summary=1;
 			}
 		
-			$userInsert="INSERT INTO `user`(`firstname`, `lastname`, `fullname`, `title`, `school_id`, `emailid`, `user_name`, `user_password`, `role`, `status`, `dashboard`, `administration_module`, `trust_creation`, `school_update`, `fees_master`, `holiday_creation`, `manage_users`, `master_module`, `area_master`, `syllabus_sub_module`, `allocation`, `allocation_view`, `staff_module`, `staff_creation`, `student_module`, `temp_admission_form`, `student_creation`, `student_rollback`, `delete_student`, `certificate_sub_module`, `transfer`, `collection_module`, `fees_concession`, `fees_collection`, `sms_module`, `birthday_wishes`, `tamil_birthday_wishes`, `student_general_message`, `staff_general_message`, `home_work`, `report_module`, `student_report_sub_module`, `student_caste_report`, `class_wise_list`, `register_of_admission`, `student_transport_list`, `fee_details_sub_module`, `daily_fees_collection`, `day_end_report`, `overall_scholarship_fee_details`, `pending_fee_details`, `all_type_pending_fee_details`, `classwise_overall_pending`, `fees_summary`, `monthwise_fees_summary`, `insert_login_id`) VALUES ('$first_name','$last_name','$full_name','$title','$school_name','$email_id','$user_name','$password','$user_role','0','$dashboard_module','$administration_module','$trust_creation','$school_update','$fees_master','$holiday_creation','$manage_users','$master_module','$area_master','$syllabus_sub_module','$allocation','$allocation_view','$staff_module','$staff_creation','$student_module','$temp_admission_form','$student_creation','$student_rollback','$delete_student','$certificate_sub_module','$transfer','$collection_module','$fees_concession','$fees_collection', '$sms_module', '$birthday_wishes', '$tamil_birthday_wishes', '$student_general_message', '$staff_general_message', '$home_work', '$report_module','$student_report_sub_module','$student_caste_report','$class_wise_list','$register_of_admission','$student_transport_list','$fee_details_sub_module','$daily_fees_collection','$day_end_report','$overall_scholarship_fee_details','$pending_fee_details','$all_type_pending_fee_details','$classwise_overall_pending','$fees_summary','$monthwise_fees_summary', '$userid')";
+			$userInsert="INSERT INTO `user`(`firstname`, `lastname`, `fullname`, `title`, `school_id`, `emailid`, `user_name`, `user_password`, `role`, `status`, `dashboard`, `administration_module`, `trust_creation`, `school_update`, `fees_master`, `holiday_creation`, `manage_users`, `master_module`, `area_master`, `syllabus_sub_module`, `allocation`, `allocation_view`, `staff_module`, `staff_creation`, `student_module`, `temp_admission_form`, `student_creation`, `student_rollback`, `delete_student`, `certificate_sub_module`, `transfer`, `collection_module`, `fees_concession`, `fees_collection`, `sms_module`, `birthday_wishes`, `tamil_birthday_wishes`, `student_general_message`, `staff_general_message`, `report_module`, `student_report_sub_module`, `student_caste_report`, `class_wise_list`, `register_of_admission`, `student_transport_list`, `fee_details_sub_module`, `daily_fees_collection`, `day_end_report`, `overall_scholarship_fee_details`, `pending_fee_details`, `all_type_pending_fee_details`, `classwise_overall_pending`, `fees_summary`, `monthwise_fees_summary`, `insert_login_id`) VALUES ('$first_name','$last_name','$full_name','$title','$school_name','$email_id','$user_name','$password','$user_role','0','$dashboard_module','$administration_module','$trust_creation','$school_update','$fees_master','$holiday_creation','$manage_users','$master_module','$area_master','$syllabus_sub_module','$allocation','$allocation_view','$staff_module','$staff_creation','$student_module','$temp_admission_form','$student_creation','$student_rollback','$delete_student','$certificate_sub_module','$transfer','$collection_module','$fees_concession','$fees_collection', '$sms_module', '$birthday_wishes', '$tamil_birthday_wishes', '$student_general_message', '$staff_general_message', '$report_module','$student_report_sub_module','$student_caste_report','$class_wise_list','$register_of_admission','$student_transport_list','$fee_details_sub_module','$daily_fees_collection','$day_end_report','$overall_scholarship_fee_details','$pending_fee_details','$all_type_pending_fee_details','$classwise_overall_pending','$fees_summary','$monthwise_fees_summary', '$userid')";
 			$insresult=$mysqli->query($userInsert) or die("Error ".$mysqli->error);
 			
 		}
@@ -517,12 +517,12 @@ class admin
 			}else{
 				$staff_general_message=1;
 			}
-			if(isset($_POST['home_work']) &&    $_POST['home_work'] == 'Yes')		
-			{
-				$home_work=0;
-			}else{
-				$home_work=1;
-			}
+			// if(isset($_POST['home_work']) &&    $_POST['home_work'] == 'Yes')		
+			// {
+			// 	$home_work=0;
+			// }else{
+			// 	$home_work=1;
+			// }
 			if(isset($_POST['report_module']) &&    $_POST['report_module'] == 'Yes')		
 			{
 				$report_module=0;
@@ -614,7 +614,7 @@ class admin
 				$monthwise_fees_summary=1;
 			}
 		
-			$updateUserQry = "UPDATE `user` SET `firstname`='$first_name',`lastname`='$last_name',`fullname`='$full_name',`title`='$title',`school_id`='$school_name',`emailid`='$email_id',`user_name`='$user_name',`user_password`='$password',`role`='$user_role',`status`='0',`dashboard`='$dashboard_module',`administration_module`='$administration_module',`trust_creation`='$trust_creation',`school_update`='$school_update',`fees_master`='$fees_master',`holiday_creation`='$holiday_creation',`manage_users`='$manage_users',`master_module`='$master_module',`area_master`='$area_master',`syllabus_sub_module`='$syllabus_sub_module',`allocation`='$allocation',`allocation_view`='$allocation_view',`staff_module`='$staff_module',`staff_creation`='$staff_creation',`student_module`='$student_module',`temp_admission_form`='$temp_admission_form',`student_creation`='$student_creation',`student_rollback`='$student_rollback',`delete_student`='$delete_student',`certificate_sub_module`='$certificate_sub_module',`transfer`='$transfer',`collection_module`='$collection_module',`fees_concession`='$fees_concession',`fees_collection`='$fees_collection', `sms_module`='$sms_module',`birthday_wishes`='$birthday_wishes',`tamil_birthday_wishes`='$tamil_birthday_wishes',`student_general_message`='$student_general_message',`staff_general_message`='$staff_general_message',`home_work`='$home_work',`report_module`='$report_module',`student_report_sub_module`='$student_report_sub_module',`student_caste_report`='$student_caste_report',`class_wise_list`='$class_wise_list',`register_of_admission`='$register_of_admission',`student_transport_list`='$student_transport_list',`fee_details_sub_module`='$fee_details_sub_module',`daily_fees_collection`='$daily_fees_collection',`day_end_report`='$day_end_report',`overall_scholarship_fee_details`='$overall_scholarship_fee_details',`pending_fee_details`='$pending_fee_details',`all_type_pending_fee_details`='$all_type_pending_fee_details',`classwise_overall_pending`='$classwise_overall_pending',`fees_summary`='$fees_summary',`monthwise_fees_summary`='$monthwise_fees_summary', `update_login_id`='$userid', `updated_date`=now() WHERE `user_id`='$manage_user_id'";
+			$updateUserQry = "UPDATE `user` SET `firstname`='$first_name',`lastname`='$last_name',`fullname`='$full_name',`title`='$title',`school_id`='$school_name',`emailid`='$email_id',`user_name`='$user_name',`user_password`='$password',`role`='$user_role',`status`='0',`dashboard`='$dashboard_module',`administration_module`='$administration_module',`trust_creation`='$trust_creation',`school_update`='$school_update',`fees_master`='$fees_master',`holiday_creation`='$holiday_creation',`manage_users`='$manage_users',`master_module`='$master_module',`area_master`='$area_master',`syllabus_sub_module`='$syllabus_sub_module',`allocation`='$allocation',`allocation_view`='$allocation_view',`staff_module`='$staff_module',`staff_creation`='$staff_creation',`student_module`='$student_module',`temp_admission_form`='$temp_admission_form',`student_creation`='$student_creation',`student_rollback`='$student_rollback',`delete_student`='$delete_student',`certificate_sub_module`='$certificate_sub_module',`transfer`='$transfer',`collection_module`='$collection_module',`fees_concession`='$fees_concession',`fees_collection`='$fees_collection', `sms_module`='$sms_module',`birthday_wishes`='$birthday_wishes',`tamil_birthday_wishes`='$tamil_birthday_wishes',`student_general_message`='$student_general_message',`staff_general_message`='$staff_general_message',`report_module`='$report_module',`student_report_sub_module`='$student_report_sub_module',`student_caste_report`='$student_caste_report',`class_wise_list`='$class_wise_list',`register_of_admission`='$register_of_admission',`student_transport_list`='$student_transport_list',`fee_details_sub_module`='$fee_details_sub_module',`daily_fees_collection`='$daily_fees_collection',`day_end_report`='$day_end_report',`overall_scholarship_fee_details`='$overall_scholarship_fee_details',`pending_fee_details`='$pending_fee_details',`all_type_pending_fee_details`='$all_type_pending_fee_details',`classwise_overall_pending`='$classwise_overall_pending',`fees_summary`='$fees_summary',`monthwise_fees_summary`='$monthwise_fees_summary', `update_login_id`='$userid', `updated_date`=now() WHERE `user_id`='$manage_user_id'";
 			$insresult=$mysqli->query($updateUserQry) or die("Error ".$mysqli->error);
 			
 		}
@@ -6611,24 +6611,33 @@ public function addPurchaseOrder($mysqli){
 
 
 	///// edit birthday wishes START ////////
-	public function addBirthdayWishes($mysqli, $user_id, $school_id, $academic_year){
-		if(isset($_POST['linenum'])) {
-			echo $linenum = $_POST['linenum'];
+	public function addBirthdayWishes(){ //in Tamil language
+		if(isset($_POST['student_mobile_no'])) {
+			$recipients = urlencode($_POST['student_mobile_no']);
 		}
-die;
 		if(isset($_POST['birthday_comment'])) {
-			$birthday_comments = $_POST['birthday_comment'];
+			$message = urlencode($_POST['birthday_comment']);
 		}
-		if(isset($_POST['char_count'])) {
-			$char_counts = $_POST['char_count'];
+		if(isset($_POST['birthday_templateid'])) {
+			$templateid = $_POST['birthday_templateid'];
 		}
 
-		// $mysqli->query("INSERT INTO `student_birthday_wishes`(`message`, `char_count`, `status`, `userid`, `school_id`, `academic_year`) VALUES ('$birthday_comments','$char_counts','0','$user_id','$school_id','$academic_year')");
+		// Account details
+		$apiKey = '21400|AA7XvnY94a2UUJ2JjRmK0slM0J95M2GYhG9jMyLk';
+		// Message details
+		$sender = 'VPHSSS';
+		// Prepare data for POST request
+		$data = 'access_token='.$apiKey.'&to='.$recipients.'&message='.$message.'&service=T&sender='.$sender.'&template_id='.$templateid;
+		// Send the GET request with cURL
+		$url = 'https://sms.messagewall.in/api/v2/sms/send?'.$data; 
+		$response = file_get_contents($url);  
+		// Process your response here
+		return $response; 
 	}
 	///// edit birthday wishes END ////////
 
 	///// edit General Message START ////////
-	public function addGeneralMessage($mysqli, $user_id, $school_id, $academic_year){
+	public function addGeneralMessage(){
 		if(isset($_POST['selectedStudContanctNo'])) {
 			$recipients = urlencode($_POST['selectedStudContanctNo']);
 		}
@@ -6650,13 +6659,11 @@ die;
 		$response = file_get_contents($url);  
 		// Process your response here
 		echo $response; 
-
-		// $mysqli->query("INSERT INTO `general_message`(`standard_id`, `message`, `char_count`, `status`, `userid`, `school_id`, `academic_year`) VALUES ('$selectedValues','$general_comments','$char_count','0','$user_id','$school_id','$academic_year')");
 	}
 	///// edit General Message END ////////
 
 	///// edit staff General Message START ////////
-	public function addStaffGeneralMessage($mysqli, $user_id, $school_id, $academic_year){
+	public function addStaffGeneralMessage(){
 		if(isset($_POST['selectedContanctNo'])) {
 			$recipients = urlencode($_POST['selectedContanctNo']);
 		}
@@ -6678,8 +6685,6 @@ die;
 		$response = file_get_contents($url);  
 		// Process your response here
 		echo $response; 
-
-		// $mysqli->query("INSERT INTO `staff_general_message`(`staff_designation`, `message`, `char_count`, `status`, `userid`, `school_id`, `academic_year`) VALUES ('$selectedValues','$general_comments','$char_count','0','$user_id','$school_id','$academic_year')");
 	}
 	///// edit staff General Message END ////////
 

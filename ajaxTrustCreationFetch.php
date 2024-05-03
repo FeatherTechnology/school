@@ -21,8 +21,8 @@ $column = array(
     'tan_number', 
     'status'
 );
-
-$query = "SELECT * FROM trust_creation WHERE school_id='$school_id'";
+//WHERE school_id='$school_id'
+$query = "SELECT * FROM trust_creation WHERE 1";
 
 if($_POST['search']!="");
 {

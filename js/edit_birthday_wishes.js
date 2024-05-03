@@ -1,32 +1,56 @@
 $(document).ready(function(){
-
-    // $('#birthday_comment').keyup(function() {
-    //     $('#char_count').val(this.value.length)
-    // });
-
     $("#birthday_details").on('click', '#smsTostudent', function () {
         let currentRow = $(this).closest('tr');
         let studentName = currentRow.find('td:eq(0)' ).text();
         let studentNo = currentRow.find('td:eq(2)' ).text();
-        let  birthDayComment = 'Dear '+ studentName +', Happy Birthday! Wishing you a day filled with joy, laughter, and wonderful memories. May this year bring you success, happiness, and all that your heart desires. -VPHSS';
-        let TemplateId	= '1707171402041076933'; //FROM DLT PORTAL.
-        $.ajax({
-            type: 'POST',
-            data: {'content': birthDayComment, 'studentNo': studentNo, 'TemplateId': TemplateId},
-            url: 'ajaxFiles/ajaxSendSMS.php',
-            success: function (response) { 
+        let  birthDayComment = "Dear student "+ studentName +", today is a special day for you. wish you a 'Happy Birthday' by Vidhya Parthi Higher Secondary School, Dindigul.-VPHSS";
+        let TemplateId	= '1707171446357407764'; //FROM DLT PORTAL. VPHSS BW
+        
+        $('#birthday_comment').text(birthDayComment);
+        $('#birthday_templateid').val(TemplateId);
+        $('#student_mobile_no').val(studentNo);
 
-                if(response.status == 200){
-                    alert('Message sent Successfully. '+ response.message)
-                }else{
-                    alert("Message Failed!");
-                }
+        var length1 = birthDayComment.length;
+        $("#char_count").val(length1);
 
-            }, error: function (xhr, status, error) {
-                console.log(error);
-            }    
-        })
+        if (length1 == 0) {
+            $("#sms_count").text("Number of SMS : 0");
+        }
+        else if (length1 > 0 && length1 <= 160) {
+            $("#sms_count").text("Number of SMS : 1");
+        }
+        else if (length1 > 160 && length1 <= 300) {
+            $("#sms_count").text("Number of SMS : 2");
+        }
+        else {
+            $("#sms_count").text("Number of SMS : 3 or More");
+        }
     });
+
+    // $("#birthday_details").on('click', '#smsTostudent', function () {
+    //     let currentRow = $(this).closest('tr');
+    //     let studentName = currentRow.find('td:eq(0)' ).text();
+    //     let studentNo = currentRow.find('td:eq(2)' ).text();
+    //     let  birthDayComment = "Dear student "+ studentName +", today is a special day for you. wish you a 'Happy Birthday' by Vidhya Parthi Higher Secondary School, Dindigul.-VPHSS";
+    //     let TemplateId	= '1707171446357407764'; //FROM DLT PORTAL. VPHSS BW
+    //     $.ajax({
+    //         type: 'POST',
+    //         data: {'content': birthDayComment, 'studentNo': studentNo, 'TemplateId': TemplateId},
+    //         url: 'ajaxFiles/ajaxSendSMS.php',
+    //         // dataType: 'json',
+    //         success: function (response) { 
+
+    //             if(response.status == 200){
+    //                 alert('Message sent Successfully. '+ response.message);
+    //             }else{
+    //                 alert("Message Failed!");
+    //             }
+
+    //         }, error: function (xhr, status, error) {
+    //             console.log(error);
+    //         }    
+    //     })
+    // });
 
 });
 

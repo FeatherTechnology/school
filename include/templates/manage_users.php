@@ -449,12 +449,12 @@ if($del>0)
                     </div>
                 </div>
 
-                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
+                <!-- <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" value="Yes" <?php if(isset($home_work) && $home_work==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input sms-checkbox" id="home_work" name="home_work" disabled>
                         <label class="custom-control-label" for="home_work">Home Work</label>
                     </div>
-                </div>
+                </div> -->
             </div>
             <!-- SMS module end -->
             <hr>
