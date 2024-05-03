@@ -1,15 +1,16 @@
 <?php
-@session_start();
-if(isset($_SESSION["userid"])){
-    $userid = $_SESSION["userid"];
-    $school_id =$_SESSION["school_id"];
-    $log_year    = $_SESSION["academic_year"];
-}
-
 if(isset($_POST['submit_tamilbirthday_wishes']) && $_POST['submit_tamilbirthday_wishes'] !=''){
-    $userObj -> addBirthdayWishes($mysqli, $userid, $school_id, $log_year);
+    $get_response = $userObj -> addBirthdayWishes();
+    $responseData = json_decode($get_response, true); // Decode the JSON response
+    if ($responseData && isset($responseData['status']) && $responseData['status'] == 200) {
+        // SMS sent successfully
+        $response_sts = 1;
+    } else {
+        // Error occurred or SMS not sent
+        $response_sts = 0;
+    }
 ?>
-    <script>location.href='<?php echo $HOSTPATH; ?>edit_tamil_birthday_wishes&msc=1';</script>
+    <script>location.href='<?php echo $HOSTPATH; ?>edit_tamil_birthday_wishes&msc=<?php echo $response_sts; ?>';</script>
 <?php } ?>
 
 <script src="pramukhime/js/pramukhime.js"></script>
@@ -23,7 +24,7 @@ if(isset($_POST['submit_tamilbirthday_wishes']) && $_POST['submit_tamilbirthday_
 <!-- Main container start -->
 <div class="main-container">
 <!--form start-->
-<!-- <form name="birthdayWishes" method="post" enctype="multipart/form-data"> 
+<form name="birthdayWishes" method="post" enctype="multipart/form-data"> 
     <div class="row gutters">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
@@ -32,7 +33,9 @@ if(isset($_POST['submit_tamilbirthday_wishes']) && $_POST['submit_tamilbirthday_
                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label>Comments</label>
-                                <textarea class="form-control" name="birthday_comment" id="birthday_comment"></textarea>
+                                <textarea class="form-control" name="birthday_comment" id="birthday_comment" readonly></textarea>
+                                <input type="hidden" name="birthday_templateid" id="birthday_templateid">
+                                <input type="hidden" name="student_mobile_no" id="student_mobile_no">
                                 <script language="javascript" type="text/javascript">
                                     pramukhIME.setLanguage("tamil", "pramukhindic"); 
                                     pramukhIME.enable();
@@ -46,18 +49,24 @@ if(isset($_POST['submit_tamilbirthday_wishes']) && $_POST['submit_tamilbirthday_
                                 <input type="number" class="form-control" name="char_count" id="char_count" readonly>
                             </div>
                         </div>
+
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label id="sms_count" style="margin-top: 25px; color: red;"></label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                             
                 <div class="col-md-12">
                     <div class="text-right">
-                        <button type="submit"  tabindex="29"  id="submit_tamilbirthday_wishes" name="submit_tamilbirthday_wishes" value="Send SMS" class="btn btn-primary">Send SMS</button><br/><br/>
+                        <button type="submit" id="submit_tamilbirthday_wishes" name="submit_tamilbirthday_wishes" value="Send SMS" class="btn btn-primary">Send SMS</button><br/><br/>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</form> -->
+</form>
 
 <!-- Birthday List -->
 	<!-- Row start -->

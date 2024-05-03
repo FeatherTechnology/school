@@ -11,8 +11,9 @@ if(isset($_SESSION["userid"])){
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item">Trust List</li>
 	</ol>
-	<?php
-$query = "SELECT * FROM trust_creation WHERE school_id=$school_id AND status = 0";
+<?php
+//school_id=$school_id AND
+$query = "SELECT * FROM trust_creation WHERE status = 0";
 $statement = $mysqli->prepare($query);
 
 $statement->execute();

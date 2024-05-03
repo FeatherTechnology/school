@@ -33,6 +33,7 @@ $(document).ready(function(){
             $.ajax({
                 type: 'POST',
                 data: {'content': generalContent, 'studentNo': No, 'TemplateId': TemplateId},
+                dataType: 'json',
                 url: 'ajaxFiles/ajaxSendSMS.php',
                 success: function (response) { 
                     if(response.status == "200"){

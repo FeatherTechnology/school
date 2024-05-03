@@ -169,6 +169,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: 'POST',
+      // url: 'studentFile/ajaxBulkUploadFromASPstudentCreation.php',
       url: 'studentFile/ajaxBulkUploadFromASP.NET.php',
       data: withstudent_bulk,
       dataType: 'json',

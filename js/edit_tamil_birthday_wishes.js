@@ -1,9 +1,32 @@
 $(document).ready(function(){
+    $("#tamil_birthday_details").on('click', '#smsTostudent', function () {
+        let currentRow = $(this).closest('tr');
+        let studentName = currentRow.find('td:eq(0)' ).text();
+        let studentNo = currentRow.find('td:eq(2)' ).text();
+        let  birthDayComment = "அன்புள்ள "+ studentName +", இன்று உங்களுக்கு இனிய நாளாக அமைய வாழ்த்துகள், வித்யா பார்த்தி மேல்நிலைப்பள்ளி சார்பாக இனிய பிறந்தநாள் வாழ்த்துக்கள் . -VPHSS"; 
+        let TemplateId	= '1707171445738535179'; //FROM DLT PORTAL. From VPHSS TBW
 
-    // $('#birthday_comment').keyup(function() {
-    //     $('#char_count').val(this.value.length)
-    // });
+        $('#birthday_comment').text(birthDayComment);
+        $('#birthday_templateid').val(TemplateId);
+        $('#student_mobile_no').val(studentNo);
 
+        var length1 = birthDayComment.length;
+        $("#char_count").val(length1);
+
+        if (length1 == 0) {
+            $("#sms_count").text("Number of SMS : 0");
+        }
+        else if (length1 > 0 && length1 <= 160) {
+            $("#sms_count").text("Number of SMS : 1");
+        }
+        else if (length1 > 160 && length1 <= 300) {
+            $("#sms_count").text("Number of SMS : 2");
+        }
+        else {
+            $("#sms_count").text("Number of SMS : 3 or More");
+        }
+    });
+    
     // $("#tamil_birthday_details").on('click', '#smsTostudent', function () {
     //     let currentRow = $(this).closest('tr');
     //     let studentName = currentRow.find('td:eq(0)' ).text();
@@ -26,29 +49,6 @@ $(document).ready(function(){
     //         }    
     //     })
     // });
-
-//     $("#tamil_birthday_details").on('click', '#smsTostudent', function () {
-//         event.preventDefault();
-// console.log('aasassa')
-//         $.ajax({
-//             url: 'include/templates/edit_tamil_birthday_wishes.php',
-//             type: 'POST',
-//             data: {
-//                 submit_tamilbirthday_wishes: 'submit_tamilbirthday_wishes', // Pass the function name as data
-//             },
-//             success: function(response) {
-//                 // Handle the response from the server
-//                 console.log('PHP function called successfully.');
-//                 // You can perform any additional actions here after the PHP function is executed
-//             },
-//             error: function(xhr, status, error) {
-//                 // Handle errors
-//                 console.error('Error calling PHP function.');
-//             }
-//         });
-//     });
-    
-
 });
 
 $(function(){

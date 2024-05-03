@@ -4,6 +4,7 @@ include('ajaxconfig.php');
 
 if(isset($_SESSION["userid"])){
     $userid = $_SESSION["userid"];
+    $school_id= $_SESSION["school_id"];
 }
 
 $column = array(
@@ -18,7 +19,7 @@ $column = array(
     'status'
 );
 
-$query = "SELECT sc.school_id,sc.school_name,sc.school_login_name,sc.district,sc.address1,sc.address2,sc.address3,st.state,sc.contact_number,sc.email_id,sc.web_url,sc.status  FROM school_creation sc LEFT JOIN state_creation st ON st.id = sc.state WHERE 1";
+$query = "SELECT sc.school_id,sc.school_name,sc.school_login_name,sc.district,sc.address1,sc.address2,sc.address3,st.state,sc.contact_number,sc.email_id,sc.web_url,sc.status  FROM school_creation sc LEFT JOIN state_creation st ON st.id = sc.state WHERE school_id='$school_id' ";
 
 if($_POST['search']!="");
 {
@@ -36,14 +37,14 @@ if($_POST['search']!="");
         else{	
             $query .= "
             
-            OR sc.school_name LIKE  '%".$_POST['search']."%'
+            AND( sc.school_name LIKE  '%".$_POST['search']."%'
             OR sc.school_login_name LIKE '%".$_POST['search']."%'
             OR sc.contact_number LIKE '%".$_POST['search']."%'
             OR sc.address1 LIKE '%".$_POST['search']."%'
             OR sc.district LIKE '%".$_POST['search']."%'
             OR st.state LIKE '%".$_POST['search']."%'
             OR sc.email_id LIKE '%".$_POST['search']."%'
-            OR sc.status LIKE '%".$_POST['search']."%' ";
+            OR sc.status LIKE '%".$_POST['search']."%') ";
         }
     }
 }

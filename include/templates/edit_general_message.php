@@ -1,15 +1,16 @@
 <?php
-@session_start();
-if(isset($_SESSION["userid"])){
-    $userid = $_SESSION["userid"];
-    $school_id =$_SESSION["school_id"];
-    $log_year    = $_SESSION["academic_year"];
-}
-
 if(isset($_POST['submit_general_message']) && $_POST['submit_general_message'] !=''){
-    $userObj -> addGeneralMessage($mysqli, $userid, $school_id, $log_year);
+    $get_response = $userObj -> addGeneralMessage();
+    $responseData = json_decode($get_response, true); // Decode the JSON response
+    if ($responseData && isset($responseData['status']) && $responseData['status'] == 200) {
+        // SMS sent successfully
+        $response_sts = 1;
+    } else {
+        // Error occurred or SMS not sent
+        $response_sts = 0;
+    }
 ?>
-    <script>location.href='<?php echo $HOSTPATH; ?>edit_general_message&msc=1';</script>
+    <script>location.href='<?php echo $HOSTPATH; ?>edit_general_message&msc=<?php echo $response_sts; ?>';</script>
 <?php } ?>
 
 <!-- Page header start -->
