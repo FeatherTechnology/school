@@ -129,17 +129,17 @@ $overallLastYearFees = intval($overallLastYearGrpAmount + $overallLastYearExtraC
 
 
 //Fee Details /// Amount Paid///  Group / extra cur/ amenity / transport/
-$CheckReceiptQry = $connect->query("SELECT id FROM `admission_fees` WHERE admission_id = '$student_id' && academic_year = '$academic_year' order by id desc limit 1");
+// $CheckReceiptQry = $connect->query("SELECT id FROM `admission_fees` WHERE admission_id = '$student_id' && academic_year = '$academic_year' order by id desc limit 1");
 $overallpaid_grp_amount = 0;
 $overallpaid_extra_cur_amount = 0;
 $overallpaid_amenity_amount = 0;
-if($CheckReceiptQry->rowCount() > 0){
-    $get_fees_id = $CheckReceiptQry->fetch()['id'];
+// if($CheckReceiptQry->rowCount() > 0){
+//     $get_fees_id = $CheckReceiptQry->fetch()['id'];
     $grpfeeDetailsQry = $connect->query("SELECT (SUM(gcf.grp_amount) - SUM(afd.balance_tobe_paid))  as paid_grp_amount 
     FROM `admission_fees` af 
     JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
     JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id 
-    WHERE af.id = '$get_fees_id' && afd.fees_table_name = 'grptable' ");
+    WHERE af.admission_id = '$student_id' && af.academic_year = '$academic_year' && afd.fees_table_name = 'grptable' ");
     if($grpfeeDetailsQry->rowCount() > 0){
         $overallpaid_grp_amount = $grpfeeDetailsQry->fetch()['paid_grp_amount'];
     }else{
@@ -152,7 +152,7 @@ if($CheckReceiptQry->rowCount() > 0){
     FROM `admission_fees` af 
     JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
     JOIN extra_curricular_activities_fee ecaf ON afd.fees_id = ecaf.extra_fee_id 
-    WHERE af.id = '$get_fees_id' && afd.fees_table_name = 'extratable' ");
+    WHERE af.admission_id = '$student_id' && af.academic_year = '$academic_year' && afd.fees_table_name = 'extratable' ");
     if($extraFeeDetailsQry->rowCount() > 0){
         $overallpaid_extra_cur_amount = $extraFeeDetailsQry->fetch()['paid_extra_cur_amount'];
     }else{
@@ -165,7 +165,7 @@ if($CheckReceiptQry->rowCount() > 0){
     FROM `admission_fees` afs 
     JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id 
     JOIN amenity_fee af ON afd.fees_id = af.amenity_fee_id 
-    WHERE afs.id = '$get_fees_id' && afd.fees_table_name = 'amenitytable' ");
+    WHERE afs.admission_id = '$student_id' && afs.academic_year = '$academic_year' && afd.fees_table_name = 'amenitytable' ");
     if($amenityFeeDetailsQry->rowCount() > 0){
         $overallpaid_amenity_amount = $amenityFeeDetailsQry->fetch()['paid_amenity_amount'];
     }else{
@@ -175,8 +175,8 @@ if($CheckReceiptQry->rowCount() > 0){
     $amenityFeeDetailsQry->closeCursor(); 
 
     //Close DB connection
-    $CheckReceiptQry->closeCursor(); 
-}//admission fee if END
+//     $CheckReceiptQry->closeCursor(); 
+// }//admission fee if END
 
 $CheckTransportReceiptQry = $connect->query("SELECT id FROM `transport_admission_fees` WHERE admission_id = '$student_id' && academic_year = '$academic_year' order by id desc limit 1");
 $overallpaid_transport_amount = '0';
@@ -330,11 +330,17 @@ $CheckLastyrConcessionReceiptQry->closeCursor();
 // $studentFeesCollectionDetails = array("student_name"=>$student_name, "admission_number"=>$admission_number, "studentrollno"=>$studentrollno, "medium"=>$medium, "studentstype"=>$studentstype, "standard_name"=>$standard_name, "section"=>$section, "academic_year"=>$academic_year, "school_id"=>$school_id, "transportFacility"=>$transportFacility, "overallGrpAmount"=>$overallGrpAmount, "overallExtraCurAmount"=>$overallExtraCurAmount, "overallAmenityAmount"=> $overallAmenityAmount, "overallTransportAmount"=> $overallTransportAmount, "overallLastYearFees"=>$overallLastYearFees, "overallpaid_grp_amount"=>$overallpaid_grp_amount,  "overallpaid_extra_cur_amount"=>$overallpaid_extra_cur_amount, "overallpaid_amenity_amount"=>$overallpaid_amenity_amount, "overallpaid_transport_amount"=>$overallpaid_transport_amount,"lastyr_overallpaid_amount"=>$lastyr_overallpaid_amount, "overall_grp_concession_amount"=>$overall_grp_concession_amount,"overall_extra_cur_concession_amount"=>$overall_extra_cur_concession_amount, "overall_amenity_concession_amount"=>$overall_amenity_concession_amount,"overall_transport_concession_amount"=>$overall_transport_concession_amount, "overall_lastyr_concession_amount"=>$overall_lastyr_concession_amount
 // );
 
-$netPaySchoolFees = (($overallGrpAmount) - ($overallpaid_grp_amount + $overall_grp_concession_amount));
-$netPayExtraCurFees = (($overallExtraCurAmount) - ($overallpaid_extra_cur_amount + $overall_extra_cur_concession_amount));
-$netPayAmenityFees = (($overallAmenityAmount) - ($overallpaid_amenity_amount + $overall_amenity_concession_amount));
-$netPayTransportFees = (($overallTransportAmount) - ($overallpaid_transport_amount + $overall_transport_concession_amount));
-$netPayLastYearFees = (($overallLastYearFees) - ($lastyr_overallpaid_amount + $overall_lastyr_concession_amount));
+// $netPaySchoolFees = (($overallGrpAmount) - ($overallpaid_grp_amount + $overall_grp_concession_amount));
+// $netPayExtraCurFees = (($overallExtraCurAmount) - ($overallpaid_extra_cur_amount + $overall_extra_cur_concession_amount));
+// $netPayAmenityFees = (($overallAmenityAmount) - ($overallpaid_amenity_amount + $overall_amenity_concession_amount));
+// $netPayTransportFees = (($overallTransportAmount) - ($overallpaid_transport_amount + $overall_transport_concession_amount));
+// $netPayLastYearFees = (($overallLastYearFees) - ($lastyr_overallpaid_amount + $overall_lastyr_concession_amount));
+
+$netPaySchoolFees = (($overallGrpAmount) - ($overallpaid_grp_amount));
+$netPayExtraCurFees = (($overallExtraCurAmount) - ($overallpaid_extra_cur_amount));
+$netPayAmenityFees = (($overallAmenityAmount) - ($overallpaid_amenity_amount));
+$netPayTransportFees = (($overallTransportAmount) - ($overallpaid_transport_amount));
+$netPayLastYearFees = (($overallLastYearFees) - ($lastyr_overallpaid_amount));
 
 $studentFeesCollectionDetails =array();
 $studentFeesCollectionDetails["student_name"] = ($student_name) ? $student_name : '-';

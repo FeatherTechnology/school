@@ -234,35 +234,35 @@ if($del>0)
             <div class="row">
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($trust_creation) && $trust_creation==0){ echo'checked'; } ?> tabindex="13" class="custom-control-input admin-checkbox" id="trust_creation" name="trust_creation" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($trust_creation) && $trust_creation==0){ echo'checked'; } ?> tabindex="13" class="custom-control-input admin-checkbox" id="trust_creation" name="trust_creation" >
                         <label class="custom-control-label" for="trust_creation">Trust Creation</label>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($school_update) && $school_update==0){ echo'checked'; } ?> tabindex="14" class="custom-control-input admin-checkbox" id="school_update" name="school_update" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($school_update) && $school_update==0){ echo'checked'; } ?> tabindex="14" class="custom-control-input admin-checkbox" id="school_update" name="school_update" >
                         <label class="custom-control-label" for="school_update">School Update</label>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($fees_master) && $fees_master==0){ echo'checked'; } ?> tabindex="15" class="custom-control-input admin-checkbox" id="fees_master" name="fees_master" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($fees_master) && $fees_master==0){ echo'checked'; } ?> tabindex="15" class="custom-control-input admin-checkbox" id="fees_master" name="fees_master" >
                         <label class="custom-control-label" for="fees_master">Fees Master</label>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($holiday_creation) && $holiday_creation==0){ echo'checked'; } ?> tabindex="16" class="custom-control-input admin-checkbox" id="holiday_creation" name="holiday_creation" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($holiday_creation) && $holiday_creation==0){ echo'checked'; } ?> tabindex="16" class="custom-control-input admin-checkbox" id="holiday_creation" name="holiday_creation" >
                         <label class="custom-control-label" for="holiday_creation">Holiday Info</label>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($manage_users) && $manage_users==0){ echo'checked'; } ?> tabindex="17" class="custom-control-input admin-checkbox" id="manage_users" name="manage_users" disabled >
+                        <input type="checkbox" value="Yes" <?php if(isset($manage_users) && $manage_users==0){ echo'checked'; } ?> tabindex="17" class="custom-control-input admin-checkbox" id="manage_users" name="manage_users"  >
                         <label class="custom-control-label" for="manage_users">Manage Users</label>
                     </div>
                 </div>
@@ -282,24 +282,24 @@ if($del>0)
 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($area_master) && $area_master==0){ echo'checked'; } ?>  tabindex="19" class="custom-control-input master-checkbox" id="area_master" name="area_master" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($area_master) && $area_master==0){ echo'checked'; } ?>  tabindex="19" class="custom-control-input master-checkbox" id="area_master" name="area_master" >
                         <label class="custom-control-label" for="area_master">Area Master</label>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($syllabus_sub_module) && $syllabus_sub_module==0){ echo'checked'; } ?> tabindex="20" class="custom-control-input master-syllabus-checkbox" id="syllabus_sub_module" name="syllabus_sub_module" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($syllabus_sub_module) && $syllabus_sub_module==0){ echo'checked'; } ?> tabindex="20" class="custom-control-input master-syllabus-checkbox" id="syllabus_sub_module" name="syllabus_sub_module" >
                         <label class="custom-control-label" for="syllabus_sub_module"><h6>Syllabus<h6></label>
                     </div> <br>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($allocation) && $allocation==0){ echo'checked'; } ?> tabindex="21" class="custom-control-input syllabus-sub-checkbox" id="allocation" name="allocation" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($allocation) && $allocation==0){ echo'checked'; } ?> tabindex="21" class="custom-control-input syllabus-sub-checkbox" id="allocation" name="allocation" >
                         <label class="custom-control-label" for="allocation">Allocation</label>
                     </div>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($allocation_view) && $allocation_view==0){ echo'checked'; } ?> tabindex="22" class="custom-control-input syllabus-sub-checkbox" id="allocation_view" name="allocation_view" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($allocation_view) && $allocation_view==0){ echo'checked'; } ?> tabindex="22" class="custom-control-input syllabus-sub-checkbox" id="allocation_view" name="allocation_view" >
                         <label class="custom-control-label" for="allocation_view">Allocation View</label>
                     </div>
                 </div>
@@ -320,7 +320,7 @@ if($del>0)
             <div class="row">
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($staff_creation) && $staff_creation==0){ echo'checked'; } ?> tabindex="24" class="custom-control-input staff-checkbox" id="staff_creation" name="staff_creation" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($staff_creation) && $staff_creation==0){ echo'checked'; } ?> tabindex="24" class="custom-control-input staff-checkbox" id="staff_creation" name="staff_creation" >
                         <label class="custom-control-label" for="staff_creation">Staff Creation</label>
                     </div>
                 </div>
@@ -341,28 +341,28 @@ if($del>0)
 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($temp_admission_form) && $temp_admission_form==0){ echo'checked'; } ?> tabindex="26" class="custom-control-input student-sub-checkbox" id="temp_admission_form" name="temp_admission_form" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($temp_admission_form) && $temp_admission_form==0){ echo'checked'; } ?> tabindex="26" class="custom-control-input student-sub-checkbox" id="temp_admission_form" name="temp_admission_form" >
                         <label class="custom-control-label" for="temp_admission_form">Temp.Admission Form</label>
                     </div>
                 </div>
                 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($student_creation) && $student_creation==0){ echo'checked'; } ?> tabindex="27" class="custom-control-input student-sub-checkbox" id="student_creation" name="student_creation" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($student_creation) && $student_creation==0){ echo'checked'; } ?> tabindex="27" class="custom-control-input student-sub-checkbox" id="student_creation" name="student_creation" >
                         <label class="custom-control-label" for="student_creation">Student Creation</label>
                     </div>
                 </div>
                 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($student_rollback) && $student_rollback==0){ echo'checked'; } ?> tabindex="28" class="custom-control-input student-sub-checkbox" id="student_rollback" name="student_rollback" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($student_rollback) && $student_rollback==0){ echo'checked'; } ?> tabindex="28" class="custom-control-input student-sub-checkbox" id="student_rollback" name="student_rollback" >
                         <label class="custom-control-label" for="student_rollback">Student Roll Back</label>
                     </div>
                 </div>
                 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($delete_student) && $delete_student==0){ echo'checked'; } ?> tabindex="29" class="custom-control-input student-sub-checkbox" id="delete_student" name="delete_student" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($delete_student) && $delete_student==0){ echo'checked'; } ?> tabindex="29" class="custom-control-input student-sub-checkbox" id="delete_student" name="delete_student" >
                         <label class="custom-control-label" for="delete_student">Delete Student</label>
                     </div>
                 </div> 
@@ -371,12 +371,12 @@ if($del>0)
             <div class="row">
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($certificate_sub_module) && $certificate_sub_module==0){ echo'checked'; } ?> tabindex="30" class="custom-control-input student-certificate-checkbox" id="certificate_sub_module" name="certificate_sub_module" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($certificate_sub_module) && $certificate_sub_module==0){ echo'checked'; } ?> tabindex="30" class="custom-control-input student-certificate-checkbox" id="certificate_sub_module" name="certificate_sub_module" >
                         <label class="custom-control-label" for="certificate_sub_module"><h6>Certificates<h6></label>
                     </div> <br>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($transfer) && $transfer==0){ echo'checked'; } ?> tabindex="31" class="custom-control-input certificate-sub-checkbox" id="transfer" name="transfer" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($transfer) && $transfer==0){ echo'checked'; } ?> tabindex="31" class="custom-control-input certificate-sub-checkbox" id="transfer" name="transfer" >
                         <label class="custom-control-label" for="transfer">Transfer</label>
                     </div>
                 </div>
@@ -396,14 +396,14 @@ if($del>0)
             <div class="row">
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($fees_concession) && $fees_concession==0){ echo'checked'; } ?> tabindex="34" class="custom-control-input collection-checkbox" id="fees_concession" name="fees_concession" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($fees_concession) && $fees_concession==0){ echo'checked'; } ?> tabindex="34" class="custom-control-input collection-checkbox" id="fees_concession" name="fees_concession" >
                         <label class="custom-control-label" for="fees_concession">Fees Concession</label>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($fees_collection) && $fees_collection==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input collection-checkbox" id="fees_collection" name="fees_collection" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($fees_collection) && $fees_collection==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input collection-checkbox" id="fees_collection" name="fees_collection" >
                         <label class="custom-control-label" for="fees_collection">Fees Collection</label>
                     </div>
                 </div>
@@ -423,35 +423,35 @@ if($del>0)
             <div class="row">
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($birthday_wishes) && $birthday_wishes==0){ echo'checked'; } ?> tabindex="34" class="custom-control-input sms-checkbox" id="birthday_wishes" name="birthday_wishes" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($birthday_wishes) && $birthday_wishes==0){ echo'checked'; } ?> tabindex="34" class="custom-control-input sms-checkbox" id="birthday_wishes" name="birthday_wishes" >
                         <label class="custom-control-label" for="birthday_wishes">Birthday Wishes</label>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($tamil_birthday_wishes) && $tamil_birthday_wishes==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input sms-checkbox" id="tamil_birthday_wishes" name="tamil_birthday_wishes" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($tamil_birthday_wishes) && $tamil_birthday_wishes==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input sms-checkbox" id="tamil_birthday_wishes" name="tamil_birthday_wishes" >
                         <label class="custom-control-label" for="tamil_birthday_wishes">Tamil Birthday Wishes</label>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($student_general_message) && $student_general_message==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input sms-checkbox" id="student_general_message" name="student_general_message" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($student_general_message) && $student_general_message==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input sms-checkbox" id="student_general_message" name="student_general_message" >
                         <label class="custom-control-label" for="student_general_message">Student General Message</label>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($staff_general_message) && $staff_general_message==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input sms-checkbox" id="staff_general_message" name="staff_general_message" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($staff_general_message) && $staff_general_message==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input sms-checkbox" id="staff_general_message" name="staff_general_message" >
                         <label class="custom-control-label" for="staff_general_message">Staff General Message</label>
                     </div>
                 </div>
 
                 <!-- <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($home_work) && $home_work==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input sms-checkbox" id="home_work" name="home_work" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($home_work) && $home_work==0){ echo'checked'; } ?> tabindex="35" class="custom-control-input sms-checkbox" id="home_work" name="home_work" >
                         <label class="custom-control-label" for="home_work">Home Work</label>
                     </div>
                 </div> -->
@@ -471,74 +471,74 @@ if($del>0)
             <div class="row">
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($student_report_sub_module) && $student_report_sub_module==0){ echo'checked'; } ?> tabindex="37" class="custom-control-input report-sub-checkbox" id="student_report_sub_module" name="student_report_sub_module" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($student_report_sub_module) && $student_report_sub_module==0){ echo'checked'; } ?> tabindex="37" class="custom-control-input report-sub-checkbox" id="student_report_sub_module" name="student_report_sub_module" >
                         <label class="custom-control-label" for="student_report_sub_module"><h6>Student Report<h6></label>
                     </div> <br>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($student_caste_report) && $student_caste_report==0){ echo'checked'; } ?> tabindex="38" class="custom-control-input studentreport-sub-checkbox" id="student_caste_report" name="student_caste_report" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($student_caste_report) && $student_caste_report==0){ echo'checked'; } ?> tabindex="38" class="custom-control-input studentreport-sub-checkbox" id="student_caste_report" name="student_caste_report" >
                         <label class="custom-control-label" for="student_caste_report">Student Caste List</label>
                     </div>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($class_wise_list) && $class_wise_list==0){ echo'checked'; } ?> tabindex="39" class="custom-control-input studentreport-sub-checkbox" id="class_wise_list" name="class_wise_list" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($class_wise_list) && $class_wise_list==0){ echo'checked'; } ?> tabindex="39" class="custom-control-input studentreport-sub-checkbox" id="class_wise_list" name="class_wise_list" >
                         <label class="custom-control-label" for="class_wise_list">Class wise List</label>
                     </div>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($register_of_admission) && $register_of_admission==0){ echo'checked'; } ?> tabindex="40" class="custom-control-input studentreport-sub-checkbox" id="register_of_admission" name="register_of_admission" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($register_of_admission) && $register_of_admission==0){ echo'checked'; } ?> tabindex="40" class="custom-control-input studentreport-sub-checkbox" id="register_of_admission" name="register_of_admission" >
                         <label class="custom-control-label" for="register_of_admission">Register of Admission</label>
                     </div>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($student_transport_list) && $student_transport_list==0){ echo'checked'; } ?> tabindex="41" class="custom-control-input studentreport-sub-checkbox" id="student_transport_list" name="student_transport_list" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($student_transport_list) && $student_transport_list==0){ echo'checked'; } ?> tabindex="41" class="custom-control-input studentreport-sub-checkbox" id="student_transport_list" name="student_transport_list" >
                         <label class="custom-control-label" for="student_transport_list">Student Transport List</label>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($fee_details_sub_module) && $fee_details_sub_module==0){ echo'checked'; } ?> tabindex="42" class="custom-control-input report-sub-checkbox" id="fee_details_sub_module" name="fee_details_sub_module" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($fee_details_sub_module) && $fee_details_sub_module==0){ echo'checked'; } ?> tabindex="42" class="custom-control-input report-sub-checkbox" id="fee_details_sub_module" name="fee_details_sub_module" >
                         <label class="custom-control-label" for="fee_details_sub_module"><h6>Fees Details<h6></label>
                     </div> <br>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($daily_fees_collection) && $daily_fees_collection==0){ echo'checked'; } ?> tabindex="43" class="custom-control-input feedetailsreport-sub-checkbox" id="daily_fees_collection" name="daily_fees_collection" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($daily_fees_collection) && $daily_fees_collection==0){ echo'checked'; } ?> tabindex="43" class="custom-control-input feedetailsreport-sub-checkbox" id="daily_fees_collection" name="daily_fees_collection" >
                         <label class="custom-control-label" for="daily_fees_collection">Daily Fees Collection</label>
                     </div>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($day_end_report) && $day_end_report==0){ echo'checked'; } ?> tabindex="44" class="custom-control-input feedetailsreport-sub-checkbox" id="day_end_report" name="day_end_report" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($day_end_report) && $day_end_report==0){ echo'checked'; } ?> tabindex="44" class="custom-control-input feedetailsreport-sub-checkbox" id="day_end_report" name="day_end_report" >
                         <label class="custom-control-label" for="day_end_report">Day End Report</label>
                     </div>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($overall_scholarship_fee_details) && $overall_scholarship_fee_details==0){ echo'checked'; } ?> tabindex="45" class="custom-control-input feedetailsreport-sub-checkbox" id="overall_scholarship_fee_details" name="overall_scholarship_fee_details" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($overall_scholarship_fee_details) && $overall_scholarship_fee_details==0){ echo'checked'; } ?> tabindex="45" class="custom-control-input feedetailsreport-sub-checkbox" id="overall_scholarship_fee_details" name="overall_scholarship_fee_details" >
                         <label class="custom-control-label" for="overall_scholarship_fee_details">Overall Scholarship Fee Details</label>
                     </div>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($pending_fee_details) && $pending_fee_details==0){ echo'checked'; } ?> tabindex="46" class="custom-control-input feedetailsreport-sub-checkbox" id="pending_fee_details" name="pending_fee_details" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($pending_fee_details) && $pending_fee_details==0){ echo'checked'; } ?> tabindex="46" class="custom-control-input feedetailsreport-sub-checkbox" id="pending_fee_details" name="pending_fee_details" >
                         <label class="custom-control-label" for="pending_fee_details">Pending Fee Details</label>
                     </div>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($all_type_pending_fee_details) && $all_type_pending_fee_details==0){ echo'checked'; } ?> tabindex="47" class="custom-control-input feedetailsreport-sub-checkbox" id="all_type_pending_fee_details" name="all_type_pending_fee_details" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($all_type_pending_fee_details) && $all_type_pending_fee_details==0){ echo'checked'; } ?> tabindex="47" class="custom-control-input feedetailsreport-sub-checkbox" id="all_type_pending_fee_details" name="all_type_pending_fee_details" >
                         <label class="custom-control-label" for="all_type_pending_fee_details">All Type Pending Fee Details</label>
                     </div>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($classwise_overall_pending) && $classwise_overall_pending==0){ echo'checked'; } ?> tabindex="48" class="custom-control-input feedetailsreport-sub-checkbox" id="classwise_overall_pending" name="classwise_overall_pending" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($classwise_overall_pending) && $classwise_overall_pending==0){ echo'checked'; } ?> tabindex="48" class="custom-control-input feedetailsreport-sub-checkbox" id="classwise_overall_pending" name="classwise_overall_pending" >
                         <label class="custom-control-label" for="classwise_overall_pending">ClassWise Overall Pending</label>
                     </div>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($fees_summary) && $fees_summary==0){ echo'checked'; } ?> tabindex="49" class="custom-control-input feedetailsreport-sub-checkbox" id="fees_summary" name="fees_summary" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($fees_summary) && $fees_summary==0){ echo'checked'; } ?> tabindex="49" class="custom-control-input feedetailsreport-sub-checkbox" id="fees_summary" name="fees_summary" >
                         <label class="custom-control-label" for="fees_summary">Fees Summary</label>
                     </div>
 
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" value="Yes" <?php if(isset($monthwise_fees_summary) && $monthwise_fees_summary==0){ echo'checked'; } ?> tabindex="50" class="custom-control-input feedetailsreport-sub-checkbox" id="monthwise_fees_summary" name="monthwise_fees_summary" disabled>
+                        <input type="checkbox" value="Yes" <?php if(isset($monthwise_fees_summary) && $monthwise_fees_summary==0){ echo'checked'; } ?> tabindex="50" class="custom-control-input feedetailsreport-sub-checkbox" id="monthwise_fees_summary" name="monthwise_fees_summary" >
                         <label class="custom-control-label" for="monthwise_fees_summary">Month-wise Fees Summary</label>
                     </div>
 
