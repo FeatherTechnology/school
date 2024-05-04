@@ -163,32 +163,59 @@ if (isset($_FILES["file"]["type"])) {
                 $standard = "";
                 if (isset($Row[24])) {
                     $get_standard = mysqli_real_escape_string($mysqli, $Row[24]);
-
+                    //for hss
                     $standards = [
-                        "2" => "1",  // Pre.K.G
-                        "3" => "2",  // L.K.G
-                        "4" => "3",  // U.K.G
-                        "5" => "4",  // I
-                        "6" => "5",  // II
-                        "7" => "6",  // III
-                        "8" => "7",  // IV
-                        "9" => "8",  // V
-                        "10" => "9", // VI
-                        "11" => "10", // VII
-                        "12" => "11", // VIII
-                        "13" => "12", // IX
-                        "14" => "13", // X
-                        "15" => "14", // XI_maths_biology
-                        "16" => "15", // XI_maths_computerscience
-                        "17" => "16", // XI_biology_computerscience
-                        "18" => "19", // XII_maths_biology
-                        "19" => "20", // XII_maths_computerscience
-                        "20" => "21", // XII_biology_computerscience
-                        "21" => "18", // XI_All
-                        "22" => "23", // XII_All
-                        "23" => "17", // XI_commerce_computerscience
-                        "24" => "22", // XII_commerce_computerscience
+                        "1" => "1",  // Pre.K.G
+                        "2" => "2",  // L.K.G
+                        "3" => "3",  // U.K.G
+                        "4" => "4",  // I
+                        "5" => "5",  // II
+                        "6" => "6",  // III
+                        "7" => "7",  // IV
+                        "8" => "8",  // V
+                        "9" => "9", // VI
+                        "10" => "10", // VII
+                        "11" => "11", // VIII
+                        "12" => "12", // IX
+                        "13" => "13", // X
+                        "14" => "14", // XI_maths_biology
+                        "15" => "15", // XI_maths_computerscience
+                        "16" => "16", // XI_biology_computerscience
+                        "17" => "19", // XII_maths_biology
+                        "18" => "20", // XII_maths_computerscience
+                        "19" => "21", // XII_biology_computerscience
+                        "20" => "18", // XI_All
+                        "21" => "23", // XII_All
+                        "22" => "17", // XI_commerce_computerscience
+                        "23" => "22", // XII_commerce_computerscience
                     ];
+                
+                    //For CBSE
+                    // $standards = [
+                    //     "2" => "1",  // Pre.K.G
+                    //     "3" => "2",  // L.K.G
+                    //     "4" => "3",  // U.K.G
+                    //     "5" => "4",  // I
+                    //     "6" => "5",  // II
+                    //     "7" => "6",  // III
+                    //     "8" => "7",  // IV
+                    //     "9" => "8",  // V
+                    //     "10" => "9", // VI
+                    //     "11" => "10", // VII
+                    //     "12" => "11", // VIII
+                    //     "13" => "12", // IX
+                    //     "14" => "13", // X
+                    //     "15" => "14", // XI_maths_biology
+                    //     "16" => "15", // XI_maths_computerscience
+                    //     "17" => "16", // XI_biology_computerscience
+                    //     "18" => "19", // XII_maths_biology
+                    //     "19" => "20", // XII_maths_computerscience
+                    //     "20" => "21", // XII_biology_computerscience
+                    //     "21" => "18", // XI_All
+                    //     "22" => "23", // XII_All
+                    //     "23" => "17", // XI_commerce_computerscience
+                    //     "24" => "22", // XII_commerce_computerscience
+                    // ];
 
                     $standard = isset($standards[$get_standard]) ? $standards[$get_standard] : "";
                 }
@@ -609,7 +636,8 @@ if (isset($_FILES["file"]["type"])) {
 
                 $afds_cheque_date = "";
                 if (isset($Row[101])) {
-                    $afds_cheque_date = mysqli_real_escape_string($mysqli, $Row[101]);
+                    $afdschequedate = mysqli_real_escape_string($mysqli, $Row[101]);
+                    $afds_cheque_date = date('Y-m-d', strtotime($afdschequedate));
                 }
 
                 $afds_cheque_amnt = "";
@@ -629,7 +657,8 @@ if (isset($_FILES["file"]["type"])) {
 
                 $afds_neft_tran_date = "";
                 if (isset($Row[105])) {
-                    $afds_neft_tran_date = mysqli_real_escape_string($mysqli, $Row[105]);
+                    $afdsnefttrandate = mysqli_real_escape_string($mysqli, $Row[105]);
+                    $afds_neft_tran_date = date('Y-m-d', strtotime($afdsnefttrandate));
                 }
 
                 $afds_amnt = "";
@@ -675,7 +704,8 @@ if (isset($_FILES["file"]["type"])) {
 
                 $taf_receipt_date = "";
                 if (isset($Row[114])) {
-                    $taf_receipt_date = mysqli_real_escape_string($mysqli, $Row[114]);
+                    $tafreceiptdate = mysqli_real_escape_string($mysqli, $Row[114]);
+                    $taf_receipt_date = date('Y-m-d', strtotime($tafreceiptdate));
                 }
 
                 $taf_totalfees = "";
@@ -770,7 +800,8 @@ if (isset($_FILES["file"]["type"])) {
 
                 $tafds_checquedate = "";
                 if (isset($Row[133])) {
-                    $tafds_checquedate = mysqli_real_escape_string($mysqli, $Row[133]);
+                    $tafdschecquedate = mysqli_real_escape_string($mysqli, $Row[133]);
+                    $tafds_checquedate = date('Y-m-d', strtotime($tafdschecquedate));
                 }
 
                 $tafds_checqueamnt = "";
@@ -790,7 +821,8 @@ if (isset($_FILES["file"]["type"])) {
 
                 $tafds_nefttransdate = "";
                 if (isset($Row[137])) {
-                    $tafds_nefttransdate = mysqli_real_escape_string($mysqli, $Row[137]);
+                    $tafdsnefttransdate = mysqli_real_escape_string($mysqli, $Row[137]);
+                    $tafds_nefttransdate = date('Y-m-d', strtotime($tafdsnefttransdate));
                 }
 
                 $tafds_neftamnt = "";
@@ -817,16 +849,16 @@ if (isset($_FILES["file"]["type"])) {
 */
 
                 //Area creation /// Area creation particulars  START/////
-                if($ac_areaname !=''){
+                if($ac_areaname !='' && $ac_areaname != 'NULL'){
                     $getAreaCreationQry = $connect->query("SELECT area_id FROM area_creation WHERE area_name ='$ac_areaname' AND transport_amount = '$ac_fee_amount' AND school_id ='$school_id' AND year_id ='$academic_year' ");
                     if ($getAreaCreationQry->rowCount() == '0') {
     
                         $insertAreaCreation = $mysqli->query("INSERT INTO area_creation(area_name, no_of_terms, transport_amount, school_id, year_id, insert_login_id ) VALUES('" . $ac_areaname . "', '3', '" . $ac_fee_amount . "', '" . $school_id . "', '" . $academic_year . "', '" . $userid . "')");
                         $area_last_id = $mysqli->insert_id;
     
-                        $acp_fee_particulars = ['Bus Fee I Term', 'Bus Fee II Term', 'Bus Fee III Term'];
+                        $acp_fee_particulars = ['Bus Fees I Term', 'Bus Fees II Term', 'Bus Fees III Term'];
                         $acp_feeAmnnt = intval($ac_fee_amount) / 3;
-                        $acp_due_date = ['2023-08-31', '2023-11-30', '2024-01-31'];
+                        $acp_due_date = ['2024-06-01', '2024-09-01', '2024-12-01'];
     
                         for ($i = 0; $i < 3; $i++) {
                             $insertacp = $mysqli->query("INSERT INTO `area_creation_particulars`( `area_creation_id`, `particulars`, `due_amount`, `due_date`) VALUES ('$area_last_id','$acp_fee_particulars[$i]','$acp_feeAmnnt','$acp_due_date[$i]')");
@@ -834,6 +866,8 @@ if (isset($_FILES["file"]["type"])) {
                     } else {
                         $area_last_id = $getAreaCreationQry->fetch()['area_id'];
                     }
+                }else{
+                    $area_last_id = '';
                 }
                 //Area creation /// Area creation particulars  END/////
 
@@ -860,9 +894,9 @@ if (isset($_FILES["file"]["type"])) {
                 } else {
                     if ($fm_fee_type == 'Group') {
                         $statusname = 'grp_status';
-                    } else if ($fm_fee_type == 'Amenity') {
-                        $statusname = 'extra_status';
                     } else if ($fm_fee_type == 'Extra') {
+                        $statusname = 'extra_status';
+                    } else if ($fm_fee_type == 'Amenity') {
                         $statusname = 'amenity_status';
                     }
 
@@ -879,7 +913,7 @@ if (isset($_FILES["file"]["type"])) {
                         $insertGrpFees = $mysqli->query("INSERT INTO `group_course_fee`(`fee_master_id`, `grp_particulars`, `grp_amount`, `grp_date`) VALUES ('" . $fee_master_last_id . "','" . $fm_fee_particulars . "','" . $fm_fee_amount . "','" . $fm_due_date . "' )");
                         $feetype_last_id = mysqli_insert_id($mysqli);
                     }
-                } else if ($fm_fee_type == 'Amenity') { //Because in ASP.NET they inserted all amenity in extra so here interchanging the record. 
+                } else if ($fm_fee_type == 'Extra') { //Because in ASP.NET they inserted all amenity in extra so here interchanging the record. 
                     $getExtraCntQry = $connect->query("SELECT `extra_fee_id` FROM `extra_curricular_activities_fee` WHERE `fee_master_id` ='$fee_master_last_id' AND `extra_particulars` ='$fm_fee_particulars' ORDER BY `extra_fee_id` DESC ");
                     if ($getExtraCntQry->rowCount() > 0) {
                         $feetype_last_id = $getExtraCntQry->fetch()['extra_fee_id'];
@@ -888,7 +922,7 @@ if (isset($_FILES["file"]["type"])) {
                         $insertExtraFees = $mysqli->query("INSERT INTO `extra_curricular_activities_fee`( `fee_master_id`, `extra_particulars`, `extra_amount`, `extra_date`, `type`) VALUES ('" . $fee_master_last_id . "','" . $fm_fee_particulars . "','" . $fm_fee_amount . "','" . $fm_due_date . "', 'standardwise' )");
                         $feetype_last_id = mysqli_insert_id($mysqli);
                     }
-                } else if ($fm_fee_type == 'Extra') {
+                } else if ($fm_fee_type == 'Amenity') {
                     $getAmenityCntQry = $connect->query("SELECT `amenity_fee_id` FROM `amenity_fee` WHERE `fee_master_id` ='$fee_master_last_id' AND `amenity_particulars` ='$fm_fee_particulars' ORDER BY amenity_fee_id DESC ");
                     if ($getAmenityCntQry->rowCount() > 0) {
                         $feetype_last_id = $getAmenityCntQry->fetch()['amenity_fee_id'];
@@ -925,7 +959,7 @@ if (isset($_FILES["file"]["type"])) {
                     $newReceiptNo = $splited[0] . '-' . $numadded;
 
                 if($af_receipt_date !=''){
-                    $getAdmissioncntQry = $connect->query("SELECT `id` FROM `admission_fees` WHERE `admission_id` ='$student_last_id' AND `receipt_date` ='$af_receipt_date' AND `academic_year` ='$academic_year' AND `balance_tobe_paid` = '$af_balancetobepaid' ");
+                    $getAdmissioncntQry = $connect->query("SELECT `id` FROM `admission_fees` WHERE `admission_id` ='$student_last_id' AND `receipt_date` ='$af_receipt_date' AND `academic_year` ='$academic_year' AND `final_amount_tobe_collect` = '$af_final_amounttobecollected' AND `balance_tobe_paid` = '$af_balancetobepaid' ");
                     if ($getAdmissioncntQry->rowCount() > 0) {
                         $FeesLastInsertId = $getAdmissioncntQry->fetch()['id'];
                     } else {
@@ -945,23 +979,27 @@ if (isset($_FILES["file"]["type"])) {
                         $tablename = 'grptable';
                         $connect->query("UPDATE `group_course_fee` SET `grp_id_used`='1' WHERE `grp_course_id`='$feetype_last_id'");
 
-                    } else if ($fm_fee_type == 'Amenity') {
+                    } else if ($fm_fee_type == 'Extra') {
                         $tablename = 'extratable';
                         $connect->query("UPDATE `extra_curricular_activities_fee` SET `extra_id_used`='1' WHERE `extra_fee_id` ='$feetype_last_id'");
 
-                    } else if ($fm_fee_type == 'Extra') {
+                    } else if ($fm_fee_type == 'Amenity') {
                         $tablename = 'amenitytable';
                         $connect->query("UPDATE `amenity_fee` SET `amenity_id_used`='1' WHERE `amenity_fee_id` ='$feetype_last_id'");
 
                     }
 
-                    $insertFeesDetailsQry = $mysqli->query("INSERT INTO `admission_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$fee_master_last_id', '$tablename' ,'$feetype_last_id','$afd_fee_received','$afd_balancetobepaid','$afd_scholarship')");
+                    $getAdmissionDetailscntQry = $connect->query("SELECT `id` FROM `admission_fees_details` WHERE `admission_fees_ref_id` ='$FeesLastInsertId' AND `fees_id` ='$feetype_last_id' AND `balance_tobe_paid` = '$afd_balancetobepaid' ");
+                    if ($getAdmissionDetailscntQry->rowCount() <= 0) {
+                        $insertFeesDetailsQry = $mysqli->query("INSERT INTO `admission_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$fee_master_last_id', '$tablename' ,'$feetype_last_id','$afd_fee_received','$afd_balancetobepaid','$afd_scholarship')");
+                    }
+
                 // }
                 //Admission Fees Details END///
 
                 //Admission Fees Denomination START///
-                // $getAdmissionDenominationcntQry = $connect->query("SELECT * FROM `admission_fees_denomination` WHERE `admission_fees_ref_id` ='$FeesLastInsertId' ");
-                if ($afd_fee_received > '0') {
+                $getAdmissionDenominationcntQry = $connect->query("SELECT * FROM `admission_fees_denomination` WHERE `admission_fees_ref_id` ='$FeesLastInsertId' ");
+                if ($getAdmissionDenominationcntQry->rowCount() <= 0 ) {
                     if ($afds_payment_mode == 'Cash Payment') {
                         $twothousondCnt = (intval($afds_no_thousand) * 2000) / 500;
                         $get_fivehundred_count = $twothousondCnt + intval($afds_no_fivehundred);
@@ -990,7 +1028,7 @@ if (isset($_FILES["file"]["type"])) {
                 }
 
 
-                if($taf_receipt_date !=''){
+                if($ac_areaname !='' && $ac_areaname != 'NULL'){
                     $getTransportcntQry = $connect->query("SELECT `id` FROM `transport_admission_fees` WHERE `admission_id` ='$student_last_id' AND `receipt_date` ='$taf_receipt_date' AND `academic_year` ='$academic_year' AND `balance_tobe_paid` = '$taf_balancetopaid' ");
                     if ($getTransportcntQry->rowCount() > 0) {
                         $transportLastInsertId = $getTransportcntQry->fetch()['id'];
@@ -999,25 +1037,24 @@ if (isset($_FILES["file"]["type"])) {
     
                         $transportLastInsertId = $mysqli->insert_id;
                     }
-                }
+                
                 //Transport Fees END///
 
 
                 //Transport Fees Details START///
-                // $getAdmissionDetailscntQry = $connect->query("SELECT * FROM `transport_admission_fees_details` WHERE `admission_fees_ref_id` ='$transportLastInsertId' ");
-                // if ($afd_fee_received > '0') {
-
-                    $getAreaCreationQry = $mysqli->query("SELECT particulars_id FROM area_creation_particulars WHERE area_creation_id = '$area_last_id' AND particulars = '$tafd_particulars' ");
-                    if(mysqli_num_rows($getAreaCreationQry)>0){
-                        $area_particular_id = $getAreaCreationQry->fetch_assoc()['particulars_id'];
-    
+                $getAreaCreationQry = $mysqli->query("SELECT particulars_id FROM area_creation_particulars WHERE area_creation_id = '$area_last_id' AND particulars = '$tafd_particulars' ");
+                if(mysqli_num_rows($getAreaCreationQry)>0){
+                    $area_particular_id = $getAreaCreationQry->fetch_assoc()['particulars_id'];
+                }
+                $getTransportAdmissionDetailscntQry = $connect->query("SELECT * FROM `transport_admission_fees_details` WHERE `admission_fees_ref_id` ='$transportLastInsertId' AND area_creation_particulars_id ='$area_particular_id' AND balance_tobe_paid ='$tafd_balancetodo' ");
+                if ($getTransportAdmissionDetailscntQry->rowCount() <= 0 ) {
                         $insertFeesDetailsQry = $mysqli->query("INSERT INTO `transport_admission_fees_details`(`admission_fees_ref_id`, `area_creation_id`, `area_creation_particulars_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$transportLastInsertId','$area_last_id','$area_particular_id','$tafd_fees_recieved','$tafd_balancetodo','$tafd_scholarship')");
                     }
-                // }
                 //Transport Fees Details END///
 
                 //Transport Fees Denomination START///
-                if ($tafd_fees_recieved > '0') {
+                $getTransportAdmissionDenominationcntQry = $connect->query("SELECT * FROM `transport_admission_fees_denomination` WHERE `admission_fees_ref_id` ='$transportLastInsertId' ");
+                if ($getTransportAdmissionDenominationcntQry->rowCount() <= 0 ) {
                     if ($tafds_payment == 'Cash Payment') {
                         $two_thousond_Cnt = (intval($tafds_nothousond) * 2000) / 500;
                         $get_five_hundred_count = $two_thousond_Cnt + intval($tafds_nofivehundred);
@@ -1031,6 +1068,7 @@ if (isset($_FILES["file"]["type"])) {
                         INSERT INTO `transport_admission_fees_denomination`(`admission_fees_ref_id`, `payment_mode`, `ledger_ref_id`, `neft_ref_number`, `neft_tran_date`, `neft_amount`, `neft_bank_name`, `insert_login_id`, `update_login_id`, `created_on`, `updated_on`) VALUES ('$transportLastInsertId', '$tafds_payment', '$academic_year', '$tafds_neftrefno','$tafds_nefttransdate', '$tafds_neftamnt', '$tafds_neftbank', '$userid', now())");
                     }
                 }
+            }//taf_receipt_date END 
                 //Transport Fees Denomination END///
 
             } //foreach

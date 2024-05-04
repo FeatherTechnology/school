@@ -149,14 +149,14 @@ if($idupd>0)
                                     </div>
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="contact_number">Phone Number</label>
+                                            <label for="contact_number">Phone Number</label><span class="required">*</span>
                                             <input type="number" tabindex="8" id="contact_number" name="contact_number" class="form-control"  value="<?php if(isset($contact_number)) echo $contact_number; ?>" placeholder="Enter Contact Number" >
                                             <span id="phone_numcheck" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="email_id">E-Mail Id</label>
+                                            <label for="email_id">E-Mail Id</label><span class="required">*</span>
                                             <input class="form-control" tabindex="9" id="email_id" name="email_id" type="email" value="<?php if(isset($email_id)) echo $email_id; ?>" placeholder="Enter Email Id" required>
                                             <!-- <span class="text-danger" id="email_idcheck">Enter Valid E-mail Id</span> -->
                                         </div>
