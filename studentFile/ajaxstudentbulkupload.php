@@ -275,7 +275,7 @@ if(in_array($_FILES["file"]["type"],$allowedFileType)){
                     }else if($student_type =='Vijayadashami'){
                         $getStudentType = '3';
 
-                    }else if($student_type =='All'){
+                    }else if($student_type =='All[New&Old]'){
                         $getStudentType = '4';
 
                     }
