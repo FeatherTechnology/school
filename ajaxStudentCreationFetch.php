@@ -36,11 +36,11 @@ if($_POST['search']!="");
 
         else{	
             $query .= "
-            AND student_name LIKE  '%".$_POST['search']."%'
-            AND stdc.standard LIKE '%".$_POST['search']."%'
-            AND gender LIKE '%".$_POST['search']."%'
-            AND flat_no LIKE '%".$_POST['search']."%'
-            AND stdc.status LIKE '%".$_POST['search']."%' ";
+            AND (student_name LIKE  '%".$_POST['search']."%'
+            OR stdc.standard LIKE '%".$_POST['search']."%'
+            OR gender LIKE '%".$_POST['search']."%'
+            OR flat_no LIKE '%".$_POST['search']."%'
+            OR stdc.status LIKE '%".$_POST['search']."%') ";
         }
     }
 }
