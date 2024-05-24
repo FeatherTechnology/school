@@ -165,58 +165,58 @@ if (isset($_FILES["file"]["type"])) {
                 //     $get_standard = mysqli_real_escape_string($mysqli, $Row[24]);
 
                 //     //for hss
-                //     $standards = [
-                //         "1" => "1",  // Pre.K.G
-                //         "2" => "2",  // L.K.G
-                //         "3" => "3",  // U.K.G
-                //         "4" => "4",  // I
-                //         "5" => "5",  // II
-                //         "6" => "6",  // III
-                //         "7" => "7",  // IV
-                //         "8" => "8",  // V
-                //         "9" => "9", // VI
-                //         "10" => "10", // VII
-                //         "11" => "11", // VIII
-                //         "12" => "12", // IX
-                //         "13" => "13", // X
-                //         "14" => "14", // XI_maths_biology
-                //         "15" => "15", // XI_maths_computerscience
-                //         "16" => "16", // XI_biology_computerscience
-                //         "17" => "19", // XII_maths_biology
-                //         "18" => "20", // XII_maths_computerscience
-                //         "19" => "21", // XII_biology_computerscience
-                //         "20" => "18", // XI_All
-                //         "21" => "23", // XII_All
-                //         "22" => "17", // XI_commerce_computerscience
-                //         "23" => "22", // XII_commerce_computerscience
-                //     ];
+                //     // $standards = [
+                //     //     "1" => "1",  // Pre.K.G
+                //     //     "2" => "2",  // L.K.G
+                //     //     "3" => "3",  // U.K.G
+                //     //     "4" => "4",  // I
+                //     //     "5" => "5",  // II
+                //     //     "6" => "6",  // III
+                //     //     "7" => "7",  // IV
+                //     //     "8" => "8",  // V
+                //     //     "9" => "9", // VI
+                //     //     "10" => "10", // VII
+                //     //     "11" => "11", // VIII
+                //     //     "12" => "12", // IX
+                //     //     "13" => "13", // X
+                //     //     "14" => "14", // XI_maths_biology
+                //     //     "15" => "15", // XI_maths_computerscience
+                //     //     "16" => "16", // XI_biology_computerscience
+                //     //     "17" => "19", // XII_maths_biology
+                //     //     "18" => "20", // XII_maths_computerscience
+                //     //     "19" => "21", // XII_biology_computerscience
+                //     //     "20" => "18", // XI_All
+                //     //     "21" => "23", // XII_All
+                //     //     "22" => "17", // XI_commerce_computerscience
+                //     //     "23" => "22", // XII_commerce_computerscience
+                //     // ];
                 
                 //     //For CBSE
-                //     // $standards = [
-                //     //     "2" => "1",  // Pre.K.G
-                //     //     "3" => "2",  // L.K.G
-                //     //     "4" => "3",  // U.K.G
-                //     //     "5" => "4",  // I
-                //     //     "6" => "5",  // II
-                //     //     "7" => "6",  // III
-                //     //     "8" => "7",  // IV
-                //     //     "9" => "8",  // V
-                //     //     "10" => "9", // VI
-                //     //     "11" => "10", // VII
-                //     //     "12" => "11", // VIII
-                //     //     "13" => "12", // IX
-                //     //     "14" => "13", // X
-                //     //     "15" => "14", // XI_maths_biology
-                //     //     "16" => "15", // XI_maths_computerscience
-                //     //     "17" => "16", // XI_biology_computerscience
-                //     //     "18" => "19", // XII_maths_biology
-                //     //     "19" => "20", // XII_maths_computerscience
-                //     //     "20" => "21", // XII_biology_computerscience
-                //     //     "21" => "18", // XI_All
-                //     //     "22" => "23", // XII_All
-                //     //     "23" => "17", // XI_commerce_computerscience
-                //     //     "24" => "22", // XII_commerce_computerscience
-                //     // ];
+                //     $standards = [
+                //         "2" => "1",  // Pre.K.G
+                //         "3" => "2",  // L.K.G
+                //         "4" => "3",  // U.K.G
+                //         "5" => "4",  // I
+                //         "6" => "5",  // II
+                //         "7" => "6",  // III
+                //         "8" => "7",  // IV
+                //         "9" => "8",  // V
+                //         "10" => "9", // VI
+                //         "11" => "10", // VII
+                //         "12" => "11", // VIII
+                //         "13" => "12", // IX
+                //         "14" => "13", // X
+                //         "15" => "14", // XI_maths_biology
+                //         "16" => "15", // XI_maths_computerscience
+                //         "17" => "16", // XI_biology_computerscience
+                //         "18" => "19", // XII_maths_biology
+                //         "19" => "20", // XII_maths_computerscience
+                //         "20" => "21", // XII_biology_computerscience
+                //         "21" => "18", // XI_All
+                //         "22" => "23", // XII_All
+                //         "23" => "17", // XI_commerce_computerscience
+                //         "24" => "22", // XII_commerce_computerscience
+                //     ];
 
                 //     $standard = isset($standards[$get_standard]) ? $standards[$get_standard] : "";
                 // }
@@ -483,59 +483,59 @@ if (isset($_FILES["file"]["type"])) {
                 if (isset($Row[0])) {
                     $fm_std_id = mysqli_real_escape_string($mysqli, $Row[0]);
 
-                    //for hss
-                    $standards = [
-                        "1" => "1",  // Pre.K.G
-                        "2" => "2",  // L.K.G
-                        "3" => "3",  // U.K.G
-                        "4" => "4",  // I
-                        "5" => "5",  // II
-                        "6" => "6",  // III
-                        "7" => "7",  // IV
-                        "8" => "8",  // V
-                        "9" => "9", // VI
-                        "10" => "10", // VII
-                        "11" => "11", // VIII
-                        "12" => "12", // IX
-                        "13" => "13", // X
-                        "14" => "14", // XI_maths_biology
-                        "15" => "15", // XI_maths_computerscience
-                        "16" => "16", // XI_biology_computerscience
-                        "17" => "19", // XII_maths_biology
-                        "18" => "20", // XII_maths_computerscience
-                        "19" => "21", // XII_biology_computerscience
-                        "20" => "18", // XI_All
-                        "21" => "23", // XII_All
-                        "22" => "17", // XI_commerce_computerscience
-                        "23" => "22", // XII_commerce_computerscience
-                    ];
+                //     //for hss
+                //     $standards = [
+                //         "1" => "1",  // Pre.K.G
+                //         "2" => "2",  // L.K.G
+                //         "3" => "3",  // U.K.G
+                //         "4" => "4",  // I
+                //         "5" => "5",  // II
+                //         "6" => "6",  // III
+                //         "7" => "7",  // IV
+                //         "8" => "8",  // V
+                //         "9" => "9", // VI
+                //         "10" => "10", // VII
+                //         "11" => "11", // VIII
+                //         "12" => "12", // IX
+                //         "13" => "13", // X
+                //         "14" => "14", // XI_maths_biology
+                //         "15" => "15", // XI_maths_computerscience
+                //         "16" => "16", // XI_biology_computerscience
+                //         "17" => "19", // XII_maths_biology
+                //         "18" => "20", // XII_maths_computerscience
+                //         "19" => "21", // XII_biology_computerscience
+                //         "20" => "18", // XI_All
+                //         "21" => "23", // XII_All
+                //         "22" => "17", // XI_commerce_computerscience
+                //         "23" => "22", // XII_commerce_computerscience
+                //     ];
                 
                     //For CBSE
-                    // $standards = [
-                    //     "2" => "1",  // Pre.K.G
-                    //     "3" => "2",  // L.K.G
-                    //     "4" => "3",  // U.K.G
-                    //     "5" => "4",  // I
-                    //     "6" => "5",  // II
-                    //     "7" => "6",  // III
-                    //     "8" => "7",  // IV
-                    //     "9" => "8",  // V
-                    //     "10" => "9", // VI
-                    //     "11" => "10", // VII
-                    //     "12" => "11", // VIII
-                    //     "13" => "12", // IX
-                    //     "14" => "13", // X
-                    //     "15" => "14", // XI_maths_biology
-                    //     "16" => "15", // XI_maths_computerscience
-                    //     "17" => "16", // XI_biology_computerscience
-                    //     "18" => "19", // XII_maths_biology
-                    //     "19" => "20", // XII_maths_computerscience
-                    //     "20" => "21", // XII_biology_computerscience
-                    //     "21" => "18", // XI_All
-                    //     "22" => "23", // XII_All
-                    //     "23" => "17", // XI_commerce_computerscience
-                    //     "24" => "22", // XII_commerce_computerscience
-                    // ];
+                    $standards = [
+                        "2" => "1",  // Pre.K.G
+                        "3" => "2",  // L.K.G
+                        "4" => "3",  // U.K.G
+                        "5" => "4",  // I
+                        "6" => "5",  // II
+                        "7" => "6",  // III
+                        "8" => "7",  // IV
+                        "9" => "8",  // V
+                        "10" => "9", // VI
+                        "11" => "10", // VII
+                        "12" => "11", // VIII
+                        "13" => "12", // IX
+                        "14" => "13", // X
+                        "15" => "14", // XI_maths_biology
+                        "16" => "15", // XI_maths_computerscience
+                        "17" => "16", // XI_biology_computerscience
+                        "18" => "19", // XII_maths_biology
+                        "19" => "20", // XII_maths_computerscience
+                        "20" => "21", // XII_biology_computerscience
+                        "21" => "18", // XI_All
+                        "22" => "23", // XII_All
+                        "23" => "17", // XI_commerce_computerscience
+                        "24" => "22", // XII_commerce_computerscience
+                    ];
 
                     $standard = isset($standards[$fm_std_id]) ? $standards[$fm_std_id] : "";
                 }
@@ -953,20 +953,20 @@ if (isset($_FILES["file"]["type"])) {
                     $fee_master_last_id = $feesMasterRowCnt->fetch_assoc()['fees_id'];
 
                 } else {
-                    if ($fm_fee_type == 'Group') {
-                        $statusname = 'grp_status';
-                    } else if ($fm_fee_type == 'Extra') {
-                        $statusname = 'extra_status';
-                    } else if ($fm_fee_type == 'Amenity') {
-                        $statusname = 'amenity_status';
-                    }
                     // if ($fm_fee_type == 'Group') {
                     //     $statusname = 'grp_status';
-                    // } else if ($fm_fee_type == 'Amenity') {
-                    //     $statusname = 'extra_status';
                     // } else if ($fm_fee_type == 'Extra') {
+                    //     $statusname = 'extra_status';
+                    // } else if ($fm_fee_type == 'Amenity') {
                     //     $statusname = 'amenity_status';
                     // }
+                    if ($fm_fee_type == 'Group') {
+                        $statusname = 'grp_status';
+                    } else if ($fm_fee_type == 'Amenity') {
+                        $statusname = 'extra_status';
+                    } else if ($fm_fee_type == 'Extra') {
+                        $statusname = 'amenity_status';
+                    }
 
                     $insertClass = $mysqli->query("INSERT INTO fees_master(`academic_year`, `medium`, `student_type`, `standard`, `$statusname`, `insert_login_id`, `school_id`) VALUES('" . $academic_year . "','" . $fm_medium . "', '" . $fm_student_type . "','" . $standard . "','1','" . $userid . "', '" . $school_id . "')");
                     $fee_master_last_id = mysqli_insert_id($mysqli);
@@ -981,7 +981,7 @@ if (isset($_FILES["file"]["type"])) {
                         $insertGrpFees = $mysqli->query("INSERT INTO `group_course_fee`(`fee_master_id`, `grp_particulars`, `grp_amount`, `grp_date`) VALUES ('" . $fee_master_last_id . "','" . $fm_fee_particulars . "','" . $fm_fee_amount . "','" . $fm_due_date . "' )");
                         $feetype_last_id = mysqli_insert_id($mysqli);
                     }
-                } else if ($fm_fee_type == 'Extra') { //Because in ASP.NET they inserted all amenity in extra so here interchanging the record. 
+                } else if ($fm_fee_type == 'Amenity') { //Because in ASP.NET they inserted all amenity in extra so here interchanging the record. 
                     $getExtraCntQry = $connect->query("SELECT `extra_fee_id` FROM `extra_curricular_activities_fee` WHERE `fee_master_id` ='$fee_master_last_id' AND `extra_particulars` ='$fm_fee_particulars' ORDER BY `extra_fee_id` DESC ");
                     if ($getExtraCntQry->rowCount() > 0) {
                         $feetype_last_id = $getExtraCntQry->fetch()['extra_fee_id'];
@@ -990,7 +990,7 @@ if (isset($_FILES["file"]["type"])) {
                         $insertExtraFees = $mysqli->query("INSERT INTO `extra_curricular_activities_fee`( `fee_master_id`, `extra_particulars`, `extra_amount`, `extra_date`, `type`) VALUES ('" . $fee_master_last_id . "','" . $fm_fee_particulars . "','" . $fm_fee_amount . "','" . $fm_due_date . "', 'standardwise' )");
                         $feetype_last_id = mysqli_insert_id($mysqli);
                     }
-                } else if ($fm_fee_type == 'Amenity') {
+                } else if ($fm_fee_type == 'Extra') {
                     $getAmenityCntQry = $connect->query("SELECT `amenity_fee_id` FROM `amenity_fee` WHERE `fee_master_id` ='$fee_master_last_id' AND `amenity_particulars` ='$fm_fee_particulars' ORDER BY amenity_fee_id DESC ");
                     if ($getAmenityCntQry->rowCount() > 0) {
                         $feetype_last_id = $getAmenityCntQry->fetch()['amenity_fee_id'];
