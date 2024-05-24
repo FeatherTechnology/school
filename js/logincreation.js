@@ -11,7 +11,7 @@ $(document).ready(function () {
 			dataType: "json",
 			success: function (response) {
 				$('#school').empty()
-				$('#school').append("<option value=''>Select School</option>");
+				// $('#school').append("<option value=''>Select School</option>");
 				for (var a = 0; a < response.length; a++) {
 					$('#school').append("<option value='"+response[a]['school_id']+"'>"+response[a]['school_name']+"</option>");
 				}
@@ -63,7 +63,7 @@ function getAcademicYearList(){ //Getting academic_year list from database.
 		dataType: 'json',
 		success:function(response){
 			$('#academic_year').empty();
-			$('#academic_year').append("<option value=''>Select Academic Year</option>");
+			// $('#academic_year').append("<option value=''>Select Academic Year</option>");
 			for(var i=0; i <response.length; i++){
 				$('#academic_year').append("<option value='" +response[i]['academicyear']+ "'>" +response[i]['academicyear']+ "</option>");
 			}

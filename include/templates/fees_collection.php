@@ -84,7 +84,7 @@ $StudentList = $userObj->getStudentList($mysqli, $school_id, $year_id);
 
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <!-- Fee collection data From ASP.NET to PHP  Bulk UPload START-->
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header">
                         <div class="card-title">Bulk Import From ASP.NET to PHP<i class="icon-stars"></i>
                         </div>
@@ -97,7 +97,7 @@ $StudentList = $userObj->getStudentList($mysqli, $school_id, $year_id);
                                         <button type="button" class="btn btn-primary" name="studentBulkDownload" id="studentBulkDownload" ><span class="icon-download"></span>Download</button>
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#studentBulkUploadModal"><span class="icon-upload"></span>Upload</button>
 
-                                        <!-- //Modal  -->
+                                        
                                         <div class="modal fade" id="studentBulkUploadModal" tabindex="-1" role="dialog" aria-labelledby="vCenterModalTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content" style="background-color: white">
@@ -136,7 +136,7 @@ $StudentList = $userObj->getStudentList($mysqli, $school_id, $year_id);
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>  -->
                 <!-- Fee collection data From ASP.NET to PHP  Bulk UPload END-->
                 <div class="card">
                     <div class="card-body">
