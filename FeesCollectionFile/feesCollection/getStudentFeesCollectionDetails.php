@@ -135,11 +135,16 @@ $overallpaid_extra_cur_amount = 0;
 $overallpaid_amenity_amount = 0;
 // if($CheckReceiptQry->rowCount() > 0){
 //     $get_fees_id = $CheckReceiptQry->fetch()['id'];
-    $grpfeeDetailsQry = $connect->query("SELECT (SUM(gcf.grp_amount) - SUM(afd.balance_tobe_paid))  as paid_grp_amount 
+// echo "SELECT (SUM(gcf.grp_amount) - SUM(afd.balance_tobe_paid))  as paid_grp_amount 
+// FROM `admission_fees` af 
+// JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
+// JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id 
+// WHERE af.admission_id = '$student_id' && af.academic_year = '$academic_year' && afd.fees_table_name = 'grptable' && afd.fee_received != 0 ";
+    $grpfeeDetailsQry = $connect->query("SELECT (SUM(afd.fee_received)) as paid_grp_amount 
     FROM `admission_fees` af 
     JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
     JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id 
-    WHERE af.admission_id = '$student_id' && af.academic_year = '$academic_year' && afd.fees_table_name = 'grptable' ");
+    WHERE af.admission_id = '$student_id' && af.academic_year = '$academic_year' && afd.fees_table_name = 'grptable' && afd.fee_received != 0 ");
     if($grpfeeDetailsQry->rowCount() > 0){
         $overallpaid_grp_amount = $grpfeeDetailsQry->fetch()['paid_grp_amount'];
     }else{
@@ -152,7 +157,7 @@ $overallpaid_amenity_amount = 0;
     FROM `admission_fees` af 
     JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
     JOIN extra_curricular_activities_fee ecaf ON afd.fees_id = ecaf.extra_fee_id 
-    WHERE af.admission_id = '$student_id' && af.academic_year = '$academic_year' && afd.fees_table_name = 'extratable' ");
+    WHERE af.admission_id = '$student_id' && af.academic_year = '$academic_year' && afd.fees_table_name = 'extratable' && afd.fee_received != 0 ");
     if($extraFeeDetailsQry->rowCount() > 0){
         $overallpaid_extra_cur_amount = $extraFeeDetailsQry->fetch()['paid_extra_cur_amount'];
     }else{
@@ -165,7 +170,7 @@ $overallpaid_amenity_amount = 0;
     FROM `admission_fees` afs 
     JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id 
     JOIN amenity_fee af ON afd.fees_id = af.amenity_fee_id 
-    WHERE afs.admission_id = '$student_id' && afs.academic_year = '$academic_year' && afd.fees_table_name = 'amenitytable' ");
+    WHERE afs.admission_id = '$student_id' && afs.academic_year = '$academic_year' && afd.fees_table_name = 'amenitytable' && afd.fee_received != 0 ");
     if($amenityFeeDetailsQry->rowCount() > 0){
         $overallpaid_amenity_amount = $amenityFeeDetailsQry->fetch()['paid_amenity_amount'];
     }else{
@@ -257,21 +262,25 @@ if($CheckLastyrReceiptQry->rowCount() > 0){
 
 
 //Fee Details /// Concession///  Group/ extra cur/ amenity/  transport/ Last year/
-$CheckConcessionReceiptQry = $connect->query("SELECT id FROM `admission_fees` WHERE admission_id = '$student_id' && academic_year = '$academic_year' order by id desc limit 1");
-$overall_grp_concession_amount = 0;
-$overall_extra_cur_concession_amount = 0;
-$overall_amenity_concession_amount = 0;
+$CheckConcessionReceiptQry = $connect->query("SELECT id FROM `admission_fees` WHERE admission_id = '$student_id' && academic_year = '$academic_year' order by id desc");
+$OverallGrpConcessionAmount = 0;
+$OverallExtraCurConcessionAmount = 0;
+$OverallAmenityConcessionAmount = 0;
 if($CheckConcessionReceiptQry->rowCount() > 0){
-    $get_concession_fees_id = $CheckConcessionReceiptQry->fetch()['id'];
+    while($CheckConcessionInfo = $CheckConcessionReceiptQry->fetch()){
+        $get_concession_fees_ids[] = $CheckConcessionInfo['id'];
+    }
+    $get_concession_fees_id = implode(',', $get_concession_fees_ids);
+
     $grpfeeConcessionDetailsQry = $connect->query("SELECT SUM(afd.scholarship) as grp_concession_amount  
     FROM `admission_fees` af 
     JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
     JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id 
-    WHERE af.id = '$get_concession_fees_id' && afd.fees_table_name = 'grptable' ");
+    WHERE FIND_IN_SET(af.id ,'$get_concession_fees_id') && afd.fees_table_name = 'grptable' ");
     if($grpfeeConcessionDetailsQry->rowCount() > 0){
-        $overall_grp_concession_amount = $grpfeeConcessionDetailsQry->fetch()['grp_concession_amount'];
+        $OverallGrpConcessionAmount = $grpfeeConcessionDetailsQry->fetch()['grp_concession_amount'];
     }else{
-        $overall_grp_concession_amount = '0';
+        $OverallGrpConcessionAmount = '0';
     }
     //Close DB connection
     $grpfeeConcessionDetailsQry->closeCursor(); 
@@ -280,11 +289,11 @@ if($CheckConcessionReceiptQry->rowCount() > 0){
     FROM `admission_fees` af 
     JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
     JOIN extra_curricular_activities_fee ecaf ON afd.fees_id = ecaf.extra_fee_id 
-    WHERE af.id = '$get_concession_fees_id' && afd.fees_table_name = 'extratable' ");
+    WHERE FIND_IN_SET(af.id ,'$get_concession_fees_id') && afd.fees_table_name = 'extratable' ");
     if($extraFeeConcessionDetailsQry->rowCount() > 0){
-        $overall_extra_cur_concession_amount = $extraFeeConcessionDetailsQry->fetch()['extra_cur_concession_amount'];
+        $OverallExtraCurConcessionAmount = $extraFeeConcessionDetailsQry->fetch()['extra_cur_concession_amount'];
     }else{
-        $overall_extra_cur_concession_amount = '0';
+        $OverallExtraCurConcessionAmount = '0';
     }
     //Close DB connection
     $extraFeeConcessionDetailsQry->closeCursor(); 
@@ -293,11 +302,11 @@ if($CheckConcessionReceiptQry->rowCount() > 0){
     FROM `admission_fees` afs 
     JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id 
     JOIN amenity_fee af ON afd.fees_id = af.amenity_fee_id 
-    WHERE afs.id = '$get_concession_fees_id' && afd.fees_table_name = 'amenitytable' ");
+    WHERE FIND_IN_SET(afs.id ,'$get_concession_fees_id') && afd.fees_table_name = 'amenitytable' ");
     if($amenityFeeConcessionDetailsQry->rowCount() > 0){
-        $overall_amenity_concession_amount = $amenityFeeConcessionDetailsQry->fetch()['amenity_concession_amount'];
+        $OverallAmenityConcessionAmount = $amenityFeeConcessionDetailsQry->fetch()['amenity_concession_amount'];
     }else{
-        $overall_amenity_concession_amount = '0';
+        $OverallAmenityConcessionAmount = '0';
     }
     //Close DB connection
     $amenityFeeConcessionDetailsQry->closeCursor(); 
@@ -305,6 +314,39 @@ if($CheckConcessionReceiptQry->rowCount() > 0){
     //Close DB connection
     $CheckConcessionReceiptQry->closeCursor(); 
 }//admission fee Concession if END
+
+//Fees Concession START
+$feeConcessionGRPDetailsQry = $connect->query("SELECT scholarship_amount FROM `fees_concession` WHERE student_id ='$student_id' && fees_table_name ='grptable'");
+if($feeConcessionGRPDetailsQry->rowCount() > 0){
+    $overall_concession_amount_grp = $feeConcessionGRPDetailsQry->fetch()['scholarship_amount'];
+}else{
+    $overall_concession_amount_grp = '0';
+}
+$overall_grp_concession_amount = intval($overall_concession_amount_grp + $OverallGrpConcessionAmount);
+//Close DB connection
+$feeConcessionGRPDetailsQry->closeCursor(); 
+
+$feeConcessionEXTRADetailsQry = $connect->query("SELECT scholarship_amount FROM `fees_concession` WHERE student_id ='$student_id' && fees_table_name ='extratable'");
+if($feeConcessionEXTRADetailsQry->rowCount() > 0){
+    $overall_concession_amount_extra = $feeConcessionEXTRADetailsQry->fetch()['scholarship_amount'];
+}else{
+    $overall_concession_amount_extra = '0';
+}
+$overall_extra_cur_concession_amount = intval($overall_concession_amount_extra + $OverallExtraCurConcessionAmount);
+//Close DB connection
+$feeConcessionEXTRADetailsQry->closeCursor(); 
+
+$feeConcessionAMENITYDetailsQry = $connect->query("SELECT scholarship_amount FROM `fees_concession` WHERE student_id ='$student_id' && fees_table_name ='amenitytable'");
+if($feeConcessionAMENITYDetailsQry->rowCount() > 0){
+    $overall_concession_amount_amenity = $feeConcessionAMENITYDetailsQry->fetch()['scholarship_amount'];
+}else{
+    $overall_concession_amount_amenity = '0';
+}
+$overall_amenity_concession_amount = intval($overall_concession_amount_amenity + $OverallAmenityConcessionAmount);
+//Close DB connection
+$feeConcessionAMENITYDetailsQry->closeCursor(); 
+
+//////////////////////////////////Fees Concession END 
 
 $CheckTransportConcessionReceiptQry = $connect->query("SELECT SUM(scholarship) as overall_transport_concession FROM `transport_admission_fees` WHERE admission_id = '$student_id' && academic_year = '$academic_year' ");
     if($CheckTransportConcessionReceiptQry->rowCount() > 0){
@@ -336,9 +378,9 @@ $CheckLastyrConcessionReceiptQry->closeCursor();
 // $netPayTransportFees = (($overallTransportAmount) - ($overallpaid_transport_amount + $overall_transport_concession_amount));
 // $netPayLastYearFees = (($overallLastYearFees) - ($lastyr_overallpaid_amount + $overall_lastyr_concession_amount));
 
-$netPaySchoolFees = (($overallGrpAmount) - ($overallpaid_grp_amount));
-$netPayExtraCurFees = (($overallExtraCurAmount) - ($overallpaid_extra_cur_amount));
-$netPayAmenityFees = (($overallAmenityAmount) - ($overallpaid_amenity_amount));
+$netPaySchoolFees = (($overallGrpAmount) - (($overallpaid_grp_amount) + ($overall_grp_concession_amount)));
+$netPayExtraCurFees = (($overallExtraCurAmount) - (($overallpaid_extra_cur_amount) + ($overall_extra_cur_concession_amount)));
+$netPayAmenityFees = (($overallAmenityAmount) - (($overallpaid_amenity_amount) + ($overall_amenity_concession_amount)));
 $netPayTransportFees = (($overallTransportAmount) - ($overallpaid_transport_amount));
 $netPayLastYearFees = (($overallLastYearFees) - ($lastyr_overallpaid_amount));
 

@@ -72,6 +72,35 @@ $(document).ready(function () {
     }
   });
 
+  // $("#paid_fees_details").on('click', '.printpo', function () {
+  //   var currentRow = $(this).closest("tr");
+  //   var fees_ids = currentRow.find('.fees_id').val();
+  //   var student_id = currentRow.find('.student_id').val();
+  //   var academic_year = currentRow.find('.academicyear').val();
+  //   var receipt_date = currentRow.find("td:eq(1)").text();
+  //   var receipt_number = currentRow.find("td:eq(3)").text();
+  //   var mergedParticularsArray = currentRow.find("td:eq(4)").text();
+  //   var mergedAmountArray = currentRow.find("td:eq(5)").text();
+    
+  //   $.ajax({
+  //     url: "FeesCollectionFile/grp/printFeesDetails.php",
+  //     data: {
+  //       "fees_ids": fees_ids,
+  //       "student_id": student_id,
+  //       "receipt_date": receipt_date,
+  //       "receipt_number": receipt_number,
+  //       "academic_year": academic_year,
+  //       "mergedParticularsArray": mergedParticularsArray,
+  //       "mergedAmountArray": mergedAmountArray
+  //     },
+  //     cache: false,
+  //     type: "post",
+  //     success: function (html) {
+  //       $("#poprintfield").html(html);
+  //     }
+  //   });
+  // });
+
   $("#paid_fees_details").on('click', '.printpo', function () {
     var currentRow = $(this).closest("tr");
     var fees_ids = currentRow.find('.fees_id').val();
@@ -82,24 +111,44 @@ $(document).ready(function () {
     var mergedParticularsArray = currentRow.find("td:eq(4)").text();
     var mergedAmountArray = currentRow.find("td:eq(5)").text();
     
-    $.ajax({
-      url: "FeesCollectionFile/grp/printFeesDetails.php",
-      data: {
-        "fees_ids": fees_ids,
-        "student_id": student_id,
-        "receipt_date": receipt_date,
-        "receipt_number": receipt_number,
-        "academic_year": academic_year,
-        "mergedParticularsArray": mergedParticularsArray,
-        "mergedAmountArray": mergedAmountArray
-      },
-      cache: false,
-      type: "post",
-      success: function (html) {
-        $("#poprintfield").html(html);
-      }
-    });
-  });
+    // Open a new window or tab
+    var printWindow = window.open('', '_blank');
+    
+    // Make sure the popup window is not blocked
+    if (printWindow) {
+        // Load the content into the popup window
+        $.ajax({
+            url: "FeesCollectionFile/grp/printFeesDetails.php",
+            data: {
+                "fees_ids": fees_ids,
+                "student_id": student_id,
+                "receipt_date": receipt_date,
+                "receipt_number": receipt_number,
+                "academic_year": academic_year,
+                "mergedParticularsArray": mergedParticularsArray,
+                "mergedAmountArray": mergedAmountArray
+            },
+            cache: false,
+            type: "post",
+            success: function (html) {
+                // Write the content to the new window
+                printWindow.document.open();
+                printWindow.document.write(html);
+                printWindow.document.close();
+
+                // Optionally, print the content
+                printWindow.print();
+            },
+            error: function () {
+                // Handle error
+                printWindow.close();
+                alert('Failed to load print content.');
+            }
+        });
+    } else {
+        alert('Popup blocked. Please allow popups for this website.');
+    }
+});
 
   $("#paid_fees_details").on('click', '.delete_payfees', function () { //pay fees delete
     var isok=confirm("Do you want delete Fees?");

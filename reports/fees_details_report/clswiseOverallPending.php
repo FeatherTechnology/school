@@ -88,17 +88,36 @@ while($standardList = $getStandardListQry->fetchObject()){
         $term_pending[] = $termPendingInfo['termPending_for_standard'];
     }
     
+    // $getBookPendingQry = $connect->query("SELECT
+    // (
+    //     COALESCE(SUM(ecaf.extra_amount),0) *(
+    //     SELECT
+    //         COUNT(*)
+    //     FROM
+    //         student_creation
+    //     WHERE
+    //         standard = '$standardList->standard_id' AND year_id = '$academicyear' AND  status = 0  AND school_id = '$school_id' AND extra_curricular = ecaf.extra_fee_id
+    //     )
+    // ) -(
+    //     SELECT
+    //         COALESCE((
+    //             SUM(afd.fee_received) + SUM(afd.scholarship)
+    //         ),0)
+    //     FROM
+    //         admission_fees_details afd
+    //     JOIN admission_fees af ON
+    //         afd.admission_fees_ref_id = af.id
+    //     JOIN student_creation sc ON
+    //         sc.student_id = af.admission_id
+    //     WHERE
+    //         afd.fees_id = ecaf.extra_fee_id && afd.fees_table_name = 'extratable' AND sc.standard = '$standardList->standard_id'
+    //     ) AS bookpending_for_standard
+    // FROM
+    //     fees_master fm
+    // JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id
+    // WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.standard = '$standardList->standard_id' && fm.school_id = '$school_id' ");
     $getBookPendingQry = $connect->query("SELECT
     (
-        COALESCE(SUM(ecaf.extra_amount),0) *(
-        SELECT
-            COUNT(*)
-        FROM
-            student_creation
-        WHERE
-            standard = '$standardList->standard_id' AND year_id = '$academicyear' AND  status = 0  AND school_id = '$school_id' AND extra_curricular = ecaf.extra_fee_id
-        )
-    ) -(
         SELECT
             COALESCE((
                 SUM(afd.fee_received) + SUM(afd.scholarship)
@@ -110,11 +129,11 @@ while($standardList = $getStandardListQry->fetchObject()){
         JOIN student_creation sc ON
             sc.student_id = af.admission_id
         WHERE
-            afd.fees_id = ecaf.extra_fee_id && afd.fees_table_name = 'extratable' AND sc.standard = '$standardList->standard_id'
+            afd.fees_id = af.amenity_fee_id && afd.fees_table_name = 'amenitytable' AND sc.standard = '$standardList->standard_id'
         ) AS bookpending_for_standard
     FROM
         fees_master fm
-    JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id
+    JOIN amenity_fee af ON fm.fees_id = af.fee_master_id
     WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.standard = '$standardList->standard_id' && fm.school_id = '$school_id' ");
     if($getBookPendingQry->rowCount() > 0){
         $book_pending = $getBookPendingQry->fetch()['bookpending_for_standard'];

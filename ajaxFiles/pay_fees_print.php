@@ -6,7 +6,7 @@ if(isset($_SESSION["userid"])){
 } 
 
 //get school name by using session id.
-$getschoolDetailsQry=$mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id' ");
+$getschoolDetailsQry=$mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, sc.school_logo, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id' ");
 while ($schoolInfo=$getschoolDetailsQry->fetch_assoc()) {
 	$school_name     =$schoolInfo["school_name"]; 
 	$address1  =$schoolInfo["address1"];
@@ -16,6 +16,7 @@ while ($schoolInfo=$getschoolDetailsQry->fetch_assoc()) {
 	$pincode  =$schoolInfo["pincode"];
 	$contact_number  =$schoolInfo["contact_number"];
 	$email_id     =$schoolInfo["email_id"];
+    $school_logo     =$schoolInfo["school_logo"];
 } 
 
 if(isset($_POST['payFeesid'])){
@@ -110,7 +111,7 @@ function AmountInWords($amount)
 <div id="printReceiptTable">
     <table class="table table-bordered table-responsive">
     <tr>
-        <td style="text-align: center;"> <img src="img/img11.jpg" height="100px" width="100px" alt="Logo"> </td>
+        <td style="text-align: center;"> <img src="uploads/school_creation/<?php echo $school_logo; ?>" height="100px" width="100px" alt="Logo"> </td>
         <td style="text-align: center;"> <?php if(isset($school_name)) echo $school_name; ?> </br>
         <?php if(isset($address1)) echo $address1,', '; if(isset($address2)) echo $address2,', '; if(isset($district)) echo $district,', </br>'; if(isset($state)) echo $state,'-'; if(isset($pincode)) echo $pincode; ?> </br>
             <span style="margin-right: 5px;">&#x260E;</span> - <?php if(isset($contact_number)) echo $contact_number; ?>  <span style="margin-right: 5px;">&#x1F4E7;</span>- <?php if(isset($email_id)) echo $email_id; ?>

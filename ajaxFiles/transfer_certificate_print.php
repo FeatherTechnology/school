@@ -6,7 +6,7 @@ if(isset($_SESSION["userid"])){
 } 
 
 //get school name by using session id.
-$getschoolDetailsQry=$mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id' ");
+$getschoolDetailsQry=$mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, sc.school_logo, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id' ");
 while ($schoolInfo=$getschoolDetailsQry->fetch_assoc()) {
 	$session_school_name     =$schoolInfo["school_name"]; 
 	$address1  =$schoolInfo["address1"];
@@ -16,6 +16,7 @@ while ($schoolInfo=$getschoolDetailsQry->fetch_assoc()) {
 	$pincode  =$schoolInfo["pincode"];
 	$contact_number  =$schoolInfo["contact_number"];
 	$email_id     =$schoolInfo["email_id"];
+    $school_logo     =$schoolInfo["school_logo"];
 } 
 
 if (isset($_POST['tcID'])) {
@@ -91,7 +92,7 @@ tr td {
         <td colspan="5">
             <table width="95%">
                 <tr>
-                    <td rowspan="3" width="15%" valign="top" align="right" style="font-family:'Bookman Old Style';font-size:16px; color:black"><img height="100px" width="100px" src="img/Logo.png" alt="LOGO" /> </td>
+                    <td rowspan="3" width="15%" valign="top" align="right" style="font-family:'Bookman Old Style';font-size:16px; color:black"><img height="100px" width="100px" src="uploads/school_creation/<?php echo $school_logo; ?>" alt="LOGO" /> </td>
                     <td width="85%" colspan="3" align="center" style="font-family:'Bookman Old Style';font-size:32px; color:black"><b><?php if(isset($session_school_name)) echo $session_school_name; ?></b></td>
                 </tr>
                 <tr>

@@ -36,7 +36,7 @@ if (isset($_POST['student_id'])) {
         LEFT JOIN group_course_fee gcf ON afd.fees_table_name = 'grptable' AND afd.fees_id = gcf.grp_course_id 
         LEFT JOIN extra_curricular_activities_fee ecaf ON afd.fees_table_name = 'extratable' AND afd.fees_id = ecaf.extra_fee_id 
         LEFT JOIN amenity_fee aff ON afd.fees_table_name = 'amenitytable' AND afd.fees_id = aff.amenity_fee_id 
-        WHERE af.admission_id = '$student_id' && afd.fee_received != '0' && af.academic_year ='$currentAcademicYear' order by af.id DESC ");
+        WHERE af.admission_id = '$student_id' && afd.fee_received != '0' && af.academic_year ='$currentAcademicYear' GROUP BY af.receipt_no ORDER BY af.id DESC ");
         if ($getAdmissionFees->rowCount() > 0) {
             $a = 1;
             while($admissionFeesInfo = $getAdmissionFees->fetch()) {
