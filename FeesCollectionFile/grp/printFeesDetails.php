@@ -82,7 +82,7 @@ while($row=$qry->fetch_assoc()){
 	$section=$row["section"];
 } 
 
-$getbrc=$mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id'");
+$getbrc=$mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, sc.school_logo, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id'");
 while ($schoolInfo=$getbrc->fetch_assoc()) {
 	$school_name     =$schoolInfo["school_name"]; 
 	$address1  =$schoolInfo["address1"];
@@ -92,6 +92,7 @@ while ($schoolInfo=$getbrc->fetch_assoc()) {
 	$pincode  =$schoolInfo["pincode"];
 	$contact_number  =$schoolInfo["contact_number"];
 	$email_id     =$schoolInfo["email_id"];
+	$school_logo     =$schoolInfo["school_logo"];
 } 
 ?>
 
@@ -110,7 +111,7 @@ while ($schoolInfo=$getbrc->fetch_assoc()) {
 <table rules="all" style="width: 100%;border-style: double;border: 1px solid black;margin: auto;">
 	<tr>
 	
-		<td><img src="img/img11.jpg" height="50px" width="50px" alt="testing"></td>
+		<td><img src="uploads/school_creation/<?php echo $school_logo; ?>" height="50px" width="50px" alt="LOGO"></td>
 		<td style="text-align: center;"> <?php if(isset($school_name)) echo $school_name; ?> </br>
         <?php if(isset($address1)) echo $address1,', '; if(isset($address2)) echo $address2,', '; if(isset($district)) echo $district,', </br>'; if(isset($state)) echo $state,'-'; if(isset($pincode)) echo $pincode; ?> </br>
             <span style="margin-right: 5px;">&#x260E;</span> - <?php if(isset($contact_number)) echo $contact_number; ?>  <span style="margin-right: 5px;">&#x1F4E7;</span>- <?php if(isset($email_id)) echo $email_id; ?>
@@ -134,18 +135,37 @@ while ($schoolInfo=$getbrc->fetch_assoc()) {
 		<th style="background-color: white;color: black; text-align: left;">Particulars</th>
 		<th style="background-color: white;color: black; text-align: left;">Amount</th>
 	</tr>
+	<?php
+        //Admission fees paid details///////////////////////////////////
+        $getAdmissionFees = $connect->query("SELECT af.id, af.receipt_date, af.receipt_no, af.academic_year, CASE WHEN(afd.fees_table_name ='grptable') THEN gcf.grp_particulars ELSE CASE WHEN(afd.fees_table_name ='extratable') THEN ecaf.extra_particulars ELSE CASE WHEN(afd.fees_table_name ='amenitytable') THEN aff.amenity_particulars END END END as particulars, afd.fee_received 
+        FROM admission_fees af 
+        JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id
+        LEFT JOIN group_course_fee gcf ON afd.fees_table_name = 'grptable' AND afd.fees_id = gcf.grp_course_id 
+        LEFT JOIN extra_curricular_activities_fee ecaf ON afd.fees_table_name = 'extratable' AND afd.fees_id = ecaf.extra_fee_id 
+        LEFT JOIN amenity_fee aff ON afd.fees_table_name = 'amenitytable' AND afd.fees_id = aff.amenity_fee_id 
+        WHERE af.id = '$fees_ids' && afd.fee_received != '0' ORDER BY af.id DESC ");
+        if ($getAdmissionFees->rowCount() > 0) {
+            $a = 1;
+			$totalamnt = 0;
+            while($admissionFeesInfo = $getAdmissionFees->fetch()) {
+	?>
 	<tr>
-	<td style="margin-left: 5px;padding-left: 30px;text-align: left;"><?php echo 1; ?></td>
-	<td style="margin-left: 5px;padding-left: 30px;text-align: left;"><?php echo $mergedParticularsArray; ?></td>
-	<td style="margin-left: 5px;padding-left: 30px;text-align: left;"><?php echo $mergedAmountArray; ?></td>
+	<td style="margin-left: 5px;padding-left: 30px;text-align: left;"><?php echo $a++; ?></td>
+	<td style="margin-left: 5px;padding-left: 30px;text-align: left;"><?php echo $admissionFeesInfo['particulars']; ?></td>
+	<td style="margin-left: 5px;padding-left: 30px;text-align: left;"><?php echo $admissionFeesInfo['fee_received']; ?></td>
 	</tr>
+	<?php
+	$totalamnt += $admissionFeesInfo['fee_received'];
+            }
+        }
+	?>
 	<tr>
 	<td style="margin-left: 5px;padding-left: 30px;text-align: left;"></td>
 	<td style="margin-left: 5px;padding-left: 30px;text-align: left;">Total</td>
-	<td style="margin-left: 5px;padding-left: 30px;text-align: left;"><?php echo $mergedAmountArray; ?></td>
+	<td style="margin-left: 5px;padding-left: 30px;text-align: left;"><?php echo $totalamnt; ?></td>
 	</tr>
 	<tr>
-	<td colspan="3">Amount In Words: <span id="amountInWords"><?php echo AmountInWords($mergedAmountArray) . ' Rupees Only/-'; ?></span></td>
+	<td colspan="3">Amount In Words: <span id="amountInWords"><?php echo AmountInWords($totalamnt) . ' Rupees Only/-'; ?></span></td>
 
 	</tr>
 </table><br><p style="float:right">Signature</p>
