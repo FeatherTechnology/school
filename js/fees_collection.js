@@ -150,6 +150,43 @@ $(document).ready(function () {
     }
 });
 
+  $("#paid_fees_details").on('click', '.print_transport_fees', function () {
+    var currentRow = $(this).closest("tr");
+    var fees_ids = currentRow.find('.fees_id').val();
+    
+    // Open a new window or tab
+    var printWindow = window.open('', '_blank');
+    
+    // Make sure the popup window is not blocked
+    if (printWindow) {
+        // Load the content into the popup window
+        $.ajax({
+            url: "ajaxFiles/transport_fees_print.php",
+            data: {
+                "transportFeesid": fees_ids
+            },
+            cache: false,
+            type: "post",
+            success: function (html) {
+                // Write the content to the new window
+                printWindow.document.open();
+                printWindow.document.write(html);
+                printWindow.document.close();
+
+                // Optionally, print the content
+                printWindow.print();
+            },
+            error: function () {
+                // Handle error
+                printWindow.close();
+                alert('Failed to load print content.');
+            }
+        });
+    } else {
+        alert('Popup blocked. Please allow popups for this website.');
+    }
+});
+
   $("#paid_fees_details").on('click', '.delete_payfees', function () { //pay fees delete
     var isok=confirm("Do you want delete Fees?");
     if(isok==false){
