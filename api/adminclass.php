@@ -6427,7 +6427,7 @@ public function addPurchaseOrder($mysqli){
 		//Area Table data END//
 
 		if(count($areaCreationId) > 0 ){
-		$insertPayFeesQry = $mysqli->query("INSERT INTO `transport_admission_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `scholarship`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `created_on`) VALUES ('$admission_form_id','$receipt_number','$receipt_date','$academic_year','$fees_scholarship','$fees_total','$final_amount_recieved','$fees_collected','$fees_balance','$school_id','$userid',now())");
+		$insertPayFeesQry = $mysqli->query("INSERT INTO `transport_admission_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `scholarship`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `created_on`) VALUES ('$admission_form_id','$receipt_number','$receipt_date','$academic_year','$fees_scholarship','$fees_total','$final_amount_recieved','$fees_collected','$fees_balance','$school_id','$userid',now())") or die("Error ".$mysqli->error);
 		
 		$FeesLastInsertId = $mysqli->insert_id;
 

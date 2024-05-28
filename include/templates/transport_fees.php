@@ -20,18 +20,18 @@ if (isset($_POST['submittransportpay']) && $_POST['submittransportpay'] != '') {
     if ($addTransportFeesCreation != 2) {
 ?>
         <script>
-            location.href = '<?php echo $HOSTPATH; ?>transport_fees&pagename=<?php echo $pagename; ?>&upd=<?php echo $studid; ?>';
+            // location.href = '<?php echo $HOSTPATH; ?>transport_fees&pagename=<?php echo $pagename; ?>&upd=<?php echo $studid; ?>';
             setTimeout(() => {
                 print_temp_fees(<?php echo $addTransportFeesCreation; ?>);
             }, 1000);
             // print functionality
-            function print_temp_fees(lastYearFeesid) {
+            function print_temp_fees(transportFeesid) {
                 $.ajax({
-                    url: 'ajaxFiles/last_year_fees_print.php',
+                    url: 'ajaxFiles/transport_fees_print.php',
                     cache: false,
                     type: 'POST',
                     data: {
-                        'lastYearFeesid': lastYearFeesid
+                        'transportFeesid': transportFeesid
                     },
                     success: function(html) {
                         var printWindow = window.open('', '_blank', 'height=800,width=1200');

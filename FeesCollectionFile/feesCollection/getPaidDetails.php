@@ -83,7 +83,7 @@ if (isset($_POST['student_id'])) {
                     <td><?php echo $transportfeeInfo['particulars'];  ?></td>
                     <td><?php echo $transportfeeInfo['fee_received']; ?></td>
                     <td>
-                        <a class='printpo'><span class='icon-print'></span>&nbsp;</a> &nbsp;
+                        <a class='print_transport_fees'><span class='icon-print'></span>&nbsp;</a> &nbsp;
                         <a class="delete_transportfees"><span class='icon-trash-2'></span></a>
                     </td>
                 </tr>
