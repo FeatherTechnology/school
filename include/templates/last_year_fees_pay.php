@@ -84,7 +84,7 @@ if(isset($_GET['upd'])){
         <li class="breadcrumb-item">SM - Pay Last Year Fees</li>
     </ol>
 
-    <a <?php if($pagename == 'stdcreation'){ ?>href="edit_student_creation" <?php }else{ ?> href="fees_collection" <?php } ?> >
+    <a href=" <?php if($pagename == 'stdcreation'){ ?> edit_student_creation <?php }else{?> fees_collection&studid=<?php if(isset($admission_id)) echo $admission_id; } ?>" > 
         <button type="button" class="btn btn-primary"><span class="icon-arrow-left"></span>&nbsp; Back</button>
     </a>
 </div>

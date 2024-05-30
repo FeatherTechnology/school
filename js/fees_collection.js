@@ -289,6 +289,13 @@ $(document).ready(function () {
 
 $(function () {
   getStandardList(); //Getting standard list from database.
+  setTimeout(() => {
+    let admission_form_id = $('#admission_form_id').val();
+    if(admission_form_id !=''){
+      $('#student_name1').val(admission_form_id).trigger('change');//If return from fees screen the selected student has to show so return student id and calling the function.
+    }
+  }, 1000);
+
 });
 
 function getStandardList() { //Getting standard list from database.

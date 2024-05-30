@@ -6,7 +6,7 @@ if (isset($_SESSION["userid"])) {
     $year_id = $_SESSION["academic_year"];
     $academic_year = $_SESSION["academic_year"];
 }
-// print_r($_SESSION);
+
 $FeesList = $userObj->getFeesMasterModel1Details($mysqli, $school_id, $academic_year);
 $StudentList = $userObj->getStudentList($mysqli, $school_id, $year_id);
 ?>
@@ -78,7 +78,8 @@ $StudentList = $userObj->getStudentList($mysqli, $school_id, $year_id);
 <div class="main-container">
     <!--form start-->
     <form id="fees_collection_form" name="fees_collection_form" action="" method="post" enctype="multipart/form-data">
-        <input type="hidden" class="form-control" value="<?php if (isset($fees_id)) echo $fees_id; ?>" id="id" name="id" aria-describedby="id" placeholder="Enter id">
+        <input type="hidden" class="form-control" value="<?php if (isset($fees_id)) echo $fees_id; ?>" id="id" name="id">
+        <input type="hidden" class="form-control" name="admission_form_id" id="admission_form_id" value="<?php if(isset($_GET['studid'])) echo $_GET['studid']; ?>" >
         <!-- Row start -->
         <div class="row gutters">
 
