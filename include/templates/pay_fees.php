@@ -17,11 +17,71 @@ if(isset($_POST['submitpayfees']) && $_POST['submitpayfees'] != '')
     $addPayfeesCreation = $userObj->addPayFees($mysqli,$userid,$school_id);  
     if($addPayfeesCreation){
 ?>
-    <script> location.href='<?php echo $HOSTPATH; ?>edit_student_creation&getPayId=1&payfeesid=<?php echo $addPayfeesCreation;?>';</script>
+    <script>
+        setTimeout(() => {
+            print_temp_fees(<?php echo $addPayfeesCreation; ?>);
+        }, 1000);
+
+        function print_temp_fees(payFeesid){
+            // Open a new window or tab
+            var printWindow = window.open('', '_blank');
+            
+            // Make sure the popup window is not blocked
+            if (printWindow) {
+                // Load the content into the popup window
+                $.ajax({
+                    url: 'ajaxFiles/pay_fees_print.php',
+                    data: {'payFeesid': payFeesid},
+                    cache: false,
+                    type: "post",
+                    success: function (html) {
+                        // Write the content to the new window
+                        printWindow.document.open();
+                        printWindow.document.write(html);
+                        printWindow.document.close();
+
+                        // Optionally, print the content
+                        printWindow.print();
+                    },
+                    error: function () {
+                        // Handle error
+                        printWindow.close();
+                        alert('Failed to load print content.');
+                    }
+                });
+            } else {
+                alert('Popup blocked. Please allow popups for this website.');
+            }
+        }
+        // function print_temp_fees(payFeesid){
+        //     $.ajax({
+        //         url: 'ajaxFiles/pay_fees_print.php',
+        //         cache: false,
+        //         type: 'POST',
+        //         data: {'payFeesid': payFeesid},
+        //         success: function(html){
+        //             var printWindow = window.open('', '_blank', 'height=800,width=1200');
+    
+        //             if (printWindow) { // Check if the window is successfully opened
+        //                 printWindow.document.write(html);
+        //                 printWindow.document.close();
+        //                 printWindow.print();
+        //                 printWindow.close();
+        //             } else {
+        //                 alert('Pop-up blocked. Please allow pop-ups for this site.');
+        //             }
+        //         },
+        //         error: function () {
+        //             alert('Error loading print content.');
+        //         }
+        //     });
+        // }
+    </script>
+    <!-- <script> location.href='<?php echo $HOSTPATH; ?>edit_student_creation&getPayId=1&payfeesid=<?php echo $addPayfeesCreation;?>';</script> -->
 <?php
-}else{
-?>
-    <script>location.href='<?php echo $HOSTPATH; ?>edit_student_creation&getPayId=2&payfeesid=0';</script>
+}else{?>
+    <script>alert("Fees Pay Failed!");</script>
+    <!-- <script>location.href='<?php echo $HOSTPATH; ?>edit_student_creation&getPayId=2&payfeesid=0';</script> -->
 <?php
 }
 }

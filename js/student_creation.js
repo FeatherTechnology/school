@@ -308,9 +308,9 @@ $(document).ready(function () {
   $('#date_of_birth').on('change', function () {
     var dob = $('#date_of_birth').val();
     var age = calculateAge(dob);
-    if (age < 4) {
+    if (age < 2) {
       $("#age-result").text('');
-      $('#age-result1').text('You must be at least 4 years old to use this service.');
+      $('#age-result1').text('You must be at least 2 years old to use this service.');
       $('#date_of_birth').val('');
 
     } else {

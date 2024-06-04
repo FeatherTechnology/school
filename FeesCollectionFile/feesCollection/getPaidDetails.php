@@ -30,7 +30,7 @@ if (isset($_POST['student_id'])) {
     <tbody>
         <?php
         //Admission fees paid details///////////////////////////////////
-        $getAdmissionFees = $connect->query("SELECT af.id, af.receipt_date, af.receipt_no, af.academic_year, CASE WHEN(afd.fees_table_name ='grptable') THEN gcf.grp_particulars ELSE CASE WHEN(afd.fees_table_name ='extratable') THEN ecaf.extra_particulars ELSE CASE WHEN(afd.fees_table_name ='amenitytable') THEN aff.amenity_particulars END END END as particulars, afd.fee_received 
+        $getAdmissionFees = $connect->query("SELECT af.id, af.receipt_date, af.receipt_no, af.academic_year, GROUP_CONCAT( CASE WHEN(afd.fees_table_name ='grptable') THEN gcf.grp_particulars ELSE CASE WHEN(afd.fees_table_name ='extratable') THEN ecaf.extra_particulars ELSE CASE WHEN(afd.fees_table_name ='amenitytable') THEN aff.amenity_particulars END END END ORDER BY afd.fees_table_name SEPARATOR ', ') as particulars, afd.fee_received 
         FROM admission_fees af 
         JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id
         LEFT JOIN group_course_fee gcf ON afd.fees_table_name = 'grptable' AND afd.fees_id = gcf.grp_course_id 

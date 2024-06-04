@@ -203,6 +203,7 @@ $(document).ready(function () {
         if(response == '1'){
           alert("Successfully fees deleted!")
           getPaidDetails(studentid);//call paid details function
+          getstudentDetails(studentid);//call Fees details after action to show updated value.
         }else{
           alert("Unable to delete, please try again!")
         }
@@ -227,6 +228,7 @@ $(document).ready(function () {
         if(response == '1'){
           alert("Successfully fees deleted!")
           getPaidDetails(studentid);//call paid details function
+          getstudentDetails(studentid);//call Fees details after action to show updated value.
         }else{
           alert("Unable to delete, please try again!")
         }
