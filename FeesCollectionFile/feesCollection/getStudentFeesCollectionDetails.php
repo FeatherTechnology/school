@@ -23,12 +23,19 @@ $academic_year = $studentInfo['year_id'];
 $school_id = $studentInfo['school_id'];
 $transportFacility = $studentInfo['facility'];
 
+if($studentstype =="1" || $studentstype =="2"){
+    $student_type_cndtn = "(fm.student_type = '$studentstype' || fm.student_type = '4')";
+    
+}else{
+    $student_type_cndtn = "(fm.student_type = '$studentstype')";
+
+}
 //Fee Details /// Gross Payable/// Group / extracurricular / amenity / transport/
 $getGrpFeesMasterDetailsQry = $connect->query("SELECT SUM(gcf.grp_amount) as OverallGrpAmount 
 FROM fees_master fm 
 JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id
 JOIN student_creation stdc ON fm.standard = stdc.standard 
-WHERE fm.academic_year = '$academic_year' AND fm.medium = '$medium' AND fm.student_type = '$studentstype' AND fm.standard = '$standard' AND gcf.status = 1 AND fm.school_id = '$school_id' AND stdc.student_id = '$student_id' ");
+WHERE fm.academic_year = '$academic_year' AND fm.medium = '$medium' AND $student_type_cndtn AND fm.standard = '$standard' AND gcf.status = 1 AND fm.school_id = '$school_id' AND stdc.student_id = '$student_id' ");
 if($getGrpFeesMasterDetailsQry->rowCount()>0){
     $overallGrpAmount = $getGrpFeesMasterDetailsQry->fetch()['OverallGrpAmount'];
 }else{
@@ -41,7 +48,7 @@ $getExtraCurFeesMasterDetailsQry = $connect->query("SELECT SUM(ecaf.extra_amount
 FROM fees_master fm 
 JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id 
 JOIN student_creation stdc ON fm.standard = stdc.standard
-WHERE fm.academic_year = '$academic_year' AND fm.medium = '$medium' AND fm.student_type = '$studentstype' AND fm.standard = '$standard' AND ecaf.status = '1' AND fm.school_id ='$school_id' AND stdc.student_id = '$student_id' "); 
+WHERE fm.academic_year = '$academic_year' AND fm.medium = '$medium' AND $student_type_cndtn AND fm.standard = '$standard' AND ecaf.status = '1' AND fm.school_id ='$school_id' AND stdc.student_id = '$student_id' "); 
 if($getExtraCurFeesMasterDetailsQry->rowCount() > 0){
     $overallExtraCurAmount = $getExtraCurFeesMasterDetailsQry->fetch()['OverallExtraCurAmount'];
 }else{
@@ -54,7 +61,7 @@ $getAmenityFeesMasterDetailsQry = $connect->query("SELECT SUM(af.amenity_amount)
 FROM fees_master fm 
 JOIN amenity_fee af ON fm.fees_id = af.fee_master_id 
 JOIN student_creation stdc ON fm.standard = stdc.standard
-WHERE fm.academic_year = '$academic_year' AND fm.medium = '$medium' AND fm.student_type = '$studentstype' AND fm.standard = '$standard' AND af.status = '1' AND fm.school_id ='$school_id' AND stdc.student_id = '$student_id' ");
+WHERE fm.academic_year = '$academic_year' AND fm.medium = '$medium' AND $student_type_cndtn AND fm.standard = '$standard' AND af.status = '1' AND fm.school_id ='$school_id' AND stdc.student_id = '$student_id' ");
 if($getAmenityFeesMasterDetailsQry->rowCount() > 0){
     $overallAmenityAmount = $getAmenityFeesMasterDetailsQry->fetch()['OverallAmenityAmount'];
 }else{
@@ -85,7 +92,7 @@ $getLastYearGrpFeesQry = $connect->query("SELECT SUM(gcf.grp_amount) as OverallG
 FROM fees_master fm 
 JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id 
 JOIN student_creation stdc ON fm.standard = stdc.standard
-WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND fm.student_type = '$studentstype' AND fm.standard = '$standard' AND gcf.status = 1 AND fm.school_id = '$school_id' AND stdc.student_id = '$student_id' ");
+WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND $student_type_cndtn AND fm.standard = '$standard' AND gcf.status = 1 AND fm.school_id = '$school_id' AND stdc.student_id = '$student_id' ");
 if($getLastYearGrpFeesQry->rowCount()>0){
     $overallLastYearGrpAmount = $getLastYearGrpFeesQry->fetch()['OverallGrpAmount'];
 }else{
@@ -99,7 +106,7 @@ $getLastYearExtraCurFeesQry = $connect->query("SELECT SUM(ecaf.extra_amount) as 
 FROM fees_master fm 
 JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id
 JOIN student_creation stdc ON fm.standard = stdc.standard 
-WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND fm.student_type = '$studentstype' AND fm.standard = '$standard' AND ecaf.status = '1' AND fm.school_id ='$school_id' AND stdc.student_id = '$student_id' "); 
+WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND $student_type_cndtn AND fm.standard = '$standard' AND ecaf.status = '1' AND fm.school_id ='$school_id' AND stdc.student_id = '$student_id' "); 
 if($getLastYearExtraCurFeesQry->rowCount()>0){
     $overallLastYearExtraCurAmount = $getLastYearExtraCurFeesQry->fetch()['OverallExtraCurAmount'];
 }else{
@@ -114,7 +121,7 @@ $getLastYearAmenityFeesQry = $connect->query("SELECT SUM(af.amenity_amount) as O
 FROM fees_master fm 
 JOIN amenity_fee af ON fm.fees_id = af.fee_master_id 
 JOIN student_creation stdc ON fm.standard = stdc.standard
-WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND fm.student_type = '$studentstype' AND fm.standard = '$standard' AND af.status = '1' AND fm.school_id ='$school_id' AND stdc.student_id = '$student_id' "); 
+WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND $student_type_cndtn AND fm.standard = '$standard' AND af.status = '1' AND fm.school_id ='$school_id' AND stdc.student_id = '$student_id' "); 
 if($getLastYearAmenityFeesQry->rowCount()>0){
     $overallLastYearAmenityAmount = $getLastYearAmenityFeesQry->fetch()['OverallAmenityAmount'];
 }else{
