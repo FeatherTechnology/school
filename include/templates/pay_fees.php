@@ -1,100 +1,82 @@
-<?php 
-if(isset($_SESSION['curdateFromIndexPage'])){
+<?php
+if (isset($_SESSION['curdateFromIndexPage'])) {
     $curdate = $_SESSION['curdateFromIndexPage'];
 }
-if(isset($_SESSION["academic_year"])){
+if (isset($_SESSION["academic_year"])) {
     $academicyear = $_SESSION["academic_year"];
 }
-if(isset($_SESSION["userid"])){
+if (isset($_SESSION["userid"])) {
     $userid = $_SESSION["userid"];
 }
-if(isset($_SESSION["school_id"])){
+if (isset($_SESSION["school_id"])) {
     $school_id = $_SESSION["school_id"];
 }
 
-if(isset($_POST['submitpayfees']) && $_POST['submitpayfees'] != '')
-{
-    $addPayfeesCreation = $userObj->addPayFees($mysqli,$userid,$school_id);  
-    if($addPayfeesCreation){
-?>
-    <script>
-        setTimeout(() => {
-            print_temp_fees(<?php echo $addPayfeesCreation; ?>);
-        }, 1000);
+if (isset($_POST['submitpayfees']) && $_POST['submitpayfees'] != '') {
+    $addPayfeesCreation = $userObj->addPayFees($mysqli, $userid, $school_id);
+    if ($addPayfeesCreation == '-1') { ?>
+        <script>
+            alert("Pay Fees Already Inserted!");
+        </script>
 
-        function print_temp_fees(payFeesid){
-            // Open a new window or tab
-            var printWindow = window.open('', '_blank');
-            
-            // Make sure the popup window is not blocked
-            if (printWindow) {
-                // Load the content into the popup window
-                $.ajax({
-                    url: 'ajaxFiles/pay_fees_print.php',
-                    data: {'payFeesid': payFeesid},
-                    cache: false,
-                    type: "post",
-                    success: function (html) {
-                        // Write the content to the new window
-                        printWindow.document.open();
-                        printWindow.document.write(html);
-                        printWindow.document.close();
+    <?php } else if ($addPayfeesCreation == '2') { ?>
+        <script>
+            alert("Pay Fees Failed!");
+        </script>
 
-                        // Optionally, print the content
-                        printWindow.print();
-                    },
-                    error: function () {
-                        // Handle error
-                        printWindow.close();
-                        alert('Failed to load print content.');
-                    }
-                });
-            } else {
-                alert('Popup blocked. Please allow popups for this website.');
+    <?php } else { ?>
+        <script>
+            setTimeout(() => {
+                print_temp_fees(<?php echo $addPayfeesCreation; ?>);
+            }, 1000);
+
+            function print_temp_fees(payFeesid) {
+                // Open a new window or tab
+                var printWindow = window.open('', '_blank');
+
+                // Make sure the popup window is not blocked
+                if (printWindow) {
+                    // Load the content into the popup window
+                    $.ajax({
+                        url: 'ajaxFiles/pay_fees_print.php',
+                        data: {
+                            'payFeesid': payFeesid
+                        },
+                        cache: false,
+                        type: "post",
+                        success: function(html) {
+                            // Write the content to the new window
+                            printWindow.document.open();
+                            printWindow.document.write(html);
+                            printWindow.document.close();
+
+                            // Optionally, print the content
+                            printWindow.print();
+                        },
+                        error: function() {
+                            // Handle error
+                            printWindow.close();
+                            alert('Failed to load print content.');
+                        }
+                    });
+                } else {
+                    alert('Popup blocked. Please allow popups for this website.');
+                }
             }
-        }
-        // function print_temp_fees(payFeesid){
-        //     $.ajax({
-        //         url: 'ajaxFiles/pay_fees_print.php',
-        //         cache: false,
-        //         type: 'POST',
-        //         data: {'payFeesid': payFeesid},
-        //         success: function(html){
-        //             var printWindow = window.open('', '_blank', 'height=800,width=1200');
-    
-        //             if (printWindow) { // Check if the window is successfully opened
-        //                 printWindow.document.write(html);
-        //                 printWindow.document.close();
-        //                 printWindow.print();
-        //                 printWindow.close();
-        //             } else {
-        //                 alert('Pop-up blocked. Please allow pop-ups for this site.');
-        //             }
-        //         },
-        //         error: function () {
-        //             alert('Error loading print content.');
-        //         }
-        //     });
-        // }
-    </script>
-    <!-- <script> location.href='<?php echo $HOSTPATH; ?>edit_student_creation&getPayId=1&payfeesid=<?php echo $addPayfeesCreation;?>';</script> -->
+        </script>
 <?php
-}else{?>
-    <script>alert("Fees Pay Failed!");</script>
-    <!-- <script>location.href='<?php echo $HOSTPATH; ?>edit_student_creation&getPayId=2&payfeesid=0';</script> -->
-<?php
-}
+    }
 }
 
-if(isset($_GET['pagename'])){
+if (isset($_GET['pagename'])) {
     $pagename = $_GET['pagename'];
 }
-if(isset($_GET['upd'])){
+if (isset($_GET['upd'])) {
     $admission_id = $_GET['upd'];
 
     $getTempAdmissionDetails = $userObj->getStudentCreation($mysqli, $admission_id);
 
-    if($getTempAdmissionDetails > 0 ){
+    if ($getTempAdmissionDetails > 0) {
         $studentrollno = $getTempAdmissionDetails['studentrollno'];
         $student_name = $getTempAdmissionDetails['student_name'];
         $standard_name = $getTempAdmissionDetails['standard_name'];
@@ -110,20 +92,21 @@ if(isset($_GET['upd'])){
     <ol class="breadcrumb">
         <li class="breadcrumb-item">School Fee Receipt</li>
     </ol>
-    <a href=" <?php if($pagename == 'stdcreation'){ ?> edit_student_creation <?php }else{?> fees_collection&studid=<?php if(isset($admission_id)) echo $admission_id; } ?>" > 
+    <a href=" <?php if ($pagename == 'stdcreation') { ?> edit_student_creation <?php } else { ?> fees_collection&studid=<?php if (isset($admission_id)) echo $admission_id;
+                                                                                                                } ?>">
         <button type="button" class="btn btn-primary"><span class="icon-arrow-left"></span>&nbsp; Back</button>
     </a>
 </div>
 
 <div class="main-container">
     <!--------form start-->
-    <form id = "admission_fee_form" name="admission_fee_form" action="" method="post" enctype="multipart/form-data"> 
-        <input type="hidden" class="form-control" name="admission_form_id" id="admission_form_id" value="<?php if(isset($admission_id)) echo $admission_id; ?>" >
-        <input type="hidden" class="form-control" name="user_academic_year" id="user_academic_year" value="<?php if(isset($academicyear)) echo $academicyear; ?>" >
-        <input type="hidden" class="form-control" name="student_year_id" id="student_year_id" value="<?php if(isset($year_id)) echo $year_id; ?>" >
-        <input type="hidden" class="form-control" name="student_medium" id="student_medium" value="<?php if(isset($medium)) echo $medium; ?>" >
-        <input type="hidden" class="form-control" name="students_type" id="students_type" value="<?php if(isset($studentstype)) echo $studentstype; ?>" >
-        <input type="hidden" class="form-control" name="student_extra_curricular" id="student_extra_curricular" value="<?php if(isset($extra_curricular)) echo $extra_curricular; ?>" >
+    <form id="admission_fee_form" name="admission_fee_form" action="" method="post" enctype="multipart/form-data">
+        <input type="hidden" class="form-control" name="admission_form_id" id="admission_form_id" value="<?php if (isset($admission_id)) echo $admission_id; ?>">
+        <input type="hidden" class="form-control" name="user_academic_year" id="user_academic_year" value="<?php if (isset($academicyear)) echo $academicyear; ?>">
+        <input type="hidden" class="form-control" name="student_year_id" id="student_year_id" value="<?php if (isset($year_id)) echo $year_id; ?>">
+        <input type="hidden" class="form-control" name="student_medium" id="student_medium" value="<?php if (isset($medium)) echo $medium; ?>">
+        <input type="hidden" class="form-control" name="students_type" id="students_type" value="<?php if (isset($studentstype)) echo $studentstype; ?>">
+        <input type="hidden" class="form-control" name="student_extra_curricular" id="student_extra_curricular" value="<?php if (isset($extra_curricular)) echo $extra_curricular; ?>">
         <div class="row gutters">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
@@ -136,7 +119,7 @@ if(isset($_GET['upd'])){
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="receipt_number" id="receipt_number"  placeholder="Receipt Number" readonly>
+                                    <input type="text" class="form-control" name="receipt_number" id="receipt_number" placeholder="Receipt Number" readonly>
                                 </div>
                             </div>
 
@@ -147,7 +130,7 @@ if(isset($_GET['upd'])){
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                 <div class="form-group">
-                                <input type="date" name="receipt_date" id="receipt_date" value="<?php if(isset($curdate)) echo $curdate; ?>"  class="form-control">
+                                    <input type="date" name="receipt_date" id="receipt_date" value="<?php if (isset($curdate)) echo $curdate; ?>" class="form-control">
                                 </div>
                             </div>
                             <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-12"></div>
@@ -159,7 +142,7 @@ if(isset($_GET['upd'])){
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control"  name="register_number" id="register_number" value="<?php if(isset($studentrollno)) echo $studentrollno; ?>" readonly>
+                                    <input type="text" class="form-control" name="register_number" id="register_number" value="<?php if (isset($studentrollno)) echo $studentrollno; ?>" readonly>
                                 </div>
                             </div>
 
@@ -170,9 +153,9 @@ if(isset($_GET['upd'])){
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                 <div class="form-group">
-                                    <select type="text" class="form-control" id="academic_year" name="academic_year" >
-                                    <option value="">Select Academic Year</option>
-                                    </select>                
+                                    <select type="text" class="form-control" id="academic_year" name="academic_year">
+                                        <option value="">Select Academic Year</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-12"></div>
@@ -182,9 +165,9 @@ if(isset($_GET['upd'])){
                                     <label class="label">Student Name</label>
                                 </div>
                             </div>
-                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                 <div class="form-group">
-                                <input type="text" class="form-control" name="student_name" id="student_name"  value="<?php if(isset($student_name)) echo $student_name; ?>" readonly>
+                                    <input type="text" class="form-control" name="student_name" id="student_name" value="<?php if (isset($student_name)) echo $student_name; ?>" readonly>
                                 </div>
                             </div>
 
@@ -195,11 +178,11 @@ if(isset($_GET['upd'])){
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="standard" id="standard" value="<?php if(isset($standard_name)) echo $standard_name; ?>" readonly>
-                                    <input type="hidden" class="form-control" name="standard_id" id="standard_id" value="<?php if(isset($stdid)) echo $stdid; ?>">
+                                    <input type="text" class="form-control" name="standard" id="standard" value="<?php if (isset($standard_name)) echo $standard_name; ?>" readonly>
+                                    <input type="hidden" class="form-control" name="standard_id" id="standard_id" value="<?php if (isset($stdid)) echo $stdid; ?>">
                                 </div>
                             </div>
-                        </div>                    
+                        </div>
 
                         <div class="row gutters">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -229,7 +212,7 @@ if(isset($_GET['upd'])){
                                     <tbody id="temp_extra_curricular_fees"> </tbody>
                                 </table>
 
-                                <table class="table table-bordered responsive-table" >
+                                <table class="table table-bordered responsive-table">
                                     <thead>
                                         <tr>
                                             <th style="width: 30%;">Amenity Fees</th>
@@ -248,14 +231,14 @@ if(isset($_GET['upd'])){
                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label class="label">Other Charges</label>
-                                    <input type="text" class="form-control" name="other_charges" id="other_charges" >
+                                    <input type="text" class="form-control" name="other_charges" id="other_charges">
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12" style="visibility:hidden"></div>
                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                <label class="label">Fees Received</label>
-                                    <input type="number" class="form-control" name="other_charges_recieved" id="other_charges_recieved" value="0" >
+                                    <label class="label">Fees Received</label>
+                                    <input type="number" class="form-control" name="other_charges_recieved" id="other_charges_recieved" value="0">
                                 </div>
                             </div>
                         </div>
@@ -308,7 +291,7 @@ if(isset($_GET['upd'])){
                                     </div>
                                 </div>
                             </div> </br>
-                                
+
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div id="cash_payment">
                                     <table class="table responsive-table table-bordered">
@@ -373,29 +356,29 @@ if(isset($_GET['upd'])){
                                         <tbody>
                                             <tr>
                                                 <td>Cheque Number</td>
-                                                <td><input type="text" tabindex="13" class="form-control" name="cheque_number" id="cheque_number" ></td>
+                                                <td><input type="text" tabindex="13" class="form-control" name="cheque_number" id="cheque_number"></td>
                                             </tr>
                                             <tr>
                                                 <td>Amount</td>
-                                                <td><input type="text" tabindex="14" class="form-control" name="cheque_amount" id="cheque_amount" ></td>
+                                                <td><input type="text" tabindex="14" class="form-control" name="cheque_amount" id="cheque_amount"></td>
                                             </tr>
                                             <tr>
                                                 <td>Cheque Date</td>
                                                 <td><input type="date" tabindex="15" class="form-control" name="cheque_date" id="cheque_date"></td>
-                                                </tr>
+                                            </tr>
                                             <tr>
                                                 <td>Bank Name</td>
                                                 <td><input type="text" tabindex="16" class="form-control" name="cheque_bank_name" id="cheque_bank_name"></td>
-                                                </tr>
+                                            </tr>
                                             <tr>
                                                 <td>Ledger</td>
                                                 <td>
                                                     <div class="form-group">
-                                                    <select tabindex="1" type="text" class="form-control" id="cheque_ledger_name" name="cheque_ledger_name" tabindex="1" >
-                                                        <option value="">Select ledger</option>   
-                                                        <option value="2022-2023">2022 - 2023</option> 
-                                                        <option value="2023-2024">2023 - 2024</option> 
-                                                    </select>             
+                                                        <select tabindex="1" type="text" class="form-control" id="cheque_ledger_name" name="cheque_ledger_name" tabindex="1">
+                                                            <option value="">Select ledger</option>
+                                                            <option value="2022-2023">2022 - 2023</option>
+                                                            <option value="2023-2024">2023 - 2024</option>
+                                                        </select>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -403,54 +386,54 @@ if(isset($_GET['upd'])){
                                     </table>
                                 </div>
 
-                            <div id="neft_payment" style="display:none;" tabindex="11">
-                                <table class="table custom-table">
-                                    <tbody>
-                                        <tr>
-                                            <td>NEFT Ref Number</td>
-                                            <td><input type="text" tabindex="13" class="form-control" name="neft_number" id="neft_number" ></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Amount</td>
-                                            <td><input type="text" tabindex="14" class="form-control" name="neft_amount" id="neft_amount"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Transaction Date</td>
-                                            <td><input type="date" tabindex="15" class="form-control" name="neft_date" id="neft_date" ></td>
+                                <div id="neft_payment" style="display:none;" tabindex="11">
+                                    <table class="table custom-table">
+                                        <tbody>
+                                            <tr>
+                                                <td>NEFT Ref Number</td>
+                                                <td><input type="text" tabindex="13" class="form-control" name="neft_number" id="neft_number"></td>
                                             </tr>
-                                        <tr>
-                                            <td>Bank Name</td>
-                                            <td><input type="text" tabindex="16" class="form-control" name="neft_bank_name" id="neft_bank_name"></td>
+                                            <tr>
+                                                <td>Amount</td>
+                                                <td><input type="text" tabindex="14" class="form-control" name="neft_amount" id="neft_amount"></td>
                                             </tr>
-                                        <tr>
-                                            <td>Ledger</td>
-                                            <td>
-                                                <div class="form-group">
-                                                <select tabindex="1" type="text" class="form-control" id="neft_ledger_name" name="neft_ledger_name" tabindex="1" >
-                                                    <option value="">Select Ledger</option>   
-                                                    <option value="2022-2023">2022 - 2023</option> 
-                                                    <option value="2023-2024">2023 - 2024</option> 
-                                                </select>             
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>            
-                        </div>
-                    </div>
-
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-4">
-                        <div class="text-right">
-                            <div>
-                                <button type="submit" tabindex="19" name="submitpayfees" id="submitpayfees" class="btn btn-primary" value="submit" tabindex="10">Submit</button>
-                                <!-- <button type="reset"  tabindex="21" class="btn btn-outline-secondary">Cancel</button>  -->
+                                            <tr>
+                                                <td>Transaction Date</td>
+                                                <td><input type="date" tabindex="15" class="form-control" name="neft_date" id="neft_date"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Bank Name</td>
+                                                <td><input type="text" tabindex="16" class="form-control" name="neft_bank_name" id="neft_bank_name"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ledger</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <select tabindex="1" type="text" class="form-control" id="neft_ledger_name" name="neft_ledger_name" tabindex="1">
+                                                            <option value="">Select Ledger</option>
+                                                            <option value="2022-2023">2022 - 2023</option>
+                                                            <option value="2023-2024">2023 - 2024</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-4">
+                            <div class="text-right">
+                                <div>
+                                    <button type="submit" tabindex="19" name="submitpayfees" id="submitpayfees" class="btn btn-primary" value="submit" tabindex="10">Submit</button>
+                                    <!-- <button type="reset"  tabindex="21" class="btn btn-outline-secondary">Cancel</button>  -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
     </form>
 </div>
