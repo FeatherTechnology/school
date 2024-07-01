@@ -68,9 +68,11 @@ $(document).ready(function(){
 }); //Document END///
 
 $(function(){
-  getReceiptCode(); //Receipt Number;
-  getFeesTableFunc();
   getAcademicYearList(); //Get  Academic Year List.
+  getReceiptCode(); //Receipt Number;
+  setTimeout(() => {
+    getFeesTableFunc();
+  }, 1000);
 });
 
 function getFeesTableFunc(){

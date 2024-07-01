@@ -15,7 +15,7 @@ include "../ajaxconfig.php";
 
         if(!in_array($standard_id[$i], $particular_std_id)){ //these under 9 std. so jst add 1 to the id and update.
             $next_std_id = intval($standard_id[$i]) + 1;
-            $updateStudentCreation = $connect->query("UPDATE `student_creation` SET `standard`='$next_std_id' WHERE `student_id`='$student_id[$i]'");
+            $updateStudentCreation = $connect->query("UPDATE `student_creation` SET `standard`='$next_std_id', `studentstype` ='2' WHERE `student_id`='$student_id[$i]'");
             
         }else{ //these are 11th std so  no need to check next standard id.
             
@@ -31,7 +31,7 @@ include "../ajaxconfig.php";
                 $next_std_id = '23';
             }
 
-            $updateStudentCreation = $connect->query("UPDATE `student_creation` SET `standard`='$next_std_id' WHERE `student_id`='$student_id[$i]'");
+            $updateStudentCreation = $connect->query("UPDATE `student_creation` SET `standard`='$next_std_id', `studentstype` ='2' WHERE `student_id`='$student_id[$i]'");
 
         }
     }
