@@ -24,7 +24,7 @@ if(isset($_POST['feesToDate'])){
             <th>Receipt No</th>
             <th>Admission No</th>
             <th>Student Name</th>
-            <th>Standard & Section</th>
+            <th>Standard - Section</th>
             <th>School Fee</th>
             <th>Book Fee</th>
             <th>Transport Fee</th>
@@ -110,9 +110,8 @@ $total += $totalAmnt;
 
 $startdate->modify('+1 day');
 }//End of While loop for getting dates from start to end date. ?>
-    </tbody>
     <tr style="font-weight: bold;">
-        <td></td>
+        <td><?php echo $a;?></td>
         <td></td>
         <td></td>
         <td></td>
@@ -124,6 +123,7 @@ $startdate->modify('+1 day');
         <td><?php echo $lastyear_total;?></td>
         <td><?php echo $total;?></td>
     </tr>
+    </tbody>
 </table>
 
 <script>
@@ -139,5 +139,5 @@ $startdate->modify('+1 day');
             ],
             paging: false, // Disable paging
         });
-    });
+    });    
 </script>
