@@ -42,7 +42,7 @@ while($grpfeeDetailsInfo = $feeDetailsQry->fetch()){
     if($grpConcessionQry->rowCount() > 0){
         $grpTotalScholarshipAmnt = $grpConcessionQry->fetch()['grpTotalScholarshipAmnt'];
     }
-    $grpAmount = $grpfeeDetailsInfo['grp_amount'] - $grpTotalScholarshipAmnt;
+    $grpAmount = ($grpfeeDetailsInfo['grp_amount'] != '0') ? $grpfeeDetailsInfo['grp_amount'] - $grpTotalScholarshipAmnt : $grpfeeDetailsInfo['grp_amount'];
 ?>
 <tr>
     <td>
