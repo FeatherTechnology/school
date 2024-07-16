@@ -416,9 +416,9 @@ if($CheckConcessionReceiptQry->rowCount() > 0){
 }//admission fee Concession if END
 
 //Fees Concession START
-$feeConcessionGRPDetailsQry = $connect->query("SELECT scholarship_amount FROM `fees_concession` WHERE student_id ='$student_id' && fees_table_name ='grptable'");
+$feeConcessionGRPDetailsQry = $connect->query("SELECT SUM(scholarship_amount) AS grp_con_amnt FROM `fees_concession` WHERE student_id ='$student_id' && fees_table_name ='grptable'");
 if($feeConcessionGRPDetailsQry->rowCount() > 0){
-    $overall_concession_amount_grp = $feeConcessionGRPDetailsQry->fetch()['scholarship_amount'];
+    $overall_concession_amount_grp = $feeConcessionGRPDetailsQry->fetch()['grp_con_amnt'];
 }else{
     $overall_concession_amount_grp = '0';
 }
@@ -426,9 +426,9 @@ $overall_grp_concession_amount = intval($overall_concession_amount_grp + $Overal
 //Close DB connection
 $feeConcessionGRPDetailsQry->closeCursor(); 
 
-$feeConcessionEXTRADetailsQry = $connect->query("SELECT scholarship_amount FROM `fees_concession` WHERE student_id ='$student_id' && fees_table_name ='extratable'");
+$feeConcessionEXTRADetailsQry = $connect->query("SELECT SUM(scholarship_amount) AS extra_con_amnt FROM `fees_concession` WHERE student_id ='$student_id' && fees_table_name ='extratable'");
 if($feeConcessionEXTRADetailsQry->rowCount() > 0){
-    $overall_concession_amount_extra = $feeConcessionEXTRADetailsQry->fetch()['scholarship_amount'];
+    $overall_concession_amount_extra = $feeConcessionEXTRADetailsQry->fetch()['extra_con_amnt'];
 }else{
     $overall_concession_amount_extra = '0';
 }
@@ -436,9 +436,9 @@ $overall_extra_cur_concession_amount = intval($overall_concession_amount_extra +
 //Close DB connection
 $feeConcessionEXTRADetailsQry->closeCursor(); 
 
-$feeConcessionAMENITYDetailsQry = $connect->query("SELECT scholarship_amount FROM `fees_concession` WHERE student_id ='$student_id' && fees_table_name ='amenitytable'");
+$feeConcessionAMENITYDetailsQry = $connect->query("SELECT SUM(scholarship_amount) AS amenity_con_amnt FROM `fees_concession` WHERE student_id ='$student_id' && fees_table_name ='amenitytable'");
 if($feeConcessionAMENITYDetailsQry->rowCount() > 0){
-    $overall_concession_amount_amenity = $feeConcessionAMENITYDetailsQry->fetch()['scholarship_amount'];
+    $overall_concession_amount_amenity = $feeConcessionAMENITYDetailsQry->fetch()['amenity_con_amnt'];
 }else{
     $overall_concession_amount_amenity = '0';
 }

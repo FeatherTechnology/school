@@ -25,24 +25,23 @@ if($studentType =="1" || $studentType =="2"){
 
 }
 
-$CheckReceiptQry = $connect->query("SELECT af.id FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$admissionFormId' && afd.fees_table_name = 'grptable' ORDER BY af.id DESC LIMIT 1");
+$CheckReceiptQry = $connect->query("SELECT af.id FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$admissionFormId' && afd.fees_table_name = 'grptable' && af.academic_year ='$academicYear' ORDER BY af.id DESC LIMIT 1");
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
-    $feeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as grp_amount, afd.fees_master_id as fees_id, afd.fees_id as grp_course_id, gcf.grp_particulars FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id WHERE af.id = '$get_temp_fees_id' && afd.fees_table_name = 'grptable' && gcf.status ='1' ");
+    $feeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as grp_amount, afd.fees_master_id as fees_id, afd.fees_id as grp_course_id, gcf.grp_particulars, gcf.grp_amount AS ovrlAllGrpAmnt FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id WHERE af.id = '$get_temp_fees_id' && afd.fees_table_name = 'grptable' && gcf.status ='1' ");
 
 }else{
-    $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, gcf.*  FROM `fees_master` fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$standardId' && gcf.status ='1' ");
+    $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, gcf.*, gcf.grp_amount AS ovrlAllGrpAmnt  FROM `fees_master` fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$standardId' && gcf.status ='1' ");
 
 }
 
 $i=0;
 while($grpfeeDetailsInfo = $feeDetailsQry->fetch()){
-    $grpConcessionQry = $connect->query("SELECT SUM(scholarship_amount) as grpTotalScholarshipAmnt FROM `fees_concession` WHERE `student_id`='$admissionFormId' && `fees_table_name`='grptable' && `fees_id` = '".$grpfeeDetailsInfo['grp_course_id']."' ");
-    $grpTotalScholarshipAmnt = '0';
-    if($grpConcessionQry->rowCount() > 0){
-        $grpTotalScholarshipAmnt = $grpConcessionQry->fetch()['grpTotalScholarshipAmnt'];
-    }
-    $grpAmount = ($grpfeeDetailsInfo['grp_amount'] != '0') ? $grpfeeDetailsInfo['grp_amount'] - $grpTotalScholarshipAmnt : $grpfeeDetailsInfo['grp_amount'];
+    $grpConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as grp_schlrshp_amnt, (SELECT COALESCE(SUM(afd.fee_received),0) FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$admissionFormId' && afd.fees_table_name = 'grptable' && afd.fees_id = '".$grpfeeDetailsInfo['grp_course_id']."' && af.academic_year ='$academicYear') AS grp_amnt FROM `fees_concession` WHERE `student_id`='$admissionFormId' && `fees_table_name`='grptable' && `fees_id` = '".$grpfeeDetailsInfo['grp_course_id']."' && academic_year ='$academicYear' ");
+    $grpConcessionInfo = $grpConcessionQry->fetch();
+    $grpTotalScholarshipAmnt = $grpConcessionInfo['grp_schlrshp_amnt'];
+    $totalGrpAmnt = $grpConcessionInfo['grp_amnt'];
+    $grpAmount = ($grpfeeDetailsInfo['grp_amount'] != '0') ? $grpfeeDetailsInfo['ovrlAllGrpAmnt'] - $grpTotalScholarshipAmnt - $totalGrpAmnt : $grpfeeDetailsInfo['grp_amount'];
 ?>
 <tr>
     <td>

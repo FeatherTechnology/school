@@ -44,16 +44,56 @@ if(isset($_POST['feesToDate'])){
     while($startdate <= $feesToDate){
     $from_date = $startdate->format('Y-m-d');
 
-    $getFeeCollectionQry = $connect->query("SELECT af.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, 
-    SUM(CASE WHEN afd.fees_table_name = 'grptable' THEN afd.fee_received ELSE 0 END) AS grp_fee,
-    SUM(CASE WHEN afd.fees_table_name = 'amenitytable' THEN afd.fee_received ELSE 0 END) AS extra_fee,
-    0 AS transportFees,
-    0 AS lastyearFees
+    // $getFeeCollectionQry = $connect->query("SELECT af.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, 
+    // SUM(CASE WHEN afd.fees_table_name = 'grptable' THEN afd.fee_received ELSE 0 END) AS grp_fee,
+    // SUM(CASE WHEN afd.fees_table_name = 'amenitytable' THEN afd.fee_received ELSE 0 END) AS extra_fee,
+    // 0 AS transportFees,
+    // 0 AS lastyearFees
+    // FROM `admission_fees` af 
+    // JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
+    // JOIN student_creation sc ON af.admission_id = sc.student_id 
+    // JOIN standard_creation std ON sc.standard = std.standard_id 
+    // WHERE af.receipt_date ='$from_date' AND afd.fee_received > 0 AND sc.school_id = '$school_id'
+    // GROUP BY 
+    //     af.receipt_no, 
+    //     sc.admission_number, 
+    //     sc.student_name, 
+    //     std.standard, 
+    //     sc.section
+        
+    // UNION 
+    
+    // SELECT taf.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, 0 AS grp_fee, 0 AS extra_fee, tafd.fee_received AS transportFees, 0 AS lastyearFees 
+    // FROM `transport_admission_fees` taf 
+    // JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id 
+    // JOIN student_creation sc ON taf.admission_id = sc.student_id 
+    // JOIN standard_creation std ON sc.standard = std.standard_id 
+    // WHERE taf.receipt_date ='$from_date' AND tafd.fee_received > 0 AND sc.school_id = '$school_id'
+    
+    // UNION
+    
+    // SELECT lyf.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, 
+    // 0 AS grp_fee,
+    // 0 AS extra_fee,
+    // 0 AS transportFees,
+    // SUM(lyfd.fee_received) AS lastyearFees
+    // FROM last_year_fees lyf 
+    // JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id 
+    // JOIN student_creation sc ON lyf.admission_id = sc.student_id 
+    // JOIN standard_creation std ON sc.standard = std.standard_id 
+    // WHERE lyf.receipt_date ='$from_date' AND lyfd.fee_received > 0  AND sc.school_id = '$school_id' HAVING lastyearFees > 0 ");
+
+    $getFeeCollectionQry = $connect->query("SELECT * FROM (
+    SELECT af.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, 
+        SUM(CASE WHEN afd.fees_table_name = 'grptable' THEN afd.fee_received ELSE 0 END) AS grp_fee,
+        SUM(CASE WHEN afd.fees_table_name = 'amenitytable' THEN afd.fee_received ELSE 0 END) AS extra_fee,
+        0 AS transportFees,
+        0 AS lastyearFees
     FROM `admission_fees` af 
     JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
     JOIN student_creation sc ON af.admission_id = sc.student_id 
     JOIN standard_creation std ON sc.standard = std.standard_id 
-    WHERE af.receipt_date ='$from_date' AND afd.fee_received > 0 AND sc.school_id = '$school_id'
+    WHERE af.receipt_date ='$from_date' AND afd.fee_received > 0 AND sc.school_id = '$school_id' AND sc.status = 0
     GROUP BY 
         af.receipt_no, 
         sc.admission_number, 
@@ -68,20 +108,28 @@ if(isset($_POST['feesToDate'])){
     JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id 
     JOIN student_creation sc ON taf.admission_id = sc.student_id 
     JOIN standard_creation std ON sc.standard = std.standard_id 
-    WHERE taf.receipt_date ='$from_date' AND tafd.fee_received > 0 AND sc.school_id = '$school_id'
+    WHERE taf.receipt_date ='$from_date' AND tafd.fee_received > 0 AND sc.school_id = '$school_id' AND sc.status = 0
     
     UNION
     
     SELECT lyf.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, 
-    0 AS grp_fee,
-    0 AS extra_fee,
-    0 AS transportFees,
-    SUM(lyfd.fee_received) AS lastyearFees
+        0 AS grp_fee,
+        0 AS extra_fee,
+        0 AS transportFees,
+        SUM(lyfd.fee_received) AS lastyearFees
     FROM last_year_fees lyf 
     JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id 
     JOIN student_creation sc ON lyf.admission_id = sc.student_id 
     JOIN standard_creation std ON sc.standard = std.standard_id 
-    WHERE lyf.receipt_date ='$from_date' AND lyfd.fee_received > 0  AND sc.school_id = '$school_id' HAVING lastyearFees > 0 ");
+    WHERE lyf.receipt_date ='$from_date' AND lyfd.fee_received > 0 AND sc.school_id = '$school_id' AND sc.status = 0
+    GROUP BY 
+        lyf.receipt_no, 
+        sc.admission_number, 
+        sc.student_name, 
+        std.standard, 
+        sc.section
+) AS combined_result
+ORDER BY CAST(SUBSTRING(receipt_no, LOCATE('-', receipt_no) + 1) AS UNSIGNED); ");
     
     while($feeCollection = $getFeeCollectionQry->fetchObject()){
 ?>
