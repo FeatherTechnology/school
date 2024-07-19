@@ -2197,7 +2197,7 @@ class admin
 	{
 
 		$checkinsertedTrustQry = $mysqli->query("SELECT * FROM trust_creation WHERE status ='0' ");
-		if ($mysqli->affected_rows == '0') { //to check already a trust is active or not because creation access to create one trust. 
+		// if ($mysqli->affected_rows == '0') { //to check already a trust is active or not because creation access to create one trust. 
 
 			if (isset($_POST['trust_name'])) {
 				$trust_name = $_POST['trust_name'];
@@ -2256,7 +2256,7 @@ class admin
 		tan_number='" . strip_tags($tan_number) . "', update_login_id='" . strip_tags($userid) . "', trust_logo='" . strip_tags($trust_logo) . "',academic_year='" . strip_tags($academic_year) . "', status = '0' 
 		WHERE trust_id= '" . strip_tags($id) . "' ";
 			$updresult = $mysqli->query($updateTrustCreationQry) or die("Error in in update Query!." . $mysqli->error);
-		}
+		// }
 	}
 
 
