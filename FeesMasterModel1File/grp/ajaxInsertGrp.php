@@ -88,10 +88,10 @@ if($grp_academic_year == $academic_year && $grp_medium == $medium && $grp_studen
 			$student_type2 = "2"; //old
 		}
 
-		$getFeeMasterDetailsQry = $mysqli->query("SELECT * FROM `fees_master` fm WHERE fm.academic_year = '".$academic_year."' AND fm.medium = '".$medium."' AND (fm.student_type = '".$student_type1."' OR fm.student_type = '".$student_type2."') AND fm.standard = '".$standard."' AND fm.school_id = '".$school_id."' ");
-		if(mysqli_num_rows($getFeeMasterDetailsQry)>0){
-			$message ="StudentType Already saved!";
-		}else{
+		// $getFeeMasterDetailsQry = $mysqli->query("SELECT * FROM `fees_master` fm WHERE fm.academic_year = '".$academic_year."' AND fm.medium = '".$medium."' AND (fm.student_type = '".$student_type1."' OR fm.student_type = '".$student_type2."') AND fm.standard = '".$standard."' AND fm.school_id = '".$school_id."' ");
+		// if(mysqli_num_rows($getFeeMasterDetailsQry)>0){
+		// 	$message ="StudentType Already saved!";
+		// }else{
 					
 			$feeMasterrowcnt=$mysqli->query("SELECT fees_id FROM `fees_master` WHERE academic_year = '".$academic_year."' AND medium = '".$medium."' AND student_type = '".$student_type."' AND standard = '".$standard."' AND school_id = '".$school_id."' order by fees_id desc ");
 
@@ -113,7 +113,7 @@ if($grp_academic_year == $academic_year && $grp_medium == $medium && $grp_studen
 			}else{
 				$message="Fees Insert Failed";
 			}
-		}
+		// }
     }
 }
 echo json_encode($message);
