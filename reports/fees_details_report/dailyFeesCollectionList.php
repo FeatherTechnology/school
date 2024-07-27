@@ -101,7 +101,7 @@ if(isset($_POST['feesToDate'])){
         std.standard, 
         sc.section
         
-    UNION 
+    UNION ALL
     
     SELECT taf.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, 0 AS grp_fee, 0 AS extra_fee, tafd.fee_received AS transportFees, 0 AS lastyearFees 
     FROM `transport_admission_fees` taf 
@@ -110,7 +110,7 @@ if(isset($_POST['feesToDate'])){
     JOIN standard_creation std ON sc.standard = std.standard_id 
     WHERE taf.receipt_date ='$from_date' AND tafd.fee_received > 0 AND sc.school_id = '$school_id' AND sc.status = 0
     
-    UNION
+    UNION ALL
     
     SELECT lyf.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, 
         0 AS grp_fee,
