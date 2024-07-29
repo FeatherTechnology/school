@@ -56,8 +56,9 @@
                                     <label>Fee Type</label>
                                     <select class="form-control" id="fee_type" name="fee_type" tabindex="4">
                                         <option value="0">Select Fee Type</option>
-                                        <option value="1">School</option>
-                                        <option value="2">Extra/Book</option>
+                                        <option value="1">Group</option>
+                                        <option value="2">Extra</option>
+                                        <option value="5">Book</option>
                                         <option value="3">Lastyear</option>
                                         <option value="4">Transport</option>
                                     </select>

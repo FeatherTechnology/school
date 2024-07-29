@@ -158,8 +158,9 @@ while($standardList = $getStandardListQry->fetchObject()){
                     SUM(tafd.fee_received) + SUM(tafd.scholarship)
                 ),0)
         FROM
-            transport_admission_fees_details tafd
-        JOIN transport_admission_fees taf JOIN student_creation sc ON
+            transport_admission_fees taf 
+            JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id
+            JOIN student_creation sc ON
             sc.student_id = taf.admission_id
         WHERE
             tafd.area_creation_particulars_id = acp.particulars_id AND sc.standard = '$standardList->standard_id' AND sc.school_id = '$school_id'
@@ -208,7 +209,6 @@ $grand_transport_term2 += $transport_term2;
 $grand_transport_term3 += $transport_term3;
 $grand_overall_total += $grand_total;
 } ?>
-    </tbody>
     <tr style= "font-weight: bold;">
         <td>Grand Total</td>
         <td><?php echo $grand_term1; ?></td>
@@ -220,6 +220,7 @@ $grand_overall_total += $grand_total;
         <td><?php echo $grand_transport_term3; ?></td>
         <td><?php echo $grand_overall_total; ?></td>
     </tr>
+    </tbody>
     </table>
 
 <script>
