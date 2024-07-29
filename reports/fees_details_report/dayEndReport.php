@@ -114,9 +114,8 @@ if($dateSelect =='singledate'){
 <?php 
 $single_total += $schoolfee_total;
 } ?>
-    </tbody>
     <tr style="font-weight: bold;">
-        <td></td>
+        <td><?php echo $a;?></td>
         <td></td>
         <td></td>
         <td></td>
@@ -124,6 +123,7 @@ $single_total += $schoolfee_total;
         <td>Grand Total</td>
         <td><?php echo $single_total;?></td>
     </tr>
+    </tbody>
     </table>
 
 <?php }else if($dateSelect =='multipledate'){ ?>
@@ -149,7 +149,7 @@ $single_total += $schoolfee_total;
     $from_date = $startdate->format('Y-m-d');
 
     if($feeType =='grptable' || $feeType == 'extratable' || $feeType == 'amenitytable'){//school
-        $Qry = "SELECT af.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, 
+        $Qry = "SELECT af.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, af.receipt_date,
         SUM(CASE WHEN afd.fees_table_name = 'grptable' THEN afd.fee_received ELSE 0 END) AS grp_fee,
         SUM(CASE WHEN afd.fees_table_name = 'extratable' THEN afd.fee_received ELSE 0 END) AS extra_fee,
         SUM(CASE WHEN afd.fees_table_name = 'amenitytable' THEN afd.fee_received ELSE 0 END) AS amenity_fee
@@ -166,7 +166,7 @@ $single_total += $schoolfee_total;
             sc.section ORDER BY CAST(SUBSTRING(receipt_no, LOCATE('-', receipt_no) + 1) AS UNSIGNED)" ;
     
     }else if($feeType =='lastyear'){//Last Year
-        $Qry = "SELECT lyf.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, lyfd.fee_received AS lastyearFees
+        $Qry = "SELECT lyf.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, lyfd.fee_received AS lastyearFees, lyf.receipt_date
         FROM last_year_fees lyf 
         JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id 
         JOIN student_creation sc ON lyf.admission_id = sc.student_id 
@@ -174,7 +174,7 @@ $single_total += $schoolfee_total;
         WHERE lyf.receipt_date ='$from_date' AND lyfd.fee_received > 0 AND sc.school_id = '$school_id' AND sc.status = 0 HAVING lastyearFees > 0 ORDER BY CAST(SUBSTRING(receipt_no, LOCATE('-', receipt_no) + 1) AS UNSIGNED)";
     
     }else if($feeType == 'transport'){//Transport
-        $Qry = "SELECT taf.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, 0 AS grp_fee, 0 AS extra_fee, tafd.fee_received AS transportFees 
+        $Qry = "SELECT taf.receipt_no, sc.admission_number, sc.student_name, std.standard, sc.section, 0 AS grp_fee, 0 AS extra_fee, tafd.fee_received AS transportFees, taf.receipt_date 
         FROM `transport_admission_fees` taf 
         JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id 
         JOIN student_creation sc ON taf.admission_id = sc.student_id 
@@ -208,7 +208,7 @@ $single_total += $schoolfee_total;
 
     <tr>
         <td><?php echo $a++;?></td>
-        <td><?php echo date('d-m-Y',strtotime($singleDate));?></td>
+        <td><?php echo date('d-m-Y',strtotime($feeCollection->receipt_date));?></td>
         <td><?php echo $feeCollection->receipt_no;?></td>
         <td><?php echo $feeCollection->admission_number;?></td>
         <td><?php echo $feeCollection->student_name;?></td>
@@ -222,9 +222,8 @@ $single_total += $schoolfee_total;
 
     $startdate->modify('+1 day');
 }//End of While loop for getting dates from start to end date. ?>
-    </tbody>
     <tr style="font-weight: bold;">
-        <td></td>
+        <td><?php echo $a;?></td>
         <td></td>
         <td></td>
         <td></td>
@@ -232,6 +231,7 @@ $single_total += $schoolfee_total;
         <td>Grand Total</td>
         <td><?php echo $multiple_total;?></td>
     </tr>
+    </tbody>
     </table>
 
 <?php

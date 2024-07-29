@@ -66,9 +66,8 @@ while($studentList = $getStudentListQry->fetchObject()){
 <?php 
 $schoolScholarshipTotal += $studentList->scholarship_amount;
 } ?>
-</tbody>
 <tr style="font-weight: bold;">
-    <td></td>
+    <td><?php echo $i; ?></td>
     <td></td>
     <td></td>
     <td></td>
@@ -77,6 +76,7 @@ $schoolScholarshipTotal += $studentList->scholarship_amount;
     <td><?php echo $schoolScholarshipTotal; ?></td>
     <td></td>
 </tr>
+</tbody>
 </table>
 
 <?php }else if($feeType == '2'){ //Extra ?> 
@@ -126,9 +126,8 @@ while($studentList = $getStudentListQry->fetchObject()){
 <?php
 $grnd_total_amount += $studentList->scholarship_amount;
 } ?>
-</tbody>
 <tr style="font-weight: bold;">
-    <td></td>
+    <td><?php echo $i; ?></td>
     <td></td>
     <td></td>
     <td></td>
@@ -137,6 +136,7 @@ $grnd_total_amount += $studentList->scholarship_amount;
     <td><?php echo $grnd_total_amount; ?></td>
     <td></td>
 </tr>
+</tbody>
 </table>
 <?php }else if($feeType =='3'){ //Last year ?>
     <table class="table table-bordered" id="show_student_scholarship_list">
@@ -189,9 +189,8 @@ while($studentList = $getStudentListQry->fetchObject()){
 <?php 
 $grnd_lastyr_total_fee += $studentList->scholarship_amount;
 } ?>
-</tbody>
 <tr style="font-weight: bold;">
-    <td></td>
+    <td><?php echo $i; ?></td>
     <td></td>
     <td></td>
     <td></td>
@@ -200,6 +199,7 @@ $grnd_lastyr_total_fee += $studentList->scholarship_amount;
     <td><?php echo $grnd_lastyr_total_fee; ?></td>
     <td></td>
 </tr>
+</tbody>
 </table>
 
 <?php }else if($feeType == '4'){//transport ?>
@@ -244,9 +244,8 @@ while($studentList = $getStudentListQry->fetchObject()){
 <?php 
 $grnd_total_fee += $studentList->scholarship_amount;
 } ?>
-</tbody>
 <tr style="font-weight: bold;">
-    <td></td>
+    <td><?php echo $i; ?></td>
     <td></td>
     <td></td>
     <td></td>
@@ -255,6 +254,7 @@ $grnd_total_fee += $studentList->scholarship_amount;
     <td><?php echo $grnd_total_fee; ?></td>
     <td></td>
 </tr>
+</tbody>
 </table>
 
 <?php } ?>

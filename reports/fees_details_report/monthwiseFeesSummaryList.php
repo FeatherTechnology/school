@@ -74,9 +74,8 @@ $lastyear_total += $lastyearFeesInfo->lastyearFees;
 $total += $totalAmnt;
 $startdate->modify('+1 month');
 } ?>
-    </tbody>
     <tr style="font-weight: bold;">
-        <td></td>
+        <td><?php echo $i;?></td>
         <td>Grand Total</td>
         <td><?php echo $schoolfee_total;?></td>
         <td><?php echo $bookfee_total;?></td>
@@ -84,6 +83,7 @@ $startdate->modify('+1 month');
         <td><?php echo $lastyear_total;?></td>
         <td><?php echo $total;?></td>
     </tr>
+    </tbody>
 </table>
 
 <script>
