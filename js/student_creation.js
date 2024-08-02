@@ -494,6 +494,10 @@ $(document).ready(function () {
       $('#referred_by').val($(this).find('option:selected').text().trim());
   });
 
+  $('#standard, #medium, #studentstype').change(function(){
+    extracur();
+  });
+  
 }); //Document END.
 
 $(function(){ //ONLOAD Function
@@ -510,7 +514,7 @@ $(function(){ //ONLOAD Function
     getResetTempAdmTable();// Get Temp Admission Table/
     
     setTimeout(() => {
-      extracur();
+      // extracur();
 
       var stdidOnEdit = $('#stdidOnEdit').val();
       if(stdidOnEdit > 0){
