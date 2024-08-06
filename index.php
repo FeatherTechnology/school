@@ -40,7 +40,7 @@ if(isset($_POST['lusername'])) {
 		}
 
 
-	$qry = "SELECT u.fullname,u.user_name,u.user_id,u.school_id,s.school_name,a.year_id,a.academic_year FROM user u LEFT JOIN school_creation s ON s.school_id=u.school_id LEFT JOIN academic_year a ON a.academic_year IN ($year) = s.year_id IN ($quotedYearsStrings) WHERE u.user_name = '$username' AND u.user_password = '$password' AND u.status=0  AND u.school_id ='$school' AND a.academic_year='$year'"; 
+	$qry = "SELECT u.fullname,u.user_name,u.user_id,u.school_id,s.school_name,s.school_logo,a.year_id,a.academic_year FROM user u LEFT JOIN school_creation s ON s.school_id=u.school_id LEFT JOIN academic_year a ON a.academic_year IN ($year) = s.year_id IN ($quotedYearsStrings) WHERE u.user_name = '$username' AND u.user_password = '$password' AND u.status=0  AND u.school_id ='$school' AND a.academic_year='$year'"; 
 	$res = mysqli_query($mysqli, $qry)or die("Error in Get All Records".mysqli_error($mysqli)); 
 	$result = mysqli_fetch_array($res);
 	if ($mysqli->affected_rows>0)
@@ -50,6 +50,7 @@ if(isset($_POST['lusername'])) {
 		$_SESSION['fullname']    = $result['fullname']; 
 		$_SESSION['school_id']    = $result['school_id']; 
 		$_SESSION['school_name']    = $result['school_name']; 
+		$_SESSION['school_logo']    = $result['school_logo']; 
 		$_SESSION['year_id']    = $result['year_id']; 
 		$_SESSION['academic_year']    = $result['academic_year']; 
 		$_SESSION['curdateFromIndexPage']    = date('Y-m-d'); 

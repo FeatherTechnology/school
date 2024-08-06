@@ -7,7 +7,6 @@ if (isset($_SESSION["userid"])) {
     $academic_year = $_SESSION["academic_year"];
 }
 
-$FeesList = $userObj->getFeesMasterModel1Details($mysqli, $school_id, $academic_year);
 $StudentList = $userObj->getStudentList($mysqli, $school_id, $year_id);
 ?>
 <style>

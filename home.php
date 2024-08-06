@@ -8,6 +8,11 @@ if(isset($_SESSION['fullname'])){
 if(isset($_SESSION['userid'])){
 	$userid  = $_SESSION['userid'];
 }
+if(isset($_SESSION['school_logo']) && $_SESSION['school_logo'] !=''){
+	$school_logo  = "uploads/school_creation/".$_SESSION['school_logo'];
+}else{
+	$school_logo = "img/user22.png";
+}
 
 $msc=0;
 if(isset($_GET['msc']))
@@ -98,7 +103,7 @@ if($current_page == 'vendorcreation' || $current_page == 'auction_details') {
 								aria-haspopup="true">
 								<span class="user-name"><?php echo $fullname; ?></span>
 								<span class="avatar">
-									<img src="img/user22.png" alt="avatar">
+									<img src="<?php echo $school_logo; ?>" alt="avatar">
 									<span class="status busy"></span>
 								</span>
 							</a>
@@ -106,12 +111,12 @@ if($current_page == 'vendorcreation' || $current_page == 'auction_details') {
 								<div class="header-profile-actions">
 									<div class="header-user-profile">
 										<div class="header-user">
-											<img src="img/user22.png" alt="Admin Template">
+											<img src="<?php echo $school_logo; ?>" alt="Admin Template">
 										</div>
 										<h5><?php echo $fullname; ?></h5>
 										<p><?php echo $fullname; ?></p>
 									</div>
-									<a href="#"><i class="icon-user1"></i> My Profile</a>
+									<!-- <a href="#"><i class="icon-user1"></i> My Profile</a> -->
 									<a href="logout.php"><i class="icon-log-out1"></i> Sign Out</a>
 								</div>
 							</div>
