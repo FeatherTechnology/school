@@ -85,11 +85,11 @@ if(isset($_POST['lusername'])) {
 						</span>
 						<h5>Welcome back,<br />Please Login to your Account.</h5>
 						<div class="form-group mt-4">
-							<input type="text" name="lusername" id="lusername"  tabindex="1"  class="form-control val" value="support@feathertechnology.in" placeholder="Enter Email" />
+							<input type="text" name="lusername" id="lusername"  tabindex="1"  class="form-control val" placeholder="Enter Email" />
 							<span id="usernamecheck" class="text-danger" style="display: none;"></span>    
 						</div>
 						<div class="form-group mt-4">
-							<input type="password" name="lpassword" id="lpassword"  tabindex="2"  class="form-control val" value="admin@123" placeholder="Enter Password" />
+							<input type="password" name="lpassword" id="lpassword"  tabindex="2"  class="form-control val" placeholder="Enter Password" />
 							<span id="passwordcheck" class="text-danger" style="display: none;"></span>    
 						</div>		
 						<div class="form-group mt-4">
