@@ -79,7 +79,7 @@ while($studentList = $getStudentListQry->fetchObject()){
     }
     
 
-    $getTermPendingQry = $connect->query("SELECT COALESCE( ( gcf.grp_amount - (SELECT (SUM(afd.fee_received) + SUM(afd.scholarship)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = gcf.grp_course_id AND afd.fees_table_name = 'grptable' AND af.admission_id = '$studentList->student_id') ), 0) - COALESCE((SELECT scholarship_amount FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='grptable' AND fees_id = gcf.grp_course_id),0) AS termPending, COALESCE(gcf.grp_amount,0) AS schoolPending  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' && fm.school_id = '$school_id' ORDER BY gcf.grp_date ASC");
+    $getTermPendingQry = $connect->query("SELECT COALESCE( ( gcf.grp_amount - (SELECT (SUM(afd.fee_received) + SUM(afd.scholarship)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = gcf.grp_course_id AND afd.fees_table_name = 'grptable' AND af.admission_id = '$studentList->student_id') ), 0) - COALESCE((SELECT SUM(scholarship_amount) FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='grptable' AND fees_id = gcf.grp_course_id),0) AS termPending, COALESCE(gcf.grp_amount,0) AS schoolPending  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && fm.student_type = '$studentList->studentstype' && fm.standard = '$stdStandard' && fm.school_id = '$school_id' ORDER BY gcf.grp_date ASC");
     $term_pending = array();
     $school_pending = array();
     $total_amount =0;
@@ -336,7 +336,7 @@ $grnd_pending = 0;
 while($studentList = $getStudentListQry->fetchObject()){
     $getLastYearPending = $connect->query("SELECT COALESCE(SUM(pending),0) as total_balance_tobe_paid
     FROM (
-        (SELECT ( ( (SELECT SUM(gcf.grp_amount) FROM group_course_fee gcf WHERE gcf.fee_master_id = afd.fees_master_id ) - (SUM(afd.fee_received) + SUM(afd.scholarship) ) ) - COALESCE((SELECT scholarship_amount FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='grptable' AND fees_master_id = afd.fees_master_id),0) ) AS pending 
+        (SELECT ( ( (SELECT SUM(gcf.grp_amount) FROM group_course_fee gcf WHERE gcf.fee_master_id = afd.fees_master_id ) - (SUM(afd.fee_received) + SUM(afd.scholarship) ) ) - COALESCE((SELECT SUM(scholarship_amount) FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='grptable' AND fees_master_id = afd.fees_master_id),0) ) AS pending 
         FROM admission_fees af 
         JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
         WHERE af.admission_id = '$studentList->student_id' 
@@ -345,7 +345,7 @@ while($studentList = $getStudentListQry->fetchObject()){
         AND afd.fee_received > 0
         ORDER BY af.id ASC)
     UNION 
-        (SELECT ( ( (SELECT SUM(ecaf.extra_amount) FROM  extra_curricular_activities_fee ecaf WHERE ecaf.fee_master_id = afd.fees_master_id ) - (SUM(afd.fee_received) + SUM(afd.scholarship) ) ) - COALESCE((SELECT scholarship_amount FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='extratable' AND fees_master_id = afd.fees_master_id ),0) ) AS pending
+        (SELECT ( ( (SELECT SUM(ecaf.extra_amount) FROM  extra_curricular_activities_fee ecaf WHERE ecaf.fee_master_id = afd.fees_master_id ) - (SUM(afd.fee_received) + SUM(afd.scholarship) ) ) - COALESCE((SELECT SUM(scholarship_amount) FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='extratable' AND fees_master_id = afd.fees_master_id ),0) ) AS pending
         FROM admission_fees af 
         JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
         WHERE af.admission_id = '$studentList->student_id' 
@@ -354,7 +354,7 @@ while($studentList = $getStudentListQry->fetchObject()){
         AND afd.fee_received > 0
         ORDER BY af.id ASC)
     UNION 
-        (SELECT ( ( (SELECT SUM(af.amenity_amount) FROM amenity_fee af WHERE af.fee_master_id = afd.fees_master_id ) - (SUM(afd.fee_received) + SUM(afd.scholarship) ) ) - COALESCE((SELECT scholarship_amount FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='amenitytable' AND fees_master_id = afd.fees_master_id),0) ) AS pending
+        (SELECT ( ( (SELECT SUM(af.amenity_amount) FROM amenity_fee af WHERE af.fee_master_id = afd.fees_master_id ) - (SUM(afd.fee_received) + SUM(afd.scholarship) ) ) - COALESCE((SELECT SUM(scholarship_amount) FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='amenitytable' AND fees_master_id = afd.fees_master_id),0) ) AS pending
         FROM admission_fees afs 
         JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id 
         WHERE afs.admission_id = '$studentList->student_id' 
@@ -458,7 +458,7 @@ while($studentList = $getStudentListQry->fetchObject()){
         $concession = $paidFeeInfo['concession'];
     }
 
-    $getTransportPendingQry = $connect->query("SELECT COALESCE( ( SUM(acp.due_amount) - (SELECT (SUM(tafd.fee_received) + SUM(tafd.scholarship)) FROM transport_admission_fees_details tafd JOIN transport_admission_fees taf ON tafd.admission_fees_ref_id = taf.id WHERE tafd.area_creation_particulars_id = acp.particulars_id && taf.academic_year = '$academicyear' && taf.admission_id ='$studentList->student_id') ), 0) - COALESCE((SELECT scholarship_amount FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='transport' AND fees_id = acp.particulars_id),0) AS transport_pending, COALESCE(SUM(acp.due_amount),0) AS transportTotal from area_creation ac JOIN area_creation_particulars acp ON ac.area_id = acp.area_creation_id WHERE ac.area_id = '$transport_id' ORDER BY acp.particulars_id ASC ");
+    $getTransportPendingQry = $connect->query("SELECT COALESCE( ( SUM(acp.due_amount) - (SELECT (SUM(tafd.fee_received) + SUM(tafd.scholarship)) FROM transport_admission_fees_details tafd JOIN transport_admission_fees taf ON tafd.admission_fees_ref_id = taf.id WHERE tafd.area_creation_particulars_id = acp.particulars_id && taf.academic_year = '$academicyear' && taf.admission_id ='$studentList->student_id') ), 0) - COALESCE((SELECT SUM(scholarship_amount) FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='transport' AND fees_id = acp.particulars_id),0) AS transport_pending, COALESCE(SUM(acp.due_amount),0) AS transportTotal from area_creation ac JOIN area_creation_particulars acp ON ac.area_id = acp.area_creation_id WHERE ac.area_id = '$transport_id' ORDER BY acp.particulars_id ASC ");
     $transportPendingInfo = $getTransportPendingQry->fetch();
     $transport_pending = $transportPendingInfo['transport_pending'];
     $transportTotal = $transportPendingInfo['transportTotal'];
