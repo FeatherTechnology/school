@@ -514,7 +514,7 @@ $(function(){ //ONLOAD Function
     getResetTempAdmTable();// Get Temp Admission Table/
     
     setTimeout(() => {
-      // extracur();
+      extracur();
 
       var stdidOnEdit = $('#stdidOnEdit').val();
       if(stdidOnEdit > 0){
