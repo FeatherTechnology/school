@@ -84,12 +84,12 @@ function getFeesTableFunc(){
   // getExtraCurricularActivityDetails(admissionFormId, academicYear, medium, studentType, standard);
   // getAmenityFeesDetails(admissionFormId, academicYear, medium, studentType, standard);
 
-  setTimeout(() => { 
-    functionAfterAjax();
-    getTotalFeeToBeCollected();//Fees to be collected total.
-    getScholarshipTotal(); //Scholarship amount.
+  // setTimeout(() => { 
+  //   functionAfterAjax();
+  //   getTotalFeeToBeCollected();//Fees to be collected total.
+  //   getScholarshipTotal(); //Scholarship amount.
     
-  }, 1500);
+  // }, 1500);
 }
 
 function getReceiptCode(){
@@ -114,9 +114,9 @@ function getGroupFeesDetails(admissionFormId, academicYear, medium, studentType,
     success:(function(reponse){
       $('#temp_group_fees').empty();
       $('#temp_group_fees').html(reponse);
-
-      getExtraCurricularActivityDetails(admissionFormId, academicYear, medium, studentType, standard, student_extra_curricular);
     })
+  }).then(function(){
+    getExtraCurricularActivityDetails(admissionFormId, academicYear, medium, studentType, standard, student_extra_curricular);
   })
 }
 
@@ -128,9 +128,9 @@ function getExtraCurricularActivityDetails(admissionFormId, academicYear, medium
     success:(function(reponse){
       $('#temp_extra_curricular_fees').empty();
       $('#temp_extra_curricular_fees').html(reponse);
-
-      getAmenityFeesDetails(admissionFormId, academicYear, medium, studentType, standard);
     })
+  }).then(function(){
+    getAmenityFeesDetails(admissionFormId, academicYear, medium, studentType, standard);
   })
 }
 
@@ -143,6 +143,10 @@ function getAmenityFeesDetails(admissionFormId, academicYear, medium, studentTyp
       $('#temp_amenity_fees').empty();
       $('#temp_amenity_fees').html(reponse);
     })
+    }).then(function(){
+      functionAfterAjax();
+      getTotalFeeToBeCollected();//Fees to be collected total.
+      getScholarshipTotal(); //Scholarship amount.
     });
 }
 
@@ -157,7 +161,7 @@ function functionAfterAjax(){
     }
   })
 
-  $('.grpfeesreceived, .grpfeesscholarship').keyup(function(){
+  $(document).on('keyup','.grpfeesreceived, .grpfeesscholarship',function(){
     var feeamnt = parseInt($(this).parent().parent().find('.grpfeesreceived').val());
     var scholaramnt = parseInt($(this).parent().parent().find('.grpfeesscholarship').val());
     var grpfeeamnt = parseInt($(this).parent().parent().find('.grpfeesamnt').val());
@@ -183,7 +187,7 @@ function functionAfterAjax(){
 
   }); //Group fee calculation END.
 
-  $('.extrafeesreceived, .extrafeesscholar').keyup(function(){
+  $(document).on('keyup','.extrafeesreceived, .extrafeesscholar',function(){
     var extrafeereceived = parseInt($(this).parent().parent().find('.extrafeesreceived').val());
     var extrascholaramnt = parseInt($(this).parent().parent().find('.extrafeesscholar').val());
     var extrafeeamnt = parseInt($(this).parent().parent().find('.extrafeesamnt').val());
@@ -209,7 +213,7 @@ function functionAfterAjax(){
 
   }); //Extra curricular fee calculation END.
 
-  $('.amenityfeesreceived, .amenityfeesscholar').keyup(function(){
+  $(document).on('keyup','.amenityfeesreceived, .amenityfeesscholar',function(){
     var amenityfeereceived = parseInt($(this).parent().parent().find('.amenityfeesreceived').val());
     var amenityscholaramnt = parseInt($(this).parent().parent().find('.amenityfeesscholar').val());
     var amenityfeeamnt = parseInt($(this).parent().parent().find('.amenityfees').val());

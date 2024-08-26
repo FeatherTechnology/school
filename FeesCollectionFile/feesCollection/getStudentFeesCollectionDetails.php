@@ -43,12 +43,15 @@ if($getGrpFeesMasterDetailsQry->rowCount()>0){
 }
 //Close DB connection
 $getGrpFeesMasterDetailsQry->closeCursor(); 
-
+// echo "SELECT SUM(ecaf.extra_amount) as OverallExtraCurAmount 
+// FROM fees_master fm 
+// JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id 
+// JOIN student_creation stdc ON fm.standard = stdc.standard
+// WHERE fm.academic_year = '$academic_year' AND fm.medium = '$medium' AND $student_type_cndtn AND fm.standard = '$standard' AND ecaf.status = '1' AND fm.school_id ='$school_id' AND stdc.student_id = '$student_id' ";
 $getExtraCurFeesMasterDetailsQry = $connect->query("SELECT SUM(ecaf.extra_amount) as OverallExtraCurAmount 
-FROM fees_master fm 
-JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id 
-JOIN student_creation stdc ON fm.standard = stdc.standard
-WHERE fm.academic_year = '$academic_year' AND fm.medium = '$medium' AND $student_type_cndtn AND fm.standard = '$standard' AND ecaf.status = '1' AND fm.school_id ='$school_id' AND stdc.student_id = '$student_id' "); 
+FROM extra_curricular_activities_fee ecaf 
+JOIN student_creation stdc ON FIND_IN_SET(ecaf.extra_fee_id, stdc.extra_curricular) 
+WHERE ecaf.status = '1' AND stdc.student_id ='$student_id' "); 
 if($getExtraCurFeesMasterDetailsQry->rowCount() > 0){
     $overallExtraCurAmount = $getExtraCurFeesMasterDetailsQry->fetch()['OverallExtraCurAmount'];
 }else{
