@@ -62,6 +62,7 @@ if (isset($_POST['student_id'])) {
 
 
     ////Transport fees receipt details. ///////////////////////////////
+   
         $getTransportPaidDetails = $connect->query("SELECT taf.id, taf.receipt_date, taf.receipt_no, taf.academic_year, acp.particulars, tafd.fee_received
         FROM `transport_admission_fees` taf 
         JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id 

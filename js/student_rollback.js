@@ -1,15 +1,71 @@
 $(document).ready(function () {
-  
+
   // Select all checkboxes when the "select all" checkbox is checked
   $('#select-all').click(function () {
     $('.checkbox').prop('checked', this.checked);
     updateUnselectedTable();
-    if(this.checked == true){
+    if (this.checked == true) {
       // hide the unselected table if select all student.
       $('#unselected_table').hide();
     }
   });
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  $('#period_from').attr('min', currentYear + '-01-01');
+  $('#period_from').on('change', function () {
+    // Get the selected Period From date
+    var periodFrom = $(this).val();
 
+    // Set the min attribute of Period To to the selected Period From date
+    $('#period_to').attr('min', periodFrom);
+  });
+
+
+  // Add event listeners to the Period From and Period To inputs
+  $('#period_from').on('change', updateAcademicPeriod);
+  $('#period_to').on('change', updateAcademicPeriod);
+
+  //////////////////////////////Academic Modal/////////////////////////////////
+  $('#submit_academic').click(function (event) {
+    event.preventDefault();
+    $(this).attr('disabled', true);
+    // Get values from input fields
+    let period_from = $('#period_from').val();
+    let period_to = $('#period_to').val();
+    let academic_period = $('#academic_period').val();
+
+    // Combined Validation
+    if (period_from.trim() === "" || period_to.trim() === "" || academic_period.trim() === "") {
+      alert("Please fill out all mandatory fields.");
+      $('#submit_academic').attr('disabled', false);
+      return;
+    }
+
+    // If all fields are valid, proceed with AJAX submission
+    $.ajax({
+      type: 'POST',
+      data: { 'period_from': period_from, 'period_to': period_to, 'academic_period': academic_period },
+      url: 'ajaxFiles/sumbitAcademicInfo.php',
+      dataType: 'json',
+      success: function (result) {
+        $('#submit_academic').attr('disabled', false);
+        if (result == '0') {
+          $('#period_from').val('');
+          $('#period_to').val('');
+          $('#academic_period').val('');
+          alert("Academic Period is Already Added");
+        } else if (result == '1') {
+          alert("Academic Info Added Successfully!");
+        } else {
+          alert("Academic Info Addition Failed!");
+        }
+
+      }
+    });
+
+  });
+
+  /////////////////////////////////////////////////////////////////////////////
   $('#submitFailList').click(function () {
     if ($('.checkbox').length === $('.checkbox:checked').length) {
       alert('All students are pass');
@@ -42,7 +98,7 @@ $(document).ready(function () {
           }
         }
       });
-    }else{
+    } else {
       $('#section').empty();
       // getStudentListForRollBack('','', 1); //1 =showing All students in initially.
     }
@@ -52,38 +108,44 @@ $(document).ready(function () {
     var standard = $("#standard").val();
     var section = $("#section").val();
     if (standard.length != 0 && section.length != 0) {
-      getStudentListForRollBack(standard,section, 2); //2 =selecting standard and section to show particular std students.
+      getStudentListForRollBack(standard, section, 2); //2 =selecting standard and section to show particular std students.
     }
   });
-
-  $('#submitschool_creation').click(function(e){
+  $(document).on('click', '.academicDeleteBtn', function () {
+    var data = $(this).data('id').split('_');
+    var year_id = data[0];
+    var academic_year = data[1];
+    getAcademicDelete(year_id,academic_year);
+    return;
+  });
+  $('#submitschool_creation').click(function (e) {
     event.preventDefault();
 
-    var studentID = $('input[type="checkbox"]:checked').map(function() {
+    var studentID = $('input[type="checkbox"]:checked').map(function () {
       return $(this).closest('tr').find('input[name="studentId[]"]').val();
-  }).get();
-    var standardID = $('input[type="checkbox"]:checked').map(function() {
+    }).get();
+    var standardID = $('input[type="checkbox"]:checked').map(function () {
       return $(this).closest('tr').find('input[name="stdId[]"]').val();
-  }).get();
+    }).get();
 
     $.ajax({
       type: 'POST',
-      data: {'student_id': studentID, 'standard_id': standardID},
+      data: { 'student_id': studentID, 'standard_id': standardID },
       url: 'ajaxFiles/submitRollBackForm.php',
       dataType: 'json',
-      success: function(result) {
-        if(result.status == 'success'){
+      success: function (result) {
+        if (result.status == 'success') {
           alert("Successfully Roll Backed!");
-          
-        }else{
+
+        } else {
           alert("Roll Back Failed!");
         }
 
         var standard = $("#standard").val();
-        if(standard !=''){
+        if (standard != '') {
           var section = $("#section").val();
           getStudentListForRollBack(standard, section, 2)
-        }else{
+        } else {
           // getStudentListForRollBack('', '', 1)
         }
         // window.location.href= "student_rollback.php";
@@ -102,7 +164,7 @@ $(function () {
 
 
 function getStandardList() { //Getting standard list from database.
-  var hrCls = ['13','19','20','21','22','23'];
+  var hrCls = ['13', '19', '20', '21', '22', '23'];
   $.ajax({
     type: 'POST',
     data: {},
@@ -113,7 +175,7 @@ function getStandardList() { //Getting standard list from database.
       $('#standard').append("<option value=''>Select Standard</option>");
       for (var i = 0; i < response.length; i++) {
         var stdIdString = response[i]['std_id'].toString(); // Convert std_id to string
-        if (hrCls.indexOf(stdIdString) === -1) { 
+        if (hrCls.indexOf(stdIdString) === -1) {
           $('#standard').append("<option value='" + response[i]['std_id'] + "'>" + response[i]['std'] + "</option>");
         }
       }
@@ -121,61 +183,134 @@ function getStandardList() { //Getting standard list from database.
   });
 }
 
-  // Function to update the unselected data table
-  function updateUnselectedTable() {
-    // Clear the existing rows in the unselected table
-    $('#unselected_tbody').empty();
+// Function to update the unselected data table
+function updateUnselectedTable() {
+  // Clear the existing rows in the unselected table
+  $('#unselected_tbody').empty();
 
-    // Iterate over the data and check if each row's checkbox is checked or not
-    $('#student_rollback_info tbody tr').each(function () {
-      var checkbox = $(this).find('.checkbox'); // Find the checkbox element within the row
+  // Iterate over the data and check if each row's checkbox is checked or not
+  $('#student_rollback_info tbody tr').each(function () {
+    var checkbox = $(this).find('.checkbox'); // Find the checkbox element within the row
 
-      // Check if the checkbox is not checked
-      if (!checkbox.prop('checked')) {
-        var rowData = $(this).find('td:not(:first-child):not(:last-child)').map(function () {
-          return $(this).text();
-        }).get(); // Get the data of the unselected row excluding the first and last columns
+    // Check if the checkbox is not checked
+    if (!checkbox.prop('checked')) {
+      var rowData = $(this).find('td:not(:first-child):not(:last-child)').map(function () {
+        return $(this).text();
+      }).get(); // Get the data of the unselected row excluding the first and last columns
 
-        var newRow = $('<tr></tr>'); // Create a new row for the unselected table
-        // Iterate over the row data and build the HTML table cells
-        rowData.forEach(function (cellData) {
-          newRow.append('<td>' + cellData + '</td>'); // Append the cell to the row
+      var newRow = $('<tr></tr>'); // Create a new row for the unselected table
+      // Iterate over the row data and build the HTML table cells
+      rowData.forEach(function (cellData) {
+        newRow.append('<td>' + cellData + '</td>'); // Append the cell to the row
+      });
+
+      $('#unselected_tbody').append(newRow); // Append the row to the unselected table body
+    }
+  });
+
+}
+
+function getStudentListForRollBack(standard, section, type) {
+  $.ajax({
+    url: 'ajaxStudentRollBackFetch.php',
+    type: 'post',
+    data: { "standard": standard, "section": section, "type": type },
+    //  dataType: 'json',
+    success: function (response) {
+      $('#studentRollBackList').empty();
+      $('#studentRollBackList').html(response);
+
+      funcAfterAjaxCall();//initializing some function  after ajax call completes successfully.
+
+      // hide the unselected table if select all student.
+      $('#unselected_table').hide();
+    }
+  });
+}
+
+function funcAfterAjaxCall() {
+  // Select the "select all" checkbox if all checkboxes are checked
+  $('.checkbox').click(function () {
+    if ($('.checkbox:checked').length === $('.checkbox').length) {
+      $('#select-all').prop('checked', true);
+      // hide the unselected table if select all student.
+      $('#unselected_table').hide();
+    } else {
+      $('#select-all').prop('checked', false);
+    }
+    updateUnselectedTable();
+  });
+}
+function updateAcademicPeriod() {
+  // Get the values from the Period From and Period To fields
+  const periodFrom = $('#period_from').val();
+  const periodTo = $('#period_to').val();
+
+  // Check if both dates are selected
+  if (periodFrom && periodTo) {
+    // Extract the years from both dates
+    const fromYear = new Date(periodFrom).getFullYear();
+    const toYear = new Date(periodTo).getFullYear();
+
+    // Set the Academic Period as 'fromYear-toYear'
+    $('#academic_period').val(`${fromYear}-${toYear}`);
+  }
+}
+
+function getAcademicTable() {
+  $.ajax({
+    url: 'ajaxFiles/getAcademicTable.php', // Ensure this is the correct path to your PHP script
+    type: 'POST',
+    dataType: 'json',
+    success: function (response) {
+      if (response.length > 0) {
+        var tbody = $('#academic_creation_table tbody');
+        tbody.empty(); // Clear existing rows
+
+        // Iterate over the response array and append each row to the table
+        $.each(response, function (index, item) {
+          var serial = item.serial; // Serial number from PHP
+          var period_from = item.period_from;
+          var period_to = item.period_to;
+          var academic_period = item.academic_year;
+          var action = item.action;
+
+          var row = '<tr>' +
+            '<td>' + serial + '</td>' +
+            '<td>' + period_from + '</td>' +
+            '<td>' + period_to + '</td>' +
+            '<td>' + academic_period + '</td>' +
+            '<td>' + action + '</td>' +
+            '</tr>';
+
+          tbody.append(row);
         });
 
-        $('#unselected_tbody').append(newRow); // Append the row to the unselected table body
-      }
-    });
+        // Clear the form fields after table load
+        $('#period_from').val('');
+        $('#period_to').val('');
+        $('#academic_period').val('');
 
-  }
-
-  function getStudentListForRollBack(standard, section, type){
-    $.ajax({
-      url: 'ajaxStudentRollBackFetch.php',
-      type: 'post',
-      data: { "standard": standard, "section": section, "type": type },
-      //  dataType: 'json',
-      success: function (response) {
-        $('#studentRollBackList').empty();
-        $('#studentRollBackList').html(response);
-
-        funcAfterAjaxCall();//initializing some function  after ajax call completes successfully.
-
-        // hide the unselected table if select all student.
-        $('#unselected_table').hide();
-      }
-    });
-  }
-
-  function funcAfterAjaxCall(){
-    // Select the "select all" checkbox if all checkboxes are checked
-    $('.checkbox').click(function () {
-      if ($('.checkbox:checked').length === $('.checkbox').length) {
-        $('#select-all').prop('checked', true);
-        // hide the unselected table if select all student.
-        $('#unselected_table').hide();
       } else {
-        $('#select-all').prop('checked', false);
+        console.log("No data found.");
       }
-      updateUnselectedTable();
-    });
-  }
+    },
+    error: function (xhr, status, error) {
+      console.error('AJAX Error: ' + status + ' ' + error);
+    }
+  });
+}
+function getAcademicDelete(year_id,academic_year) {
+  $.post('ajaxFiles/deleteAcademic.php', { year_id,academic_year }, function (result) {
+    if (result == '0') {
+      alert('Warning', 'Have to maintain atleast one Family Info');
+    } else if (result == '1') {
+      alert('Success', 'Academic Info Deleted Successfully!');
+      getAcademicTable();
+    } else if (result == '2') {
+      alert('Access Denied', 'Academic Member Already Used');
+    } else {
+      alert('Warning', 'Error occur While Delete Family Info.');
+    }
+  }, 'json');
+}

@@ -6,7 +6,7 @@ if (isset($_SESSION["userid"])) {
     $year_id = $_SESSION["academic_year"];
 }
 
-if(isset($_GET['typeid'])){
+if (isset($_GET['typeid'])) {
     $typeid = $_GET['typeid'];
 }
 
@@ -72,8 +72,8 @@ if (isset($_POST['SubmitFeesConcession'])) {
                                     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12"></div>
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div class="form-group radiobtncls">
-                                            <input type="radio" tabindex="1" class="general" name="concessiontype" id="concession_type" value="GeneralConcession" > &nbsp;&nbsp; <label for="general_concession">General Concession </label> &nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input type="radio" tabindex="2" class="referral" name="concessiontype" id="concession_type" value="ReferalConcession" > &nbsp;&nbsp; <label for="referal_concession">Referal Concession </label> &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="radio" tabindex="1" class="general" name="concessiontype" id="concession_type" value="GeneralConcession"> &nbsp;&nbsp; <label for="general_concession">General Concession </label> &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="radio" tabindex="2" class="referral" name="concessiontype" id="concession_type" value="ReferalConcession"> &nbsp;&nbsp; <label for="referal_concession">Referal Concession </label> &nbsp;&nbsp;&nbsp;&nbsp;
                                             <input type="radio" tabindex="3" name="concessiontype" id="concession_type" value="ManualConcession"> &nbsp;&nbsp; <label for="manual_concession">Manual Concession </label>
                                         </div>
                                     </div>
@@ -130,8 +130,12 @@ if (isset($_POST['SubmitFeesConcession'])) {
                                         <label>Medium</label>
                                         <select class="form-control select2" id="medium" name="medium">
                                             <option value="0">Select Medium</option>
-                                            <option value="1" <?php if (isset($medium)) { if ($medium == "1") echo 'selected'; } ?>>Tamil</option>
-                                            <option value="2" <?php if (isset($medium)) { if ($medium == "2") echo 'selected'; } ?>>English</option>
+                                            <option value="1" <?php if (isset($medium)) {
+                                                                    if ($medium == "1") echo 'selected';
+                                                                } ?>>Tamil</option>
+                                            <option value="2" <?php if (isset($medium)) {
+                                                                    if ($medium == "2") echo 'selected';
+                                                                } ?>>English</option>
                                         </select>
                                     </div>
                                 </div>
@@ -210,24 +214,24 @@ if (isset($_POST['SubmitFeesConcession'])) {
 </form>
 </div>
 
-<form  method="post" action="fees_concession" >
-<div class="modal fade addGeneralConcession" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content" style="background-color: white">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myLargeModalLabel">Concession Approval Screen</h5>
-                <button type="button" class="close" id="temp_no_empty" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h5 class="modal-title" id="divtitle"> </h5>
-                <div id="showGeneralConcessionDiv"> </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<form method="post" action="fees_concession">
+    <div class="modal fade addGeneralConcession" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="background-color: white">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myLargeModalLabel">Concession Approval Screen</h5>
+                    <button type="button" class="close" id="temp_no_empty" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="modal-title" id="divtitle"> </h5>
+                    <div id="showGeneralConcessionDiv"> </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </form>

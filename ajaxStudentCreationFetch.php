@@ -20,7 +20,8 @@ $column = array(
     'status'
 );
 
-$query = "SELECT stdc.*, sc.standard as std_name, stdc.admission_number, stdc.facility FROM student_creation stdc JOIN standard_creation sc ON stdc.standard = sc.standard_id WHERE  stdc.school_id='$school_id' AND stdc.status = '0' ";
+$query = "SELECT stdc.*, sc.standard as std_name, stdc.admission_number, stdc.facility FROM student_creation stdc JOIN student_history sh ON stdc.student_id = sh.student_id JOIN standard_creation sc ON sh.standard = sc.standard_id WHERE  stdc.school_id='$school_id' AND stdc.status = '0'AND sh.academic_year = '$year_id'";
+
 if($_POST['search']!="");
 {
     if (isset($_POST['search'])) {
@@ -101,7 +102,7 @@ foreach ($result as $row) {
         <ul class='dropdown-menu'>
         <li><a id='editemai' class='dropdown-item' href='student_creation&upd=$id'><span class='icon-border_color'></span> Edit</a></li>
         <li><input type='hidden' name='student_id1' id='student_id1' value='$id'></li>
-        <li><button type='button' data-id='$id' data-toggle='modal' data-target='#rejectModal' class='btn rejectpo' title='Delete student'><span class='icon-x-circle'></span>&nbsp;Delete</button></li>
+        <li><button type='button' data-id='$id' data-toggle='modal' data-target='#rejectModal' class='btn rejectpo' id='rejectStud' title='Delete student'><span class='icon-x-circle'></span>&nbsp;Delete</button></li>
         <li><button type='button' data-no='$admissionNo' data-id='$id' data-toggle='modal' data-target='.attachmentModal' class='btn attachmentFiles' title='student Attachment'><span class='icon-attachment1'></span>&nbsp;Attachments</button></li>
         <li><a class='dropdown-item' href='pay_fees&pagename=stdcreation&upd=$id'><span class='icon-dollar-sign'></span> Pay Fees</a></li>
         <li><a class='dropdown-item' href='last_year_fees_pay&pagename=stdcreation&upd=$id'><span class='icon-dollar-sign'></span> Last Year Fees</a></li>";

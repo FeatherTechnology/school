@@ -80,11 +80,11 @@ if (isset($_GET['upd'])) {
         $studentrollno = $getTempAdmissionDetails['studentrollno'];
         $student_name = $getTempAdmissionDetails['student_name'];
         $standard_name = $getTempAdmissionDetails['standard_name'];
-        $stdid = $getTempAdmissionDetails['standard'];
-        $year_id = $getTempAdmissionDetails['year_id'];
+        $stdid = $getTempAdmissionDetails['standards'];
+        $year_id = $getTempAdmissionDetails['academic_year'];
         $medium = $getTempAdmissionDetails['medium'];
         $studentstype = $getTempAdmissionDetails['studentstype'];
-        $extra_curricular = $getTempAdmissionDetails['extra_curricular'];
+        $extra_curricular = $getTempAdmissionDetails['extra_curr'];
     }
 }
 ?>

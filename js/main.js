@@ -158,3 +158,21 @@ jQuery(function ($) {
 		}
 	});
 });
+function swalConfirm(title, text, functionname, idvalue, noCallback) {
+	Swal.fire({
+		title: title,
+		text: text,
+		icon: 'question',
+		showCancelButton: true,
+		confirmButtonColor: '#009688',
+		cancelButtonColor: '#d33',
+		cancelButtonText: 'No',
+		confirmButtonText: 'Yes'
+	}).then((result) => {
+		if (result.isConfirmed) {
+			functionname(idvalue);
+		} else if (noCallback) {
+			noCallback();
+		}
+	});
+}

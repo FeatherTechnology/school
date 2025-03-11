@@ -72,11 +72,12 @@ $(function(){
   getReceiptCode(); //Receipt Number;
   setTimeout(() => {
     getFeesTableFunc();
-  }, 1000);
+  }, 6000);
 });
 
 function getFeesTableFunc(){
   var acdmcyear = $('#academic_year').val().split('-');
+  console.log(acdmcyear)
   var academicYear = (acdmcyear[0]-1) +'-'+ (acdmcyear[1]-1);//getting current academic year and minus  one from it to show previous year.
   var admissionFormId = $('#admission_form_id').val();
   // var academicYear = $('#student_year_id').val();
@@ -93,7 +94,7 @@ function getFeesTableFunc(){
     getTotalFeeToBeCollected();//Fees to be collected total.
     getScholarshipTotal(); //Scholarship amount.
     
-  }, 1500);
+  }, 5000);
 }
 
 function getReceiptCode(){

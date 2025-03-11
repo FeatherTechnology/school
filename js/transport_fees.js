@@ -77,7 +77,7 @@ function getFeesTableFunc(){
     getTotalFeeToBeCollected();//Fees to be collected total.
     getScholarshipTotal(); //Scholarship amount.
     
-  }, 1500);
+  }, 5000);
 }
 
 function getReceiptCode(){

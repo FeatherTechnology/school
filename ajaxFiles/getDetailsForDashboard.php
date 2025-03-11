@@ -4,11 +4,11 @@ include "../ajaxconfig.php";
 if(isset($_SESSION['school_id'])){
     $school_id = $_SESSION['school_id'];
 }
-
+$academic_year = $_SESSION['academic_year'];
 $getStudentCount = $connect->query("SELECT 
 SUM(CASE WHEN gender='Male' THEN 1 ELSE 0 END) AS boysCount, 
 SUM(CASE WHEN gender='Female' THEN 1 ELSE 0 END) AS girlsCount    
-FROM `student_creation` WHERE status = 0 && school_id = '$school_id' ");
+FROM `student_creation` WHERE status = 0 && school_id = '$school_id' AND year_id ='$academic_year' ");
 $studentInfo = $getStudentCount->fetchObject();
 
 

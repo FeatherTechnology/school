@@ -516,7 +516,23 @@ while($reftransportFeeDetailsInfo = $reftransportFeeDetailsQry->fetch()){
 
 <?php } ?>
 
-<?php
-if($grpFeeDetailsQry->rowCount() > 0 || $extraFeeDetailsQry->rowCount() > 0 || $amenityFeeDetailsQry->rowCount() > 0 || $transportFeeDetailsQry->rowCount() > 0 ){ ?>
-<center><button type="submit" name="SubmitFeesConcession" id="SubmitFeesConcession" class="btn btn-success" value="Submit" tabindex="9"><span class="icon-keyboard_tab"></span>&nbsp;Approve This Concession</button></center>
+<?php if($grpFeeDetailsQry->rowCount() > 0 || $extraFeeDetailsQry->rowCount() > 0 || $amenityFeeDetailsQry->rowCount() > 0 || $transportFeeDetailsQry->rowCount() > 0 ){ ?>
+    <center>
+        <button type="submit" name="SubmitFeesConcession" id="SubmitFeesConcession" class="btn btn-success" value="Submit" tabindex="9" onclick="disableButton(this)">
+            <span class="icon-keyboard_tab"></span>&nbsp;Approve This Concession
+        </button>
+    </center>
 <?php } ?>
+
+<script>
+    function disableButton(button) {
+        button.classList.add('disabled-button');
+    }
+</script>
+
+<style>
+    .disabled-button {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+</style>

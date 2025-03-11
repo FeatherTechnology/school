@@ -60,7 +60,7 @@ while($standardList = $getStandardListQry->fetchObject()){
             student_creation
         WHERE
             standard = '$standardList->standard_id' AND year_id = '$academicyear' AND
-        status = 0 AND school_id = '$school_id'
+        leaving_term!=1 AND leaving_term!=5  AND school_id = '$school_id'
     )
     ) -(
     SELECT
@@ -149,7 +149,7 @@ while($standardList = $getStandardListQry->fetchObject()){
         FROM
             student_creation
         WHERE
-            standard = '$standardList->standard_id' AND year_id = '$academicyear' AND status = 0 AND school_id = '$school_id' AND transportarearefid = ac.area_id
+            standard = '$standardList->standard_id' AND year_id = '$academicyear' AND leaving_term!=1 AND leaving_term!=5  AND school_id = '$school_id' AND transportarearefid = ac.area_id
         )
     ) -(
         SELECT
@@ -172,7 +172,7 @@ while($standardList = $getStandardListQry->fetchObject()){
     JOIN student_creation sc ON
         sc.transportarearefid = ac.area_id
     WHERE
-        ac.year_id = '$academicyear' AND sc.standard = '$standardList->standard_id' AND sc.status = 0 AND sc.school_id = '$school_id'
+        ac.year_id = '$academicyear' AND sc.standard = '$standardList->standard_id' AND  leaving_term!=1 AND leaving_term!=5  AND sc.school_id = '$school_id'
     ORDER BY acp.particulars_id ASC ");
     $transport_pending = array();
     while($transportPendingInfo = $getTransportPendingQry->fetch()){

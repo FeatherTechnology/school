@@ -32,7 +32,7 @@ if($CheckReceiptQry->rowCount() > 0){
     FROM student_creation sc
     JOIN area_creation ac ON sc.transportarearefid = ac.area_id
     JOIN area_creation_particulars acp ON ac.area_id = acp.area_creation_id
-    WHERE sc.student_id = '$admissionFormId' AND ac.status = '0' ");
+    WHERE sc.student_id = '$admissionFormId' AND ac.status = '0' AND ac.year_id ='$academicYear' ");
 
 }
 
