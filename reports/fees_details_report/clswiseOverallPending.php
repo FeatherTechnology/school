@@ -55,12 +55,13 @@ while($standardList = $getStandardListQry->fetchObject()){
     (
         COALESCE(gcf.grp_amount, 0) *(
         SELECT
-            COUNT(*)
+         COUNT(sh.student_id) AS student_count
         FROM
-            student_creation
+            student_creation sc
+     LEFT JOIN student_history sh ON sc.student_id = sh.student_id
         WHERE
-            standard = '$standardList->standard_id' AND year_id = '$academicyear' AND
-        leaving_term!=1 AND leaving_term!=5  AND school_id = '$school_id'
+           sh.standard = '$standardList->standard_id' AND sh.academic_year = '$academicyear' AND
+       sc.leaving_term!=1 AND sc.leaving_term!=5  AND sc.school_id = '$school_id'
     )
     ) -(
     SELECT
@@ -73,8 +74,9 @@ while($standardList = $getStandardListQry->fetchObject()){
         afd.admission_fees_ref_id = af.id
     JOIN student_creation sc ON
         sc.student_id = af.admission_id
+    LEFT JOIN student_history sh ON sc.student_id = sh.student_id
     WHERE
-        afd.fees_id = gcf.grp_course_id && afd.fees_table_name = 'grptable' AND sc.standard = '$standardList->standard_id' AND sc.school_id = '$school_id'
+        afd.fees_id = gcf.grp_course_id && afd.fees_table_name = 'grptable' AND sh.standard = '$standardList->standard_id' AND sc.school_id = '$school_id'
     ) AS termPending_for_standard
     FROM
         fees_master fm
@@ -128,8 +130,9 @@ while($standardList = $getStandardListQry->fetchObject()){
             afd.admission_fees_ref_id = af.id
         JOIN student_creation sc ON
             sc.student_id = af.admission_id
+            LEFT JOIN student_history sh ON sc.student_id = sh.student_id
         WHERE
-            afd.fees_id = af.amenity_fee_id && afd.fees_table_name = 'amenitytable' AND sc.standard = '$standardList->standard_id'
+            afd.fees_id = af.amenity_fee_id && afd.fees_table_name = 'amenitytable' AND sh.standard = '$standardList->standard_id'
         ) AS bookpending_for_standard
     FROM
         fees_master fm
@@ -145,11 +148,12 @@ while($standardList = $getStandardListQry->fetchObject()){
     (
         COALESCE(acp.due_amount, 0) *(
         SELECT
-            COUNT(*)
+            COUNT(sh.student_id)
         FROM
-            student_creation
+            student_creation sc
+            LEFT JOIN student_history sh ON sc.student_id = sh.student_id
         WHERE
-            standard = '$standardList->standard_id' AND year_id = '$academicyear' AND leaving_term!=1 AND leaving_term!=5  AND school_id = '$school_id' AND transportarearefid = ac.area_id
+           sh.standard = '$standardList->standard_id' AND sh.academic_year = '$academicyear' AND sc.leaving_term!=1 AND sc.leaving_term!=5  AND sc.school_id = '$school_id' AND sh.transportarearefid = ac.area_id
         )
     ) -(
         SELECT
@@ -171,8 +175,9 @@ while($standardList = $getStandardListQry->fetchObject()){
         ac.area_id = acp.area_creation_id
     JOIN student_creation sc ON
         sc.transportarearefid = ac.area_id
+        LEFT JOIN student_history sh ON sc.student_id = sh.student_id
     WHERE
-        ac.year_id = '$academicyear' AND sc.standard = '$standardList->standard_id' AND  leaving_term!=1 AND leaving_term!=5  AND sc.school_id = '$school_id'
+        ac.year_id = '$academicyear' AND sh.standard = '$standardList->standard_id' AND  sc.leaving_term!=1 AND sc.leaving_term!=5  AND sc.school_id = '$school_id'
     ORDER BY acp.particulars_id ASC ");
     $transport_pending = array();
     while($transportPendingInfo = $getTransportPendingQry->fetch()){

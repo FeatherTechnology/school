@@ -77,7 +77,6 @@ $(function(){
 
 function getFeesTableFunc(){
   var acdmcyear = $('#academic_year').val().split('-');
-  console.log(acdmcyear)
   var academicYear = (acdmcyear[0]-1) +'-'+ (acdmcyear[1]-1);//getting current academic year and minus  one from it to show previous year.
   var admissionFormId = $('#admission_form_id').val();
   // var academicYear = $('#student_year_id').val();
@@ -89,12 +88,12 @@ function getFeesTableFunc(){
   // getExtraCurricularActivityDetails(admissionFormId, academicYear, medium, studentType, standard);
   // getAmenityFeesDetails(admissionFormId, academicYear, medium, studentType, standard);
 
-  setTimeout(() => { 
-    functionAfterAjax();
-    getTotalFeeToBeCollected();//Fees to be collected total.
-    getScholarshipTotal(); //Scholarship amount.
+  // setTimeout(() => { 
+  //   functionAfterAjax();
+  //   getTotalFeeToBeCollected();//Fees to be collected total.
+  //   getScholarshipTotal(); //Scholarship amount.
     
-  }, 5000);
+  // }, 8000);
 }
 
 function getReceiptCode(){
@@ -147,14 +146,30 @@ function getAmenityFeesDetails(admissionFormId, academicYear, medium, studentTyp
     success:(function(reponse){
       $('#temp_amenity_fees').empty();
       $('#temp_amenity_fees').html(reponse);
+      getTransFeesDetails(admissionFormId, academicYear, medium, studentType, standard, student_extra_curricular)
     })
     });
 }
 
+function getTransFeesDetails(admissionFormId, academicYear, medium, studentType, standard, student_extra_curricular){
+  $.ajax({
+    type : 'POST',
+    url : 'FeesCollectionFile/grp/getTransportFeesDetailsForLastYear.php',
+    data : {'admissionFormId': admissionFormId,'academicYear': academicYear,'medium': medium,'studentType': studentType,'standard': standard},
+    success:(function(reponse){
+      $('#last_year_transport_fees').empty();
+      $('#last_year_transport_fees').html(reponse);
+    })
+  }).then(function(){
+    functionAfterAjax();
+    getTotalFeeToBeCollected();//Fees to be collected total.
+    getScholarshipTotal(); //Scholarship amount.
+  });
+}
 function functionAfterAjax(){
 
   //Check Amount, if 0 then set row as readonly
-  $('.grpfeesamnt, .extrafeesamnt, .amenityfees').each(function(){
+  $('.grpfeesamnt, .extrafeesamnt, .amenityfees, .transportfeeslastamnt').each(function(){
 
     var row = $(this).closest('tr');
     if (parseFloat($(this).val()) <= 0) {
@@ -240,6 +255,32 @@ function functionAfterAjax(){
 
   }); //Amenity fee calculation END.
 
+  $('.transportfeeslastreceived, .transportfeeslastscholarship').keyup(function(){
+
+    var transportfeereceived = parseInt($(this).parent().parent().find('.transportfeeslastreceived').val());
+    var transportcholaramnt = parseInt($(this).parent().parent().find('.transportfeeslastscholarship').val());
+    var transportfeeamnt = parseInt($(this).parent().parent().find('.transportfeeslastamnt').val());
+    var totalCollectTransportFees = transportfeereceived + transportcholaramnt;
+    var transportbalanceFees = transportfeeamnt - (transportfeereceived + transportcholaramnt);
+    
+    if(totalCollectTransportFees > transportfeeamnt){
+      alert('Kindly Enter Less than or equal to Fees Amount');
+      $(this).val("0");
+      //To recalculate the balance to paid if amount entered greater value.
+      var transportfeereceived = parseInt($(this).parent().parent().find('.transportfeeslastreceived').val());
+      var extrascholaramnt = parseInt($(this).parent().parent().find('.transportfeeslastscholarship').val());
+      var transportfeeamnt = parseInt($(this).parent().parent().find('.transportfeeslastamnt').val());
+      var transportbalanceFees = transportfeeamnt - (transportfeereceived + extrascholaramnt);
+      $(this).parent().parent().find('.transportfeeslastbalance').val(transportbalanceFees);
+
+    }else{
+      $(this).parent().parent().find('.transportfeeslastbalance').val(transportbalanceFees);
+
+      getScholarshipTotal(); //Calc scholarship
+      getCollectedFeesTotal(); //Calc Fees collect.
+    }
+
+  }); //Transport fee calculation END.
 } //after ajax function END.
 
 //Total fee to be collected calc.
@@ -258,10 +299,13 @@ function getTotalFeeToBeCollected(){
   $(".amenityfees").each(function(){
     getAmenityFeesTotal += parseInt($(this).val()||0);
   }); //Amenity Fees Table
-
+  var getTransportFeesTotal = 0 ;
+  $(".transportfeeslastamnt").each(function(){
+    getTransportFeesTotal += parseInt($(this).val()||0);
+  }); //Transport Fees Table
   var getFeesReceived = parseInt($('#other_charges_recieved').val());
 
-  var totalFees = getGrpFeesTotal + getExtraFeesTotal + getAmenityFeesTotal + getFeesReceived;
+  var totalFees = getGrpFeesTotal + getExtraFeesTotal + getAmenityFeesTotal + getTransportFeesTotal + getFeesReceived;
   $('#fees_total').val(totalFees); //set value on Total fees to be collected.
 }
 
@@ -281,8 +325,11 @@ function getScholarshipTotal(){
   $(".amenityfeesscholar").each(function(){
     getAmenityScholarshipTotal += parseInt($(this).val()||0);
   }); //Amenity Fees Table
-  
-  var totalScholarship = getGrpScholarshipTotal + getExtraScholarshipTotal + getAmenityScholarshipTotal;
+  var getTransScholarshipTotal = 0 ;
+  $(".transportfeeslastscholarship").each(function(){
+    getTransScholarshipTotal += parseInt($(this).val()||0);
+  }); //Transport Fees Table
+  var totalScholarship = getGrpScholarshipTotal + getExtraScholarshipTotal + getAmenityScholarshipTotal + getTransScholarshipTotal;
   $('#fees_scholarship').val(totalScholarship); //set value on scholarship.
   var ToBeCollect = parseInt($('#fees_total').val()) - totalScholarship;
   $('#final_amount_recieved').val(ToBeCollect); //set value on Final Amount to be collected.
@@ -306,10 +353,14 @@ function getCollectedFeesTotal(){
   $(".amenityfeesreceived").each(function(){
     getAmenityCollectedFees += parseInt($(this).val()||0);
   }); //Amenity Fees Table
-  
+
+  var getTransCollectedFees = 0 ;
+  $(".transportfeeslastreceived").each(function(){
+    getTransCollectedFees += parseInt($(this).val()||0);
+  }); //Transport Fees Table
   var getFeesReceivedToAddCollect = parseInt($('#other_charges_recieved').val());
 
-  var totalCollectedFees = getGrpCollectedFees + getExtraCollectedFees + getAmenityCollectedFees + getFeesReceivedToAddCollect;
+  var totalCollectedFees = getGrpCollectedFees + getExtraCollectedFees + getAmenityCollectedFees + getTransCollectedFees + getFeesReceivedToAddCollect;
   $('#fees_collected').val(totalCollectedFees); //set value on Fees Collected.
   var balFees = parseInt($('#final_amount_recieved').val()) - totalCollectedFees;
   $('#fees_balance').val(balFees); //set value on Final Amount to be collected.

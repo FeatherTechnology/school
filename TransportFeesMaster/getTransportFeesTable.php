@@ -30,7 +30,8 @@ if($CheckReceiptQry->rowCount() > 0){
 }else{
     $feeDetailsQry = $connect->query("SELECT ac.area_id as fees_id, acp.particulars_id as particulars_id, ac.area_name, acp.particulars, acp.due_amount, acp.due_amount AS ovrlAllAmnt  
     FROM student_creation sc
-    JOIN area_creation ac ON sc.transportarearefid = ac.area_id
+  JOIN student_history sh ON sh.student_id = sc.student_id AND sh.academic_year = '$academicYear'
+    JOIN area_creation ac ON sh.transportarearefid = ac.area_id
     JOIN area_creation_particulars acp ON ac.area_id = acp.area_creation_id
     WHERE sc.student_id = '$admissionFormId' AND ac.status = '0' AND ac.year_id ='$academicYear' ");
 
@@ -38,7 +39,7 @@ if($CheckReceiptQry->rowCount() > 0){
 
 $i=0;
 while($transportFeeDetailsInfo = $feeDetailsQry->fetch()){
-    $transportConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as transportTotalScholarshipAmnt, (SELECT COALESCE(SUM(tafd.fee_received),0) FROM `transport_admission_fees` taf JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id WHERE taf.admission_id = '$admissionFormId' && taf.academic_year = '$academicYear' AND tafd.area_creation_particulars_id = '".$transportFeeDetailsInfo['particulars_id']."') AS paid_amnt FROM `fees_concession` WHERE `student_id`='$admissionFormId' && `fees_table_name`='transport' && `fees_id` = '".$transportFeeDetailsInfo['particulars_id']."' && academic_year ='$academicYear' ");
+    $transportConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as transportTotalScholarshipAmnt, (SELECT COALESCE(SUM(tafd.scholarship),0) + COALESCE(SUM(tafd.fee_received),0) FROM `transport_admission_fees` taf JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id WHERE taf.admission_id = '$admissionFormId' && taf.academic_year = '$academicYear' AND tafd.area_creation_particulars_id = '".$transportFeeDetailsInfo['particulars_id']."') AS paid_amnt FROM `fees_concession` WHERE `student_id`='$admissionFormId' && `fees_table_name`='transport' && `fees_id` = '".$transportFeeDetailsInfo['particulars_id']."' && academic_year ='$academicYear' ");
         $transportConcessionInfo = $transportConcessionQry->fetch();
         $transportTotalScholarshipAmnt = $transportConcessionInfo['transportTotalScholarshipAmnt'];
         $totalPaidAmnt = $transportConcessionInfo['paid_amnt'];

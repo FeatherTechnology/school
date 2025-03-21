@@ -56,6 +56,7 @@ $(document).ready(function () {
           alert("Academic Period is Already Added");
         } else if (result == '1') {
           alert("Academic Info Added Successfully!");
+          getAcademicTable();
         } else {
           alert("Academic Info Addition Failed!");
         }
@@ -120,20 +121,27 @@ $(document).ready(function () {
   });
   $('#submitschool_creation').click(function (e) {
     event.preventDefault();
-
+    $(this).attr('disabled', true);
     var studentID = $('input[type="checkbox"]:checked').map(function () {
       return $(this).closest('tr').find('input[name="studentId[]"]').val();
     }).get();
     var standardID = $('input[type="checkbox"]:checked').map(function () {
       return $(this).closest('tr').find('input[name="stdId[]"]').val();
     }).get();
-
+    let academic_yr = $('#academic_yr').val();
+    // Combined Validation
+    if (academic_yr.trim() === "") {
+      alert("Please fill out New Academic year.");
+      $('#submitschool_creation').attr('disabled', false);
+      return;
+    }
     $.ajax({
       type: 'POST',
       data: { 'student_id': studentID, 'standard_id': standardID },
       url: 'ajaxFiles/submitRollBackForm.php',
       dataType: 'json',
       success: function (result) {
+        $('#submitschool_creation').attr('disabled', false);
         if (result.status == 'success') {
           alert("Successfully Roll Backed!");
 
@@ -279,7 +287,7 @@ function getAcademicTable() {
             '<td>' + serial + '</td>' +
             '<td>' + period_from + '</td>' +
             '<td>' + period_to + '</td>' +
-            '<td>' + academic_period + '</td>' +
+            '<td class="academic-period">' + academic_period + '</td>' +
             '<td>' + action + '</td>' +
             '</tr>';
 
@@ -300,17 +308,22 @@ function getAcademicTable() {
     }
   });
 }
+// Attach the click event handler using event delegation
+$(document).on('click', '#academic_creation_table tbody tr', function () {
+  var academicYear = $(this).find('.academic-period').text(); // Get the academic year from the clicked row
+  $('#academic_yr').val(academicYear); // Set the academic year in the input field
+});
+
+
 function getAcademicDelete(year_id,academic_year) {
   $.post('ajaxFiles/deleteAcademic.php', { year_id,academic_year }, function (result) {
     if (result == '0') {
-      alert('Warning', 'Have to maintain atleast one Family Info');
+      alert('Academic Year already used');
     } else if (result == '1') {
-      alert('Success', 'Academic Info Deleted Successfully!');
+      alert( 'Academic Info Deleted Successfully!');
       getAcademicTable();
     } else if (result == '2') {
-      alert('Access Denied', 'Academic Member Already Used');
-    } else {
-      alert('Warning', 'Error occur While Delete Family Info.');
-    }
+      alert( 'Academic Year Not Deleted');
+    } 
   }, 'json');
 }

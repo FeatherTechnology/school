@@ -1,17 +1,23 @@
+
 <?php
 require "../ajaxconfig.php";
 
 $year_id = $_POST['year_id'];
 $academic_year = $_POST['academic_year'];
+
 try {
-    $qry = $connect->query("SELECT * FROM admission_fees WHERE academic_year = '$academic_year' ");
-    if ($qry->rowCount() == 1) { //If Only one count of kyc for the customer then restrict to delete.
-        $result = '0';
+    // Check if there is any record in the admission_fees table for the given academic_year
+    $qry = $connect->query("SELECT * FROM admission_fees WHERE academic_year = '$academic_year'");
+    
+    if ($qry->rowCount() > 0) { 
+        $result = '0'; // Do not delete, admission fees record exists
     } else {
+        // Prepare the deletion query
         $qry = $connect->prepare("DELETE FROM `academic_year` WHERE `year_id` = :year_id");
         $qry->bindParam(':year_id', $year_id, PDO::PARAM_INT);
+        
         if ($qry->execute()) {
-            $result = 1; // Deleted.
+            $result = 1; // Successfully deleted
         } else {
             throw new Exception();
         }
@@ -21,3 +27,4 @@ try {
 }
 
 echo json_encode($result);
+?>

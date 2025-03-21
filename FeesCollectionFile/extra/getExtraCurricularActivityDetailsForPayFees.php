@@ -32,7 +32,6 @@ $CheckReceiptQry = $connect->query("SELECT af.id FROM `admission_fees` af JOIN a
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
     $feeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as extra_amount, afd.fees_master_id as fees_id, afd.fees_id as extra_fee_id, ecaf.extra_particulars, ecaf.extra_amount AS ovrlAllExtraAmnt FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id JOIN extra_curricular_activities_fee ecaf ON afd.fees_id = ecaf.extra_fee_id WHERE af.id = '$get_temp_fees_id' && afd.fees_table_name = 'extratable' && ecaf.status ='1' ");
-
 }else{
     $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, ecaf.*, ecaf.extra_amount AS ovrlAllExtraAmnt  FROM `fees_master` fm JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$standardId' && FIND_IN_SET(ecaf.extra_fee_id,'$studentExtraCurricular') && ecaf.status ='1' ");
 }

@@ -1071,7 +1071,7 @@ class admin
 		if (isset($_POST['blood_group'])) {
 			$blood_group = $_POST['blood_group'];
 		}
-		$category='';
+		$category = '';
 		if (isset($_POST['category'])) {
 			$category = $_POST['category'];
 		}
@@ -1087,7 +1087,7 @@ class admin
 		if (isset($_POST['religion'])) {
 			$religion = $_POST['religion'];
 		}
-		$filltoo='';
+		$filltoo = '';
 		if (isset($_POST['filltoo'])) {
 			$filltoo = $_POST['filltoo'];
 		}
@@ -1181,14 +1181,14 @@ class admin
 		if (isset($_POST['referred_by'])) {
 			$referred_by = $_POST['referred_by'];
 		}
-		$concession_type='';
+		$concession_type = '';
 		if (isset($_POST['concession_type'])) {
 			$concession_type = $_POST['concession_type'];
 		}
 		if (isset($_POST['concessiontypedetails'])) {
 			$concessiontypedetails = $_POST['concessiontypedetails'];
 		}
-		$facility ='';
+		$facility = '';
 		if (isset($_POST['facility'])) {
 			$facility = $_POST['facility'];
 		}
@@ -1222,7 +1222,7 @@ class admin
 		if (isset($_POST['mother_aadhar_number'])) {
 			$mother_aadhar_number = $_POST['mother_aadhar_number'];
 		}
-		$occupation='';
+		$occupation = '';
 		if (isset($_POST['occupation'])) {
 			$occupation = $_POST['occupation'];
 		}
@@ -1238,7 +1238,7 @@ class admin
 		if (isset($_POST['telephone_number'])) {
 			$telephone_number = $_POST['telephone_number'];
 		}
-		$lives_gaurdian='';
+		$lives_gaurdian = '';
 		if (isset($_POST['lives_gaurdian'])) {
 			$lives_gaurdian = $_POST['lives_gaurdian'];
 		}
@@ -1422,8 +1422,8 @@ class admin
 		if (isset($_POST['extra_curricular'])) {
 			$extra_curricularstr = $_POST['extra_curricular'];
 			$extra_curricular = implode(",", $extra_curricularstr);
-		}else{
-			$extra_curricular='';
+		} else {
+			$extra_curricular = '';
 		}
 
 		$StudentInsert = "INSERT INTO student_creation(temp_admission_id,temp_no, admission_number, student_name, sur_name, date_of_birth, gender, mother_tongue,
@@ -1464,7 +1464,7 @@ class admin
 		$insresult = $mysqli->query($StudentInsert) or die("Error " . $mysqli->error);
 
 		$stdLastInsertId = $mysqli->insert_id;
-		$StudentHistoryInsert = "INSERT INTO student_history (`student_id`, `standard`, `section`, `extra_curricular`, `transportarearefid`, `academic_year`,`insert_login_id`,`created_on`)VALUES('$stdLastInsertId','" . strip_tags($standard) . "','" . strip_tags($section) . "','" . strip_tags($extra_curricular) . "','" . strip_tags($transportarearefid) . "','" . strip_tags($year_id) . "','$userid',now())";
+		$StudentHistoryInsert = "INSERT INTO student_history (`student_id`, `standard`, `section`,`studentstype` `extra_curricular`, `transportarearefid`, `academic_year`,`insert_login_id`,`created_on`)VALUES('$stdLastInsertId','" . strip_tags($standard) . "','" . strip_tags($section) . "','" . strip_tags($studentstype) . "','" . strip_tags($extra_curricular) . "','" . strip_tags($transportarearefid) . "','" . strip_tags($year_id) . "','$userid',now())";
 		$result = $mysqli->query($StudentHistoryInsert) or die("Error " . $mysqli->error);
 
 		if ($temp_admission_id != '') {
@@ -1505,7 +1505,7 @@ class admin
 	{
 		$academic_year = $_SESSION['academic_year'];
 		// $tempStudentSelect = "SELECT * FROM student_creation WHERE student_id='$id'"; 
-		$tempStudentSelect = "SELECT stdc.*, sc.standard as std_name ,sh.standard as std , sh.academic_year ,sh.extra_curricular as extra_curr FROM student_creation stdc LEFT JOIN student_history sh ON stdc.student_id =sh.student_id JOIN standard_creation sc ON sh.standard = sc.standard_id WHERE stdc.student_id='$id' and sh.academic_year = '$academic_year'";
+		$tempStudentSelect = "SELECT stdc.*, sc.standard as std_name ,sh.standard as std , sh.academic_year ,sh.extra_curricular as extra_curr,sh.studentstype as sttype FROM student_creation stdc LEFT JOIN student_history sh ON stdc.student_id =sh.student_id JOIN standard_creation sc ON sh.standard = sc.standard_id WHERE stdc.student_id='$id' and sh.academic_year = '$academic_year'";
 		$res = $mysqli->query($tempStudentSelect) or die("Error in Get All Records" . $mysqli->error);
 		$detailrecords = array();
 		if ($mysqli->affected_rows > 0) {
@@ -1549,7 +1549,7 @@ class admin
 			$detailrecords['medium']       = $row->medium;
 			$detailrecords['studentrollno']       = $row->studentrollno;
 			$detailrecords['emisno']       = $row->emisno;
-			$detailrecords['studentstype']       = $row->studentstype;
+			$detailrecords['studentstype']       = $row->sttype;
 			$detailrecords['referencecat']       = $row->referencecat;
 			$detailrecords['refstaffid']       = $row->refstaffid;
 			$detailrecords['refstudentid']       = $row->refstudentid;
@@ -2069,8 +2069,8 @@ class admin
 			certificate4='" . strip_tags($certificate4) . "', mother_image='" . strip_tags($mother_image) . "', medium='" . strip_tags($medium) . "',father_image='" . strip_tags($father_image) . "', extra_curricular='" . strip_tags($extra_curricularstr) . "', update_login_id='" . strip_tags($userid) . "', status = '0' WHERE student_id= '" . strip_tags($id) . "' ";
 		$updresult = $mysqli->query($tempStudentUpdaet) or die("Error in in update Query!." . $mysqli->error);
 
-		$history_update = "UPDATE `student_history` SET `standard`='" . strip_tags($standard) . "' ,`section`='" . strip_tags($section) . "',`extra_curricular`= '" . strip_tags($extra_curricularstr) . "',`transportarearefid`= '" . strip_tags($transportarearefid) . "' WHERE student_id= '" . strip_tags($id) . "' and academic_year = '$academic_year'";
-		$hisupdresult =$mysqli->query($history_update) or die("Error in in update Query!." . $mysqli->error);
+		$history_update = "UPDATE `student_history` SET `standard`='" . strip_tags($standard) . "' ,`section`='" . strip_tags($section) . "',`studentstype`='" . strip_tags($studentstype) . "',`extra_curricular`= '" . strip_tags($extra_curricularstr) . "',`transportarearefid`= '" . strip_tags($transportarearefid) . "' WHERE student_id= '" . strip_tags($id) . "' and academic_year = '$academic_year'";
+		$hisupdresult = $mysqli->query($history_update) or die("Error in in update Query!." . $mysqli->error);
 		//Add referral details
 		if ($referencecat != '') {
 			$ref_student_id = ($refstudentid != '') ? $refstudentid : $refoldstudentid;
@@ -6151,7 +6151,25 @@ class admin
 			$amenityAmntScholarship = $_POST['amenityAmntScholarship'];
 		}
 		//Amenity Table data END//
-
+		//Transport Table data//
+		$areaCreationId = [];
+		if (isset($_POST['areaCreationId'])) {
+			$areaCreationId = $_POST['areaCreationId'];
+		}
+		if (isset($_POST['particularId'])) {
+			$transtablename = 'transport';
+			$particularId = $_POST['particularId'];
+		}
+		if (isset($_POST['transportFeeReceived'])) {
+			$transportFeeReceived = $_POST['transportFeeReceived'];
+		}
+		if (isset($_POST['transportFeeBalance'])) {
+			$transportFeeBalance = $_POST['transportFeeBalance'];
+		}
+		if (isset($_POST['transportFeeScholarship'])) {
+			$transportFeeScholarship = $_POST['transportFeeScholarship'];
+		}
+		//Transport Table data END//
 		if (count($feesMasterid) > 0 || count($extraFeesMasterid) > 0 || count($amenityFeesMasterid) > 0) {
 			$insertPayFeesQry = $mysqli->query("INSERT INTO `last_year_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `other_charges`, `other_charges_received`, `scholarship`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `created_on`) VALUES ('$admission_form_id','$receipt_number','$receipt_date','$academic_year','$other_charges','$other_charges_recieved','$fees_scholarship','$fees_total','$final_amount_recieved','$fees_collected','$fees_balance','$school_id','$userid',now())");
 
@@ -6182,7 +6200,11 @@ class admin
 				$insertamenityFeesDetailsQry = $mysqli->query("INSERT INTO `last_year_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$amenityFeesMasterid[$c]','$amenitytablename','$amenityAmntid[$c]','$amenityAmntReceived[$c]','$amenityAmntBalance[$c]','$amenityAmntScholarship[$c]')");
 				// }
 			}
-
+			for ($d = 0; $d < count($areaCreationId); $d++) {
+				// if($amenityAmntReceived[$c] > 0 || $amenityAmntScholarship[$c] > 0 ){
+				$inserttransFeesDetailsQry = $mysqli->query("INSERT INTO `last_year_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$areaCreationId[$d]','$transtablename','$particularId[$d]','$transportFeeReceived[$d]','$transportFeeBalance[$d]','$transportFeeScholarship[$d]')");
+				// }
+			}
 			if ($insertPayFeesQry) {
 				return $FeesLastInsertId;
 			} else {

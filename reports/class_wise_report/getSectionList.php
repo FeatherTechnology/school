@@ -15,7 +15,7 @@ if(isset($_POST['standardID'])){
     $standardID = $_POST['standardID'];
 }
 
-    $getSectionQry = $connect->query("SELECT section FROM student_creation WHERE medium = '$medium' AND standard = '$standardID' AND school_id='$school_id' AND year_id = '$academic_year' AND status = 0 GROUP BY section");
+    $getSectionQry = $connect->query("SELECT sh.section FROM student_creation sc JOIN student_history sh ON sc.student_id = sc.student_id  WHERE sc.medium = '$medium' AND sh.standard = '$standardID' AND sc.school_id='$school_id' AND sh.academic_year = '$academic_year' AND sc.status = 0 GROUP BY sh.section");
 
     $sectionNameArr = array();
     if($getSectionQry->rowCount() > 0){

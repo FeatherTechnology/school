@@ -48,10 +48,11 @@ if (isset($_POST['stdSection'])) {
     <tbody>
 
         <?php
-        $getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sc.section, sc.extra_curricular, sc.transportarearefid, sc.studentstype, sc.sms_sent_no,sc.leaving_term
+        $getStudentListQry = $connect->query("SELECT sc.student_id, sc.admission_number, sc.student_name, std.standard, sh.section, sh.extra_curricular, sh.transportarearefid, sh.studentstype, sc.sms_sent_no,sc.leaving_term
 FROM `student_creation` sc 
-JOIN standard_creation std ON sc.standard = std.standard_id
-WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' && sc.standard = '$stdStandard' && sc.leaving_term !='1' && sc.leaving_term !='5' &&  sc.section = '$stdSection' && sc.school_id = '$school_id' ORDER BY sc.student_name ASC");
+LEFT JOIN student_history sh ON sc.student_id = sh.student_id
+JOIN standard_creation std ON sh.standard = std.standard_id
+WHERE sh.academic_year  = '$academicyear' && sc.medium = '$stdMedium' && sh.standard = '$stdStandard' && sc.leaving_term !='1' && sc.leaving_term !='5' &&  sh.section = '$stdSection' && sc.school_id = '$school_id' ORDER BY sc.student_name ASC");
         $i = 1;
         $ls_pending = 0;
         $grnd_term1_pending = 0;
@@ -142,36 +143,70 @@ WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' && sc.standard = 
                 $book_pending = '0';
             }
             $extra_id = ($studentList->extra_curricular) ? $studentList->extra_curricular : '0';
-            $getExtraPendingQry = $connect->query("SELECT COALESCE(( ecaf.extra_amount - (SELECT (COALESCE(SUM(afd.fee_received), 0) + COALESCE(SUM(afd.scholarship), 0)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = ecaf.extra_fee_id AND afd.fees_table_name = 'extratable' AND af.admission_id = '$studentList->student_id') ), 0) - COALESCE((SELECT SUM(scholarship_amount) FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='extratable' AND fees_id = ecaf.extra_fee_id),0) AS extraPending, ecaf.extra_amount AS extraAmnt FROM extra_curricular_activities_fee ecaf WHERE FIND_IN_SET('$extra_id', ecaf.extra_fee_id)");
+            $getExtraPendingQry = $connect->query("SELECT COALESCE(( ecaf.extra_amount - (SELECT (COALESCE(SUM(afd.fee_received), 0) + COALESCE(SUM(afd.scholarship), 0)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = ecaf.extra_fee_id AND afd.fees_table_name = 'extratable' AND af.admission_id = '$studentList->student_id') ), 0) - COALESCE((SELECT SUM(scholarship_amount) FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='extratable' AND fees_id = ecaf.extra_fee_id),0) AS extraPending, ecaf.extra_amount AS extraAmnt FROM extra_curricular_activities_fee ecaf WHERE ecaf.extra_fee_id IN ($extra_id) ");
+            $extra_pending =0;
             if ($getExtraPendingQry->rowCount() > 0) {
-                $extrapendingInfo = $getExtraPendingQry->fetch();
-                $extraPending = $extrapendingInfo['extraPending'];
-                $extraAmnt = $extrapendingInfo['extraAmnt'];
-                $currentExtraPending = is_null($extraPending) ? $extraAmnt : $extraPending;
-                // Logic to handle pending amounts based on leaving term
-        
-                if ($leavingTerm == 2 || $leavingTerm == 3) {
-                    // If the student leaves after 1st term, only show 1st term pending amount
-                    $extra_pending = 0;
-                } else {
-                    // If student stays beyond the 2nd term, show all pending terms
-                    $extra_pending = $currentExtraPending;
+                while ($extrapendingInfo = $getExtraPendingQry->fetch()) {
+                    $extraPending = $extrapendingInfo['extraPending'];
+                    $extraAmnt = $extrapendingInfo['extraAmnt'];
+                    $currentExtraPending = is_null($extraPending) ? $extraAmnt : $extraPending;
+                    // Logic to handle pending amounts based on leaving term
+
+                    if ($leavingTerm == 2 || $leavingTerm == 3) {
+                        // If the student leaves after 1st term, only show 1st term pending amount
+                        $extra_pending = 0;
+                    } else {
+                        // If student stays beyond the 2nd term, show all pending terms
+                        $extra_pending += $currentExtraPending;
+                    }
                 }
             } else {
                 $extra_pending = '0';
             }
-
             $transport_id = ($studentList->transportarearefid) ? $studentList->transportarearefid : '0';
-
-            $getTransportPendingQry = $connect->query("SELECT acp.particulars,ABS( acp.due_amount - (SELECT (SUM(tafd.fee_received) + SUM(tafd.scholarship)) FROM transport_admission_fees_details tafd JOIN transport_admission_fees taf ON tafd.admission_fees_ref_id = taf.id WHERE tafd.area_creation_particulars_id = acp.particulars_id AND taf.admission_id = '$studentList->student_id') ) - COALESCE((SELECT SUM(scholarship_amount) FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='transport' AND fees_id = acp.particulars_id),0) AS transport_pending, acp.due_amount AS transAmnt from area_creation ac JOIN area_creation_particulars acp ON ac.area_id = acp.area_creation_id WHERE ac.area_id = '$transport_id' ORDER BY acp.due_date ASC ");
+            $getTransportPendingQry = $connect->query("SELECT
+    acp.particulars,
+    COALESCE(
+        acp.due_amount - COALESCE((
+            SELECT
+                SUM(tafd.fee_received) + SUM(tafd.scholarship)
+            FROM
+                transport_admission_fees_details tafd
+            JOIN
+                transport_admission_fees taf ON tafd.admission_fees_ref_id = taf.id
+            WHERE
+                tafd.area_creation_particulars_id = acp.particulars_id
+                AND taf.admission_id = '$studentList->student_id'
+        ), 0), 0) 
+    - COALESCE((
+            SELECT
+                SUM(scholarship_amount)
+            FROM
+                fees_concession
+            WHERE
+                student_id = '$studentList->student_id'
+                AND fees_table_name = 'transport'
+                AND fees_id = acp.particulars_id
+        ), 0) AS transport_pending,
+    acp.due_amount AS transAmnt
+FROM 
+    area_creation ac
+JOIN 
+    area_creation_particulars acp 
+ON 
+    ac.area_id = acp.area_creation_id
+WHERE 
+    ac.area_id = '$transport_id'
+ORDER BY 
+    acp.due_date ASC;
+ ");
             $transport_pending = array();
             while ($transportPendingInfo = $getTransportPendingQry->fetch()) {
                 $transportpending = $transportPendingInfo['transport_pending'];
                 $transAmnt = $transportPendingInfo['transAmnt'];
-
                 // Check if termPending is null, then consider the full term amount
                 $currentTransPending = is_null($transportpending) ? $termAmnt : $transportpending;
-         
+
                 // Logic to handle pending amounts based on leaving term
                 if ($leavingTerm == 2) {
                     // If the student leaves after 1st term, only show 1st term pending amount

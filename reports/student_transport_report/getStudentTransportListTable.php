@@ -34,11 +34,12 @@ if(isset($_POST['stdSection'])){
     <tbody>
 
 <?php
-$getStudentListQry = $connect->query("SELECT sc.student_name, std.standard, sc.section, sc.sms_sent_no, ac.area_name, sc.transportstopping, sc.busno, ac.transport_amount 
+$getStudentListQry = $connect->query("SELECT sc.student_name, std.standard, sh.section, sc.sms_sent_no, ac.area_name, sc.transportstopping, sc.busno, ac.transport_amount 
 FROM `student_creation` sc 
-JOIN standard_creation std ON sc.standard = std.standard_id 
-JOIN area_creation ac ON sc.transportarearefid = ac.area_id 
-WHERE sc.year_id = '$academicyear' && sc.medium = '$stdMedium' && ('$stdStandard' = '0' || sc.standard = '$stdStandard') && ('$stdSection' = '0' || sc.section = '$stdSection') && sc.status = '0' && sc.school_id = '$school_id' ");
+JOIN student_history sh  ON sh.student_id = sc.student_id
+JOIN standard_creation std ON sh.standard = std.standard_id 
+JOIN area_creation ac ON sh.transportarearefid = ac.area_id 
+WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' && ('$stdStandard' = '0' || sh.standard = '$stdStandard') && ('$stdSection' = '0' || sh.section = '$stdSection') && sc.status = '0' && sc.school_id = '$school_id' ");
 $i=1;
 while($studentList = $getStudentListQry->fetchObject()){
 ?>
