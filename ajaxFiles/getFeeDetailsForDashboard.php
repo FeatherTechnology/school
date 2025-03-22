@@ -11,7 +11,14 @@ if(isset($_SESSION['school_id'])){
 ///////////////////////////////////Total fee START///////////////////////////////////////
 $totalamount=0;
 
-$getgrpFeeTotalQry = $connect->query("SELECT COALESCE(SUM(gcf.grp_amount) * (SELECT COUNT(*) from student_creation where standard=fm.standard AND studentstype= fm.student_type AND medium=fm.medium AND year_id=fm.academic_year AND leaving_term!=1 AND leaving_term!=5 ),0) AS totalgrpamnt 
+$getgrpFeeTotalQry = $connect->query("SELECT COALESCE(SUM(gcf.grp_amount) * (SELECT COUNT(*) from student_creation where standard=fm.standard  AND medium=fm.medium AND year_id=fm.academic_year AND leaving_term!=1 AND leaving_term!=5 AND (
+                    CASE
+                        WHEN studentstype IN ('1', '2') THEN 
+                            (fm.student_type = studentstype OR fm.student_type = '4')
+                        ELSE
+                            fm.student_type = studentstype
+                    END
+                ) ),0) AS totalgrpamnt 
 FROM `fees_master` fm 
 JOIN group_course_fee gcf ON gcf.fee_master_id = fm.fees_id 
 WHERE fm.academic_year='$academicyear' && fm.status=0 && fm.school_id = '$school_id' && gcf.status=1 
@@ -36,8 +43,14 @@ WHERE fm.academic_year = '$academicyear'
 $extraFeeInfo = $getExtraFeeTotalQry->fetchObject();
     $totalamount += $extraFeeInfo->extraAmnt;
 
-
-$getamenityFeeTotalQry = $connect->query("SELECT COALESCE(SUM(af.amenity_amount) * (SELECT COUNT(*) from student_creation where standard=fm.standard AND studentstype= fm.student_type AND medium=fm.medium AND year_id=fm.academic_year AND  leaving_term!=1 AND leaving_term!=5 ),0) AS totalAmenityamnt 
+$getamenityFeeTotalQry = $connect->query("SELECT COALESCE(SUM(af.amenity_amount) * (SELECT COUNT(*) from student_creation where standard=fm.standard  AND medium=fm.medium AND year_id=fm.academic_year AND  leaving_term!=1 AND leaving_term!=5 AND (
+                    CASE
+                        WHEN studentstype IN ('1', '2') THEN 
+                            (fm.student_type = studentstype OR fm.student_type = '4')
+                        ELSE
+                            fm.student_type = studentstype
+                    END
+                ) ),0) AS totalAmenityamnt 
 FROM `fees_master` fm 
 JOIN amenity_fee af ON af.fee_master_id = fm.fees_id 
 WHERE fm.academic_year='$academicyear' && fm.status=0 && fm.school_id = '$school_id' && af.status=1 

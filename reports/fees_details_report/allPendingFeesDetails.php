@@ -103,7 +103,50 @@ WHERE sh.academic_year  = '$academicyear' && sc.medium = '$stdMedium' && sh.stan
             $lastyearpending = $getLastYearPending->fetchObject();
             $lsPending = $lastyearpending->total_balance_tobe_paid;
 
-            $getTermPendingQry = $connect->query("SELECT gcf.grp_particulars, ABS(ABS( gcf.grp_amount - (SELECT (SUM(afd.fee_received) + SUM(afd.scholarship)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = gcf.grp_course_id AND afd.fees_table_name = 'grptable' AND af.admission_id = '$studentList->student_id') ) - COALESCE((SELECT SUM(scholarship_amount) FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='grptable' AND fees_id = gcf.grp_course_id),0)) AS termPending, gcf.grp_amount AS termAmnt  FROM fees_master fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && $student_type_cndtn && fm.standard = '$stdStandard' && fm.school_id = '$school_id' ORDER BY gcf.grp_date ASC");
+            $getTermPendingQry = $connect->query("SELECT 
+    gcf.grp_particulars, 
+    ABS(
+        ABS(
+            gcf.grp_amount - (
+                SELECT 
+                    COALESCE(SUM(afd.fee_received), 0) + COALESCE(SUM(afd.scholarship), 0) 
+                FROM 
+                    admission_fees_details afd 
+                JOIN 
+                    admission_fees af 
+                ON 
+                    afd.admission_fees_ref_id = af.id 
+                WHERE 
+                    afd.fees_id = gcf.grp_course_id 
+                    AND afd.fees_table_name = 'grptable' 
+                    AND af.admission_id = '$studentList->student_id'
+            )
+        ) - 
+        COALESCE(
+            (SELECT SUM(scholarship_amount) 
+             FROM fees_concession 
+             WHERE student_id = '$studentList->student_id' 
+             AND fees_table_name = 'grptable' 
+             AND fees_id = gcf.grp_course_id), 
+            0
+        )
+    ) AS termPending, 
+    gcf.grp_amount AS termAmnt  
+FROM 
+    fees_master fm 
+JOIN 
+    group_course_fee gcf 
+ON 
+    fm.fees_id = gcf.fee_master_id 
+WHERE 
+    fm.academic_year = '$academicyear' 
+    AND fm.medium = '$stdMedium' 
+    AND $student_type_cndtn 
+    AND fm.standard = '$stdStandard' 
+    AND fm.school_id = '$school_id' 
+ORDER BY 
+    gcf.grp_date ASC;
+");
             $term_pending = array();
             while ($termPendingInfo = $getTermPendingQry->fetch()) {
                 $termPending = $termPendingInfo['termPending'];
@@ -125,7 +168,44 @@ WHERE sh.academic_year  = '$academicyear' && sc.medium = '$stdMedium' && sh.stan
                 }
             }
 
-            $getBookPendingQry = $connect->query("SELECT ( af.amenity_amount - (SELECT (SUM(afd.fee_received) + SUM(afd.scholarship)) FROM admission_fees_details afd JOIN admission_fees af ON afd.admission_fees_ref_id = af.id WHERE afd.fees_id = af.amenity_fee_id AND afd.fees_table_name = 'amenitytable' AND af.admission_id = '$studentList->student_id') ) - COALESCE((SELECT SUM(scholarship_amount) FROM fees_concession WHERE student_id ='$studentList->student_id' AND fees_table_name ='amenitytable' AND fees_id = af.amenity_fee_id),0) AS bookPending, af.amenity_amount AS bookAmnt  FROM fees_master fm JOIN amenity_fee af ON fm.fees_id = af.fee_master_id WHERE fm.academic_year = '$academicyear' && fm.medium = '$stdMedium' && $student_type_cndtn && fm.standard = '$stdStandard' && fm.school_id = '$school_id' ORDER BY af.amenity_date ASC");
+            $getBookPendingQry = $connect->query("SELECT 
+    (af.amenity_amount - (
+        SELECT 
+            COALESCE(SUM(afd.fee_received), 0) + COALESCE(SUM(afd.scholarship), 0)
+        FROM 
+            admission_fees_details afd 
+        JOIN 
+            admission_fees af2 
+        ON 
+            afd.admission_fees_ref_id = af2.id 
+        WHERE 
+            afd.fees_id = af.amenity_fee_id 
+            AND afd.fees_table_name = 'amenitytable' 
+            AND af2.admission_id = '$studentList->student_id'
+    ) 
+    ) - COALESCE(
+        (SELECT SUM(scholarship_amount) 
+         FROM fees_concession 
+         WHERE student_id = '$studentList->student_id' 
+         AND fees_table_name = 'amenitytable' 
+         AND fees_id = af.amenity_fee_id), 0
+    ) AS bookPending, 
+    af.amenity_amount AS bookAmnt  
+FROM 
+    fees_master fm 
+JOIN 
+    amenity_fee af 
+ON 
+    fm.fees_id = af.fee_master_id 
+WHERE 
+    fm.academic_year = '$academicyear' 
+    AND fm.medium = '$stdMedium' 
+    AND $student_type_cndtn 
+    AND fm.standard = '$stdStandard' 
+    AND fm.school_id = '$school_id' 
+ORDER BY 
+    af.amenity_date ASC;
+");
             if ($getBookPendingQry->rowCount() > 0) {
                 $bookpendingInfo = $getBookPendingQry->fetch();
                 $bookPending = $bookpendingInfo['bookPending'];

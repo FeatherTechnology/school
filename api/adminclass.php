@@ -1323,8 +1323,9 @@ class admin
 		$subdir = $_POST['admission_number'];
 		//set the directory path name
 		$dir = ("uploads/certificates/" . $subdir);
-		//make the directory
-		mkdir($dir, 0777);
+		if (!is_dir($dir)) {
+			mkdir($dir, 0777, true); // 'true' allows recursive directory creation
+		}
 		if (!empty($_FILES['certificate']['name'])) {
 			$certificate = $_FILES['certificate']['name'];
 			$certificate_tmp = $_FILES['certificate']['tmp_name'];
@@ -1335,8 +1336,9 @@ class admin
 		$subdir1 = $_POST['admission_number'];
 		//set the directory path name
 		$dir1 = ("uploads/certificates/" . $subdir1);
-		//make the directory
-		mkdir($dir1, 0777);
+		if (!is_dir($dir1)) {
+			mkdir($dir1, 0777, true); // 'true' allows recursive directory creation
+		}
 
 		if (!empty($_FILES['certificate1']['name'])) {
 			$certificate1 = $_FILES['certificate1']['name'];
@@ -1348,9 +1350,9 @@ class admin
 		$subdir2 = $_POST['admission_number'];
 		//set the directory path name
 		$dir2 = ("uploads/certificates/" . $subdir2);
-		//make the directory
-		mkdir($dir2, 0777);
-
+		if (!is_dir($dir2)) {
+			mkdir($dir2, 0777, true); // 'true' allows recursive directory creation
+		}
 		if (!empty($_FILES['certificate2']['name'])) {
 			$certificate2 = $_FILES['certificate2']['name'];
 			$certificate2_tmp = $_FILES['certificate2']['tmp_name'];
@@ -1361,8 +1363,10 @@ class admin
 		$subdir3 = $_POST['admission_number'];
 		//set the directory path name
 		$dir3 = ("uploads/certificates/" . $subdir3);
+		if (!is_dir($dir3)) {
+			mkdir($dir3, 0777, true); // 'true' allows recursive directory creation
+		}
 		//make the directory
-		mkdir($dir3, 0777);
 		if (!empty($_FILES['certificate3']['name'])) {
 			$certificate3 = $_FILES['certificate3']['name'];
 			$certificate3_tmp = $_FILES['certificate3']['tmp_name'];
@@ -1373,8 +1377,9 @@ class admin
 		$subdir4 = $_POST['admission_number'];
 		//set the directory path name
 		$dir4 = ("uploads/certificates/" . $subdir4);
-		//make the directory
-		mkdir($dir4, 0777);
+		if (!is_dir($dir4)) {
+			mkdir($dir4, 0777, true); // 'true' allows recursive directory creation
+		}
 		if (!empty($_FILES['certificate4']['name'])) {
 			$certificate4 = $_FILES['certificate4']['name'];
 			$certificate4_tmp = $_FILES['certificate4']['tmp_name'];
@@ -1398,8 +1403,9 @@ class admin
 		$subdir6 = $_POST['admission_number'];
 		//set the directory path name
 		$dir6 = ("uploads/student_creation/" . $subdir6);
-		//make the directory
-		mkdir($dir6, 0777);
+		if (!is_dir($dir6)) {
+			mkdir($dir6, 0777, true); // 'true' allows recursive directory creation
+		}
 		if (!empty($_FILES['father_image']['name'])) {
 			$father_image = $_FILES['father_image']['name'];
 			$father_image_tmp = $_FILES['father_image']['tmp_name'];
@@ -1412,7 +1418,9 @@ class admin
 		//set the directory path name
 		$dir7 = ("uploads/student_creation/" . $subdir7);
 		//make the directory
-		mkdir($dir7, 0777);
+		if (!is_dir($dir7)) {
+			mkdir($dir7, 0777, true); // 'true' allows recursive directory creation
+		}
 		if (!empty($_FILES['mother_image']['name'])) {
 			$mother_image = $_FILES['mother_image']['name'];
 			$mother_image_tmp = $_FILES['mother_image']['tmp_name'];
@@ -1464,9 +1472,8 @@ class admin
 		$insresult = $mysqli->query($StudentInsert) or die("Error " . $mysqli->error);
 
 		$stdLastInsertId = $mysqli->insert_id;
-		$StudentHistoryInsert = "INSERT INTO student_history (`student_id`, `standard`, `section`,`studentstype` `extra_curricular`, `transportarearefid`, `academic_year`,`insert_login_id`,`created_on`)VALUES('$stdLastInsertId','" . strip_tags($standard) . "','" . strip_tags($section) . "','" . strip_tags($studentstype) . "','" . strip_tags($extra_curricular) . "','" . strip_tags($transportarearefid) . "','" . strip_tags($year_id) . "','$userid',now())";
+		$StudentHistoryInsert = "INSERT INTO student_history (`student_id`, `standard`, `section`,`studentstype` ,`extra_curricular`, `transportarearefid`, `academic_year`,`insert_login_id`,`created_on`)VALUES('$stdLastInsertId','" . strip_tags($standard) . "','" . strip_tags($section) . "','" . strip_tags($studentstype) . "','" . strip_tags($extra_curricular) . "','" . strip_tags($transportarearefid) . "','" . strip_tags($year_id) . "','$userid',now())";
 		$result = $mysqli->query($StudentHistoryInsert) or die("Error " . $mysqli->error);
-
 		if ($temp_admission_id != '') {
 			$selectFeesQry = $mysqli->query("SELECT `id`, `TempAdmissionId` FROM `temp_admission_fees` WHERE `TempAdmissionId` = '$temp_admission_id' ");
 			while ($getdetails = $selectFeesQry->fetch_assoc()) {

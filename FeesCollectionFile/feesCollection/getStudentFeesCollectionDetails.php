@@ -116,16 +116,33 @@ if (!in_array($standard, $particular_std_id)) { //these under 9 std. so jst add 
 //Group fees
 // $getOldStudCntQry = $connect->query(" SELECT * FROM `student_creation` WHERE studentstype ='2' AND YEAR(created_date) <= YEAR(CURDATE()) AND student_id = '$student_id' ");
 // if ($getOldStudCntQry->rowCount() > 0) {
+
+$getStudentLastDetailsQry = $connect->query("SELECT stdc.student_name, sh.studentstype
+FROM `student_creation` stdc 
+JOIN student_history sh ON stdc.student_id = sh.student_id
+WHERE stdc.student_id = '$student_id' AND sh.academic_year ='$last_year'");
+if ($getStudentLastDetailsQry->rowCount() > 0) {
+    $studentLastInfo = $getStudentLastDetailsQry->fetch();
+    $laststudentstype = $studentLastInfo['studentstype'];
+
+    if ($laststudentstype == "1" || $laststudentstype == "2") {
+        $studentlast_type_cndtn = "(fm.student_type = '$laststudentstype' || fm.student_type = '4')";
+    } else {
+        $studentlast_type_cndtn = "(fm.student_type = '$laststudentstype')";
+    }
+
 $getLastYearGrpFeesQry = $connect->query("SELECT SUM(gcf.grp_amount) as OverallGrpAmount 
     FROM fees_master fm 
     JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id 
     JOIN student_creation stdc ON fm.medium = stdc.medium
-    WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND $student_type_cndtn AND fm.standard = '$lastyr_std_id' AND gcf.status = 1 AND fm.school_id = '$school_id' AND stdc.student_id = '$student_id' ");
+    JOIN student_history sh ON sh.student_id = stdc.student_id
+    WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND $studentlast_type_cndtn AND fm.standard = '$lastyr_std_id' AND gcf.status = 1 AND fm.school_id = '$school_id' AND stdc.student_id = '$student_id' AND sh.academic_year = '$last_year' ");
 if ($getLastYearGrpFeesQry->rowCount() > 0) {
     $overallLastYearGrpAmount = $getLastYearGrpFeesQry->fetch()['OverallGrpAmount'];
 } else {
     $overallLastYearGrpAmount = '0';
 }
+
 //Close DB connection
 $getLastYearGrpFeesQry->closeCursor();
 
@@ -134,7 +151,7 @@ $getLastYearExtraCurFeesQry = $connect->query("SELECT SUM(ecaf.extra_amount) as 
     FROM fees_master fm 
     JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id
 JOIN student_history sh ON FIND_IN_SET(ecaf.extra_fee_id, sh.extra_curricular) AND sh.academic_year = '$last_year'
-    WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND $student_type_cndtn AND fm.standard = '$lastyr_std_id' AND ecaf.status = '1' AND fm.school_id ='$school_id' AND sh.student_id = '$student_id' ");
+    WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND $studentlast_type_cndtn AND fm.standard = '$lastyr_std_id' AND ecaf.status = '1' AND fm.school_id ='$school_id' AND sh.student_id = '$student_id' ");
 if ($getLastYearExtraCurFeesQry->rowCount() > 0) {
     $overallLastYearExtraCurAmount = $getLastYearExtraCurFeesQry->fetch()['OverallExtraCurAmount'];
 } else {
@@ -149,7 +166,8 @@ $getLastYearAmenityFeesQry = $connect->query("SELECT SUM(af.amenity_amount) as O
     FROM fees_master fm 
     JOIN amenity_fee af ON fm.fees_id = af.fee_master_id 
     JOIN student_creation stdc ON fm.medium = stdc.medium
-    WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND $student_type_cndtn AND fm.standard = '$lastyr_std_id' AND af.status = '1' AND fm.school_id ='$school_id' AND stdc.student_id = '$student_id' ");
+    JOIN student_history sh ON sh.student_id = stdc.student_id
+    WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND $studentlast_type_cndtn AND fm.standard = '$lastyr_std_id' AND af.status = '1' AND fm.school_id ='$school_id' AND stdc.student_id = '$student_id' AND sh.academic_year = '$last_year'");
 if ($getLastYearAmenityFeesQry->rowCount() > 0) {
     $overallLastYearAmenityAmount = $getLastYearAmenityFeesQry->fetch()['OverallAmenityAmount'];
 } else {
@@ -175,9 +193,9 @@ if ($getLastAreaMasterDetailsQry->rowCount() > 0) {
 $getLastAreaMasterDetailsQry->closeCursor();
 $overallLastYearFees = intval($overallLastYearGrpAmount + $overallLastYearExtraCurAmount + $overallLastYearAmenityAmount + $overallLastTransportAmount);
 
-// } else {
-//     $overallLastYearFees = 0;
-// }
+} else {
+    $overallLastYearFees = 0;
+}
 
 //Fee Details /// Gross Payable/// Last year fees/ ///////////////////////////////END /////////////////////////////////////////////////////////////////////
 
@@ -285,14 +303,15 @@ if ($CheckLastyrReceiptQry->rowCount() > 0) {
     } else {
         $lastyr_overallpaid_extra_cur_amount = '0';
     }
+   
     //Close DB connection
     $lastyr_extraFeeDetailsQry->closeCursor();
 
-    $lastyr_amenityFeeDetailsQry = $connect->query("SELECT (SUM(af.amenity_amount) - SUM(afd.balance_tobe_paid)) as paid_amenity_amount 
+    $lastyr_amenityFeeDetailsQry = $connect->query("SELECT (SUM(afd.fee_received)) as paid_amenity_amount 
     FROM `admission_fees` afs 
     JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id 
     JOIN amenity_fee af ON afd.fees_id = af.amenity_fee_id 
-    WHERE afs.id = '$get_lastyr_fees_id' && afd.fees_table_name = 'amenitytable' ");
+    WHERE afs.admission_id = '$student_id' && afd.fees_table_name = 'amenitytable' && afs.academic_year = '$last_year' ");
     if ($lastyr_amenityFeeDetailsQry->rowCount() > 0) {
         $lastyr_overallpaid_amenity_amount = $lastyr_amenityFeeDetailsQry->fetch()['paid_amenity_amount'];
     } else {
@@ -345,7 +364,6 @@ if ($CheckLastyrQry->rowCount() > 0) {
     } else {
         $lastyr_grp_amount = '0';
     }
-  
     //Close DB connection
     $lastyr_grpfeeQry->closeCursor();
 
@@ -527,6 +545,7 @@ if ($CheckLastyrConcessionQry->rowCount() > 0) {
 } else {
     $lastyr_concession_amount = '0';
 }
+
 //Close DB connection
 $CheckLastyrConcessionQry->closeCursor();
 $CheckLastyrFeesConcessionQry = $connect->query("SELECT SUM(scholarship_amount) as overall_last_concession FROM `fees_concession` WHERE student_id = '$student_id' && academic_year = '$last_year' ");
@@ -535,6 +554,7 @@ if ($CheckLastyrFeesConcessionQry->rowCount() > 0) {
 } else {
     $lastyrfees_concession_amount = '0';
 }
+
 //Close DB connection
 $CheckLastyrFeesConcessionQry->closeCursor();
 $CheckLastyrEntryConcessionQry = $connect->query("SELECT SUM(scholarship) as overall_lastyr_concession FROM `last_year_fees` WHERE admission_id = '$student_id' && academic_year = '$last_year' ");
