@@ -4,7 +4,7 @@ include "../ajaxconfig.php";
 if(isset($_SESSION["userid"])){
     $school_id = $_SESSION["school_id"];
 } 
-
+$academic_year = $_SESSION['academic_year'];
 //get school name by using session id.
 $getschoolDetailsQry=$mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, sc.school_logo, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id' ");
 while ($schoolInfo=$getschoolDetailsQry->fetch_assoc()) {
@@ -34,7 +34,9 @@ admission_fees af
 JOIN 
 student_creation stdc ON af.admission_id = stdc.student_id 
 JOIN 
-standard_creation sc ON stdc.standard = sc.standard_id 
+student_history sh ON sh.student_id = stdc.student_id and sh.academic_year = '$academic_year'
+JOIN 
+standard_creation sc ON sh.standard = sc.standard_id 
 JOIN 
 admission_fees_details afd ON af.id = afd.admission_fees_ref_id
 WHERE af.id = '$payFeesid' && afd.fee_received > 0 ");

@@ -211,6 +211,30 @@ $(document).ready(function () {
     });
     }
   });
+  $("#paid_fees_details").on('click', '.delete_lastpayfees', function () { //pay fees delete
+    var isok=confirm("Do you want delete Fees?");
+    if(isok==false){
+      return false;
+    }else{
+    var feesid = $(this).closest('tr').find('.fees_id').val();
+    var studentid = $(this).closest('tr').find('.student_id').val();
+    $.ajax({
+      type: "POST",
+      data: { "feesid": feesid },
+      url: "FeesCollectionFile/feesCollection/deleteLastPayFeesDetails.php",
+      success: function (response) {
+        console.log(response);
+        if(response == '1'){
+          alert("Successfully fees deleted!")
+          getPaidDetails(studentid);//call paid details function
+          getstudentDetails(studentid);//call Fees details after action to show updated value.
+        }else{
+          alert("Unable to delete, please try again!")
+        }
+      }
+    });
+    }
+  });
 
   $("#paid_fees_details").on('click', '.delete_transportfees', function () { //Transport fees delete
     var isok=confirm("Do you want delete Fees?");

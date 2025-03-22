@@ -31,13 +31,11 @@ if(isset($_POST['student_name1'])){
   $student_name1 = $_POST['student_name1'];
 }
 
-
-
 // listen for changes in the medium, standard, and section dropdowns
 if($medium != '' && $standard != ''  && $section != ''){
   
   // make a query to fetch the student names list
-  $sql2 = "SELECT student_id, student_name FROM student_creation WHERE medium = '$medium' AND standard = '$standard' AND section = '$section' AND school_id='$school_id' AND year_id ='$year_id' AND status = 0 ";
+  $sql2 = "SELECT sc.student_id, sc.student_name FROM student_creation sc LEFT JOIN student_history sh ON sc.student_id = sh.student_id WHERE sc.medium = '$medium' AND sh.standard = '$standard' AND sh.section = '$section' AND sc.school_id='$school_id' AND sh.academic_year ='$year_id' AND sc.status = 0 ";
   $result2 = mysqli_query($mysqli, $sql2);
 
   // check if there are any students in the result
@@ -56,7 +54,7 @@ if($medium != '' && $standard != ''  && $section != ''){
 } else if($medium != '' && $standard != ''){
   
   // make a query to fetch the section list
-  $sql = "SELECT section FROM student_creation WHERE medium = '$medium' AND standard = '$standard' AND school_id='$school_id' AND status = 0 GROUP BY section";
+  $sql = "SELECT sh.section FROM student_creation sc LEFT JOIN student_history sh ON sc.student_id = sh.student_id WHERE sc.medium = '$medium' AND sh.standard = '$standard'  AND sc.school_id='$school_id' AND sh.academic_year ='$year_id' AND sc.status = 0 GROUP BY section";
   $result = mysqli_query($mysqli, $sql);
 
   // check if there are any sections in the result
@@ -74,9 +72,9 @@ if($medium != '' && $standard != ''  && $section != ''){
 } else if($student_id !='' && $student_name1 !=''){
     
   if (!empty($student_id)) {
-      $sql = "SELECT student_name FROM student_creation WHERE student_id = '$student_id' AND school_id='$school_id' AND year_id ='$year_id' AND status = 0 ";
+      $sql = "SELECT sc.student_name FROM student_creation  sc LEFT JOIN student_history sh ON sc.student_id = sh.student_id  WHERE sc.student_id = '$student_id' AND sc.school_id='$school_id' AND sh.academic_year ='$year_id' AND status = 0 ";
   } elseif (!empty($student_name1)) {
-      $sql = "SELECT student_name FROM student_creation WHERE student_id = '$student_name1' AND school_id='$school_id' AND year_id ='$year_id' AND status = 0 ";
+    $sql = "SELECT sc.student_name FROM student_creation  sc LEFT JOIN student_history sh ON sc.student_id = sh.student_id  WHERE sc.student_id = '$student_id' AND sc.school_id='$school_id' AND sh.academic_year ='$year_id' AND status = 0 ";
   } else {
       // handle error case
   }
@@ -98,7 +96,7 @@ if($medium != '' && $standard != ''  && $section != ''){
 } else if($standard != ''){
 
   // make a query to fetch the section list
-  $sql = "SELECT section FROM student_creation WHERE standard = '$standard' AND school_id='$school_id' AND year_id ='$year_id' AND status = 0 GROUP BY section "; 
+  $sql = "SELECT sh.section FROM student_creation sc LEFT JOIN student_history sh ON sc.student_id = sh.student_id WHERE sh.standard = '$standard'  AND sc.school_id='$school_id' AND sh.academic_year ='$year_id' AND sc.status = 0 GROUP BY section "; 
   $result = mysqli_query($mysqli, $sql);
 
   // check if there are any sections in the result
@@ -115,7 +113,7 @@ if($medium != '' && $standard != ''  && $section != ''){
 } else if($section !=''){
   
     // make a query to fetch the student names list
-    $sql2 = "SELECT student_id, student_name FROM student_creation WHERE section = '$section' AND school_id='$school_id' AND year_id ='$year_id' AND status = 0";
+    $sql2 = "SELECT sc.student_id, sc.student_name FROM student_creation sc LEFT JOIN student_history sh ON sc.student_id = sh.student_id WHERE sc.medium = '$medium' AND sh.standard = '$standard' AND sh.section = '$section' AND sc.school_id='$school_id' AND sh.academic_year ='$year_id' AND sc.status = 0 ";
     $result2 = mysqli_query($mysqli, $sql2);
   
     // check if there are any students in the result

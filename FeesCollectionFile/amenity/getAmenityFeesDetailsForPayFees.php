@@ -25,7 +25,7 @@ if($studentType =="1" || $studentType =="2"){
 
 }
 
-$CheckReceiptQry = $connect->query("SELECT afs.id FROM `admission_fees` afs JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id WHERE afs.admission_id = '$admissionFormId' && afd.fees_table_name = 'amenitytable' && afs.academic_year ='$academicYear' ORDER BY afs.id DESC LIMIT 1");
+$CheckReceiptQry = $connect->query("SELECT afs.id FROM `admission_fees` afs JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id WHERE afs.admission_id = '$admissionFormId' && afd.fees_table_name = 'amenitytable' && afd.fee_received > 0 && afs.academic_year ='$academicYear' ORDER BY afs.id DESC LIMIT 1");
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
     $feeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as amenity_amount, afd.fees_master_id as fees_id, afd.fees_id as amenity_fee_id, af.amenity_particulars, af.amenity_amount AS ovrlAllAmenityAmnt FROM `admission_fees` afs JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id JOIN amenity_fee af ON afd.fees_id = af.amenity_fee_id WHERE afs.id = '$get_temp_fees_id' && afd.fees_table_name = 'amenitytable' && af.status ='1' ");

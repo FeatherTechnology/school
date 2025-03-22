@@ -22,7 +22,7 @@ if(isset($_POST['submitpaylastyearfees']) && $_POST['submitpaylastyearfees'] != 
     $addLastYearFeesCreation = $userObj->addLastYearFees($mysqli,$userid,$school_id);  
     if($addLastYearFeesCreation != 2){
 ?>
-    <script> location.href='<?php echo $HOSTPATH; ?>last_year_fees_pay&pagename=<?php echo $pagename; ?>&upd=<?php echo $studid; ?>';
+    <script>
     setTimeout(() => {
         print_temp_fees(<?php echo $addLastYearFeesCreation; ?>);
     }, 1000);
@@ -218,7 +218,7 @@ if(isset($_GET['upd'])){
                                     <tbody id="temp_amenity_fees"> </tbody>
                                 </table>
 
-                                <!-- <table class="table table-bordered responsive-table" >
+                                <table class="table table-bordered responsive-table" >
                                     <thead>
                                         <tr>
                                             <th style="width: 30%;">Transport Fees</th>
@@ -229,7 +229,7 @@ if(isset($_GET['upd'])){
                                         </tr>
                                     </thead>
                                     <tbody id="last_year_transport_fees"> </tbody>
-                                </table> -->
+                                </table>
                             </div>
                         </div>
 

@@ -4,7 +4,9 @@ include "../../ajaxconfig.php";
 if(isset($_SESSION['school_id'])){
     $school_id = $_SESSION['school_id'];
 }
-
+if(isset($_SESSION['academic_year'])){
+    $academic_year = $_SESSION['academic_year'];
+}
 if(isset($_POST['stdMedium'])){
     $stdMedium = $_POST['stdMedium'];
 }
@@ -50,7 +52,8 @@ if(isset($_POST['stdStandard'])){
     <tbody>
 
 <?php
-$getStudentListQry = $connect->query("SELECT * FROM `student_creation` sc JOIN standard_creation std ON sc.standard = std.standard_id WHERE sc.medium = '$stdMedium' && sc.standard = '$stdStandard' && sc.status = '0' && sc.school_id = '$school_id' ");
+
+$getStudentListQry = $connect->query("SELECT * FROM `student_creation` sc JOIN student_history sh  ON sh.student_id = sc.student_id JOIN standard_creation std ON sh.standard = std.standard_id WHERE sc.medium = '$stdMedium' && sh.standard = '$stdStandard' && sc.status = '0' && sc.school_id = '$school_id' AND sh.academic_year='$academic_year' ");
 $i=1;
 while($studentList = $getStudentListQry->fetchObject()){
 ?>

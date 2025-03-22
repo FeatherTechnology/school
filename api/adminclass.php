@@ -1071,6 +1071,7 @@ class admin
 		if (isset($_POST['blood_group'])) {
 			$blood_group = $_POST['blood_group'];
 		}
+		$category = '';
 		if (isset($_POST['category'])) {
 			$category = $_POST['category'];
 		}
@@ -1086,6 +1087,7 @@ class admin
 		if (isset($_POST['religion'])) {
 			$religion = $_POST['religion'];
 		}
+		$filltoo = '';
 		if (isset($_POST['filltoo'])) {
 			$filltoo = $_POST['filltoo'];
 		}
@@ -1179,12 +1181,14 @@ class admin
 		if (isset($_POST['referred_by'])) {
 			$referred_by = $_POST['referred_by'];
 		}
+		$concession_type = '';
 		if (isset($_POST['concession_type'])) {
 			$concession_type = $_POST['concession_type'];
 		}
 		if (isset($_POST['concessiontypedetails'])) {
 			$concessiontypedetails = $_POST['concessiontypedetails'];
 		}
+		$facility = '';
 		if (isset($_POST['facility'])) {
 			$facility = $_POST['facility'];
 		}
@@ -1218,6 +1222,7 @@ class admin
 		if (isset($_POST['mother_aadhar_number'])) {
 			$mother_aadhar_number = $_POST['mother_aadhar_number'];
 		}
+		$occupation = '';
 		if (isset($_POST['occupation'])) {
 			$occupation = $_POST['occupation'];
 		}
@@ -1233,6 +1238,7 @@ class admin
 		if (isset($_POST['telephone_number'])) {
 			$telephone_number = $_POST['telephone_number'];
 		}
+		$lives_gaurdian = '';
 		if (isset($_POST['lives_gaurdian'])) {
 			$lives_gaurdian = $_POST['lives_gaurdian'];
 		}
@@ -1312,13 +1318,14 @@ class admin
 		if (isset($_POST['temp_admission_id'])) {
 			$temp_admission_id = $_POST['temp_admission_id'];
 		}
-
+		$userid = $_SESSION["userid"];
 		$certificate = '';
 		$subdir = $_POST['admission_number'];
 		//set the directory path name
 		$dir = ("uploads/certificates/" . $subdir);
-		//make the directory
-		mkdir($dir, 0777);
+		if (!is_dir($dir)) {
+			mkdir($dir, 0777, true); // 'true' allows recursive directory creation
+		}
 		if (!empty($_FILES['certificate']['name'])) {
 			$certificate = $_FILES['certificate']['name'];
 			$certificate_tmp = $_FILES['certificate']['tmp_name'];
@@ -1329,8 +1336,9 @@ class admin
 		$subdir1 = $_POST['admission_number'];
 		//set the directory path name
 		$dir1 = ("uploads/certificates/" . $subdir1);
-		//make the directory
-		mkdir($dir1, 0777);
+		if (!is_dir($dir1)) {
+			mkdir($dir1, 0777, true); // 'true' allows recursive directory creation
+		}
 
 		if (!empty($_FILES['certificate1']['name'])) {
 			$certificate1 = $_FILES['certificate1']['name'];
@@ -1342,9 +1350,9 @@ class admin
 		$subdir2 = $_POST['admission_number'];
 		//set the directory path name
 		$dir2 = ("uploads/certificates/" . $subdir2);
-		//make the directory
-		mkdir($dir2, 0777);
-
+		if (!is_dir($dir2)) {
+			mkdir($dir2, 0777, true); // 'true' allows recursive directory creation
+		}
 		if (!empty($_FILES['certificate2']['name'])) {
 			$certificate2 = $_FILES['certificate2']['name'];
 			$certificate2_tmp = $_FILES['certificate2']['tmp_name'];
@@ -1355,8 +1363,10 @@ class admin
 		$subdir3 = $_POST['admission_number'];
 		//set the directory path name
 		$dir3 = ("uploads/certificates/" . $subdir3);
+		if (!is_dir($dir3)) {
+			mkdir($dir3, 0777, true); // 'true' allows recursive directory creation
+		}
 		//make the directory
-		mkdir($dir3, 0777);
 		if (!empty($_FILES['certificate3']['name'])) {
 			$certificate3 = $_FILES['certificate3']['name'];
 			$certificate3_tmp = $_FILES['certificate3']['tmp_name'];
@@ -1367,8 +1377,9 @@ class admin
 		$subdir4 = $_POST['admission_number'];
 		//set the directory path name
 		$dir4 = ("uploads/certificates/" . $subdir4);
-		//make the directory
-		mkdir($dir4, 0777);
+		if (!is_dir($dir4)) {
+			mkdir($dir4, 0777, true); // 'true' allows recursive directory creation
+		}
 		if (!empty($_FILES['certificate4']['name'])) {
 			$certificate4 = $_FILES['certificate4']['name'];
 			$certificate4_tmp = $_FILES['certificate4']['tmp_name'];
@@ -1392,8 +1403,9 @@ class admin
 		$subdir6 = $_POST['admission_number'];
 		//set the directory path name
 		$dir6 = ("uploads/student_creation/" . $subdir6);
-		//make the directory
-		mkdir($dir6, 0777);
+		if (!is_dir($dir6)) {
+			mkdir($dir6, 0777, true); // 'true' allows recursive directory creation
+		}
 		if (!empty($_FILES['father_image']['name'])) {
 			$father_image = $_FILES['father_image']['name'];
 			$father_image_tmp = $_FILES['father_image']['tmp_name'];
@@ -1406,7 +1418,9 @@ class admin
 		//set the directory path name
 		$dir7 = ("uploads/student_creation/" . $subdir7);
 		//make the directory
-		mkdir($dir7, 0777);
+		if (!is_dir($dir7)) {
+			mkdir($dir7, 0777, true); // 'true' allows recursive directory creation
+		}
 		if (!empty($_FILES['mother_image']['name'])) {
 			$mother_image = $_FILES['mother_image']['name'];
 			$mother_image_tmp = $_FILES['mother_image']['tmp_name'];
@@ -1416,6 +1430,8 @@ class admin
 		if (isset($_POST['extra_curricular'])) {
 			$extra_curricularstr = $_POST['extra_curricular'];
 			$extra_curricular = implode(",", $extra_curricularstr);
+		} else {
+			$extra_curricular = '';
 		}
 
 		$StudentInsert = "INSERT INTO student_creation(temp_admission_id,temp_no, admission_number, student_name, sur_name, date_of_birth, gender, mother_tongue,
@@ -1456,7 +1472,8 @@ class admin
 		$insresult = $mysqli->query($StudentInsert) or die("Error " . $mysqli->error);
 
 		$stdLastInsertId = $mysqli->insert_id;
-
+		$StudentHistoryInsert = "INSERT INTO student_history (`student_id`, `standard`, `section`,`studentstype` ,`extra_curricular`, `transportarearefid`, `academic_year`,`insert_login_id`,`created_on`)VALUES('$stdLastInsertId','" . strip_tags($standard) . "','" . strip_tags($section) . "','" . strip_tags($studentstype) . "','" . strip_tags($extra_curricular) . "','" . strip_tags($transportarearefid) . "','" . strip_tags($year_id) . "','$userid',now())";
+		$result = $mysqli->query($StudentHistoryInsert) or die("Error " . $mysqli->error);
 		if ($temp_admission_id != '') {
 			$selectFeesQry = $mysqli->query("SELECT `id`, `TempAdmissionId` FROM `temp_admission_fees` WHERE `TempAdmissionId` = '$temp_admission_id' ");
 			while ($getdetails = $selectFeesQry->fetch_assoc()) {
@@ -1493,9 +1510,9 @@ class admin
 	// Get tempStudent
 	public function getStudentCreation($mysqli, $id)
 	{
-
+		$academic_year = $_SESSION['academic_year'];
 		// $tempStudentSelect = "SELECT * FROM student_creation WHERE student_id='$id'"; 
-		$tempStudentSelect = "SELECT stdc.*, sc.standard as std_name FROM student_creation stdc JOIN standard_creation sc ON stdc.standard = sc.standard_id WHERE stdc.student_id='$id'";
+		$tempStudentSelect = "SELECT stdc.*, sc.standard as std_name ,sh.standard as std , sh.academic_year ,sh.extra_curricular as extra_curr,sh.studentstype as sttype FROM student_creation stdc LEFT JOIN student_history sh ON stdc.student_id =sh.student_id JOIN standard_creation sc ON sh.standard = sc.standard_id WHERE stdc.student_id='$id' and sh.academic_year = '$academic_year'";
 		$res = $mysqli->query($tempStudentSelect) or die("Error in Get All Records" . $mysqli->error);
 		$detailrecords = array();
 		if ($mysqli->affected_rows > 0) {
@@ -1539,7 +1556,7 @@ class admin
 			$detailrecords['medium']       = $row->medium;
 			$detailrecords['studentrollno']       = $row->studentrollno;
 			$detailrecords['emisno']       = $row->emisno;
-			$detailrecords['studentstype']       = $row->studentstype;
+			$detailrecords['studentstype']       = $row->sttype;
 			$detailrecords['referencecat']       = $row->referencecat;
 			$detailrecords['refstaffid']       = $row->refstaffid;
 			$detailrecords['refstudentid']       = $row->refstudentid;
@@ -1597,6 +1614,9 @@ class admin
 			$detailrecords['father_image']       = $row->father_image;
 			$detailrecords['extra_curricular']       = $row->extra_curricular;
 			$detailrecords['year_id']       = $row->year_id;
+			$detailrecords['standards']       = $row->std;
+			$detailrecords['academic_year']       = $row->academic_year;
+			$detailrecords['extra_curr']       = $row->extra_curr;
 		}
 
 		return $detailrecords;
@@ -2024,6 +2044,7 @@ class admin
 			$extra_curricular = $_POST['extra_curricular'];
 			$extra_curricularstr = implode(",", $extra_curricular);
 		}
+		$academic_year = $_SESSION['academic_year'];
 
 		$tempStudentUpdaet = "UPDATE student_creation SET temp_admission_id = '" . strip_tags($temp_admission_id) . "', temp_no = '" . strip_tags($temp_no) . "', admission_number='" . strip_tags($admission_number) . "', 
 			student_name='" . strip_tags($student_name) . "', sur_name='" . strip_tags($sur_name) . "', date_of_birth='" . strip_tags($date_of_birth) . "', 
@@ -2055,6 +2076,8 @@ class admin
 			certificate4='" . strip_tags($certificate4) . "', mother_image='" . strip_tags($mother_image) . "', medium='" . strip_tags($medium) . "',father_image='" . strip_tags($father_image) . "', extra_curricular='" . strip_tags($extra_curricularstr) . "', update_login_id='" . strip_tags($userid) . "', status = '0' WHERE student_id= '" . strip_tags($id) . "' ";
 		$updresult = $mysqli->query($tempStudentUpdaet) or die("Error in in update Query!." . $mysqli->error);
 
+		$history_update = "UPDATE `student_history` SET `standard`='" . strip_tags($standard) . "' ,`section`='" . strip_tags($section) . "',`studentstype`='" . strip_tags($studentstype) . "',`extra_curricular`= '" . strip_tags($extra_curricularstr) . "',`transportarearefid`= '" . strip_tags($transportarearefid) . "' WHERE student_id= '" . strip_tags($id) . "' and academic_year = '$academic_year'";
+		$hisupdresult = $mysqli->query($history_update) or die("Error in in update Query!." . $mysqli->error);
 		//Add referral details
 		if ($referencecat != '') {
 			$ref_student_id = ($refstudentid != '') ? $refstudentid : $refoldstudentid;
@@ -2199,63 +2222,63 @@ class admin
 		$checkinsertedTrustQry = $mysqli->query("SELECT * FROM trust_creation WHERE status ='0' ");
 		// if ($mysqli->affected_rows == '0') { //to check already a trust is active or not because creation access to create one trust. 
 
-			if (isset($_POST['trust_name'])) {
-				$trust_name = $_POST['trust_name'];
-			}
-			if (isset($_POST['contact_person'])) {
-				$contact_person = $_POST['contact_person'];
-			}
-			if (isset($_POST['contact_number'])) {
-				$contact_number = $_POST['contact_number'];
-			}
-			if (isset($_POST['address1'])) {
-				$address1 = $_POST['address1'];
-			}
-			if (isset($_POST['address2'])) {
-				$address2 = $_POST['address2'];
-			}
-			if (isset($_POST['address3'])) {
-				$address3 = $_POST['address3'];
-			}
-			if (isset($_POST['place'])) {
-				$place = $_POST['place'];
-			}
-			if (isset($_POST['pincode'])) {
-				$pincode = $_POST['pincode'];
-			}
-			if (isset($_POST['email_id'])) {
-				$email_id = $_POST['email_id'];
-			}
-			if (isset($_POST['website'])) {
-				$website = $_POST['website'];
-			}
-			if (isset($_POST['pan_number'])) {
-				$pan_number = $_POST['pan_number'];
-			}
-			if (isset($_POST['tan_number'])) {
-				$tan_number = $_POST['tan_number'];
-			}
-			if (isset($_POST['userid'])) {
-				$userid = $_POST['userid'];
-			}
-			if (isset($_POST['academic_year'])) {
-				$academic_year = $_POST['academic_year'];
-			}
-			$trust_logo = '';
-			if (!empty($_FILES['trust_logo']['name'])) {
-				$trust_logo = $_FILES['trust_logo']['name'];
-				$trust_logo_tmp = $_FILES['trust_logo']['tmp_name'];
-				$trust_logofolder = "uploads/trust_creation/" . $trust_logo;
-				move_uploaded_file($trust_logo_tmp, $trust_logofolder);
-			}
-			if ($trust_logo == '' && isset($_POST["updateimage"])) {
-				$trust_logo = $_POST["updateimage"];
-			}
-			$updateTrustCreationQry = "UPDATE trust_creation SET trust_name = '" . strip_tags($trust_name) . "', contact_person='" . strip_tags($contact_person) . "', contact_number='" . strip_tags($contact_number) . "', address1='" . strip_tags($address1) . "', address2='" . strip_tags($address2) . "', address3='" . strip_tags($address3) . "', place='" . strip_tags($place) . "', 
+		if (isset($_POST['trust_name'])) {
+			$trust_name = $_POST['trust_name'];
+		}
+		if (isset($_POST['contact_person'])) {
+			$contact_person = $_POST['contact_person'];
+		}
+		if (isset($_POST['contact_number'])) {
+			$contact_number = $_POST['contact_number'];
+		}
+		if (isset($_POST['address1'])) {
+			$address1 = $_POST['address1'];
+		}
+		if (isset($_POST['address2'])) {
+			$address2 = $_POST['address2'];
+		}
+		if (isset($_POST['address3'])) {
+			$address3 = $_POST['address3'];
+		}
+		if (isset($_POST['place'])) {
+			$place = $_POST['place'];
+		}
+		if (isset($_POST['pincode'])) {
+			$pincode = $_POST['pincode'];
+		}
+		if (isset($_POST['email_id'])) {
+			$email_id = $_POST['email_id'];
+		}
+		if (isset($_POST['website'])) {
+			$website = $_POST['website'];
+		}
+		if (isset($_POST['pan_number'])) {
+			$pan_number = $_POST['pan_number'];
+		}
+		if (isset($_POST['tan_number'])) {
+			$tan_number = $_POST['tan_number'];
+		}
+		if (isset($_POST['userid'])) {
+			$userid = $_POST['userid'];
+		}
+		if (isset($_POST['academic_year'])) {
+			$academic_year = $_POST['academic_year'];
+		}
+		$trust_logo = '';
+		if (!empty($_FILES['trust_logo']['name'])) {
+			$trust_logo = $_FILES['trust_logo']['name'];
+			$trust_logo_tmp = $_FILES['trust_logo']['tmp_name'];
+			$trust_logofolder = "uploads/trust_creation/" . $trust_logo;
+			move_uploaded_file($trust_logo_tmp, $trust_logofolder);
+		}
+		if ($trust_logo == '' && isset($_POST["updateimage"])) {
+			$trust_logo = $_POST["updateimage"];
+		}
+		$updateTrustCreationQry = "UPDATE trust_creation SET trust_name = '" . strip_tags($trust_name) . "', contact_person='" . strip_tags($contact_person) . "', contact_number='" . strip_tags($contact_number) . "', address1='" . strip_tags($address1) . "', address2='" . strip_tags($address2) . "', address3='" . strip_tags($address3) . "', place='" . strip_tags($place) . "', 
 		pincode='" . strip_tags($pincode) . "', email_id='" . strip_tags($email_id) . "', website='" . strip_tags($website) . "', pan_number='" . strip_tags($pan_number) . "', 
 		tan_number='" . strip_tags($tan_number) . "', update_login_id='" . strip_tags($userid) . "', trust_logo='" . strip_tags($trust_logo) . "',academic_year='" . strip_tags($academic_year) . "', status = '0' 
 		WHERE trust_id= '" . strip_tags($id) . "' ";
-			$updresult = $mysqli->query($updateTrustCreationQry) or die("Error in in update Query!." . $mysqli->error);
+		$updresult = $mysqli->query($updateTrustCreationQry) or die("Error in in update Query!." . $mysqli->error);
 		// }
 	}
 
@@ -3066,7 +3089,7 @@ class admin
 	//  get TempStudentList
 	public function getStudentList($mysqli, $school_id, $year_id)
 	{
-		$qry = "SELECT * FROM student_creation WHERE school_id='$school_id' AND year_id='$year_id' AND status=0 ORDER BY student_id DESC";
+		$qry = "SELECT sc.* FROM student_creation sc LEFT JOIN student_history sh ON sc.student_id =sh.student_id WHERE sc.school_id='$school_id' AND sh.academic_year='$year_id' AND status=0 ORDER BY sc.student_id DESC";
 		// SELECT * FROM student_creation WHERE 1 AND status=0 ORDER BY student_id DESC
 		$res = $mysqli->query($qry) or die("Error in Get All Records" . $mysqli->error);
 		$detailrecords = array();
@@ -6135,7 +6158,25 @@ class admin
 			$amenityAmntScholarship = $_POST['amenityAmntScholarship'];
 		}
 		//Amenity Table data END//
-
+		//Transport Table data//
+		$areaCreationId = [];
+		if (isset($_POST['areaCreationId'])) {
+			$areaCreationId = $_POST['areaCreationId'];
+		}
+		if (isset($_POST['particularId'])) {
+			$transtablename = 'transport';
+			$particularId = $_POST['particularId'];
+		}
+		if (isset($_POST['transportFeeReceived'])) {
+			$transportFeeReceived = $_POST['transportFeeReceived'];
+		}
+		if (isset($_POST['transportFeeBalance'])) {
+			$transportFeeBalance = $_POST['transportFeeBalance'];
+		}
+		if (isset($_POST['transportFeeScholarship'])) {
+			$transportFeeScholarship = $_POST['transportFeeScholarship'];
+		}
+		//Transport Table data END//
 		if (count($feesMasterid) > 0 || count($extraFeesMasterid) > 0 || count($amenityFeesMasterid) > 0) {
 			$insertPayFeesQry = $mysqli->query("INSERT INTO `last_year_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `other_charges`, `other_charges_received`, `scholarship`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `created_on`) VALUES ('$admission_form_id','$receipt_number','$receipt_date','$academic_year','$other_charges','$other_charges_recieved','$fees_scholarship','$fees_total','$final_amount_recieved','$fees_collected','$fees_balance','$school_id','$userid',now())");
 
@@ -6166,7 +6207,11 @@ class admin
 				$insertamenityFeesDetailsQry = $mysqli->query("INSERT INTO `last_year_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$amenityFeesMasterid[$c]','$amenitytablename','$amenityAmntid[$c]','$amenityAmntReceived[$c]','$amenityAmntBalance[$c]','$amenityAmntScholarship[$c]')");
 				// }
 			}
-
+			for ($d = 0; $d < count($areaCreationId); $d++) {
+				// if($amenityAmntReceived[$c] > 0 || $amenityAmntScholarship[$c] > 0 ){
+				$inserttransFeesDetailsQry = $mysqli->query("INSERT INTO `last_year_fees_details`(`admission_fees_ref_id`, `fees_master_id`, `fees_table_name`, `fees_id`, `fee_received`, `balance_tobe_paid`, `scholarship`) VALUES ('$FeesLastInsertId','$areaCreationId[$d]','$transtablename','$particularId[$d]','$transportFeeReceived[$d]','$transportFeeBalance[$d]','$transportFeeScholarship[$d]')");
+				// }
+			}
 			if ($insertPayFeesQry) {
 				return $FeesLastInsertId;
 			} else {

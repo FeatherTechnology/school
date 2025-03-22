@@ -32,12 +32,12 @@ lyf.receipt_date
 FROM 
 last_year_fees lyf 
 JOIN 
-student_creation stdc ON lyf.TempAdmissionId = stdc.temp_admission_id 
+student_creation stdc ON lyf.admission_id = stdc.student_id 
 JOIN 
-standard_creation sc ON stdc.temp_standard = sc.standard_id 
+standard_creation sc ON stdc.standard = sc.standard_id 
 JOIN 
-last_year_fees_details lyfd ON lyf.id = lyfd.TempAdmFeeRefId
-WHERE lyf.id = '$lastYearFeesid' && lyfd.FeeReceived > 0");
+last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id
+WHERE lyf.id = '$lastYearFeesid' && lyfd.fee_received > 0");
 
 $tempfeesDetails = $getTempFees->fetch();
 
@@ -152,7 +152,13 @@ function AmountInWords($amount)
     <?php   
     $getLastYearFeesQry = $connect->query("SELECT 
     lyfd.fee_received, 
-    CASE WHEN(gcf.grp_particulars <>'') THEN gcf.grp_particulars ELSE CASE WHEN(ecaf.extra_particulars <> '') THEN ecaf.extra_particulars ELSE CASE WHEN(af.amenity_particulars <> '') THEN af.amenity_particulars END END END as particulars   
+    CASE 
+        WHEN gcf.grp_particulars <> '' THEN gcf.grp_particulars
+        WHEN ecaf.extra_particulars <> '' THEN ecaf.extra_particulars
+        WHEN af.amenity_particulars <> '' THEN af.amenity_particulars
+        WHEN acp.particulars <> '' THEN acp.particulars
+        ELSE NULL
+    END AS particulars
     FROM 
     last_year_fees lyf 
     JOIN 
@@ -167,6 +173,8 @@ function AmountInWords($amount)
     extra_curricular_activities_fee ecaf ON lyfd.fees_table_name = 'extratable' AND lyfd.fees_id = ecaf.extra_fee_id 
     LEFT JOIN 
     amenity_fee af ON lyfd.fees_table_name = 'amenitytable' AND lyfd.fees_id = af.amenity_fee_id 
+       LEFT JOIN area_creation_particulars acp ON 
+    lyfd.fees_table_name = 'transport' AND lyfd.fees_id = acp.particulars_id
     WHERE lyf.id = '$lastYearFeesid'  && lyfd.fee_received > 0"); 
     $i = 1;
     $totalAmnt = 0;

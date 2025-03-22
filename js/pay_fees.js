@@ -80,6 +80,7 @@ function getFeesTableFunc(){
   var studentType = $('#students_type').val();
   var standard = $('#standard_id').val(); 
   var student_extra_curricular = $('#student_extra_curricular').val(); 
+
   getGroupFeesDetails(admissionFormId, academicYear, medium, studentType, standard, student_extra_curricular);
   // getExtraCurricularActivityDetails(admissionFormId, academicYear, medium, studentType, standard);
   // getAmenityFeesDetails(admissionFormId, academicYear, medium, studentType, standard);
