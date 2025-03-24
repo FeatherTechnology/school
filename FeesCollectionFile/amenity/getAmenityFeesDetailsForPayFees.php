@@ -36,7 +36,7 @@ if($CheckReceiptQry->rowCount() > 0){
 
 $i=0;
 while($amenityFeeDetailsInfo = $feeDetailsQry->fetch()){
-    $amenityConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as amenityTotalScholarshipAmnt, (SELECT COALESCE(SUM(afd.fee_received),0) FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$admissionFormId' && afd.fees_table_name = 'amenitytable' && afd.fees_id = '".$amenityFeeDetailsInfo['amenity_fee_id']."' && af.academic_year ='$academicYear') AS paid_amnt FROM `fees_concession` WHERE `student_id`='$admissionFormId' && `fees_table_name`='amenitytable' && `fees_id` = '".$amenityFeeDetailsInfo['amenity_fee_id']."' && academic_year ='$academicYear' ");
+    $amenityConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as amenityTotalScholarshipAmnt, (SELECT COALESCE(SUM(afd.fee_received),0) + COALESCE(SUM(afd.scholarship),0) FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$admissionFormId' && afd.fees_table_name = 'amenitytable' && afd.fees_id = '".$amenityFeeDetailsInfo['amenity_fee_id']."' && af.academic_year ='$academicYear') AS paid_amnt FROM `fees_concession` WHERE `student_id`='$admissionFormId' && `fees_table_name`='amenitytable' && `fees_id` = '".$amenityFeeDetailsInfo['amenity_fee_id']."' && academic_year ='$academicYear' ");
     
     $amenityConcessionInfo = $amenityConcessionQry->fetch();
     $amenityTotalScholarshipAmnt = $amenityConcessionInfo['amenityTotalScholarshipAmnt'];
