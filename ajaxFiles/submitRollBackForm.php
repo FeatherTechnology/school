@@ -9,7 +9,7 @@ if (isset($_SESSION["academic_year"])) {
     echo json_encode(['status' => 'error', 'message' => 'Academic year not found in session.']);
     exit();
 }
-
+$userid = $_SESSION["userid"];
 // Split the academic year string by the '-' character
 $acdmcyear = explode('-', $year_id);
 
@@ -107,8 +107,8 @@ if (isset($_POST['student_id']) && isset($_POST['standard_id'])) {
 
             // Insert into `student_history`
             $history_query = "
-                INSERT INTO `student_history` (student_id, standard, section,studentstype, extra_curricular, transportarearefid, academic_year, created_on)
-                SELECT student_id, '$next_std_id', section,'2',extra_curricular, transportarearefid, '$nextAcademicYear', NOW()
+                INSERT INTO `student_history` (student_id, standard, section,studentstype, extra_curricular, transportarearefid, academic_year,insert_login_id, created_on)
+                SELECT student_id, '$next_std_id', section,'2',extra_curricular, transportarearefid, '$nextAcademicYear','$userid', NOW()
                 FROM student_creation
                 WHERE student_id = '$student_id[$i]'
             ";
@@ -117,7 +117,7 @@ if (isset($_POST['student_id']) && isset($_POST['standard_id'])) {
             // Update `student_creation` with the new standard and academic year
             $update_student_query = "
                 UPDATE `student_creation`
-                SET `standard` = '$next_std_id', `studentstype` = '2', `year_id` = '$nextAcademicYear'
+                SET `standard` = '$next_std_id', `studentstype` = '2', `year_id` = '$nextAcademicYear' ,update_login_id = '$userid',updated_date=NOW()
                 WHERE `student_id` = '$student_id[$i]'
             ";
             $connect->query($update_student_query);
