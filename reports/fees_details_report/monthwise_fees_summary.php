@@ -1,3 +1,12 @@
+<style>
+#show_monthwise_fees_summary th ,#show_monthwise_fees_summary td {
+    text-align: left !important;
+}
+#show_monthwise_fees_summary .report-title {
+    text-align: center !important;
+}
+
+</style>
 <!-- Page header start -->
 <div class="page-header">
     <ol class="breadcrumb">

@@ -31,12 +31,11 @@ if($studentstype =="1" || $studentstype =="2"){
 
 }
 
-
 if($mediums == '' && $standards == ''){
-echo	$qry = "SELECT fm.fees_id, ecaf.extra_fee_id, ecaf.extra_particulars, ecaf.extra_amount  FROM `fees_master` fm JOIN `extra_curricular_activities_fee` ecaf ON fm.fees_id = ecaf.fee_master_id WHERE fm.academic_year = '$year_id' AND school_id = '$school_id' AND fm.extra_status = '1' AND fm.status = '0'"; 
+	$qry = "SELECT fm.fees_id, ecaf.extra_fee_id, ecaf.extra_particulars, ecaf.extra_amount  FROM `fees_master` fm JOIN `extra_curricular_activities_fee` ecaf ON fm.fees_id = ecaf.fee_master_id WHERE fm.academic_year = '$year_id' AND school_id = '$school_id' AND fm.extra_status = '1' AND fm.status = '0'"; 
 
 }else{
-    echo   $qry = "SELECT fm.fees_id, ecaf.extra_fee_id, ecaf.extra_particulars, ecaf.extra_amount  FROM `fees_master` fm JOIN `extra_curricular_activities_fee` ecaf ON fm.fees_id = ecaf.fee_master_id WHERE 
+       $qry = "SELECT fm.fees_id, ecaf.extra_fee_id, ecaf.extra_particulars, ecaf.extra_amount  FROM `fees_master` fm JOIN `extra_curricular_activities_fee` ecaf ON fm.fees_id = ecaf.fee_master_id WHERE 
     fm.academic_year = '$year_id' AND ((fm.medium = '$mediums' AND $student_type_cndtn AND fm.standard = '$standards') OR (ecaf.type='common')) AND fm.extra_status = '1' AND school_id = '$school_id' AND fm.status = '0'";
 }
 

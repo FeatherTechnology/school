@@ -34,7 +34,12 @@ if(isset($_POST['stdSection'])){
     <tbody>
 
 <?php
-$getStudentListQry = $connect->query("SELECT student_name, std.standard, sh.section, father_name, mother_name, admission_number, gender, flat_no, street, area_locatlity, district, pincode, sms_sent_no FROM `student_creation` sc JOIN student_history sh  ON sh.student_id = sc.student_id JOIN standard_creation std ON sh.standard = std.standard_id WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' && sh.standard = '$stdStandard' && sh.section = '$stdSection' && sc.status = '0' && sc.school_id = '$school_id' ");
+$getStudentListQry = $connect->query("SELECT sc.student_name, std.standard, sh.section, sc.father_name, sc.mother_name, sc.admission_number, sc.gender, sc.flat_no, sc.street, sc.area_locatlity, sc.district, sc.pincode, sc.sms_sent_no FROM `student_creation` sc JOIN student_history sh  ON sh.student_id = sc.student_id JOIN standard_creation std ON sh.standard = std.standard_id WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' && sh.standard = '$stdStandard' && sh.section = '$stdSection' && sc.status = '0' && sc.school_id = '$school_id' ORDER BY 
+  CASE 
+    WHEN sc.student_name LIKE '%.%' THEN SUBSTRING_INDEX(sc.student_name, '.', -1)
+    WHEN sc.student_name LIKE '% %' THEN SUBSTRING_INDEX(sc.student_name, ' ', -1)
+    ELSE sc.student_name
+  END ASC   ");
 while($studentList = $getStudentListQry->fetchObject()){
 ?>
     <tr>

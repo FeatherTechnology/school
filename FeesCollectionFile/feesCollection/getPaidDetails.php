@@ -21,7 +21,6 @@ if (isset($_POST['student_id'])) {
             <th width="50">S.No</th>
             <th>Receipt Date</th>
             <th>Receipt Number</th>
-            <th>Receipt Number In Detail</th>
             <th>Particulars</th>
             <th>Total Amount</th>
             <th>Action</th>
@@ -48,7 +47,6 @@ if (isset($_POST['student_id'])) {
                             <td><?php echo $a++; ?></td>
                             <td><?php echo date('d-m-Y', strtotime($admissionFeesInfo['receipt_date'])); ?></td>
                             <td><?php echo $admissionFeesInfo['receipt_no']; ?></td>
-                            <td><?php echo $admissionFeesInfo['receipt_no'] . ' (' . $admissionFeesInfo['academic_year'] . ')'; ?></td>
                             <td><?php echo $admissionFeesInfo['particulars'];  ?></td>
                             <td><?php echo $admissionFeesInfo['fees_collected']; ?></td>
                             <td>
@@ -92,7 +90,6 @@ if ($getLastAdmissionFees->rowCount() > 0) {
                     <td><?php echo $a++; ?></td>
                     <td><?php echo date('d-m-Y', strtotime($lastadmissionFeesInfo['receipt_date'])); ?></td>
                     <td><?php echo $lastadmissionFeesInfo['receipt_no']; ?></td>
-                    <td><?php echo $lastadmissionFeesInfo['receipt_no'] . ' (' . $lastadmissionFeesInfo['academic_year'] . ')'; ?></td>
                     <td><?php echo $lastadmissionFeesInfo['particulars'];  ?></td>
                     <td><?php echo $lastadmissionFeesInfo['fees_collected']; ?></td>
                     <td>
@@ -124,7 +121,6 @@ if ($getLastAdmissionFees->rowCount() > 0) {
                     <td><?php echo $b++; ?></td>
                     <td><?php echo date('d-m-Y', strtotime($transportfeeInfo['receipt_date'])); ?></td>
                     <td><?php echo $transportfeeInfo['receipt_no']; ?></td>
-                    <td><?php echo $transportfeeInfo['receipt_no'] . ' (' . $transportfeeInfo['academic_year'] . ')'; ?></td>
                     <td><?php echo $transportfeeInfo['particulars'];  ?></td>
                     <td><?php echo $transportfeeInfo['fee_received']; ?></td>
                     <td>

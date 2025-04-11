@@ -1,3 +1,10 @@
+
+<style>
+
+#show_student_scholarship_list td {
+    text-align: left !important;
+}
+</style>
 <!-- Page header start -->
 <div class="page-header">
     <ol class="breadcrumb">

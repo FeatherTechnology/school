@@ -252,12 +252,12 @@ $CheckTransportReceiptQry = $connect->query("SELECT id FROM `transport_admission
 $overallpaid_transport_amount = '0';
 if ($CheckTransportReceiptQry->rowCount() > 0) {
     $get_transportfees_id = $CheckTransportReceiptQry->fetch()['id'];
-    $transportfeeDetailsQry = $connect->query("SELECT (SUM(acp.due_amount) - SUM(tafd.balance_tobe_paid)) as paid_transport_amount
+    $transportfeeDetailsQry = $connect->query("SELECT COALESCE(SUM(tafd.fee_received), 0) as paid_transport_amount
     FROM `transport_admission_fees` taf 
     JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id 
     JOIN area_creation ac ON tafd.area_creation_id = ac.area_id
     JOIN area_creation_particulars acp ON tafd.area_creation_particulars_id = acp.particulars_id 
-    WHERE taf.id = '$get_transportfees_id' ");
+    WHERE taf.admission_id = '$student_id' && taf.academic_year = '$academic_year'");
     if ($transportfeeDetailsQry->rowCount() > 0) {
         $overallpaid_transport_amount = $transportfeeDetailsQry->fetch()['paid_transport_amount'];
     } else {
@@ -293,11 +293,11 @@ if ($CheckLastyrReceiptQry->rowCount() > 0) {
     //Close DB connection
     $lastyr_grpfeeDetailsQry->closeCursor();
 
-    $lastyr_extraFeeDetailsQry = $connect->query("SELECT (SUM(ecaf.extra_amount) - SUM(afd.balance_tobe_paid)) as paid_extra_cur_amount 
+    $lastyr_extraFeeDetailsQry = $connect->query("SELECT (SUM(afd.fee_received)) as paid_extra_cur_amount 
     FROM `admission_fees` af 
     JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
     JOIN extra_curricular_activities_fee ecaf ON afd.fees_id = ecaf.extra_fee_id 
-    WHERE af.id = '$get_lastyr_fees_id' && afd.fees_table_name = 'extratable' ");
+    WHERE af.admission_id = '$student_id' && afd.fees_table_name = 'extratable' && af.academic_year = '$last_year' ");
     if ($lastyr_extraFeeDetailsQry->rowCount() > 0) {
         $lastyr_overallpaid_extra_cur_amount = $lastyr_extraFeeDetailsQry->fetch()['paid_extra_cur_amount'];
     } else {
@@ -358,7 +358,7 @@ if ($CheckLastyrQry->rowCount() > 0) {
     FROM `last_year_fees` lyf 
     JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id 
     JOIN group_course_fee gcf ON lyfd.fees_id = gcf.grp_course_id 
-    WHERE lyf.admission_id = '$student_id' && lyfd.fees_table_name = 'grptable' ");
+    WHERE lyf.admission_id = '$student_id' && lyfd.fees_table_name = 'grptable' && lyf.academic_year = '$academic_year' ");
     if ($lastyr_grpfeeQry->rowCount() > 0) {
         $lastyr_grp_amount = $lastyr_grpfeeQry->fetch()['paid_grp_amount'];
     } else {
@@ -367,11 +367,11 @@ if ($CheckLastyrQry->rowCount() > 0) {
     //Close DB connection
     $lastyr_grpfeeQry->closeCursor();
 
-    $lastyr_extraFeeQry = $connect->query("SELECT (SUM(ecaf.extra_amount) - SUM(lyfd.balance_tobe_paid)) as paid_extra_cur_amount 
+    $lastyr_extraFeeQry = $connect->query("SELECT (SUM(lyfd.fee_received)) as paid_extra_cur_amount 
     FROM `last_year_fees` lyf 
     JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id 
     JOIN extra_curricular_activities_fee ecaf ON lyfd.fees_id = ecaf.extra_fee_id 
-    WHERE lyf.id = '$lastyr_fees_id' && lyfd.fees_table_name = 'extratable' ");
+    WHERE lyf.admission_id = '$student_id' && lyfd.fees_table_name = 'extratable' && lyf.academic_year = '$academic_year' ");
     if ($lastyr_extraFeeQry->rowCount() > 0) {
         $lastyr_extra_cur_amount = $lastyr_extraFeeQry->fetch()['paid_extra_cur_amount'];
     } else {
@@ -384,7 +384,7 @@ if ($CheckLastyrQry->rowCount() > 0) {
     FROM `last_year_fees` lyfs 
     JOIN last_year_fees_details lyfd ON lyfs.id = lyfd.admission_fees_ref_id 
     JOIN amenity_fee af ON lyfd.fees_id = af.amenity_fee_id 
-    WHERE lyfs.admission_id = '$student_id'  && lyfd.fees_table_name = 'amenitytable' ");
+    WHERE lyfs.admission_id = '$student_id'  && lyfd.fees_table_name = 'amenitytable' && lyf.academic_year = '$academic_year' ");
     if ($lastyr_amenityFeeQry->rowCount() > 0) {
         $lastyr_amenity_amount = $lastyr_amenityFeeQry->fetch()['paid_amenity_amount'];
     } else {
@@ -393,12 +393,11 @@ if ($CheckLastyrQry->rowCount() > 0) {
 
     //Close DB connection
     $lastyr_amenityFeeQry->closeCursor();
-
     $lastyr_transFeeQry = $connect->query("SELECT (SUM(lyfd.fee_received)) as paid_trans_amount 
     FROM `last_year_fees` lyfs 
     JOIN last_year_fees_details lyfd ON lyfs.id = lyfd.admission_fees_ref_id 
  JOIN area_creation_particulars acp ON lyfd.fees_id = acp.particulars_id
-    WHERE lyfs.admission_id = '$student_id'  && lyfd.fees_table_name = 'transport' ");
+    WHERE lyfs.admission_id = '$student_id'  && lyfd.fees_table_name = 'transport' && lyf.academic_year = '$academic_year'");
     if ($lastyr_transFeeQry->rowCount() > 0) {
         $lastyr_trans_amount = $lastyr_transFeeQry->fetch()['paid_trans_amount'];
     } else {
@@ -407,7 +406,6 @@ if ($CheckLastyrQry->rowCount() > 0) {
 
     //Close DB connection
     $lastyr_transFeeQry->closeCursor();
-
     $lastyr_entrypaid_amount = $lastyr_grp_amount + $lastyr_extra_cur_amount + $lastyr_amenity_amount + $lastyr_trans_amount;
 
     //Close DB connection

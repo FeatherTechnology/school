@@ -25,14 +25,13 @@ if($studentType =="1" || $studentType =="2"){
 
 }
 
-$CheckReceiptQry = $connect->query("SELECT af.id FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$admissionFormId' && afd.fees_table_name = 'grptable' && af.academic_year ='$academicYear' ORDER BY af.id DESC LIMIT 1");
+$CheckReceiptQry = $connect->query("SELECT af.admission_id FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$admissionFormId' && afd.fees_table_name = 'grptable' && af.academic_year ='$academicYear' ORDER BY af.id DESC LIMIT 1");
 if($CheckReceiptQry->rowCount() > 0){
-    $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
-    $feeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as grp_amount, afd.fees_master_id as fees_id, afd.fees_id as grp_course_id, gcf.grp_particulars, gcf.grp_amount AS ovrlAllGrpAmnt FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id WHERE af.id = '$get_temp_fees_id' && afd.fees_table_name = 'grptable' && gcf.status ='1' ");
+    $get_temp_fees_id = $CheckReceiptQry->fetch()['admission_id'];
+    $feeDetailsQry = $connect->query("SELECT COALESCE(SUM(afd.fee_received),0) as grp_amount, afd.fees_master_id as fees_id, afd.fees_id as grp_course_id, gcf.grp_particulars, gcf.grp_amount AS ovrlAllGrpAmnt FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id WHERE  af.admission_id = '$get_temp_fees_id' && afd.fees_table_name = 'grptable' && gcf.status ='1' && af.academic_year='$academicYear' GROUP BY afd.fees_id");
 
 }else{
     $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, gcf.*, gcf.grp_amount AS ovrlAllGrpAmnt  FROM `fees_master` fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$standardId' && gcf.status ='1' ");
-
 }
 $i=0;
 while($grpfeeDetailsInfo = $feeDetailsQry->fetch()){
@@ -40,7 +39,7 @@ while($grpfeeDetailsInfo = $feeDetailsQry->fetch()){
     $grpConcessionInfo = $grpConcessionQry->fetch();
     $grpTotalScholarshipAmnt = $grpConcessionInfo['grp_schlrshp_amnt'];
     $totalGrpAmnt = $grpConcessionInfo['grp_amnt'];
-    $grpAmount = ($grpfeeDetailsInfo['grp_amount'] != '0') ? $grpfeeDetailsInfo['ovrlAllGrpAmnt'] - $grpTotalScholarshipAmnt - $totalGrpAmnt : $grpfeeDetailsInfo['grp_amount'];
+    $grpAmount = ($grpfeeDetailsInfo['grp_amount'] != '0') ? $grpfeeDetailsInfo['ovrlAllGrpAmnt'] - $grpTotalScholarshipAmnt - $totalGrpAmnt : $grpfeeDetailsInfo['ovrlAllGrpAmnt'];
 ?>
 <tr>
     <td>

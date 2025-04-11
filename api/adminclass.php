@@ -5958,9 +5958,8 @@ class admin
 
 			if (count($feesMasterid) > 0 || count($extraFeesMasterid) > 0 || count($amenityFeesMasterid) > 0) {
 				$insertPayFeesQry = $mysqli->query("INSERT INTO `admission_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `other_charges`, `other_charges_received`, `scholarship`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `created_on`) VALUES ('$admission_form_id','$receipt_number','$receipt_date','$academic_year','$other_charges','$other_charges_recieved','$fees_scholarship','$fees_total','$final_amount_recieved','$fees_collected','$fees_balance','$school_id','$userid',now())");
-
+				
 				$FeesLastInsertId = $mysqli->insert_id;
-
 				if ($payment_mode == 'cash_payment') {
 					$insertCashDenomination = $mysqli->query("INSERT INTO `admission_fees_denomination`(`admission_fees_ref_id`, `payment_mode`, `ledger_ref_id`, `no_five_hundred`, `no_two_hundred`, `no_hundred`, `no_fifty`, `no_twenty`, `no_ten`, `no_five`, `total_amount`, `insert_login_id`, `created_on`) VALUES ('$FeesLastInsertId','$payment_mode','$academic_year','$receive_five_hundred','$receive_two_hundred','$receive_hundred','$receive_fifty','$receive_twenty','$receive_ten','$receive_five','$total_amount','$userid',now())");
 				} else if ($payment_mode == 'cheque') {

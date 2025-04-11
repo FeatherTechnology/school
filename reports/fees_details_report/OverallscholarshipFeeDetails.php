@@ -26,7 +26,7 @@ if (isset($_POST['feeType'])) {
 if ($feeType == '1') { //school
 ?>
 
-    <table class="table table-bordered" id="show_student_scholarship_list">
+    <table class="table table-bordered" id="show_student_scholarship_list" style="text-align: left;" >
         <thead>
             <tr>
                 <th colspan='8'>School Scholarship Fee At <?php echo date('d-m-Y'); ?></th>
@@ -150,7 +150,7 @@ WHERE
 
 <?php } else if ($feeType == '2') { //Extra 
 ?>
-    <table class="table table-bordered" id="show_student_scholarship_list">
+    <table class="table table-bordered" id="show_student_scholarship_list" style="text-align: left;" >
         <thead>
             <tr>
                 <th colspan='8'>Extra/Book Scholarship Fee At <?php echo date('d-m-Y'); ?></th>
@@ -245,7 +245,7 @@ WHERE
     </table>
 <?php } else if ($feeType == '3') { //Last year 
 ?>
-    <table class="table table-bordered" id="show_student_scholarship_list">
+    <table class="table table-bordered" id="show_student_scholarship_list" style="text-align: left;">
         <thead>
             <tr>
                 <th colspan='8'>Lastyear Scholarship Fee At <?php echo date('d-m-Y'); ?></th>
@@ -356,7 +356,7 @@ $grnd_lastyr_total_fee = 0;
 <?php } else if ($feeType == '4') { //transport 
 ?>
 
-    <table class="table table-bordered" id="show_student_scholarship_list">
+    <table class="table table-bordered" id="show_student_scholarship_list" style="text-align: left;" >
         <thead>
             <tr>
                 <th colspan='8'>Transport Scholarship Fee At <?php echo date('d-m-Y'); ?></th>

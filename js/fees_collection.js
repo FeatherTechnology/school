@@ -107,9 +107,9 @@ $(document).ready(function () {
     var student_id = currentRow.find('.student_id').val();
     var academic_year = currentRow.find('.academicyear').val();
     var receipt_date = currentRow.find("td:eq(1)").text();
-    var receipt_number = currentRow.find("td:eq(3)").text();
-    var mergedParticularsArray = currentRow.find("td:eq(4)").text();
-    var mergedAmountArray = currentRow.find("td:eq(5)").text();
+    var receipt_number = currentRow.find("td:eq(2)").text();
+    var mergedParticularsArray = currentRow.find("td:eq(3)").text();
+    var mergedAmountArray = currentRow.find("td:eq(4)").text();
     
     // Open a new window or tab
     var printWindow = window.open('', '_blank');

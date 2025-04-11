@@ -1,25 +1,25 @@
 <?php
 include "../ajaxconfig.php";
 @session_start();
-if(isset($_SESSION["userid"])){
+if (isset($_SESSION["userid"])) {
     $school_id = $_SESSION["school_id"];
-} 
+}
 $academic_year = $_SESSION['academic_year'];
 //get school name by using session id.
-$getschoolDetailsQry=$mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, sc.school_logo, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id' ");
-while ($schoolInfo=$getschoolDetailsQry->fetch_assoc()) {
-	$school_name     =$schoolInfo["school_name"]; 
-	$address1  =$schoolInfo["address1"];
-	$address2  =$schoolInfo["address2"];
-	$district  =$schoolInfo["district"];
-	$state     =$schoolInfo["state"];
-	$pincode  =$schoolInfo["pincode"];
-	$contact_number  =$schoolInfo["contact_number"];
-	$email_id     =$schoolInfo["email_id"];
-    $school_logo     =$schoolInfo["school_logo"];
-} 
+$getschoolDetailsQry = $mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, sc.school_logo, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id' ");
+while ($schoolInfo = $getschoolDetailsQry->fetch_assoc()) {
+    $school_name     = $schoolInfo["school_name"];
+    $address1  = $schoolInfo["address1"];
+    $address2  = $schoolInfo["address2"];
+    $district  = $schoolInfo["district"];
+    $state     = $schoolInfo["state"];
+    $pincode  = $schoolInfo["pincode"];
+    $contact_number  = $schoolInfo["contact_number"];
+    $email_id     = $schoolInfo["email_id"];
+    $school_logo     = $schoolInfo["school_logo"];
+}
 
-if(isset($_POST['payFeesid'])){
+if (isset($_POST['payFeesid'])) {
     $payFeesid = $_POST['payFeesid'];
 }
 
@@ -28,7 +28,8 @@ stdc.admission_number,
 stdc.student_name, 
 sc.standard, 
 af.receipt_no, 
-af.receipt_date
+af.receipt_date,
+afds.payment_mode
 FROM 
 admission_fees af 
 JOIN 
@@ -39,6 +40,7 @@ JOIN
 standard_creation sc ON sh.standard = sc.standard_id 
 JOIN 
 admission_fees_details afd ON af.id = afd.admission_fees_ref_id
+LEFT JOIN admission_fees_denomination afds ON af.id = afds.admission_fees_ref_id 
 WHERE af.id = '$payFeesid' && afd.fee_received > 0 ");
 $payfeesDetails = $getPayFees->fetch();
 
@@ -52,15 +54,34 @@ function AmountInWords($amount)
     $x = 0;
     $string = array();
     $change_words = array(
-        0 => '', 1 => 'One', 2 => 'Two',
-        3 => 'Three', 4 => 'Four', 5 => 'Five', 6 => 'Six',
-        7 => 'Seven', 8 => 'Eight', 9 => 'Nine',
-        10 => 'Ten', 11 => 'Eleven', 12 => 'Twelve',
-        13 => 'Thirteen', 14 => 'Fourteen', 15 => 'Fifteen',
-        16 => 'Sixteen', 17 => 'Seventeen', 18 => 'Eighteen',
-        19 => 'Nineteen', 20 => 'Twenty', 30 => 'Thirty',
-        40 => 'Forty', 50 => 'Fifty', 60 => 'Sixty',
-        70 => 'Seventy', 80 => 'Eighty', 90 => 'Ninety'
+        0 => '',
+        1 => 'One',
+        2 => 'Two',
+        3 => 'Three',
+        4 => 'Four',
+        5 => 'Five',
+        6 => 'Six',
+        7 => 'Seven',
+        8 => 'Eight',
+        9 => 'Nine',
+        10 => 'Ten',
+        11 => 'Eleven',
+        12 => 'Twelve',
+        13 => 'Thirteen',
+        14 => 'Fourteen',
+        15 => 'Fifteen',
+        16 => 'Sixteen',
+        17 => 'Seventeen',
+        18 => 'Eighteen',
+        19 => 'Nineteen',
+        20 => 'Twenty',
+        30 => 'Thirty',
+        40 => 'Forty',
+        50 => 'Fifty',
+        60 => 'Sixty',
+        70 => 'Seventy',
+        80 => 'Eighty',
+        90 => 'Ninety'
     );
     $here_digits = array('', 'Hundred', 'Thousand', 'Lakh', 'Crore');
     while ($x < $count_length) {
@@ -90,7 +111,9 @@ function AmountInWords($amount)
             width: 100%;
         }
 
-        table, th, td {
+        table,
+        th,
+        td {
             border: 1px solid black;
         }
 
@@ -103,101 +126,118 @@ function AmountInWords($amount)
     #printReceiptTable td.first-row {
         line-height: 2.5;
     }
-    
+
     #printReceiptTable tr.last-row td {
         line-height: 3.5;
         /* margin-top: 30px; */
     }
 </style>
 
-<div id="printReceiptTable">
-    <table class="table table-bordered table-responsive">
-    <tr>
-        <td style="text-align: center;"> <img src="uploads/school_creation/<?php echo $school_logo; ?>" height="100px" width="100px" alt="Logo"> </td>
-        <td style="text-align: center;"> <?php if(isset($school_name)) echo $school_name; ?> </br>
-        <?php if(isset($address1)) echo $address1,', '; if(isset($address2)) echo $address2,', '; if(isset($district)) echo $district,', </br>'; if(isset($state)) echo $state,'-'; if(isset($pincode)) echo $pincode; ?> </br>
-            <span style="margin-right: 5px;">&#x260E;</span> - <?php if(isset($contact_number)) echo $contact_number; ?>  <span style="margin-right: 5px;">&#x1F4E7;</span>- <?php if(isset($email_id)) echo $email_id; ?>
-        </td>
-        <td class="first-row"> Receipt No. <?php echo $payfeesDetails['receipt_no'];?></br> 
-            Manual Rcpt.No </br> 
-            (Student copy)
-        </td>
-    </tr>
-    <tr>
-        <td colspan='2' style="border-bottom: none; border-right: none;">
-            Admission Number: <?php echo $payfeesDetails['admission_number'];?>
-        </td>
-        <td style="border-bottom: none; border-left: none;">
-            Date: <?php echo date('d-m-Y',strtotime($payfeesDetails['receipt_date']));?>
-        </td>
-    </tr>
-    <tr>
-        <td colspan='2' style="border-top: none; border-right: none;">
-            Student Name: <?php echo $payfeesDetails['student_name'];?>
-        </td>
-        <td style="border-top: none; border-left: none;">
-            Standard: <?php echo $payfeesDetails['standard'];?>
-        </td>
-    </tr>
-    <tr>
-        <th>
-            Sl No. 
-        </th>
-        <th>
-            Particulars
-        </th>
-        <th>
-            Amount 
-        </th>
-    </tr>
-    <?php
-    $getPayFeesQry = $connect->query("SELECT 
-    afd.fee_received,
-    CASE WHEN(gcf.grp_particulars <>'') THEN gcf.grp_particulars ELSE CASE WHEN(ecaf.extra_particulars <> '') THEN ecaf.extra_particulars ELSE CASE WHEN(aff.amenity_particulars <> '') THEN aff.amenity_particulars END END END as particulars   
-    FROM 
-    admission_fees af 
-    JOIN 
-    student_creation stdc ON af.admission_id = stdc.student_id 
-    JOIN 
-    standard_creation sc ON stdc.standard = sc.standard_id 
-    JOIN 
-    admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
-    LEFT JOIN 
-    group_course_fee gcf ON afd.fees_table_name = 'grptable' AND afd.fees_id = gcf.grp_course_id 
-    LEFT JOIN 
-    extra_curricular_activities_fee ecaf ON afd.fees_table_name = 'extratable' AND afd.fees_id = ecaf.extra_fee_id 
-    LEFT JOIN 
-    amenity_fee aff ON afd.fees_table_name = 'amenitytable' AND afd.fees_id = aff.amenity_fee_id 
-    WHERE af.id = '$payFeesid' && afd.fee_received > 0; ");
-    
-    $i = 1;
-    $totalAmnt = 0;
-    while($getpayFeesDetails = $getPayFeesQry ->fetch()){
-        $totalAmnt = $totalAmnt + $getpayFeesDetails['fee_received'];
-        ?>
-    <tr>
-        <td> <?php echo $i++; ?> </td>
-        <td> <?php echo $getpayFeesDetails['particulars'];?> </td>
-        <td> <?php echo $getpayFeesDetails['fee_received'];?> </td>
-    </tr>
-    
-    <?php
-    } ?>
-    <tr>
-        <td> </td>
-        <td> Total amount </td>
-        <td> <?php echo $totalAmnt; ?> </td>
-    </tr>
-    <tr>
-        <td colspan="3"> Amount in words: <?php echo AmountInWords($totalAmnt); ?> /- </td>
-    </tr>
-    <tr class="last-row">
-        <td colspan="2" style="text-align: justify;">
-            Seal 
-        </td>
-        <td style="text-align: center;"> 
-            Signature 
-        </td>
-    </tr>
-    </table>
-</div>
+<?php
+$copyLabels = ['Student Copy', 'School Copy'];
+foreach ($copyLabels as $copyLabel) {
+?>
+    <div id="printReceiptTable">
+        <table class="table table-bordered table-responsive">
+            <tr>
+                <td style="text-align: center;">
+                    <img src="uploads/school_creation/<?php echo $school_logo; ?>" height="100px" width="100px" alt="Logo">
+                </td>
+                <td style="text-align: center;">
+                    <?php if (isset($school_name)) echo $school_name; ?> </br>
+                    <?php
+                    if (isset($address1)) echo $address1 . ', ';
+                    if (isset($address2)) echo $address2 . ', ';
+                    if (isset($district)) echo $district . ', </br>';
+                    if (isset($state)) echo $state . '-';
+                    if (isset($pincode)) echo $pincode;
+                    ?> </br>
+                    <span style="margin-right: 5px;">&#x260E;</span> - <?php echo $contact_number; ?>
+                    <span style="margin-right: 5px;">&#x1F4E7;</span>- <?php echo $email_id; ?>
+                </td>
+                <td class="first-row">
+                    Receipt No. <?php echo $payfeesDetails['receipt_no']; ?></br>
+                    Manual Rcpt.No </br>
+                    (<?php echo $copyLabel; ?>)
+                </td>
+            </tr>
+            <tr>
+                <td colspan='2' style="border-bottom: none; border-right: none;">
+                    Admission Number: <?php echo $payfeesDetails['admission_number']; ?>
+                </td>
+                <td style="border-bottom: none; border-left: none;">
+                    Date: <?php echo date('d-m-Y', strtotime($payfeesDetails['receipt_date'])); ?>
+                </td>
+            </tr>
+            <tr>
+                <td colspan='2' style="border-top: none; border-right: none; border-bottom: none;">
+                    Student Name: <?php echo $payfeesDetails['student_name']; ?>
+                </td>
+                <td style="border-top: none; border-left: none; border-bottom: none;">
+                    Standard: <?php echo $payfeesDetails['standard']; ?>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border-top: none; border-right: none; border-left: none; border-bottom: none; ">
+                    Payment Mode:
+                    <?php
+                    if ($payfeesDetails['payment_mode'] == 'cash_payment') {
+                        echo 'Cash';
+                    } else if ($payfeesDetails['payment_mode'] == 'cheque') {
+                        echo 'Cheque';
+                    } else if ($payfeesDetails['payment_mode'] == 'neft') {
+                        echo 'Bank Transfer';
+                    } else {
+                        echo '';
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <th> Sl No. </th>
+                <th> Particulars </th>
+                <th> Amount </th>
+            </tr>
+            <?php
+            $getPayFeesQry = $connect->query("SELECT 
+        afd.fee_received,
+        CASE WHEN(gcf.grp_particulars <>'') THEN gcf.grp_particulars 
+             WHEN(ecaf.extra_particulars <> '') THEN ecaf.extra_particulars 
+             WHEN(aff.amenity_particulars <> '') THEN aff.amenity_particulars 
+        END as particulars   
+        FROM admission_fees af 
+        JOIN student_creation stdc ON af.admission_id = stdc.student_id 
+        JOIN standard_creation sc ON stdc.standard = sc.standard_id 
+        JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
+        LEFT JOIN group_course_fee gcf ON afd.fees_table_name = 'grptable' AND afd.fees_id = gcf.grp_course_id 
+        LEFT JOIN extra_curricular_activities_fee ecaf ON afd.fees_table_name = 'extratable' AND afd.fees_id = ecaf.extra_fee_id 
+        LEFT JOIN amenity_fee aff ON afd.fees_table_name = 'amenitytable' AND afd.fees_id = aff.amenity_fee_id 
+        WHERE af.id = '$payFeesid' && afd.fee_received > 0; ");
+
+            $i = 1;
+            $totalAmnt = 0;
+            while ($getpayFeesDetails = $getPayFeesQry->fetch()) {
+                $totalAmnt += $getpayFeesDetails['fee_received'];
+            ?>
+                <tr>
+                    <td> <?php echo $i++; ?> </td>
+                    <td> <?php echo $getpayFeesDetails['particulars']; ?> </td>
+                    <td> <?php echo $getpayFeesDetails['fee_received']; ?> </td>
+                </tr>
+            <?php } ?>
+            <tr>
+                <td> </td>
+                <td> Total amount </td>
+                <td> <?php echo $totalAmnt; ?> </td>
+            </tr>
+            <tr>
+                <td colspan="3"> Amount in words: <?php echo AmountInWords($totalAmnt); ?> /- </td>
+            </tr>
+            <tr class="last-row">
+                <td colspan="2" style="text-align: justify;"> Seal </td>
+                <td style="text-align: center;"> Signature </td>
+            </tr>
+        </table>
+    </div>
+    <hr style="border-top: 2px dashed #000; margin-top: 40px; margin-bottom: 40px;">
+<?php } ?>

@@ -25,12 +25,12 @@ if(isset($_POST['standard'])){
 $CheckReceiptQry = $connect->query("SELECT id FROM `transport_admission_fees` WHERE admission_id = '$admissionFormId' && academic_year = '$academicYear' order by id desc limit 1");
 if($CheckReceiptQry->rowCount() > 0){
     $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
-    $feeDetailsQry = $connect->query("SELECT tafd.balance_tobe_paid as due_amount, tafd.area_creation_id as fees_id, tafd.area_creation_particulars_id as particulars_id, ac.area_name, acp.particulars, acp.due_amount AS ovrlAllAmnt
+    $feeDetailsQry = $connect->query("SELECT  COALESCE(SUM(tafd.fee_received),0) as due_amount, tafd.area_creation_id as fees_id, tafd.area_creation_particulars_id as particulars_id, ac.area_name, acp.particulars, acp.due_amount AS ovrlAllAmnt
     FROM `transport_admission_fees` taf 
     JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id 
     JOIN area_creation ac ON tafd.area_creation_id = ac.area_id
     JOIN area_creation_particulars acp ON tafd.area_creation_particulars_id = acp.particulars_id 
-    WHERE taf.id = '$get_temp_fees_id' && taf.academic_year = '$academicYear' AND ac.status = '0' ");
+    WHERE taf.admission_id = '$get_temp_fees_id' && taf.academic_year = '$academicYear' AND ac.status = '0' GROUP BY tafd.area_creation_id ");
 
 }else{
     $feeDetailsQry = $connect->query("SELECT ac.area_id as fees_id, acp.particulars_id as particulars_id, ac.area_name, acp.particulars, acp.due_amount, acp.due_amount AS ovrlAllAmnt  

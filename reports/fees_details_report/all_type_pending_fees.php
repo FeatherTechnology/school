@@ -1,3 +1,11 @@
+
+<style>
+#show_student_allPending_list th,
+#show_student_allPending_list td {
+    text-align: left !important;
+    white-space: nowrap;
+}
+</style>
 <!-- Page header start -->
 <div class="page-header">
     <ol class="breadcrumb">
