@@ -57,7 +57,7 @@ if($checkAdmFeesForGrp->rowCount() > 0){
 }
 
 while($grpfeeDetailsInfo = $grpFeeDetailsQry->fetch()){
-    $grpConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as grp_schlrshp_amnt, (SELECT COALESCE(SUM(afd.fee_received),0) FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$studentid' && afd.fees_table_name = 'grptable' && afd.fees_id = '".$grpfeeDetailsInfo['grp_course_id']."' && af.academic_year ='$academicYear') AS grp_amnt FROM `fees_concession` WHERE `student_id`='$studentid' && `fees_table_name`='grptable' && `fees_id` = '".$grpfeeDetailsInfo['grp_course_id']."' && academic_year ='$academicYear' ");
+    $grpConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as grp_schlrshp_amnt, (SELECT COALESCE(SUM(afd.scholarship),0) + COALESCE(SUM(afd.fee_received),0) FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$studentid' && afd.fees_table_name = 'grptable' && afd.fees_id = '".$grpfeeDetailsInfo['grp_course_id']."' && af.academic_year ='$academicYear') AS grp_amnt FROM `fees_concession` WHERE `student_id`='$studentid' && `fees_table_name`='grptable' && `fees_id` = '".$grpfeeDetailsInfo['grp_course_id']."' && academic_year ='$academicYear' ");
     $grpConcessionInfo = $grpConcessionQry->fetch();
     $grpTotalScholarshipAmnt = $grpConcessionInfo['grp_schlrshp_amnt'];
     $totalGrpAmnt = $grpConcessionInfo['grp_amnt'];
@@ -107,7 +107,7 @@ if($CheckAdmFeesForExtra->rowCount() > 0){
 }
 
 while($extraFeeDetailsInfo = $extraFeeDetailsQry->fetch()){
-    $extraConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as extraTotalScholarshipAmnt, (SELECT COALESCE(SUM(afd.fee_received),0) FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$studentid' && afd.fees_table_name = 'extratable' && afd.fees_id = '".$extraFeeDetailsInfo['extra_fee_id']."' && af.academic_year ='$academicYear') AS paid_amnt FROM `fees_concession` WHERE `student_id`='$studentid' && `fees_table_name`='extratable' && `fees_id` = '".$extraFeeDetailsInfo['extra_fee_id']."' && academic_year ='$academicYear' ");
+    $extraConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as extraTotalScholarshipAmnt, (SELECT COALESCE(SUM(afd.scholarship),0) +  COALESCE(SUM(afd.fee_received),0) FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$studentid' && afd.fees_table_name = 'extratable' && afd.fees_id = '".$extraFeeDetailsInfo['extra_fee_id']."' && af.academic_year ='$academicYear') AS paid_amnt FROM `fees_concession` WHERE `student_id`='$studentid' && `fees_table_name`='extratable' && `fees_id` = '".$extraFeeDetailsInfo['extra_fee_id']."' && academic_year ='$academicYear' ");
 
     $extraConcessionInfo = $extraConcessionQry->fetch();
     $extraTotalScholarshipAmnt = $extraConcessionInfo['extraTotalScholarshipAmnt'];
@@ -157,7 +157,7 @@ if($CheckAdmFeesForAmenity->rowCount() > 0){
 }
 
 while($amenityFeeDetailsInfo = $amenityFeeDetailsQry->fetch()){
-    $amenityConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as amenityTotalScholarshipAmnt, (SELECT COALESCE(SUM(afd.fee_received),0) FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$studentid' && afd.fees_table_name = 'amenitytable' && afd.fees_id = '".$amenityFeeDetailsInfo['amenity_fee_id']."' && af.academic_year ='$academicYear') AS paid_amnt FROM `fees_concession` WHERE `student_id`='$studentid' && `fees_table_name`='amenitytable' && `fees_id` = '".$amenityFeeDetailsInfo['amenity_fee_id']."' && academic_year ='$academicYear' ");
+    $amenityConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as amenityTotalScholarshipAmnt, (SELECT COALESCE(SUM(afd.scholarship),0) + COALESCE(SUM(afd.fee_received),0) FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$studentid' && afd.fees_table_name = 'amenitytable' && afd.fees_id = '".$amenityFeeDetailsInfo['amenity_fee_id']."' && af.academic_year ='$academicYear') AS paid_amnt FROM `fees_concession` WHERE `student_id`='$studentid' && `fees_table_name`='amenitytable' && `fees_id` = '".$amenityFeeDetailsInfo['amenity_fee_id']."' && academic_year ='$academicYear' ");
     
     $amenityConcessionInfo = $amenityConcessionQry->fetch();
     $amenityTotalScholarshipAmnt = $amenityConcessionInfo['amenityTotalScholarshipAmnt'];
@@ -216,7 +216,7 @@ if($CheckTransportFees->rowCount() > 0){
 }
 
 while($transportFeeDetailsInfo = $transportFeeDetailsQry->fetch()){
-    $transportConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as transportTotalScholarshipAmnt, (SELECT COALESCE(SUM(tafd.fee_received),0) FROM `transport_admission_fees` taf JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id WHERE taf.admission_id = '$studentid' && taf.academic_year = '$academicYear' AND tafd.area_creation_particulars_id = '".$transportFeeDetailsInfo['particulars_id']."') AS paid_amnt FROM `fees_concession` WHERE `student_id`='$studentid' && `fees_table_name`='transport' && `fees_id` = '".$transportFeeDetailsInfo['particulars_id']."' && academic_year ='$academicYear' ");
+    $transportConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as transportTotalScholarshipAmnt, (SELECT COALESCE(SUM(tafd.scholarship),0) + COALESCE(SUM(tafd.fee_received),0)  FROM `transport_admission_fees` taf JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id WHERE taf.admission_id = '$studentid' && taf.academic_year = '$academicYear' AND tafd.area_creation_particulars_id = '".$transportFeeDetailsInfo['particulars_id']."') AS paid_amnt FROM `fees_concession` WHERE `student_id`='$studentid' && `fees_table_name`='transport' && `fees_id` = '".$transportFeeDetailsInfo['particulars_id']."' && academic_year ='$academicYear' ");
         $transportConcessionInfo = $transportConcessionQry->fetch();
         $transportTotalScholarshipAmnt = $transportConcessionInfo['transportTotalScholarshipAmnt'];
         $totalPaidAmnt = $transportConcessionInfo['paid_amnt'];

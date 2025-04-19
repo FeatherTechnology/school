@@ -26,6 +26,7 @@ if (isset($_POST['lastYearFeesid'])) {
 $getTempFees = $connect->query("SELECT 
 stdc.admission_number, 
 stdc.student_name, 
+stdc.section, 
 sc.standard, 
 lyf.receipt_no, 
 lyf.receipt_date,
@@ -117,13 +118,13 @@ function AmountInWords($amount)
         }
 
         td {
-            padding: 10px;
+            padding: 4px;
             text-align: left;
         }
     }
 
     #printReceiptTable td.first-row {
-        line-height: 2.5;
+        line-height: 1.5;
     }
 
     #printReceiptTable tr.last-row td {
@@ -139,7 +140,7 @@ foreach ($copyLabels as $copyLabel) {
         <table class="table table-bordered table-responsive">
             <tr>
                 <td style="text-align: center;"> <img src="uploads/school_creation/<?php echo $school_logo; ?>" height="100px" width="100px" alt="Logo"> </td>
-                <td style="text-align: center;"> <?php if (isset($school_name)) echo $school_name; ?> </br>
+                <td style="text-align: center;"> <b><?php if (isset($school_name)) echo $school_name; ?></b> </br>
                     <?php if (isset($address1)) echo $address1, ', ';
                     if (isset($address2)) echo $address2, ', ';
                     if (isset($district)) echo $district, ', </br>';
@@ -153,10 +154,15 @@ foreach ($copyLabels as $copyLabel) {
                 </td>
             </tr>
             <tr>
-                <td colspan='2' style="border-bottom: none; border-right: none;">
+                <td colspan="3" style="border-bottom: none; border-right: none; border-left: none; text-align: center;">
+                    <strong>Last Year Fees</strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan='2' style="border-bottom: none; border-right: none; border-top: none;">
                     Admission Number: <?php echo $tempfeesDetails['admission_number']; ?>
                 </td>
-                <td style="border-bottom: none; border-left: none;">
+                <td style="border-bottom: none; border-left: none; border-top: none;">
                     Date: <?php echo date('d-m-Y', strtotime($tempfeesDetails['receipt_date'])); ?>
                 </td>
             </tr>
@@ -165,7 +171,7 @@ foreach ($copyLabels as $copyLabel) {
                     Student Name: <?php echo $tempfeesDetails['student_name']; ?>
                 </td>
                 <td style="border-top: none; border-left: none; border-bottom: none;">
-                    Standard: <?php echo $tempfeesDetails['standard']; ?>
+                    Standard / Section : <?php echo $tempfeesDetails['standard']; ?> - <?php echo $tempfeesDetails['section']; ?>
                 </td>
             </tr>
             <tr>
@@ -241,7 +247,7 @@ foreach ($copyLabels as $copyLabel) {
                 <td> <?php echo $totalAmnt; ?> </td>
             </tr>
             <tr>
-                <td colspan="3"> Amount in words: <?php echo AmountInWords($totalAmnt); ?> /- </td>
+                <td colspan="3"> Amount in words: <?php echo AmountInWords($totalAmnt); ?> Only. </td>
             </tr>
             <tr class="last-row">
                 <td colspan="2" style="text-align: justify;">
@@ -253,5 +259,7 @@ foreach ($copyLabels as $copyLabel) {
             </tr>
         </table>
     </div>
-    <hr style="border-top: 2px dashed #000; margin-top: 40px; margin-bottom: 40px;">
+    <?php if ($copyLabel == 'Student Copy') { ?>
+        <hr style="border-top: 2px dashed #000; margin-top: 40px; margin-bottom: 40px;">
+    <?php } ?>
 <?php } ?>

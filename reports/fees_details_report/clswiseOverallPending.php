@@ -82,7 +82,7 @@ WHERE std.status = '0' ");
         sc.student_id = af.admission_id
     LEFT JOIN student_history sh ON sc.student_id = sh.student_id
     WHERE
-        afd.fees_id = gcf.grp_course_id && afd.fees_table_name = 'grptable' AND sh.standard = '$standardList->standard_id' AND sc.school_id = '$school_id' AND sc.status = 0
+        afd.fees_id = gcf.grp_course_id && afd.fees_table_name = 'grptable' AND sh.standard = '$standardList->standard_id' AND sc.school_id = '$school_id' AND sc.status = 0 AND sh.academic_year='$academicyear'
     ) AS termPending_for_standard
     FROM
         fees_master fm
@@ -119,7 +119,7 @@ WHERE std.status = '0' ");
             sc.student_id = af.admission_id
         JOIN student_history sh ON sc.student_id = sh.student_id
         WHERE
-            afd.fees_id = af.amenity_fee_id && afd.fees_table_name = 'amenitytable' AND sh.standard = '$standardList->standard_id'AND sc.status = 0
+            afd.fees_id = af.amenity_fee_id && afd.fees_table_name = 'amenitytable' AND sh.standard = '$standardList->standard_id'AND sc.status = 0 AND sh.academic_year='$academicyear'
         ) AS bookpending_for_standard
     FROM
         fees_master fm

@@ -506,6 +506,7 @@ ORDER BY
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ],
             paging: false, // Disable paging
+            scrollX: true, // Enable horizontal scrolling
         });
     });
 </script>

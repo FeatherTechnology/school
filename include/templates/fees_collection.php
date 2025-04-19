@@ -84,7 +84,7 @@ $StudentList = $userObj->getStudentList($mysqli, $school_id, $year_id);
 
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <!-- Fee collection data From ASP.NET to PHP  Bulk UPload START-->
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header">
                         <div class="card-title">Bulk Import From ASP.NET to PHP<i class="icon-stars"></i>
                         </div>
@@ -136,7 +136,7 @@ $StudentList = $userObj->getStudentList($mysqli, $school_id, $year_id);
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>  -->
                 <!-- Fee collection data From ASP.NET to PHP  Bulk UPload END-->
                 <div class="card">
                     <div class="card-body">
@@ -325,3 +325,26 @@ $StudentList = $userObj->getStudentList($mysqli, $school_id, $year_id);
                     </div>
     </form>
     <div id="poprintfield" style="display: none"></div>
+    <!-- Modal -->
+<div class="modal fade noscroll" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="basicModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="basicModalLabel">Reason</h5>
+				<button type="button" class="close" data-dismiss="modal" onclick="closeChartsModal()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form id="edit_student__creation" name="edit_student__creation" action="" method="post" enctype="multipart/form-data">
+				<div class="modal-body" style="background-color: white; color:black">
+					<label>Reason</label>
+					<textarea name="reason" id="reason" class="form-control" placeholder="Enter Reason"></textarea>
+					<span class="text-danger" id="reasonCheck">Enter Reason</span><br><br>	
+				<div class="modal-footer">
+					<button type="submit" id='rejectpobtn' name='rejectpobtn' class="btn btn-danger rejectpobtn">Submit</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeChartsModal()">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

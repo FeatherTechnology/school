@@ -384,7 +384,7 @@ if ($CheckLastyrQry->rowCount() > 0) {
     FROM `last_year_fees` lyfs 
     JOIN last_year_fees_details lyfd ON lyfs.id = lyfd.admission_fees_ref_id 
     JOIN amenity_fee af ON lyfd.fees_id = af.amenity_fee_id 
-    WHERE lyfs.admission_id = '$student_id'  && lyfd.fees_table_name = 'amenitytable' && lyf.academic_year = '$academic_year' ");
+    WHERE lyfs.admission_id = '$student_id'  && lyfd.fees_table_name = 'amenitytable' && lyfs.academic_year = '$academic_year' ");
     if ($lastyr_amenityFeeQry->rowCount() > 0) {
         $lastyr_amenity_amount = $lastyr_amenityFeeQry->fetch()['paid_amenity_amount'];
     } else {
@@ -397,7 +397,7 @@ if ($CheckLastyrQry->rowCount() > 0) {
     FROM `last_year_fees` lyfs 
     JOIN last_year_fees_details lyfd ON lyfs.id = lyfd.admission_fees_ref_id 
  JOIN area_creation_particulars acp ON lyfd.fees_id = acp.particulars_id
-    WHERE lyfs.admission_id = '$student_id'  && lyfd.fees_table_name = 'transport' && lyf.academic_year = '$academic_year'");
+    WHERE lyfs.admission_id = '$student_id'  && lyfd.fees_table_name = 'transport' && lyfs.academic_year = '$academic_year'");
     if ($lastyr_transFeeQry->rowCount() > 0) {
         $lastyr_trans_amount = $lastyr_transFeeQry->fetch()['paid_trans_amount'];
     } else {

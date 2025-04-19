@@ -5958,7 +5958,7 @@ class admin
 
 			if (count($feesMasterid) > 0 || count($extraFeesMasterid) > 0 || count($amenityFeesMasterid) > 0) {
 				$insertPayFeesQry = $mysqli->query("INSERT INTO `admission_fees`(`admission_id`, `receipt_no`, `receipt_date`, `academic_year`, `other_charges`, `other_charges_received`, `scholarship`, `total_fees_tobe_collected`, `final_amount_tobe_collect`, `fees_collected`, `balance_tobe_paid`, `school_id`, `insert_login_id`, `created_on`) VALUES ('$admission_form_id','$receipt_number','$receipt_date','$academic_year','$other_charges','$other_charges_recieved','$fees_scholarship','$fees_total','$final_amount_recieved','$fees_collected','$fees_balance','$school_id','$userid',now())");
-				
+
 				$FeesLastInsertId = $mysqli->insert_id;
 				if ($payment_mode == 'cash_payment') {
 					$insertCashDenomination = $mysqli->query("INSERT INTO `admission_fees_denomination`(`admission_fees_ref_id`, `payment_mode`, `ledger_ref_id`, `no_five_hundred`, `no_two_hundred`, `no_hundred`, `no_fifty`, `no_twenty`, `no_ten`, `no_five`, `total_amount`, `insert_login_id`, `created_on`) VALUES ('$FeesLastInsertId','$payment_mode','$academic_year','$receive_five_hundred','$receive_two_hundred','$receive_hundred','$receive_fifty','$receive_twenty','$receive_ten','$receive_five','$total_amount','$userid',now())");
@@ -5986,7 +5986,7 @@ class admin
 					// }
 				}
 				if ($insertPayFeesQry) {
-					return $FeesLastInsertId;
+					return array('FeesLastInsertId' => $FeesLastInsertId);
 				} else {
 					return 2;
 				}
@@ -5996,7 +5996,283 @@ class admin
 		}
 	}
 
+	public function updatePayFees($mysqli, $userid, $school_id)
+	{
 
+		//admission_fees table//
+		if (isset($_POST['admission_form_id'])) {
+			$admission_form_id = $_POST['admission_form_id'];
+		}
+		if (isset($_POST['fees_id'])) {
+			$fees_id = $_POST['fees_id'];
+		}
+		if (isset($_POST['receipt_number'])) {
+			$receipt_number = $_POST['receipt_number'];
+		}
+		if (isset($_POST['receipt_date'])) {
+			$receipt_date =  $_POST['receipt_date'];
+		}
+		if (isset($_POST['academic_year'])) {
+			$academic_year = $_POST['academic_year'];
+		}
+		if (isset($_POST['other_charges'])) {
+			$other_charges = $_POST['other_charges'];
+		}
+		if (isset($_POST['other_charges_recieved'])) {
+			$other_charges_recieved = $_POST['other_charges_recieved'];
+		}
+		if (isset($_POST['fees_scholarship'])) {
+			$fees_scholarship = $_POST['fees_scholarship'];
+		}
+		if (isset($_POST['fees_total'])) {
+			$fees_total = $_POST['fees_total'];
+		}
+		if (isset($_POST['final_amount_recieved'])) {
+			$final_amount_recieved = $_POST['final_amount_recieved'];
+		}
+		if (isset($_POST['fees_collected'])) {
+			$fees_collected = $_POST['fees_collected'];
+		}
+		if (isset($_POST['fees_balance'])) {
+			$fees_balance = $_POST['fees_balance'];
+		}
+		//admission_fees table END//
+
+		//admission_fees_denomination//
+		if (isset($_POST['payment_mode'])) {
+			$payment_mode = $_POST['payment_mode'];
+		}
+		if (isset($_POST['receive_five_hundred'])) {
+			$receive_five_hundred = $_POST['receive_five_hundred'];
+		}
+		if (isset($_POST['receive_two_hundred'])) {
+			$receive_two_hundred = $_POST['receive_two_hundred'];
+		}
+		if (isset($_POST['receive_hundred'])) {
+			$receive_hundred = $_POST['receive_hundred'];
+		}
+		if (isset($_POST['receive_fifty'])) {
+			$receive_fifty = $_POST['receive_fifty'];
+		}
+		if (isset($_POST['receive_twenty'])) {
+			$receive_twenty = $_POST['receive_twenty'];
+		}
+		if (isset($_POST['receive_ten'])) {
+			$receive_ten = $_POST['receive_ten'];
+		}
+		if (isset($_POST['receive_five'])) {
+			$receive_five = $_POST['receive_five'];
+		}
+		if (isset($_POST['total_amount'])) {
+			$total_amount = $_POST['total_amount'];
+		}
+
+		if (isset($_POST['cheque_number'])) {
+			$cheque_number = $_POST['cheque_number'];
+		}
+		if (isset($_POST['cheque_amount'])) {
+			$cheque_amount = $_POST['cheque_amount'];
+		}
+		if (isset($_POST['cheque_date'])) {
+			$cheque_date = $_POST['cheque_date'];
+		}
+		if (isset($_POST['cheque_bank_name'])) {
+			$cheque_bank_name = $_POST['cheque_bank_name'];
+		}
+		if (isset($_POST['cheque_ledger_name'])) {
+			$cheque_ledger_name = $_POST['cheque_ledger_name'];
+		}
+
+		if (isset($_POST['neft_number'])) {
+			$neft_number = $_POST['neft_number'];
+		}
+		if (isset($_POST['neft_amount'])) {
+			$neft_amount = $_POST['neft_amount'];
+		}
+		if (isset($_POST['neft_date'])) {
+			$neft_date = $_POST['neft_date'];
+		}
+		if (isset($_POST['neft_bank_name'])) {
+			$neft_bank_name = $_POST['neft_bank_name'];
+		}
+		if (isset($_POST['neft_ledger_name'])) {
+			$neft_ledger_name = $_POST['neft_ledger_name'];
+		}
+		// admission_fees_denomination END//
+
+		//Group Table data//
+		$feesMasterid = [];
+		if (isset($_POST['feesMasterid'])) {
+			$feesMasterid = $_POST['feesMasterid'];
+		}
+		if (isset($_POST['grpid'])) {
+			$grptablename = 'grptable';
+			$grpid = $_POST['grpid'];
+		}
+		if (isset($_POST['grpFeeReceived'])) {
+			$grpFeeReceived = $_POST['grpFeeReceived'];
+		}
+		if (isset($_POST['grpFeeBalance'])) {
+			$grpFeeBalance = $_POST['grpFeeBalance'];
+		}
+		if (isset($_POST['grpFeeScholarship'])) {
+			$grpFeeScholarship = $_POST['grpFeeScholarship'];
+		}
+		//Group Table data END//
+
+		//Extra Curricular Activity Table data//
+		$extraFeesMasterid = [];
+		if (isset($_POST['extraFeesMasterid'])) {
+			$extraFeesMasterid = $_POST['extraFeesMasterid'];
+		}
+		if (isset($_POST['extraAmntid'])) {
+			$extratablename = 'extratable';
+			$extraAmntid = $_POST['extraAmntid'];
+		}
+		if (isset($_POST['extraAmntReceived'])) {
+			$extraAmntReceived = $_POST['extraAmntReceived'];
+		}
+		if (isset($_POST['extraAmntBalance'])) {
+			$extraAmntBalance = $_POST['extraAmntBalance'];
+		}
+		if (isset($_POST['extraAmntScholarship'])) {
+			$extraAmntScholarship = $_POST['extraAmntScholarship'];
+		}
+		//Extra Curricular Activity Table data END//
+
+		//Amenity Table data//
+		$amenityFeesMasterid = [];
+		if (isset($_POST['amenityFeesMasterid'])) {
+			$amenityFeesMasterid = $_POST['amenityFeesMasterid'];
+		}
+		if (isset($_POST['amenityAmntid'])) {
+			$amenitytablename = 'amenitytable';
+			$amenityAmntid = $_POST['amenityAmntid'];
+		}
+		if (isset($_POST['amenityAmntReceived'])) {
+			$amenityAmntReceived = $_POST['amenityAmntReceived'];
+		}
+		if (isset($_POST['amenityAmntBalance'])) {
+			$amenityAmntBalance = $_POST['amenityAmntBalance'];
+		}
+		if (isset($_POST['amenityAmntScholarship'])) {
+			$amenityAmntScholarship = $_POST['amenityAmntScholarship'];
+		}
+		if (count($feesMasterid) > 0 || count($extraFeesMasterid) > 0 || count($amenityFeesMasterid) > 0) {
+
+			if (!empty($fees_id)) {
+				// UPDATE admission_fees
+				$updatePayFeesQry = $mysqli->query("UPDATE `admission_fees` SET 
+				admission_id = '$admission_form_id',
+					`receipt_no` = '$receipt_number',
+					`receipt_date` = '$receipt_date',
+					`academic_year` = '$academic_year',
+					`other_charges` = '$other_charges',
+					`other_charges_received` = '$other_charges_recieved',
+					`scholarship` = '$fees_scholarship',
+					`total_fees_tobe_collected` = '$fees_total',
+					`final_amount_tobe_collect` = '$final_amount_recieved',
+					`fees_collected` = '$fees_collected',
+					`balance_tobe_paid` = '$fees_balance',
+					`school_id` = '$school_id',
+					`update_login_id` = '$userid',
+					`updated_on` = now()
+					WHERE `id` = '$fees_id'");
+
+				$FeesLastInsertId = $fees_id;
+
+				if ($payment_mode == 'cash_payment') {
+					$updateCashDenomination = $mysqli->query("UPDATE `admission_fees_denomination` SET
+						`payment_mode` = '$payment_mode',
+						`ledger_ref_id` = '$academic_year',
+						`no_five_hundred` = '$receive_five_hundred',
+						`no_two_hundred` = '$receive_two_hundred',
+						`no_hundred` = '$receive_hundred',
+						`no_fifty` = '$receive_fifty',
+						`no_twenty` = '$receive_twenty',
+						`no_ten` = '$receive_ten',
+						`no_five` = '$receive_five',
+						`total_amount` = '$total_amount',
+						`update_login_id` = '$userid',
+						`updated_on` = now()
+						WHERE `admission_fees_ref_id` = '$FeesLastInsertId'");
+				} else if ($payment_mode == 'cheque') {
+					$updateCashDenomination = $mysqli->query("UPDATE `admission_fees_denomination` SET
+						`payment_mode` = '$payment_mode',
+						`ledger_ref_id` = '$cheque_ledger_name',
+						`cheque_number` = '$cheque_number',
+						`cheque_date` = '$cheque_date',
+						`cheque_amount` = '$cheque_amount',
+						`cheque_bank_name` = '$cheque_bank_name',
+						`update_login_id` = '$userid',
+						`updated_on` = now()
+						WHERE `admission_fees_ref_id` = '$FeesLastInsertId'");
+				} else if ($payment_mode == 'neft') {
+					$updateCashDenomination = $mysqli->query("UPDATE `admission_fees_denomination` SET
+						`payment_mode` = '$payment_mode',
+						`ledger_ref_id` = '$neft_ledger_name',
+						`neft_ref_number` = '$neft_number',
+						`neft_tran_date` = '$neft_date',
+						`neft_amount` = '$neft_amount',
+						`neft_bank_name` = '$neft_bank_name',
+						`update_login_id` = '$userid',
+						`updated_on` = now()
+						WHERE `admission_fees_ref_id` = '$FeesLastInsertId'");
+				}
+
+				for (
+					$a = 0;
+					$a < count($feesMasterid);
+					$a++
+				) {
+					$updateQry = $mysqli->query("UPDATE `admission_fees_details` SET 
+			`fee_received` = '{$grpFeeReceived[$a]}', 
+			`balance_tobe_paid` = '{$grpFeeBalance[$a]}', 
+			`scholarship` = '{$grpFeeScholarship[$a]}' 
+			WHERE `admission_fees_ref_id` = '$FeesLastInsertId' 
+			AND `fees_master_id` = '{$feesMasterid[$a]}' 
+			AND `fees_table_name` = '$grptablename' 
+			AND `fees_id` = '{$grpid[$a]}'");
+				}
+				for (
+					$b = 0;
+					$b < count($extraFeesMasterid);
+					$b++
+				) {
+					$updateQry = $mysqli->query("UPDATE `admission_fees_details` SET 
+			`fee_received` = '{$extraAmntReceived[$b]}', 
+			`balance_tobe_paid` = '{$extraAmntBalance[$b]}', 
+			`scholarship` = '{$extraAmntScholarship[$b]}' 
+			WHERE `admission_fees_ref_id` = '$FeesLastInsertId' 
+			AND `fees_master_id` = '{$extraFeesMasterid[$b]}' 
+			AND `fees_table_name` = '$extratablename' 
+			AND `fees_id` = '{$extraAmntid[$b]}'");
+				}
+				for (
+					$c = 0;
+					$c < count($amenityFeesMasterid);
+					$c++
+				) {
+					$updateQry = $mysqli->query("UPDATE `admission_fees_details` SET 
+			`fee_received` = '{$amenityAmntReceived[$c]}', 
+			`balance_tobe_paid` = '{$amenityAmntBalance[$c]}', 
+			`scholarship` = '{$amenityAmntScholarship[$c]}' 
+			WHERE `admission_fees_ref_id` = '$FeesLastInsertId' 
+			AND `fees_master_id` = '{$amenityFeesMasterid[$c]}' 
+			AND `fees_table_name` = '$amenitytablename' 
+			AND `fees_id` = '{$amenityAmntid[$c]}'");
+				}
+			} else {
+				return 2;
+			}
+
+			if ($updatePayFeesQry) {
+				return array('FeesLastInsertId' => $fees_id, 'admission_form_id' => $admission_form_id);
+			} else {
+				return 2;
+			}
+		}
+	}
 	public function addLastYearFees($mysqli, $userid, $school_id)
 	{
 
@@ -6220,7 +6496,301 @@ class admin
 			return 2;
 		}
 	}
+	public function updateLastYearFees($mysqli, $userid, $school_id)
+	{
 
+		//last_year_fees table//
+		if (isset($_POST['admission_form_id'])) {
+			$admission_form_id = $_POST['admission_form_id'];
+		}
+		if (isset($_POST['receipt_number'])) {
+			$receipt_number = $_POST['receipt_number'];
+		}
+		if (isset($_POST['receipt_date'])) {
+			$receipt_date =  $_POST['receipt_date'];
+		}
+		if (isset($_POST['academic_year'])) {
+			$academic_year = $_POST['academic_year'];
+		}
+		if (isset($_POST['other_charges'])) {
+			$other_charges = $_POST['other_charges'];
+		}
+		if (isset($_POST['other_charges_recieved'])) {
+			$other_charges_recieved = $_POST['other_charges_recieved'];
+		}
+		if (isset($_POST['fees_scholarship'])) {
+			$fees_scholarship = $_POST['fees_scholarship'];
+		}
+		if (isset($_POST['fees_total'])) {
+			$fees_total = $_POST['fees_total'];
+		}
+		if (isset($_POST['final_amount_recieved'])) {
+			$final_amount_recieved = $_POST['final_amount_recieved'];
+		}
+		if (isset($_POST['fees_collected'])) {
+			$fees_collected = $_POST['fees_collected'];
+		}
+		if (isset($_POST['fees_balance'])) {
+			$fees_balance = $_POST['fees_balance'];
+		}
+		//last_year_fees table END//
+
+		// last_year_fees_denomination//
+		if (isset($_POST['payment_mode'])) {
+			$payment_mode = $_POST['payment_mode'];
+		}
+		if (isset($_POST['receive_five_hundred'])) {
+			$receive_five_hundred = $_POST['receive_five_hundred'];
+		}
+		if (isset($_POST['receive_two_hundred'])) {
+			$receive_two_hundred = $_POST['receive_two_hundred'];
+		}
+		if (isset($_POST['receive_hundred'])) {
+			$receive_hundred = $_POST['receive_hundred'];
+		}
+		if (isset($_POST['receive_fifty'])) {
+			$receive_fifty = $_POST['receive_fifty'];
+		}
+		if (isset($_POST['receive_twenty'])) {
+			$receive_twenty = $_POST['receive_twenty'];
+		}
+		if (isset($_POST['receive_ten'])) {
+			$receive_ten = $_POST['receive_ten'];
+		}
+		if (isset($_POST['receive_five'])) {
+			$receive_five = $_POST['receive_five'];
+		}
+		if (isset($_POST['total_amount'])) {
+			$total_amount = $_POST['total_amount'];
+		}
+
+		if (isset($_POST['cheque_number'])) {
+			$cheque_number = $_POST['cheque_number'];
+		}
+		if (isset($_POST['cheque_amount'])) {
+			$cheque_amount = $_POST['cheque_amount'];
+		}
+		if (isset($_POST['cheque_date'])) {
+			$cheque_date = $_POST['cheque_date'];
+		}
+		if (isset($_POST['cheque_bank_name'])) {
+			$cheque_bank_name = $_POST['cheque_bank_name'];
+		}
+		if (isset($_POST['cheque_ledger_name'])) {
+			$cheque_ledger_name = $_POST['cheque_ledger_name'];
+		}
+
+		if (isset($_POST['neft_number'])) {
+			$neft_number = $_POST['neft_number'];
+		}
+		if (isset($_POST['neft_amount'])) {
+			$neft_amount = $_POST['neft_amount'];
+		}
+		if (isset($_POST['neft_date'])) {
+			$neft_date = $_POST['neft_date'];
+		}
+		if (isset($_POST['neft_bank_name'])) {
+			$neft_bank_name = $_POST['neft_bank_name'];
+		}
+		if (isset($_POST['neft_ledger_name'])) {
+			$neft_ledger_name = $_POST['neft_ledger_name'];
+		}
+		// last_year_fees_denomination END//
+
+		//Group Table data//
+		$feesMasterid = [];
+		if (isset($_POST['feesMasterid'])) {
+			$feesMasterid = $_POST['feesMasterid'];
+		}
+		if (isset($_POST['grpid'])) {
+			$grptablename = 'grptable';
+			$grpid = $_POST['grpid'];
+		}
+		if (isset($_POST['grpFeeReceived'])) {
+			$grpFeeReceived = $_POST['grpFeeReceived'];
+		}
+		if (isset($_POST['grpFeeBalance'])) {
+			$grpFeeBalance = $_POST['grpFeeBalance'];
+		}
+		if (isset($_POST['grpFeeScholarship'])) {
+			$grpFeeScholarship = $_POST['grpFeeScholarship'];
+		}
+		//Group Table data END//
+
+		//Extra Curricular Activity Table data//
+		$extraFeesMasterid = [];
+		if (isset($_POST['extraFeesMasterid'])) {
+			$extraFeesMasterid = $_POST['extraFeesMasterid'];
+		}
+		if (isset($_POST['extraAmntid'])) {
+			$extratablename = 'extratable';
+			$extraAmntid = $_POST['extraAmntid'];
+		}
+		if (isset($_POST['extraAmntReceived'])) {
+			$extraAmntReceived = $_POST['extraAmntReceived'];
+		}
+		if (isset($_POST['extraAmntBalance'])) {
+			$extraAmntBalance = $_POST['extraAmntBalance'];
+		}
+		if (isset($_POST['extraAmntScholarship'])) {
+			$extraAmntScholarship = $_POST['extraAmntScholarship'];
+		}
+		//Extra Curricular Activity Table data END//
+
+		//Amenity Table data//
+		$amenityFeesMasterid = [];
+		if (isset($_POST['amenityFeesMasterid'])) {
+			$amenityFeesMasterid = $_POST['amenityFeesMasterid'];
+		}
+		if (isset($_POST['amenityAmntid'])) {
+			$amenitytablename = 'amenitytable';
+			$amenityAmntid = $_POST['amenityAmntid'];
+		}
+		if (isset($_POST['amenityAmntReceived'])) {
+			$amenityAmntReceived = $_POST['amenityAmntReceived'];
+		}
+		if (isset($_POST['amenityAmntBalance'])) {
+			$amenityAmntBalance = $_POST['amenityAmntBalance'];
+		}
+		if (isset($_POST['amenityAmntScholarship'])) {
+			$amenityAmntScholarship = $_POST['amenityAmntScholarship'];
+		}
+		//Amenity Table data END//
+		//Transport Table data//
+		$areaCreationId = [];
+		if (isset($_POST['areaCreationId'])) {
+			$areaCreationId = $_POST['areaCreationId'];
+		}
+		if (isset($_POST['particularId'])) {
+			$transtablename = 'transport';
+			$particularId = $_POST['particularId'];
+		}
+		if (isset($_POST['transportFeeReceived'])) {
+			$transportFeeReceived = $_POST['transportFeeReceived'];
+		}
+		if (isset($_POST['transportFeeBalance'])) {
+			$transportFeeBalance = $_POST['transportFeeBalance'];
+		}
+		if (isset($_POST['transportFeeScholarship'])) {
+			$transportFeeScholarship = $_POST['transportFeeScholarship'];
+		}
+		if (isset($_POST['fees_id'])) {
+			$fees_id = $_POST['fees_id'];
+		}
+		//Transport Table data END//
+		if (count($feesMasterid) > 0 || count($extraFeesMasterid) > 0 || count($amenityFeesMasterid) > 0) {
+			if (!empty($fees_id)) {
+				$updateLastFeesQry = $mysqli->query("UPDATE `last_year_fees` SET 
+				`receipt_no` = '$receipt_number', 
+				`receipt_date` = '$receipt_date', 
+				`academic_year` = '$academic_year', 
+				`other_charges` = '$other_charges', 
+				`other_charges_received` = '$other_charges_recieved', 
+				`scholarship` = '$fees_scholarship', 
+				`total_fees_tobe_collected` = '$fees_total', 
+				`final_amount_tobe_collect` = '$final_amount_recieved', 
+				`fees_collected` = '$fees_collected', 
+				`balance_tobe_paid` = '$fees_balance', 
+				`school_id` = '$school_id', 
+				`update_login_id` = '$userid',
+					`updated_on` = now()
+				WHERE `id` = '$fees_id'");
+
+
+				$FeesLastInsertId = $fees_id;
+				if ($payment_mode == 'cash_payment') {
+					$updateCashDenomination = $mysqli->query("UPDATE `last_year_fees_denomination` SET 
+    `payment_mode` = '$payment_mode', 
+    `ledger_ref_id` = '$academic_year', 
+    `no_five_hundred` = '$receive_five_hundred', 
+    `no_two_hundred` = '$receive_two_hundred', 
+    `no_hundred` = '$receive_hundred', 
+    `no_fifty` = '$receive_fifty', 
+    `no_twenty` = '$receive_twenty', 
+    `no_ten` = '$receive_ten', 
+    `no_five` = '$receive_five', 
+    `total_amount` = '$total_amount', 
+ 	`update_login_id` = '$userid',
+					`updated_on` = now()
+    WHERE `admission_fees_ref_id` = '$fees_id'");
+				} else if ($payment_mode == 'cheque') {
+					$updateChequeDenomination = $mysqli->query("UPDATE `last_year_fees_denomination` SET 
+    `payment_mode` = '$payment_mode', 
+    `ledger_ref_id` = '$cheque_ledger_name', 
+    `cheque_number` = '$cheque_number', 
+    `cheque_date` = '$cheque_date', 
+    `cheque_amount` = '$cheque_amount', 
+    `cheque_bank_name` = '$cheque_bank_name', 
+	`update_login_id` = '$userid',
+					`updated_on` = now()
+    WHERE `admission_fees_ref_id` = '$fees_id'");
+				} else if ($payment_mode == 'neft') {
+					$updateNEFTDenomination = $mysqli->query("UPDATE `last_year_fees_denomination` SET 
+					`payment_mode` = '$payment_mode', 
+					`ledger_ref_id` = '$neft_ledger_name', 
+					`neft_ref_number` = '$neft_number', 
+					`neft_tran_date` = '$neft_date', 
+					`neft_amount` = '$neft_amount', 
+					`neft_bank_name` = '$neft_bank_name', 
+						`update_login_id` = '$userid',
+					`updated_on` = now()
+					WHERE `admission_fees_ref_id` = '$fees_id'");
+				}
+
+				for ($a = 0; $a < count($feesMasterid); $a++) {
+					$updateFeesDetailsQry = $mysqli->query("UPDATE `last_year_fees_details` SET 
+						`fee_received` = '$grpFeeReceived[$a]', 
+						`balance_tobe_paid` = '$grpFeeBalance[$a]', 
+						`scholarship` = '$grpFeeScholarship[$a]' 
+						WHERE `admission_fees_ref_id` = '$fees_id' 
+						AND `fees_master_id` = '$feesMasterid[$a]' 
+						AND `fees_table_name` = '$grptablename' 
+						AND `fees_id` = '$grpid[$a]'");
+				}
+
+				for ($b = 0; $b < count($extraFeesMasterid); $b++) {
+					$updateExtraFeesDetailsQry = $mysqli->query("UPDATE `last_year_fees_details` SET 
+						`fee_received` = '$extraAmntReceived[$b]', 
+						`balance_tobe_paid` = '$extraAmntBalance[$b]', 
+						`scholarship` = '$extraAmntScholarship[$b]' 
+						WHERE `admission_fees_ref_id` = '$fees_id' 
+						AND `fees_master_id` = '$extraFeesMasterid[$b]' 
+						AND `fees_table_name` = '$extratablename' 
+						AND `fees_id` = '$extraAmntid[$b]'");
+				}
+
+				for ($c = 0; $c < count($amenityFeesMasterid); $c++) {
+					$updateAmenityFeesDetailsQry = $mysqli->query("UPDATE `last_year_fees_details` SET 
+						`fee_received` = '$amenityAmntReceived[$c]', 
+						`balance_tobe_paid` = '$amenityAmntBalance[$c]', 
+						`scholarship` = '$amenityAmntScholarship[$c]' 
+						WHERE `admission_fees_ref_id` = '$fees_id' 
+						AND `fees_master_id` = '$amenityFeesMasterid[$c]' 
+						AND `fees_table_name` = '$amenitytablename' 
+						AND `fees_id` = '$amenityAmntid[$c]'");
+				}
+
+				for ($d = 0; $d < count($areaCreationId); $d++) {
+					$updateTransFeesDetailsQry = $mysqli->query("UPDATE `last_year_fees_details` SET 
+						`fee_received` = '$transportFeeReceived[$d]', 
+						`balance_tobe_paid` = '$transportFeeBalance[$d]', 
+						`scholarship` = '$transportFeeScholarship[$d]' 
+						WHERE `admission_fees_ref_id` = '$fees_id' 
+						AND `fees_master_id` = '$areaCreationId[$d]' 
+						AND `fees_table_name` = '$transtablename' 
+						AND `fees_id` = '$particularId[$d]'");
+				}
+			
+				if ($updateLastFeesQry) {
+					return  $FeesLastInsertId;
+				} else {
+					return 2;
+				}
+			} else {
+				return 2;
+			}
+		}
+	}
 
 	public function addTransportFees($mysqli, $userid, $school_id)
 	{
@@ -6362,7 +6932,207 @@ class admin
 			return 2;
 		}
 	}
+	public function updateTransportFees($mysqli, $userid, $school_id)
+	{
 
+		//transport_fees table//
+		if (isset($_POST['admission_form_id'])) {
+			$admission_form_id = $_POST['admission_form_id'];
+		}
+		if (isset($_POST['receipt_number'])) {
+			$receipt_number = $_POST['receipt_number'];
+		}
+		if (isset($_POST['receipt_date'])) {
+			$receipt_date =  $_POST['receipt_date'];
+		}
+		if (isset($_POST['academic_year'])) {
+			$academic_year = $_POST['academic_year'];
+		}
+		if (isset($_POST['fees_scholarship'])) {
+			$fees_scholarship = $_POST['fees_scholarship'];
+		}
+		if (isset($_POST['fees_total'])) {
+			$fees_total = $_POST['fees_total'];
+		}
+		if (isset($_POST['final_amount_recieved'])) {
+			$final_amount_recieved = $_POST['final_amount_recieved'];
+		}
+		if (isset($_POST['fees_collected'])) {
+			$fees_collected = $_POST['fees_collected'];
+		}
+		if (isset($_POST['fees_balance'])) {
+			$fees_balance = $_POST['fees_balance'];
+		}
+		//transport_fees table END//
+
+		// 	transport_admission_fees_denomination//
+		if (isset($_POST['payment_mode'])) {
+			$payment_mode = $_POST['payment_mode'];
+		}
+		if (isset($_POST['receive_five_hundred'])) {
+			$receive_five_hundred = $_POST['receive_five_hundred'];
+		}
+		if (isset($_POST['receive_two_hundred'])) {
+			$receive_two_hundred = $_POST['receive_two_hundred'];
+		}
+		if (isset($_POST['receive_hundred'])) {
+			$receive_hundred = $_POST['receive_hundred'];
+		}
+		if (isset($_POST['receive_fifty'])) {
+			$receive_fifty = $_POST['receive_fifty'];
+		}
+		if (isset($_POST['receive_twenty'])) {
+			$receive_twenty = $_POST['receive_twenty'];
+		}
+		if (isset($_POST['receive_ten'])) {
+			$receive_ten = $_POST['receive_ten'];
+		}
+		if (isset($_POST['receive_five'])) {
+			$receive_five = $_POST['receive_five'];
+		}
+		if (isset($_POST['total_amount'])) {
+			$total_amount = $_POST['total_amount'];
+		}
+
+		if (isset($_POST['cheque_number'])) {
+			$cheque_number = $_POST['cheque_number'];
+		}
+		if (isset($_POST['cheque_amount'])) {
+			$cheque_amount = $_POST['cheque_amount'];
+		}
+		if (isset($_POST['cheque_date'])) {
+			$cheque_date = $_POST['cheque_date'];
+		}
+		if (isset($_POST['cheque_bank_name'])) {
+			$cheque_bank_name = $_POST['cheque_bank_name'];
+		}
+		if (isset($_POST['cheque_ledger_name'])) {
+			$cheque_ledger_name = $_POST['cheque_ledger_name'];
+		}
+
+		if (isset($_POST['neft_number'])) {
+			$neft_number = $_POST['neft_number'];
+		}
+		if (isset($_POST['neft_amount'])) {
+			$neft_amount = $_POST['neft_amount'];
+		}
+		if (isset($_POST['neft_date'])) {
+			$neft_date = $_POST['neft_date'];
+		}
+		if (isset($_POST['neft_bank_name'])) {
+			$neft_bank_name = $_POST['neft_bank_name'];
+		}
+		if (isset($_POST['neft_ledger_name'])) {
+			$neft_ledger_name = $_POST['neft_ledger_name'];
+		}
+		// 	transport_admission_fees_denomination END//
+
+		//Area Table data//
+		$areaCreationId = [];
+		if (isset($_POST['areaCreationId'])) {
+			$areaCreationId = $_POST['areaCreationId'];
+		}
+		if (isset($_POST['particularId'])) {
+			$particularId = $_POST['particularId'];
+		}
+		if (isset($_POST['transportFeeReceived'])) {
+			$transportFeeReceived = $_POST['transportFeeReceived'];
+		}
+		if (isset($_POST['transportFeeBalance'])) {
+			$transportFeeBalance = $_POST['transportFeeBalance'];
+		}
+		if (isset($_POST['transportFeeScholarship'])) {
+			$transportFeeScholarship = $_POST['transportFeeScholarship'];
+		}
+		if (isset($_POST['fees_id'])) {
+			$fees_id = $_POST['fees_id'];
+		}
+		//Area Table data END//
+
+		if (count($areaCreationId) > 0) {
+			if (!empty($fees_id)) {
+				$updatePayFeesQry = $mysqli->query("UPDATE `transport_admission_fees` 
+				SET 
+					`admission_id` = '$admission_form_id',
+					`receipt_no` = '$receipt_number',
+					`receipt_date` = '$receipt_date',
+					`academic_year` = '$academic_year',
+					`scholarship` = '$fees_scholarship',
+					`total_fees_tobe_collected` = '$fees_total',
+					`final_amount_tobe_collect` = '$final_amount_recieved',
+					`fees_collected` = '$fees_collected',
+					`balance_tobe_paid` = '$fees_balance',
+					`school_id` = '$school_id',
+					`update_login_id` = '$userid',
+					`updated_on` = now()
+				WHERE id = '$fees_id'
+			") or die("Error: " . $mysqli->error);
+
+				$FeesLastInsertId = $fees_id;
+
+				if ($payment_mode == 'cash_payment') {
+					$updateDenominationQry = $mysqli->query("UPDATE `transport_admission_fees_denomination` SET 
+        `payment_mode` = '$payment_mode',
+        `ledger_ref_id` = '$academic_year',
+        `no_five_hundred` = '$receive_five_hundred',
+        `no_two_hundred` = '$receive_two_hundred',
+        `no_hundred` = '$receive_hundred',
+        `no_fifty` = '$receive_fifty',
+        `no_twenty` = '$receive_twenty',
+        `no_ten` = '$receive_ten',
+        `no_five` = '$receive_five',
+        `total_amount` = '$total_amount',
+    	`update_login_id` = '$userid',
+		`updated_on` = now()
+        WHERE admission_fees_ref_id = '$fees_id'
+    ");
+				} else if ($payment_mode == 'cheque') {
+					$updateDenominationQry = $mysqli->query("UPDATE `transport_admission_fees_denomination` SET 
+        `payment_mode` = '$payment_mode',
+        `ledger_ref_id` = '$cheque_ledger_name',
+        `cheque_number` = '$cheque_number',
+        `cheque_date` = '$cheque_date',
+        `cheque_amount` = '$cheque_amount',
+        `cheque_bank_name` = '$cheque_bank_name',
+     	`update_login_id` = '$userid',
+		`updated_on` = now()
+        WHERE admission_fees_ref_id = '$fees_id'
+    ");
+				} else if ($payment_mode == 'neft') {
+					$updateDenominationQry = $mysqli->query("UPDATE `transport_admission_fees_denomination` SET 
+        `payment_mode` = '$payment_mode',
+        `ledger_ref_id` = '$neft_ledger_name',
+        `neft_ref_number` = '$neft_number',
+        `neft_tran_date` = '$neft_date',
+        `neft_amount` = '$neft_amount',
+        `neft_bank_name` = '$neft_bank_name',
+    	`update_login_id` = '$userid',
+		`updated_on` = now()
+        WHERE admission_fees_ref_id = '$fees_id'
+    ");
+				}
+
+				for ($a = 0; $a < count($areaCreationId); $a++) {
+					$updateFeesDetailsQry = $mysqli->query("UPDATE `transport_admission_fees_details` SET 
+        `fee_received` = '$transportFeeReceived[$a]',
+        `balance_tobe_paid` = '$transportFeeBalance[$a]',
+        `scholarship` = '$transportFeeScholarship[$a]'
+        WHERE 
+            `admission_fees_ref_id` = '$fees_id' AND 
+            `area_creation_id` = '$areaCreationId[$a]' AND 
+            `area_creation_particulars_id` = '$particularId[$a]'
+    ");
+				}
+				if ($updatePayFeesQry) {
+					return  $FeesLastInsertId;
+				} else {
+					return 2;
+				}
+			} else {
+				return 2;
+			}
+		}
+	}
 	public function addFeesConcession($mysqli, $userid, $school_id, $year_id)
 	{
 

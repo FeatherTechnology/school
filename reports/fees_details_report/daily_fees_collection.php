@@ -54,7 +54,7 @@
         <!-- card END -->
 
         <div class="card" id="listCard" style="display: none;">
-            <div class="card-body">
+            <div class="card-body ">
                 <div id="showStudentDailyFeesCollectionList"></div>
             </div>
         </div>

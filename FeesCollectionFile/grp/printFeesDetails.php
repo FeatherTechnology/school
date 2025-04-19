@@ -1,4 +1,3 @@
-
 <?php
 @session_start();
 include '../../ajaxconfig.php';
@@ -108,49 +107,71 @@ $school_logo = $schoolInfo["school_logo"];
 
 <head>
     <style>
-        th { text-align: center; font-weight: bold; }
+        th {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        #dettable tr.last-row td {
+        line-height: 3.5;
+        /* margin-top: 30px; */
+    }
     </style>
 </head>
 <div class="approvedtablefield">
-<?php
-$copyLabels = ['Student Copy', 'School Copy'];
-$pay_mode ='';
-foreach ($copyLabels as $copyLabel) {
-?>
-    <div id="dettable" style="border:1px solid black;margin: 20px auto;">
-        <table rules="all" style="width: 100%; border-style: double; border: 1px solid black; margin: auto;">
-            <tr>
-                <td><img src="uploads/school_creation/<?php echo $school_logo; ?>" height="50px" width="50px" alt="LOGO"></td>
-                <td style="text-align: center;">
-                    <?php echo $school_name; ?><br>
-                    <?php echo "$address1, $address2, $district,<br>$state - $pincode"; ?><br>
-                    ☎ - <?php echo $contact_number; ?> ✉ - <?php echo $email_id; ?>
-                </td>
-                <td>
-                    Receipt Number: <?php echo $receipt_number; ?><br>
-                    Manual Rcpt.No:<br>
-                    (<?php echo $copyLabel; ?>)
-                </td>
-            </tr>
-        </table>
+    <?php
+    $copyLabels = ['Student Copy', 'School Copy'];
+    $pay_mode = '';
+    foreach ($copyLabels as $copyLabel) {
+    ?>
+        <div id="dettable" style="border:1px solid black;margin: 20px auto; padding: 10px;">
+            <table rules="all" style="width: 100%; border-style: double; border: 1px solid black; margin: auto;">
+                <tr>
+                    <td><img src="uploads/school_creation/<?php echo $school_logo; ?>" height="50px" width="50px" alt="LOGO" style="padding: 5px;"></td>
+                    <td style="text-align: center;">
+                        <b><?php echo $school_name; ?></b><br>
+                        <?php echo "$address1, $address2, $district,<br>$state - $pincode"; ?><br>
+                        ☎ - <?php echo $contact_number; ?> ✉ - <?php echo $email_id; ?>
+                    </td>
+                    <td style="padding: 5px;">
+                        Receipt Number: <?php echo $receipt_number; ?><br>
+                        Manual Rcpt.No:<br>
+                        (<?php echo $copyLabel; ?>)
+                    </td>
 
-        <p style="float:right">Date: <?php echo $receipt_date; ?></p>
-        <p>Admission Number: <?php echo $admission_number; ?></p>
-        <p style="float:right">Standard & Section: <?php echo "$standard & $section"; ?></p>
-        <p>Student Name: <?php echo $student_name; ?></p>
-        <br><br>
-        <table rules="all" style="width: 100%; border-style: double; border: 1px solid black; margin: auto;">
-            <tr>
-                <th>SI.No</th>
-                <th>Particulars</th>
-                <th>Amount</th>
-            </tr>
+                </tr>
+            </table>
             <?php
-            $totalamnt = 0;
-            $a = 1;
-
             if (strpos($receipt_number, 'LAST') === 0) {
-                $query = $mysqli->query("SELECT 
+                echo '<p style="text-align: center; font-weight: bold;">Last Year Fees</p>';
+            } else {
+                echo '<p style="text-align: center; font-weight: bold;">Group Fees</p>';
+            }
+            ?>
+
+            <table style="width: 100%; margin-bottom: 10px;">
+                <tr>
+                    <td>Admission Number: <?php echo $admission_number; ?></td>
+                    <td style="text-align: right;">Date: <?php echo $receipt_date; ?></td>
+                </tr>
+                <tr>
+                    <td>Student Name: <?php echo $student_name; ?></td>
+                    <td style="text-align: right;">Standard / Section: <?php echo "$standard - $section"; ?></td>
+                </tr>
+            </table>
+
+            <table rules="all" style="width: 100%; border-style: double; border: 1px solid black; margin: auto;">
+                <tr>
+                    <th>SI.No</th>
+                    <th>Particulars</th>
+                    <th>Amount</th>
+                </tr>
+                <?php
+                $totalamnt = 0;
+                $a = 1;
+
+                if (strpos($receipt_number, 'LAST') === 0) {
+                    $query = $mysqli->query("SELECT 
                     CASE 
                         WHEN(lfd.fees_table_name = 'grptable') THEN gcf.grp_particulars 
                         WHEN(lfd.fees_table_name = 'extratable') THEN ecaf.extra_particulars 
@@ -167,8 +188,8 @@ foreach ($copyLabels as $copyLabel) {
                 LEFT JOIN amenity_fee aff ON lfd.fees_table_name = 'amenitytable' AND lfd.fees_id = aff.amenity_fee_id 
                 LEFT JOIN area_creation_particulars acp ON lfd.fees_table_name = 'transport' AND lfd.fees_id = acp.particulars_id 
                 WHERE lf.id = '$fees_ids' AND lfd.fee_received != '0'");
-            } else {
-                $query = $mysqli->query("SELECT 
+                } else {
+                    $query = $mysqli->query("SELECT 
                     CASE 
                         WHEN(afd.fees_table_name = 'grptable') THEN gcf.grp_particulars 
                         WHEN(afd.fees_table_name = 'extratable') THEN ecaf.extra_particulars 
@@ -183,39 +204,47 @@ foreach ($copyLabels as $copyLabel) {
                 LEFT JOIN extra_curricular_activities_fee ecaf ON afd.fees_table_name = 'extratable' AND afd.fees_id = ecaf.extra_fee_id 
                 LEFT JOIN amenity_fee aff ON afd.fees_table_name = 'amenitytable' AND afd.fees_id = aff.amenity_fee_id 
                 WHERE af.id = '$fees_ids' AND afd.fee_received != '0'");
-            }
-            $pay_mode ='';
-            while ($row = $query->fetch_assoc()) {
-                echo "<tr>
+                }
+                $pay_mode = '';
+                while ($row = $query->fetch_assoc()) {
+                    echo "<tr>
                     <td>{$a}</td>
                     <td>{$row['particulars']}</td>
                     <td style='text-align:right;'> " . ($row['fee_received']) . "</td>
                 </tr>";
-                $totalamnt += $row['fee_received'];
-                $a++;
-                if($row['payment_mode'] == 'cash_payment'){
-                    $pay_mode = 'Cash';
-                }else if($row['payment_mode'] == 'cheque'){
-                  $pay_mode = 'Cheque';
+                    $totalamnt += $row['fee_received'];
+                    $a++;
+                    if ($row['payment_mode'] == 'cash_payment') {
+                        $pay_mode = 'Cash';
+                    } else if ($row['payment_mode'] == 'cheque') {
+                        $pay_mode = 'Cheque';
+                    } else if ($row['payment_mode'] == 'neft') {
+                        $pay_mode = 'Bank Transfer';
+                    } else {
+                        $pay_mode = '';
+                    }
                 }
-                else if ($row['payment_mode'] == 'neft'){
-                    $pay_mode = 'Bank Transfer';
-                }else{
-               $pay_mode = '';
-                }
-            }
-            ?>
-            <p style="margin-top: -40px;">Payment Mode: <?php echo $pay_mode; ?></p>
-            <tr>
-                <td colspan="2" style="text-align:right;"><b>Total Amount:</b></td>
-                <td style="text-align:right;"><b> <?php echo ($totalamnt); ?></b></td>
-            </tr>
-        </table>
+                ?>
+                <p style="width: 33%;">Payment Mode: <?php echo $pay_mode; ?></p>
+                <tr>
+                    <td colspan="2" style="text-align:right;"><b>Total Amount:</b></td>
+                    <td style="text-align:right;"><b> <?php echo ($totalamnt); ?></b></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Amount in words: <?php echo AmountInWords($totalamnt); ?> Only.</td>
+                </tr>
+                <tr class="last-row">
+                    <td colspan="2" style="text-align: justify;"> Seal </td>
+                    <td style="text-align: center;"> Signature </td>
+                </tr>
+            </table>
 
-        <p style="margin-top:20px;"><b>Amount in Words:</b> <?php echo AmountInWords($totalamnt); ?></p>
-    </div>
-    <hr style="border-top: 2px dashed #000; margin-top: 40px; margin-bottom: 40px;">
-<?php } ?>
+
+        </div>
+        <?php if ($copyLabel == 'Student Copy') { ?>
+            <hr style="border-top: 2px dashed #000; margin-top: 40px; margin-bottom: 40px;">
+        <?php } ?>
+    <?php } ?>
 </div>
 
 <button type="button" name="printpurchase" onclick="poprint()" id="printpurchase" class="btn btn-primary" style="display:none">Print</button>
