@@ -18,16 +18,24 @@ if(isset($_GET['pagename']))
 
 if(isset($_POST['submitpaylastyearfees']) && $_POST['submitpaylastyearfees'] != '')
 {
+    $fees_id = isset($_POST['fees_id']) ? $_POST['fees_id'] : '';
     $studid = $_POST['admission_form_id'];
-    $addLastYearFeesCreation = $userObj->addLastYearFees($mysqli,$userid,$school_id);  
+    if (!empty($fees_id)) {
+        // Update case
+        $addLastYearFeesCreation = $userObj->updateLastYearFees($mysqli,$userid,$school_id);  
+    } else {
+        // Add case
+        $addLastYearFeesCreation = $userObj->addLastYearFees($mysqli,$userid,$school_id);  
+    }
+  
     if($addLastYearFeesCreation != 2){
 ?>
     <script>
     setTimeout(() => {
-        print_temp_fees(<?php echo $addLastYearFeesCreation; ?>);
+        print_temp_fees(<?php echo $addLastYearFeesCreation; ?>,  <?php echo $studid; ?>);
     }, 1000);
     // print functionality
-    function print_temp_fees(lastYearFeesid){
+    function print_temp_fees(lastYearFeesid, studid){
     $.ajax({
         url: 'ajaxFiles/last_year_fees_print.php',
         cache: false,
@@ -39,8 +47,14 @@ if(isset($_POST['submitpaylastyearfees']) && $_POST['submitpaylastyearfees'] != 
             if (printWindow) { // Check if the window is successfully opened
                 printWindow.document.write(html);
                 printWindow.document.close();
+                printWindow.onafterprint = function() {
+                                printWindow.close();
+                                <?php if (!empty($fees_id)) { ?>
+                                    window.location.href = '<?php echo $HOSTPATH; ?>fees_collection&studid=' + studid;
+                                <?php } ?>
+                            };
                 printWindow.print();
-                printWindow.close();
+    
             } else {
                 alert('Pop-up blocked. Please allow pop-ups for this site.');
             }
@@ -64,7 +78,7 @@ if(isset($_POST['submitpaylastyearfees']) && $_POST['submitpaylastyearfees'] != 
 
 if(isset($_GET['upd'])){
     $admission_id = $_GET['upd'];
-
+    $feesid = isset($_GET['feesid']) && !empty($_GET['feesid']) ? $_GET['feesid'] : '';
     $getTempAdmissionDetails = $userObj->getStudentCreation($mysqli, $admission_id);
 
     if($getTempAdmissionDetails > 0 ){
@@ -98,6 +112,7 @@ if(isset($_GET['upd'])){
                 <input type="hidden" class="form-control" name="student_medium" id="student_medium" value="<?php if(isset($medium)) echo $medium; ?>" >
                 <input type="hidden" class="form-control" name="students_type" id="students_type" value="<?php if(isset($studentstype)) echo $studentstype; ?>" >
                 <input type="hidden" class="form-control" name="student_extra_curricular" id="student_extra_curricular" value="<?php if(isset($extra_curricular)) echo $extra_curricular; ?>" >
+                <input type="hidden" class="form-control" name="fees_id" id="fees_id" value="<?php echo $feesid ?? ''; ?>">
                 <div class="row gutters">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">

@@ -1,3 +1,9 @@
+<style>
+#show_student_pending_list th,
+#show_student_pending_list td {
+    text-align: left !important;
+}
+</style>
 <!-- Page header start -->
 <div class="page-header">
     <ol class="breadcrumb">

@@ -9,38 +9,46 @@ if (isset($_SESSION["userid"])) {
 if (isset($_SESSION["school_id"])) {
     $school_id = $_SESSION["school_id"];
 }
-if(isset($_GET['pagename']))
-{
+if (isset($_GET['pagename'])) {
     $pagename = $_GET['pagename'];
 }
 
 if (isset($_POST['submittransportpay']) && $_POST['submittransportpay'] != '') {
+    $fees_id = isset($_POST['fees_id']) ? $_POST['fees_id'] : '';
     $studid = $_POST['admission_form_id'];
-    $addTransportFeesCreation = $userObj->addTransportFees($mysqli, $userid, $school_id);
+    if (!empty($fees_id)) {
+        // Update case
+        $addTransportFeesCreation = $userObj->updateTransportFees($mysqli, $userid, $school_id);
+    } else {
+        // Add case
+        $addTransportFeesCreation = $userObj->addTransportFees($mysqli, $userid, $school_id);
+    }
     if ($addTransportFeesCreation != 2) {
-?>
+        ?>
         <script>
-            // location.href = '<?php echo $HOSTPATH; ?>transport_fees&pagename=<?php echo $pagename; ?>&upd=<?php echo $studid; ?>';
             setTimeout(() => {
-                print_temp_fees(<?php echo $addTransportFeesCreation; ?>);
+                print_temp_fees(<?php echo $addTransportFeesCreation; ?>, <?php echo $studid; ?>);
             }, 1000);
+
             // print functionality
-            function print_temp_fees(transportFeesid) {
+            function print_temp_fees(transportFeesid, studid) {
                 $.ajax({
                     url: 'ajaxFiles/transport_fees_print.php',
                     cache: false,
                     type: 'POST',
-                    data: {
-                        'transportFeesid': transportFeesid
-                    },
+                    data: { 'transportFeesid': transportFeesid },
                     success: function(html) {
                         var printWindow = window.open('', '_blank', 'height=800,width=1200');
-
-                        if (printWindow) { // Check if the window is successfully opened
+                        if (printWindow) {
                             printWindow.document.write(html);
                             printWindow.document.close();
+                            printWindow.onafterprint = function() {
+                                printWindow.close();
+                                <?php if (!empty($fees_id)) { ?>
+                                    window.location.href = '<?php echo $HOSTPATH; ?>fees_collection&studid=' + studid;
+                                <?php } ?>
+                            };
                             printWindow.print();
-                            printWindow.close();
                         } else {
                             alert('Pop-up blocked. Please allow pop-ups for this site.');
                         }
@@ -53,18 +61,18 @@ if (isset($_POST['submittransportpay']) && $_POST['submittransportpay'] != '') {
         </script>
     <?php
     } else {
-    ?>
+        ?>
         <script>
             alert('Transport fees not added! Try again later.');
             location.href = '<?php echo $HOSTPATH; ?>transport_fees&pagename=<?php echo $pagename; ?>&upd=<?php echo $studid; ?>';
         </script>
-<?php
+    <?php
     }
 }
 
 if (isset($_GET['upd'])) {
     $admission_id = $_GET['upd'];
-
+    $feesid = isset($_GET['feesid']) && !empty($_GET['feesid']) ? $_GET['feesid'] : '';
     $getTempAdmissionDetails = $userObj->getStudentCreation($mysqli, $admission_id);
 
     if ($getTempAdmissionDetails > 0) {
@@ -84,7 +92,8 @@ if (isset($_GET['upd'])) {
         <li class="breadcrumb-item">SM - Transport Fees</li>
     </ol>
 
-    <a href=" <?php if($pagename == 'stdcreation'){ ?> edit_student_creation <?php }else{?> fees_collection&studid=<?php if(isset($admission_id)) echo $admission_id; } ?>" > 
+    <a href=" <?php if ($pagename == 'stdcreation') { ?> edit_student_creation <?php } else { ?> fees_collection&studid=<?php if (isset($admission_id)) echo $admission_id;
+                                                                                                                } ?>">
         <button type="button" class="btn btn-primary"><span class="icon-arrow-left"></span>&nbsp; Back</button>
     </a>
 </div>
@@ -92,11 +101,12 @@ if (isset($_GET['upd'])) {
 <div class="main-container">
     <!--form start-->
     <form id="transport_fees_form" name="transport_fees_form" method="post" enctype="multipart/form-data">
-        <input type="hidden" class="form-control" name="admission_form_id" id="admission_form_id" value="<?php if(isset($admission_id)) echo $admission_id; ?>" >
-        <input type="hidden" class="form-control" name="user_academic_year" id="user_academic_year" value="<?php if(isset($academicyear)) echo $academicyear; ?>" >
-        <input type="hidden" class="form-control" name="student_year_id" id="student_year_id" value="<?php if(isset($year_id)) echo $year_id; ?>" >
-        <input type="hidden" class="form-control" name="student_medium" id="student_medium" value="<?php if(isset($medium)) echo $medium; ?>" >
-        <input type="hidden" class="form-control" name="students_type" id="students_type" value="<?php if(isset($studentstype)) echo $studentstype; ?>" >
+        <input type="hidden" class="form-control" name="admission_form_id" id="admission_form_id" value="<?php if (isset($admission_id)) echo $admission_id; ?>">
+        <input type="hidden" class="form-control" name="user_academic_year" id="user_academic_year" value="<?php if (isset($academicyear)) echo $academicyear; ?>">
+        <input type="hidden" class="form-control" name="student_year_id" id="student_year_id" value="<?php if (isset($year_id)) echo $year_id; ?>">
+        <input type="hidden" class="form-control" name="student_medium" id="student_medium" value="<?php if (isset($medium)) echo $medium; ?>">
+        <input type="hidden" class="form-control" name="students_type" id="students_type" value="<?php if (isset($studentstype)) echo $studentstype; ?>">
+        <input type="hidden" class="form-control" name="fees_id" id="fees_id" value="<?php echo $feesid ?? ''; ?>">
         <div class="row gutters">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">

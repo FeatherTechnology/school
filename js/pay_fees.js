@@ -68,7 +68,6 @@ $('#neft_amount').keyup(function(){
 }); // Document END.
 
 $(function(){
-  getReceiptCode(); //Receipt Number;
   getFeesTableFunc();
   getAcademicYearList(); //Get  Academic Year List.
 });
@@ -80,8 +79,14 @@ function getFeesTableFunc(){
   var studentType = $('#students_type').val();
   var standard = $('#standard_id').val(); 
   var student_extra_curricular = $('#student_extra_curricular').val(); 
-
+  var fees_id = $('#fees_id').val();
+  if (fees_id != ''){
+    geteditFeesDetails(fees_id)
+  }
+ else{
+  getReceiptCode(); //Receipt Number;
   getGroupFeesDetails(admissionFormId, academicYear, medium, studentType, standard, student_extra_curricular);
+ }
   // getExtraCurricularActivityDetails(admissionFormId, academicYear, medium, studentType, standard);
   // getAmenityFeesDetails(admissionFormId, academicYear, medium, studentType, standard);
 
@@ -162,59 +167,86 @@ function functionAfterAjax(){
     }
   })
 
-  $(document).on('keyup','.grpfeesreceived, .grpfeesscholarship',function(){
-    var feeamnt = parseInt($(this).parent().parent().find('.grpfeesreceived').val());
-    var scholaramnt = parseInt($(this).parent().parent().find('.grpfeesscholarship').val());
-    var grpfeeamnt = parseInt($(this).parent().parent().find('.grpfeesamnt').val());
-    var totalCollectgrpFees = feeamnt + scholaramnt;
-    var balanceFees = grpfeeamnt - (feeamnt + scholaramnt);
-    
-    if(totalCollectgrpFees > grpfeeamnt){
-      alert('Kindly Enter Less than or equal to Fees Amount');
-      $(this).val("0");
-      //To recalculate the balance to paid if amount entered greater value.
-      var feeamnt = parseInt($(this).parent().parent().find('.grpfeesreceived').val());
-      var scholaramnt = parseInt($(this).parent().parent().find('.grpfeesscholarship').val());
-      var grpfeeamnt = parseInt($(this).parent().parent().find('.grpfeesamnt').val());
-      var balanceFees = grpfeeamnt - (feeamnt + scholaramnt);
-      $(this).parent().parent().find('.grpfeesbalance').val(balanceFees);
-      
-    }else{
-      $(this).parent().parent().find('.grpfeesbalance').val(balanceFees);
-      
-      getScholarshipTotal(); //Calc scholarship
-      getCollectedFeesTotal(); //Calc Fees collect.
-    }
+  $(document).on('keyup', '.grpfeesreceived, .grpfeesscholarship', function () {
+    var fees_id = $('#fees_id').val();
+    var $row = $(this).closest('tr');
+    var $thisField = $(this);
 
-  }); //Group fee calculation END.
+    if (fees_id != '') {
+      validateGroupFeesAjax(fees_id, $thisField, $row);
+
+    } else {
+        var feeamnt = parseInt($row.find('.grpfeesreceived').val()) || 0;
+        var scholaramnt = parseInt($row.find('.grpfeesscholarship').val()) || 0;
+        var grpfeeamnt = parseInt($row.find('.grpfeesamnt').val()) || 0;
+        var totalCollectgrpFees = feeamnt + scholaramnt;
+        var balanceFees = grpfeeamnt - totalCollectgrpFees;
+
+        if (totalCollectgrpFees > grpfeeamnt) {
+            alert('Kindly Enter Less than or equal to Fees Amount');
+            $thisField.val("0");
+
+            // Recalculate balance
+            feeamnt = parseInt($row.find('.grpfeesreceived').val()) || 0;
+            scholaramnt = parseInt($row.find('.grpfeesscholarship').val()) || 0;
+            grpfeeamnt = parseInt($row.find('.grpfeesamnt').val()) || 0;
+            balanceFees = grpfeeamnt - (feeamnt + scholaramnt);
+            $row.find('.grpfeesbalance').val(balanceFees);
+        } else {
+            $row.find('.grpfeesbalance').val(balanceFees);
+            getScholarshipTotal();
+            getCollectedFeesTotal();
+        }
+    }
+});
+ //Group fee calculation END.
 
   $(document).on('keyup','.extrafeesreceived, .extrafeesscholar',function(){
-    var extrafeereceived = parseInt($(this).parent().parent().find('.extrafeesreceived').val());
-    var extrascholaramnt = parseInt($(this).parent().parent().find('.extrafeesscholar').val());
-    var extrafeeamnt = parseInt($(this).parent().parent().find('.extrafeesamnt').val());
-    var totalCollectextraFees = extrafeereceived + extrascholaramnt;
-    var extrabalanceFees = extrafeeamnt - (extrafeereceived + extrascholaramnt);
-    
-    if(totalCollectextraFees > extrafeeamnt){
-      alert('Kindly Enter Less than or equal to Fees Amount');
-      $(this).val("0");
-      //To recalculate the balance to paid if amount entered greater value.
+
+    var fees_id = $('#fees_id').val();
+    var $row = $(this).closest('tr');
+    var $thisField = $(this);
+
+    if (fees_id != '') {
+      validateExtraFeesAjax(fees_id, $thisField, $row);
+
+    }else{
       var extrafeereceived = parseInt($(this).parent().parent().find('.extrafeesreceived').val());
       var extrascholaramnt = parseInt($(this).parent().parent().find('.extrafeesscholar').val());
       var extrafeeamnt = parseInt($(this).parent().parent().find('.extrafeesamnt').val());
+      var totalCollectextraFees = extrafeereceived + extrascholaramnt;
       var extrabalanceFees = extrafeeamnt - (extrafeereceived + extrascholaramnt);
-      $(this).parent().parent().find('.extrafeesbalance').val(extrabalanceFees);
-
-    }else{
-      $(this).parent().parent().find('.extrafeesbalance').val(extrabalanceFees);
-
-      getScholarshipTotal(); //Calc scholarship
-      getCollectedFeesTotal(); //Calc Fees collect.
+      
+      if(totalCollectextraFees > extrafeeamnt){
+        alert('Kindly Enter Less than or equal to Fees Amount');
+        $(this).val("0");
+        //To recalculate the balance to paid if amount entered greater value.
+        var extrafeereceived = parseInt($(this).parent().parent().find('.extrafeesreceived').val());
+        var extrascholaramnt = parseInt($(this).parent().parent().find('.extrafeesscholar').val());
+        var extrafeeamnt = parseInt($(this).parent().parent().find('.extrafeesamnt').val());
+        var extrabalanceFees = extrafeeamnt - (extrafeereceived + extrascholaramnt);
+        $(this).parent().parent().find('.extrafeesbalance').val(extrabalanceFees);
+  
+      }else{
+        $(this).parent().parent().find('.extrafeesbalance').val(extrabalanceFees);
+  
+        getScholarshipTotal(); //Calc scholarship
+        getCollectedFeesTotal(); //Calc Fees collect.
+      }
     }
+    
 
   }); //Extra curricular fee calculation END.
 
   $(document).on('keyup','.amenityfeesreceived, .amenityfeesscholar',function(){
+    var fees_id = $('#fees_id').val();
+    var $row = $(this).closest('tr');
+    var $thisField = $(this);
+
+    if (fees_id != '') {
+      validateAmentityFeesAjax(fees_id, $thisField, $row);
+
+    } else {
     var amenityfeereceived = parseInt($(this).parent().parent().find('.amenityfeesreceived').val());
     var amenityscholaramnt = parseInt($(this).parent().parent().find('.amenityfeesscholar').val());
     var amenityfeeamnt = parseInt($(this).parent().parent().find('.amenityfees').val());
@@ -237,6 +269,7 @@ function functionAfterAjax(){
       getScholarshipTotal(); //Calc scholarship
       getCollectedFeesTotal(); //Calc Fees collect.
     }
+  }
 
   }); //Amenity fee calculation END.
 
@@ -344,4 +377,192 @@ function getAcademicYearList(){ //Getting academic_year list from database.
           }
       }
   })
+}
+
+
+function geteditFeesDetails(fees_id){
+  $.ajax({
+      type : 'POST',
+      url : 'FeesCollectionFile/grp/editFeesDetailsForPayFees.php',
+      data : {'fees_id': fees_id},
+      dataType: 'json',
+      success:(function(res){
+          var groupFeesHtml = res.group;
+          var extraFeesHtml = res.extra;
+          var amenityFeesHtml = res.amenity;
+          var academicYear = res.academic_year;
+          var receiptNo = res.receipt_no;
+          var receiptDate = res.receipt_date;
+          var payment_mode = res.payment_mode;
+          var fees_collected = res.fees_collected;
+          var scholarship = res.scholarship;
+          // Use these values as needed
+          $('#academic_year').val(academicYear);
+          $('#receipt_number').val(receiptNo);
+          $('#receipt_date').val(receiptDate);
+          // $('#fees_total').val(receiptDate);
+          // $('#fees_balance').val(receiptDate);
+          // $('#final_amount_recieved').val(receiptDate);
+          $('#temp_group_fees').empty();
+          $('#temp_extra_curricular_fees').empty();
+          $('#temp_amenity_fees').empty();
+
+          $('#temp_group_fees').append(groupFeesHtml);
+          $('#temp_extra_curricular_fees').append(extraFeesHtml);
+          $('#temp_amenity_fees').append(amenityFeesHtml);
+          $('#fees_scholarship').val(scholarship);
+          $('#fees_collected').val(fees_collected);
+
+          $('input[name="payment_mode"][value="' + payment_mode + '"]').prop('checked', true);
+      })
+  }).then(function(){
+    functionAfterAjax();
+    getTotalFeeToBeCollected();//Fees to be collected total.
+    getScholarshipTotal(); //Scholarship amount.
+  });
+}
+
+function validateGroupFeesAjax(fees_id, $thisField, $row) {
+  const groupFeeData = [];
+  var admissionFormId = $('#admission_form_id').val();
+  $('#temp_group_fees tr').each(function () {
+      const feesMasterId = $(this).find('input[name="grpid[]"]').val();
+      const receivedAmount = parseFloat($(this).find('.grpfeesreceived').val()) || 0;
+      const scholarshipAmount = parseFloat($(this).find('.grpfeesscholarship').val()) || 0;
+
+      groupFeeData.push({
+          fees_master_id: feesMasterId,
+          received: receivedAmount,
+          scholarship: scholarshipAmount
+      });
+  });
+
+  $.ajax({
+      url: 'FeesCollectionFile/grp/editValidation.php',
+      type: 'POST',
+      data: {
+        admissionFormId :admissionFormId,
+          admission_fees_ref_id: fees_id,
+          group_fees_data: groupFeeData
+      },
+      dataType: 'json',
+      success: function (response) {
+          const feeamnt = parseFloat($row.find('.grpfeesreceived').val()) || 0;
+          const scholaramnt = parseFloat($row.find('.grpfeesscholarship').val()) || 0;
+          const grpfeeamnt = parseFloat($row.find('.grpfeesamnt').val()) || 0;
+          const balanceFees = grpfeeamnt - (feeamnt + scholaramnt);
+
+          if (response.status === 'error') {
+              alert(response.message);
+              $thisField.val(0);
+          }
+
+          const updatedFee = parseFloat($row.find('.grpfeesreceived').val()) || 0;
+          const updatedScholar = parseFloat($row.find('.grpfeesscholarship').val()) || 0;
+          const updatedBalance = grpfeeamnt - (updatedFee + updatedScholar);
+          $row.find('.grpfeesbalance').val(updatedBalance);
+
+          getScholarshipTotal();
+          getCollectedFeesTotal();
+      },
+      error: function () {
+          alert('Server error! Please try again.');
+      }
+  });
+}
+function validateAmentityFeesAjax(fees_id, $thisField, $row) {
+  const amenity_fees_data = [];
+  var admissionFormId = $('#admission_form_id').val();
+  $('#temp_amenity_fees tr').each(function () {
+      const feesMasterId = $(this).find('input[name="amenityAmntid[]"]').val();
+      const receivedAmount = parseFloat($(this).find('.amenityfeesreceived').val()) || 0;
+      const scholarshipAmount = parseFloat($(this).find('.amenityfeesscholar').val()) || 0;
+
+      amenity_fees_data.push({
+          fees_master_id: feesMasterId,
+          received: receivedAmount,
+          scholarship: scholarshipAmount
+      });
+  });
+
+  $.ajax({
+      url: 'FeesCollectionFile/grp/editValidation.php',
+      type: 'POST',
+      data: {
+        admissionFormId :admissionFormId,
+          admission_fees_ref_id: fees_id,
+          amenity_fees_data: amenity_fees_data
+      },
+      dataType: 'json',
+      success: function (response) {
+          const feeamnt = parseFloat($row.find('.amenityfeesreceived').val()) || 0;
+          const scholaramnt = parseFloat($row.find('.amenityfeesscholar').val()) || 0;
+          const grpfeeamnt = parseFloat($row.find('.amenityfees').val()) || 0;
+          const balanceFees = grpfeeamnt - (feeamnt + scholaramnt);
+
+          if (response.status === 'error') {
+              alert(response.message);
+              $thisField.val(0);
+          }
+
+          const updatedFee = parseFloat($row.find('.amenityfeesreceived').val()) || 0;
+          const updatedScholar = parseFloat($row.find('.amenityfeesscholar').val()) || 0;
+          const updatedBalance = grpfeeamnt - (updatedFee + updatedScholar);
+          $row.find('.amenityfeesbalance').val(updatedBalance);
+
+          getScholarshipTotal();
+          getCollectedFeesTotal();
+      },
+      error: function () {
+          alert('Server error! Please try again.');
+      }
+  });
+}
+function validateExtraFeesAjax(fees_id, $thisField, $row) {
+  const extra_fees_data = [];
+  var admissionFormId = $('#admission_form_id').val();
+  $('#temp_extra_curricular_fees tr').each(function () {
+      const feesMasterId = $(this).find('input[name="extraAmntid[]"]').val();
+      const receivedAmount = parseFloat($(this).find('.extrafeesreceived').val()) || 0;
+      const scholarshipAmount = parseFloat($(this).find('.extrafeesscholar').val()) || 0;
+
+      extra_fees_data.push({
+          fees_master_id: feesMasterId,
+          received: receivedAmount,
+          scholarship: scholarshipAmount
+      });
+  });
+
+  $.ajax({
+      url: 'FeesCollectionFile/grp/editValidation.php',
+      type: 'POST',
+      data: {
+        admissionFormId :admissionFormId,
+          admission_fees_ref_id: fees_id,
+          extra_fees_data: extra_fees_data
+      },
+      dataType: 'json',
+      success: function (response) {
+          const feeamnt = parseFloat($row.find('.extrafeesreceived').val()) || 0;
+          const scholaramnt = parseFloat($row.find('.extrafeesscholar').val()) || 0;
+          const grpfeeamnt = parseFloat($row.find('.extrafeesamnt').val()) || 0;
+          const balanceFees = grpfeeamnt - (feeamnt + scholaramnt);
+
+          if (response.status === 'error') {
+              alert(response.message);
+              $thisField.val(0);
+          }
+
+          const updatedFee = parseFloat($row.find('.extrafeesreceived').val()) || 0;
+          const updatedScholar = parseFloat($row.find('.extrafeesscholar').val()) || 0;
+          const updatedBalance = grpfeeamnt - (updatedFee + updatedScholar);
+          $row.find('.extrafeesbalance').val(updatedBalance);
+
+          getScholarshipTotal();
+          getCollectedFeesTotal();
+      },
+      error: function () {
+          alert('Server error! Please try again.');
+      }
+  });
 }

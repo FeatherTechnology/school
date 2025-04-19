@@ -1,3 +1,13 @@
+<style>
+#show_student_fees_summary_list th,
+#show_student_fees_summary_list td {
+    text-align: left !important;
+    white-space: nowrap;
+}
+#show_student_fees_summary_list .report-title {
+    text-align: center !important;
+}
+</style>
 <!-- Page header start -->
 <div class="page-header">
     <ol class="breadcrumb">
@@ -44,7 +54,7 @@
         <!-- card END -->
 
         <div class="card" id="listCard" style="display: none;">
-            <div class="card-body">
+            <div class="card-body ">
                 <div id="showStudentDailyFeesCollectionList"></div>
             </div>
         </div>

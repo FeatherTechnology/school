@@ -6359,3 +6359,12 @@ code {
             font-weight: 900;
             font-family: 'Font Awesome 5 Free';
         }
+        @media print {
+          @page {
+              size: auto; /* Use the default page size */
+          }
+          body {
+              width: 100%;
+          }
+      }
+      

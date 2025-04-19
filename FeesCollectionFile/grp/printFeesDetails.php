@@ -2,38 +2,21 @@
 @session_start();
 include '../../ajaxconfig.php';
 
-if (isset($_POST["fees_ids"])) {
-    $fees_ids = $_POST["fees_ids"];
-}
-if (isset($_POST["pay_fees_id"])) {
-    $pay_fees_id = $_POST["pay_fees_id"];
-}
-if (isset($_POST["student_id"])) {
-    $student_id = $_POST["student_id"];
-}
-if (isset($_POST["receipt_date"])) {
-    $receipt_date = $_POST["receipt_date"];
-}
-if (isset($_POST["receipt_number"])) {
-    $receipt_number = $_POST["receipt_number"];
-}
-if (isset($_POST["academic_year"])) {
-    $academic_year = $_POST["academic_year"];
-}
-if (isset($_POST["mergedParticularsArray"])) {
-    $mergedParticularsArray = $_POST["mergedParticularsArray"];
-}
-if (isset($_POST["mergedAmountArray"])) {
-    $mergedAmountArray = $_POST["mergedAmountArray"];
-}
-@session_start();
+if (isset($_POST["fees_ids"])) $fees_ids = $_POST["fees_ids"];
+if (isset($_POST["pay_fees_id"])) $pay_fees_id = $_POST["pay_fees_id"];
+if (isset($_POST["student_id"])) $student_id = $_POST["student_id"];
+if (isset($_POST["receipt_date"])) $receipt_date = $_POST["receipt_date"];
+if (isset($_POST["receipt_number"])) $receipt_number = $_POST["receipt_number"];
+if (isset($_POST["academic_year"])) $academic_year = $_POST["academic_year"];
+if (isset($_POST["mergedParticularsArray"])) $mergedParticularsArray = $_POST["mergedParticularsArray"];
+if (isset($_POST["mergedAmountArray"])) $mergedAmountArray = $_POST["mergedAmountArray"];
+
 if (isset($_SESSION["userid"])) {
     $userid = $_SESSION["userid"];
     $school_id = $_SESSION["school_id"];
     $year_id = $_SESSION["academic_year"];
-    // $academic_year = $_SESSION["academic_year"];
 }
-// Function to convert number to words
+
 function AmountInWords($amount)
 {
     $amount_after_decimal = round($amount - ($num = floor($amount)), 2) * 100;
@@ -92,149 +75,179 @@ function AmountInWords($amount)
     return ($implode_to_Rupees ? $implode_to_Rupees . 'Rupees ' : '') . $get_paise;
 }
 
-$qry = $mysqli->query("SELECT stdc.student_name, stdc.admission_number, stdc.section, sc.standard FROM student_creation stdc  
-JOIN 
-student_history sh ON sh.student_id = stdc.student_id  JOIN standard_creation sc ON sh.standard = sc.standard_id WHERE sh.student_id = '$student_id' AND stdc.status=0 AND stdc.school_id='$school_id' AND sh.academic_year='$year_id'");
-// SELECT * FROM student_creation WHERE student_id = '$student_id' AND status=0
-while ($row = $qry->fetch_assoc()) {
-    $student_name = $row["student_name"];
-    $admission_number = $row["admission_number"];
-    $standard = $row["standard"];
-    $section = $row["section"];
-}
+// Fetch student details
+$qry = $mysqli->query("SELECT stdc.student_name, stdc.admission_number, stdc.section, sc.standard 
+    FROM student_creation stdc 
+    JOIN student_history sh ON sh.student_id = stdc.student_id  
+    JOIN standard_creation sc ON sh.standard = sc.standard_id 
+    WHERE sh.student_id = '$student_id' AND stdc.status=0 AND stdc.school_id='$school_id' AND sh.academic_year='$year_id'");
 
-$getbrc = $mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, sc.school_logo, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id'");
-while ($schoolInfo = $getbrc->fetch_assoc()) {
-    $school_name     = $schoolInfo["school_name"];
-    $address1  = $schoolInfo["address1"];
-    $address2  = $schoolInfo["address2"];
-    $district  = $schoolInfo["district"];
-    $state     = $schoolInfo["state"];
-    $pincode  = $schoolInfo["pincode"];
-    $contact_number  = $schoolInfo["contact_number"];
-    $email_id     = $schoolInfo["email_id"];
-    $school_logo     = $schoolInfo["school_logo"];
-}
+$row = $qry->fetch_assoc();
+$student_name = $row["student_name"];
+$admission_number = $row["admission_number"];
+$standard = $row["standard"];
+$section = $row["section"];
+
+// Fetch school info
+$getbrc = $mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, sc.school_logo, stc.state 
+    FROM school_creation sc 
+    JOIN state_creation stc ON sc.state = stc.id 
+    WHERE sc.status = 0 AND school_id = '$school_id'");
+$schoolInfo = $getbrc->fetch_assoc();
+$school_name = $schoolInfo["school_name"];
+$address1 = $schoolInfo["address1"];
+$address2 = $schoolInfo["address2"];
+$district = $schoolInfo["district"];
+$state = $schoolInfo["state"];
+$pincode = $schoolInfo["pincode"];
+$contact_number = $schoolInfo["contact_number"];
+$email_id = $schoolInfo["email_id"];
+$school_logo = $schoolInfo["school_logo"];
 ?>
 
 <head>
-    <style type="text/css">
+    <style>
         th {
             text-align: center;
             font-weight: bold;
         }
+
+        #dettable tr.last-row td {
+        line-height: 3.5;
+        /* margin-top: 30px; */
+    }
     </style>
 </head>
-
 <div class="approvedtablefield">
-    <div id="dettable" style="border:1px solid black;margin: auto;">
+    <?php
+    $copyLabels = ['Student Copy', 'School Copy'];
+    $pay_mode = '';
+    foreach ($copyLabels as $copyLabel) {
+    ?>
+        <div id="dettable" style="border:1px solid black;margin: 20px auto; padding: 10px;">
+            <table rules="all" style="width: 100%; border-style: double; border: 1px solid black; margin: auto;">
+                <tr>
+                    <td><img src="uploads/school_creation/<?php echo $school_logo; ?>" height="50px" width="50px" alt="LOGO" style="padding: 5px;"></td>
+                    <td style="text-align: center;">
+                        <b><?php echo $school_name; ?></b><br>
+                        <?php echo "$address1, $address2, $district,<br>$state - $pincode"; ?><br>
+                        ☎ - <?php echo $contact_number; ?> ✉ - <?php echo $email_id; ?>
+                    </td>
+                    <td style="padding: 5px;">
+                        Receipt Number: <?php echo $receipt_number; ?><br>
+                        Manual Rcpt.No:<br>
+                        (<?php echo $copyLabel; ?>)
+                    </td>
 
-        <table rules="all" style="width: 100%;border-style: double;border: 1px solid black;margin: auto;">
-            <tr>
-
-                <td><img src="uploads/school_creation/<?php echo $school_logo; ?>" height="50px" width="50px" alt="LOGO"></td>
-                <td style="text-align: center;"> <?php if (isset($school_name)) echo $school_name; ?> </br>
-                    <?php if (isset($address1)) echo $address1, ', ';
-                    if (isset($address2)) echo $address2, ', ';
-                    if (isset($district)) echo $district, ', </br>';
-                    if (isset($state)) echo $state, '-';
-                    if (isset($pincode)) echo $pincode; ?> </br>
-                    <span style="margin-right: 5px;">&#x260E;</span> - <?php if (isset($contact_number)) echo $contact_number; ?> <span style="margin-right: 5px;">&#x1F4E7;</span>- <?php if (isset($email_id)) echo $email_id; ?>
-                </td>
-                <td>
-                    Receipt Number: <?php echo $receipt_number; ?><br>
-                    Manual Rcpt.No:<BR>
-                    (Student Copy)
-                </td>
-            </tr>
-        </table>
-        <p style="float:right">Date: <?php echo $receipt_date; ?></p>
-        <p>Admission Number: <?php echo $admission_number; ?></p>
-        <p style="float:right">Standard & Section: <?php echo $standard ?> &amp; <?php echo $section; ?></p>
-        <p>Student Name: <?php echo $student_name; ?></p>
-
-        <br /><br />
-        <table rules="all" style="width: 100%;border-style: double;border: 1px solid black;margin: auto;">
-            <tr>
-                <th style="background-color: white;color: black; text-align: left;">SI.No</th>
-                <th style="background-color: white;color: black; text-align: left;">Particulars</th>
-                <th style="background-color: white;color: black; text-align: left;">Amount</th>
-            </tr>
+                </tr>
+            </table>
             <?php
-            if (isset($_POST["receipt_number"])) {
-                $receipt_number = $_POST["receipt_number"];
-                // Determine which query to use based on the receipt_number
-                if (strpos($receipt_number, 'LAST') === 0) {
-                    // Use getLastAdmissionFees query if receipt_number starts with "LAST"
-                    $feesQuery = $connect->query("SELECT lf.id, lf.receipt_date, lf.receipt_no, lf.academic_year, 
-            CASE 
-                WHEN(lfd.fees_table_name = 'grptable') THEN gcf.grp_particulars 
-                WHEN(lfd.fees_table_name = 'extratable') THEN ecaf.extra_particulars 
-                WHEN(lfd.fees_table_name = 'amenitytable') THEN aff.amenity_particulars 
-                 WHEN (lfd.fees_table_name = 'transport') THEN acp.particulars
-            END as particulars, 
-            lfd.fee_received 
-        FROM last_year_fees lf 
-        JOIN last_year_fees_details lfd ON lf.id = lfd.admission_fees_ref_id
-        LEFT JOIN group_course_fee gcf ON lfd.fees_table_name = 'grptable' AND lfd.fees_id = gcf.grp_course_id 
-        LEFT JOIN extra_curricular_activities_fee ecaf ON lfd.fees_table_name = 'extratable' AND lfd.fees_id = ecaf.extra_fee_id 
-        LEFT JOIN amenity_fee aff ON lfd.fees_table_name = 'amenitytable' AND lfd.fees_id = aff.amenity_fee_id 
-        LEFT JOIN area_creation_particulars acp ON 
-    lfd.fees_table_name = 'transport' AND lfd.fees_id = acp.particulars_id
-        WHERE lf.id = '$fees_ids' && lfd.fee_received != '0' ORDER BY lf.id DESC");
-                } else {
-                    // Use getAdmissionFees query if receipt_number doesn't start with "LAST"
-                    $feesQuery = $connect->query("SELECT af.id, af.receipt_date, af.receipt_no, af.academic_year, 
-            CASE 
-                WHEN(afd.fees_table_name = 'grptable') THEN gcf.grp_particulars 
-                WHEN(afd.fees_table_name = 'extratable') THEN ecaf.extra_particulars 
-                WHEN(afd.fees_table_name = 'amenitytable') THEN aff.amenity_particulars 
-            END as particulars, 
-            afd.fee_received 
-        FROM admission_fees af 
-        JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id
-        LEFT JOIN group_course_fee gcf ON afd.fees_table_name = 'grptable' AND afd.fees_id = gcf.grp_course_id 
-        LEFT JOIN extra_curricular_activities_fee ecaf ON afd.fees_table_name = 'extratable' AND afd.fees_id = ecaf.extra_fee_id 
-        LEFT JOIN amenity_fee aff ON afd.fees_table_name = 'amenitytable' AND afd.fees_id = aff.amenity_fee_id 
-        WHERE af.id = '$fees_ids' AND afd.fee_received != '0' 
-        ORDER BY af.id DESC");
-                }
-
-                // Check if the query returned any results
-                if ($feesQuery->rowCount() > 0) {
-                    $a = 1;
-                    $totalamnt = 0;
-                    while ($feesInfo = $feesQuery->fetch()) {
-            ?>
-                        <tr>
-                            <td style="margin-left: 5px;padding-left: 30px;text-align: left;"><?php echo $a++; ?></td>
-                            <td style="margin-left: 5px;padding-left: 30px;text-align: left;"><?php echo $feesInfo['particulars']; ?></td>
-                            <td style="margin-left: 5px;padding-left: 30px;text-align: left;"><?php echo $feesInfo['fee_received']; ?></td>
-                        </tr>
-            <?php
-                        $totalamnt += $feesInfo['fee_received'];
-                    }
-                }
+            if (strpos($receipt_number, 'LAST') === 0) {
+                echo '<p style="text-align: center; font-weight: bold;">Last Year Fees</p>';
+            } else {
+                echo '<p style="text-align: center; font-weight: bold;">Group Fees</p>';
             }
             ?>
 
-            <tr>
-                <td style="margin-left: 5px;padding-left: 30px;text-align: left;"></td>
-                <td style="margin-left: 5px;padding-left: 30px;text-align: left;">Total</td>
-                <td style="margin-left: 5px;padding-left: 30px;text-align: left;"><?php echo $totalamnt; ?></td>
-            </tr>
-            <tr>
-                <td colspan="3">Amount In Words: <span id="amountInWords"><?php echo AmountInWords($totalamnt) . ' Rupees Only/-'; ?></span></td>
+            <table style="width: 100%; margin-bottom: 10px;">
+                <tr>
+                    <td>Admission Number: <?php echo $admission_number; ?></td>
+                    <td style="text-align: right;">Date: <?php echo $receipt_date; ?></td>
+                </tr>
+                <tr>
+                    <td>Student Name: <?php echo $student_name; ?></td>
+                    <td style="text-align: right;">Standard / Section: <?php echo "$standard - $section"; ?></td>
+                </tr>
+            </table>
 
-            </tr>
-        </table><br>
-        <p style="float:right">Signature</p>
-        <p>Seal</p>
+            <table rules="all" style="width: 100%; border-style: double; border: 1px solid black; margin: auto;">
+                <tr>
+                    <th>SI.No</th>
+                    <th>Particulars</th>
+                    <th>Amount</th>
+                </tr>
+                <?php
+                $totalamnt = 0;
+                $a = 1;
 
-    </div>
+                if (strpos($receipt_number, 'LAST') === 0) {
+                    $query = $mysqli->query("SELECT 
+                    CASE 
+                        WHEN(lfd.fees_table_name = 'grptable') THEN gcf.grp_particulars 
+                        WHEN(lfd.fees_table_name = 'extratable') THEN ecaf.extra_particulars 
+                        WHEN(lfd.fees_table_name = 'amenitytable') THEN aff.amenity_particulars 
+                        WHEN(lfd.fees_table_name = 'transport') THEN acp.particulars 
+                    END as particulars, 
+                    lfd.fee_received,
+                    lfds.payment_mode
+                FROM last_year_fees lf 
+                JOIN last_year_fees_details lfd ON lf.id = lfd.admission_fees_ref_id 
+                JOIN last_year_fees_denomination lfds ON lf.id = lfds.admission_fees_ref_id 
+                LEFT JOIN group_course_fee gcf ON lfd.fees_table_name = 'grptable' AND lfd.fees_id = gcf.grp_course_id 
+                LEFT JOIN extra_curricular_activities_fee ecaf ON lfd.fees_table_name = 'extratable' AND lfd.fees_id = ecaf.extra_fee_id 
+                LEFT JOIN amenity_fee aff ON lfd.fees_table_name = 'amenitytable' AND lfd.fees_id = aff.amenity_fee_id 
+                LEFT JOIN area_creation_particulars acp ON lfd.fees_table_name = 'transport' AND lfd.fees_id = acp.particulars_id 
+                WHERE lf.id = '$fees_ids' AND lfd.fee_received != '0'");
+                } else {
+                    $query = $mysqli->query("SELECT 
+                    CASE 
+                        WHEN(afd.fees_table_name = 'grptable') THEN gcf.grp_particulars 
+                        WHEN(afd.fees_table_name = 'extratable') THEN ecaf.extra_particulars 
+                        WHEN(afd.fees_table_name = 'amenitytable') THEN aff.amenity_particulars 
+                    END as particulars, 
+                    afd.fee_received ,
+                    afds.payment_mode
+                FROM admission_fees af 
+                JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
+                LEFT JOIN admission_fees_denomination afds ON af.id = afds.admission_fees_ref_id 
+                LEFT JOIN group_course_fee gcf ON afd.fees_table_name = 'grptable' AND afd.fees_id = gcf.grp_course_id 
+                LEFT JOIN extra_curricular_activities_fee ecaf ON afd.fees_table_name = 'extratable' AND afd.fees_id = ecaf.extra_fee_id 
+                LEFT JOIN amenity_fee aff ON afd.fees_table_name = 'amenitytable' AND afd.fees_id = aff.amenity_fee_id 
+                WHERE af.id = '$fees_ids' AND afd.fee_received != '0'");
+                }
+                $pay_mode = '';
+                while ($row = $query->fetch_assoc()) {
+                    echo "<tr>
+                    <td>{$a}</td>
+                    <td>{$row['particulars']}</td>
+                    <td style='text-align:right;'> " . ($row['fee_received']) . "</td>
+                </tr>";
+                    $totalamnt += $row['fee_received'];
+                    $a++;
+                    if ($row['payment_mode'] == 'cash_payment') {
+                        $pay_mode = 'Cash';
+                    } else if ($row['payment_mode'] == 'cheque') {
+                        $pay_mode = 'Cheque';
+                    } else if ($row['payment_mode'] == 'neft') {
+                        $pay_mode = 'Bank Transfer';
+                    } else {
+                        $pay_mode = '';
+                    }
+                }
+                ?>
+                <p style="width: 33%;">Payment Mode: <?php echo $pay_mode; ?></p>
+                <tr>
+                    <td colspan="2" style="text-align:right;"><b>Total Amount:</b></td>
+                    <td style="text-align:right;"><b> <?php echo ($totalamnt); ?></b></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Amount in words: <?php echo AmountInWords($totalamnt); ?> Only.</td>
+                </tr>
+                <tr class="last-row">
+                    <td colspan="2" style="text-align: justify;"> Seal </td>
+                    <td style="text-align: center;"> Signature </td>
+                </tr>
+            </table>
+
+
+        </div>
+        <?php if ($copyLabel == 'Student Copy') { ?>
+            <hr style="border-top: 2px dashed #000; margin-top: 40px; margin-bottom: 40px;">
+        <?php } ?>
+    <?php } ?>
 </div>
 
-<button type="button" name="printpurchase" onclick="poprint()" id="printpurchase" class="btn btn-primary">Print</button>
+<button type="button" name="printpurchase" onclick="poprint()" id="printpurchase" class="btn btn-primary" style="display:none">Print</button>
 
 <script type="text/javascript">
     function poprint() {

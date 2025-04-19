@@ -20,6 +20,7 @@ if(isset($_POST['studentType'])){
 }
 if(isset($_POST['standard'])){
     $standardId = $_POST['standard'];
+    $prevstandardId = $standardId - 1;
 }
 
 if($studentType =="1" || $studentType =="2"){
@@ -30,23 +31,15 @@ if($studentType =="1" || $studentType =="2"){
 
 }
 
-$CheckReceiptQry = $connect->query("SELECT af.id FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$admissionFormId' && af.academic_year = '$academicYear' && afd.fees_table_name = 'grptable' ORDER BY af.id DESC LIMIT 1");
-if($CheckReceiptQry->rowCount() > 0){
-    $get_temp_fees_id = $CheckReceiptQry->fetch()['id'];
-    $feeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as grp_amount, afd.fees_master_id as fees_id, afd.fees_id as grp_course_id, gcf.grp_particulars,gcf.grp_amount  AS ovrlAllGrpAmnt FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id WHERE af.id = '$get_temp_fees_id' && af.academic_year = '$academicYear' && afd.fees_table_name = 'grptable' && gcf.status ='1' ");
-
+    $CheckReceiptQry1 = $connect->query("SELECT sc.id FROM `student_history` sc WHERE sc.academic_year = '$academicYear' AND sc.student_id = '$admissionFormId' ");
+if($CheckReceiptQry1->rowCount() > 0)
+    {
+  $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, gcf.*,gcf.grp_amount AS ovrlAllGrpAmnt  FROM `fees_master` fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$prevstandardId' && gcf.status ='1' ");
 }else{
-    $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, gcf.*,gcf.grp_amount AS ovrlAllGrpAmnt  FROM `fees_master` fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$standardId' && gcf.status ='1' ");
-
+    echo ''; // no data to return
+    exit;
 }
-
-$CheckLastReceiptQry = $connect->query("SELECT lf.id FROM `last_year_fees` lf JOIN last_year_fees_details lfd ON lf.id = lfd.admission_fees_ref_id WHERE lf.admission_id = '$admissionFormId' && lf.academic_year = '$nextAcademicYear' && lfd.fees_table_name = 'grptable' ORDER BY lf.id DESC LIMIT 1");
-if($CheckLastReceiptQry->rowCount() > 0){
-    $get_temp_fees_id = $CheckLastReceiptQry->fetch()['id'];
-    $lastfeeDetailsQry = $connect->query("SELECT lfd.balance_tobe_paid as grp_amount, lfd.fees_master_id as fees_id, lfd.fees_id as grp_course_id, gcf.grp_particulars,gcf.grp_amount  AS ovrlAllGrpAmnt FROM `last_year_fees` lf JOIN last_year_fees_details lfd ON lf.id = lfd.admission_fees_ref_id JOIN group_course_fee gcf ON lfd.fees_id = gcf.grp_course_id WHERE lf.id = '$get_temp_fees_id' && lf.academic_year = '$nextAcademicYear' && lfd.fees_table_name = 'grptable' && gcf.status ='1' ");
-
-}
-$feeQueryToUse = ($CheckLastReceiptQry->rowCount() > 0) ? $lastfeeDetailsQry : $feeDetailsQry;
+$feeQueryToUse =  $feeDetailsQry;
 $i=0;
 while($grpfeeDetailsInfo = $feeQueryToUse->fetch()){  
     $grpConcessionQry = $connect->query("SELECT COALESCE(SUM(scholarship_amount),0) as grp_schlrshp_amnt, (SELECT COALESCE(SUM(afd.scholarship),0) + COALESCE(SUM(afd.fee_received),0)  FROM `admission_fees` af JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id WHERE af.admission_id = '$admissionFormId' && afd.fees_table_name = 'grptable' && afd.fees_id = '".$grpfeeDetailsInfo['grp_course_id']."' && af.academic_year ='$academicYear') AS grp_amnt FROM `fees_concession` WHERE `student_id`='$admissionFormId' && `fees_table_name`='grptable' && `fees_id` = '".$grpfeeDetailsInfo['grp_course_id']."' && academic_year ='$academicYear' ");
@@ -56,7 +49,7 @@ while($grpfeeDetailsInfo = $feeQueryToUse->fetch()){
     $grpLastConcessionQry = $connect->query("SELECT COALESCE(SUM(lfd.scholarship),0) + COALESCE(SUM(lfd.fee_received),0) AS grp_amnt FROM `last_year_fees` lf JOIN last_year_fees_details lfd ON lf.id = lfd.admission_fees_ref_id WHERE lf.admission_id = '$admissionFormId' && lfd.fees_table_name = 'grptable' && lfd.fees_id = '".$grpfeeDetailsInfo['grp_course_id']."' && lf.academic_year ='$nextAcademicYear' ");
     $grpLastConcessionInfo = $grpLastConcessionQry->fetch();
     $totallastGrpAmnt = $grpLastConcessionInfo['grp_amnt'];
-    $grpAmount = ($grpfeeDetailsInfo['grp_amount'] != '0') ? $grpfeeDetailsInfo['ovrlAllGrpAmnt'] - $grpTotalScholarshipAmnt - $totalGrpAmnt - $totallastGrpAmnt : $grpfeeDetailsInfo['grp_amount'];
+    $grpAmount = $grpfeeDetailsInfo['ovrlAllGrpAmnt'] - $grpTotalScholarshipAmnt - $totalGrpAmnt - $totallastGrpAmnt ;
     
 ?>
 <tr>

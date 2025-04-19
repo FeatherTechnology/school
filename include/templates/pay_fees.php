@@ -13,48 +13,57 @@ if (isset($_SESSION["school_id"])) {
 }
 
 if (isset($_POST['submitpayfees']) && $_POST['submitpayfees'] != '') {
-    $addPayfeesCreation = $userObj->addPayFees($mysqli, $userid, $school_id);
-    if ($addPayfeesCreation == '-1') { ?>
-        <script>
-            alert("Pay Fees Already Inserted!");
-        </script>
 
-    <?php } else if ($addPayfeesCreation == '2') { ?>
-        <script>
-            alert("Pay Fees Failed!");
-        </script>
+    $fees_id = isset($_POST['fees_id']) ? $_POST['fees_id'] : '';
 
-    <?php } else { ?>
+    if (!empty($fees_id)) {
+        // Update case
+        $addPayfeesCreation = $userObj->updatePayFees($mysqli, $userid, $school_id);
+    } else {
+        // Add case
+        $addPayfeesCreation = $userObj->addPayFees($mysqli, $userid, $school_id);
+    }
+
+    if ($addPayfeesCreation == '-1') {
+        echo "<script>alert('Pay Fees Already Inserted!');</script>";
+    } else if ($addPayfeesCreation == '2') {
+        echo "<script>alert('Pay Fees Failed!');</script>";
+    } else {
+        $payFeesId = $addPayfeesCreation['FeesLastInsertId'];
+        $admissionFormId = $addPayfeesCreation['admission_form_id'];
+?>
         <script>
+            const payFeesId = '<?php echo $payFeesId; ?>';
+            const admissionFormId = '<?php echo $admissionFormId; ?>';
+
             setTimeout(() => {
-                print_temp_fees(<?php echo $addPayfeesCreation; ?>);
+                print_temp_fees(payFeesId,admissionFormId);
             }, 1000);
 
-            function print_temp_fees(payFeesid) {
-                // Open a new window or tab
-                var printWindow = window.open('', '_blank');
-
-                // Make sure the popup window is not blocked
+            function print_temp_fees(payFeesid, admissionFormId) {
+                const printWindow = window.open('', '_blank');
                 if (printWindow) {
-                    // Load the content into the popup window
                     $.ajax({
                         url: 'ajaxFiles/pay_fees_print.php',
+                        type: 'POST',
                         data: {
-                            'payFeesid': payFeesid
+                            payFeesid: payFeesid
                         },
                         cache: false,
-                        type: "post",
                         success: function(html) {
-                            // Write the content to the new window
                             printWindow.document.open();
                             printWindow.document.write(html);
                             printWindow.document.close();
-
-                            // Optionally, print the content
                             printWindow.print();
+
+                            // Redirect after print (if it's an update case)
+                            <?php if (!empty($fees_id)) { ?>
+                                setTimeout(function() {
+                                    window.location.href = 'fees_collection&studid=' + admissionFormId;
+                                }, 500);
+                            <?php } ?>
                         },
                         error: function() {
-                            // Handle error
                             printWindow.close();
                             alert('Failed to load print content.');
                         }
@@ -73,6 +82,7 @@ if (isset($_GET['pagename'])) {
 }
 if (isset($_GET['upd'])) {
     $admission_id = $_GET['upd'];
+    $feesid = isset($_GET['feesid']) && !empty($_GET['feesid']) ? $_GET['feesid'] : '';
 
     $getTempAdmissionDetails = $userObj->getStudentCreation($mysqli, $admission_id);
 
@@ -93,7 +103,7 @@ if (isset($_GET['upd'])) {
         <li class="breadcrumb-item">School Fee Receipt</li>
     </ol>
     <a href=" <?php if ($pagename == 'stdcreation') { ?> edit_student_creation <?php } else { ?> fees_collection&studid=<?php if (isset($admission_id)) echo $admission_id;
-                                                                                                                } ?>">
+                                                                                                                    } ?>">
         <button type="button" class="btn btn-primary"><span class="icon-arrow-left"></span>&nbsp; Back</button>
     </a>
 </div>
@@ -107,6 +117,7 @@ if (isset($_GET['upd'])) {
         <input type="hidden" class="form-control" name="student_medium" id="student_medium" value="<?php if (isset($medium)) echo $medium; ?>">
         <input type="hidden" class="form-control" name="students_type" id="students_type" value="<?php if (isset($studentstype)) echo $studentstype; ?>">
         <input type="hidden" class="form-control" name="student_extra_curricular" id="student_extra_curricular" value="<?php if (isset($extra_curricular)) echo $extra_curricular; ?>">
+        <input type="hidden" class="form-control" name="fees_id" id="fees_id" value="<?php echo $feesid ?? ''; ?>">
         <div class="row gutters">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
