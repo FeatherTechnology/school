@@ -389,6 +389,8 @@ if (isset($_GET['upd'])) {
                                                             <option value="">Select ledger</option>
                                                             <option value="2022-2023">2022 - 2023</option>
                                                             <option value="2023-2024">2023 - 2024</option>
+                                                            <option value="2024-2025">2024 - 2025</option>
+                                                            <option value="2025-2026">2025 - 2026</option>
                                                         </select>
                                                     </div>
                                                 </td>
@@ -424,6 +426,7 @@ if (isset($_GET['upd'])) {
                                                             <option value="">Select Ledger</option>
                                                             <option value="2022-2023">2022 - 2023</option>
                                                             <option value="2023-2024">2023 - 2024</option>
+                                                            <option value="2025-2026">2025 - 2026</option>
                                                         </select>
                                                     </div>
                                                 </td>

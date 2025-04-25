@@ -1,8 +1,11 @@
 <style>
-#show_student_allPending_list th,
-#show_student_allPending_list td {
+#show_student_allPending_list th {
     text-align: left !important;
 }
+.text-right {
+    text-align: right !important;
+}
+
 </style>
 <!-- Page header start -->
 <div class="page-header">

@@ -18,7 +18,7 @@ if (isset($_POST['feesToDate'])) {
 <table class="table table-bordered" id="show_student_fees_summary_list" style="text-align: left;">
     <thead>
         <tr>
-        <th colspan='20' class="report-title">Fees Summary Report From <?php echo $feesFromDate->format('d-m-Y'); ?> To <?php echo $feesToDate->format('d-m-Y'); ?> </th>
+            <th colspan='20' class="report-title">Fees Summary Report From <?php echo $feesFromDate->format('d-m-Y'); ?> To <?php echo $feesToDate->format('d-m-Y'); ?> </th>
         </tr>
         <tr>
             <th rowspan="2">S.No</th>
@@ -107,344 +107,370 @@ if (isset($_POST['feesToDate'])) {
             // JOIN standard_creation std ON sc.standard = std.standard_id 
             // WHERE lyf.receipt_date ='$from_date' AND lyfd.fee_received > 0  AND sc.school_id = '$school_id' HAVING lastyearFees > 0 ");
 
-            $getFeeCollectionQry = $connect->query("SELECT
-    *
-FROM
-    (
-    SELECT
-    af.receipt_no,
-    sc.admission_number,
-    sc.student_name,
-    std.standard,
-    sh.section,
-    
-    -- Group Fee Terms
-    SUM(
-        CASE 
-            WHEN afd.fees_table_name = 'grptable' 
-             AND gcf.grp_particulars LIKE '%I%' 
-             AND gcf.grp_particulars NOT LIKE '%II%' 
-             AND gcf.grp_particulars NOT LIKE '%III%' 
-            THEN afd.fee_received 
-            ELSE 0 
-        END
-    ) AS grp_fee_t1,
 
-    SUM(
-        CASE 
-            WHEN afd.fees_table_name = 'grptable' 
-             AND gcf.grp_particulars LIKE '%II%' 
-             AND gcf.grp_particulars NOT LIKE '%III%' 
-            THEN afd.fee_received 
-            ELSE 0 
-        END
-    ) AS grp_fee_t2,
-
-    SUM(
-        CASE 
-            WHEN afd.fees_table_name = 'grptable' 
-             AND gcf.grp_particulars LIKE '%III%' 
-            THEN afd.fee_received 
-            ELSE 0 
-        END
-    ) AS grp_fee_t3,
-
-    -- Extra fee
-    SUM(
-        CASE 
-            WHEN afd.fees_table_name = 'amenitytable' 
-            THEN afd.fee_received 
-            ELSE 0 
-        END
-    ) AS book_fees,
-0 AS uniform_fees,
-0 AS admission_fees,
-0 AS extra_fees,
-    -- Transport fee placeholders
-    0 AS transport_fee_t1,
-    0 AS transport_fee_t2,
-    0 AS transport_fee_t3,
-
-    -- Last year fee placeholder
-    0 AS lastyearFees,
-      SUM(
-        CASE 
-            WHEN afd_deno.payment_mode = 'cash_payment' 
-            THEN afd.fee_received 
-            ELSE 0 
-        END
-    ) AS cash_balance,
-
-    -- Bank Balance
-    SUM(
-        CASE 
-            WHEN afd_deno.payment_mode != 'cash_payment' 
-            THEN afd.fee_received 
-            ELSE 0 
-        END
-    ) AS bank_balance
-
-FROM admission_fees af
-JOIN admission_fees_details afd 
-    ON af.id = afd.admission_fees_ref_id
-JOIN admission_fees_denomination afd_deno 
-    ON af.id = afd_deno.admission_fees_ref_id
-JOIN student_creation sc 
-    ON af.admission_id = sc.student_id
-JOIN student_history sh 
-    ON sh.student_id = sc.student_id 
-    AND af.academic_year = sh.academic_year
-JOIN standard_creation std 
-    ON sh.standard = std.standard_id
-JOIN group_course_fee gcf 
-    ON afd.fees_id = gcf.grp_course_id
-WHERE af.receipt_date = '$from_date' AND afd.fees_table_name != 'extratable'
-    AND afd.fee_received > 0 
-    AND sc.school_id = '$school_id' 
-    AND sc.status = 0
-
-GROUP BY
-    af.receipt_no,
-    sc.admission_number,
-    sc.student_name,
-    std.standard,
-    sh.section
-UNION ALL
-SELECT
-    af.receipt_no,
-    sc.admission_number,
-    sc.student_name,
-    std.standard,
-    sh.section,
-      0 AS grp_fee_t1,
-    0 AS grp_fee_t2,
-    0 AS grp_fee_t3,
-    0 AS book_fees,
-      SUM(
-        CASE 
-            WHEN afd.fees_table_name = 'extratable' 
-             AND ecaf.extra_particulars LIKE '%uniform%'  
-            THEN afd.fee_received 
-            ELSE 0 
-        END
-    ) AS uniform_fees,
-        SUM(
-        CASE 
-            WHEN afd.fees_table_name = 'extratable' 
-             AND ecaf.extra_particulars LIKE '%admission%'  
-            THEN afd.fee_received 
-            ELSE 0 
-        END
-    ) AS admission_fees,
-        SUM(
-        CASE 
-            WHEN afd.fees_table_name = 'extratable' 
-             AND ecaf.extra_particulars LIKE '%eca%'  
-            THEN afd.fee_received 
-            ELSE 0 
-        END
-    ) AS extra_fees,
-    -- Transport fee placeholders
-    0 AS transport_fee_t1,
-    0 AS transport_fee_t2,
-    0 AS transport_fee_t3,
-
-    -- Last year fee placeholder
-    0 AS lastyearFees,
-      SUM(
-        CASE 
-            WHEN afd_deno.payment_mode = 'cash_payment' 
-            THEN afd.fee_received 
-            ELSE 0 
-        END
-    ) AS cash_balance,
-
-    -- Bank Balance
-    SUM(
-        CASE 
-            WHEN afd_deno.payment_mode != 'cash_payment' 
-            THEN afd.fee_received 
-            ELSE 0 
-        END
-    ) AS bank_balance
-
-FROM admission_fees af
-JOIN admission_fees_details afd 
-    ON af.id = afd.admission_fees_ref_id
-JOIN admission_fees_denomination afd_deno 
-    ON af.id = afd_deno.admission_fees_ref_id
-JOIN student_creation sc 
-    ON af.admission_id = sc.student_id
-JOIN student_history sh 
-    ON sh.student_id = sc.student_id 
-    AND af.academic_year = sh.academic_year
-JOIN standard_creation std 
-    ON sh.standard = std.standard_id
- JOIN extra_curricular_activities_fee ecaf ON afd.fees_id = ecaf.extra_fee_id 
-
-WHERE af.receipt_date = '$from_date' AND afd.fees_table_name = 'extratable'
-    AND afd.fee_received > 0 
-    AND sc.school_id = '$school_id' 
-    AND sc.status = 0
-
-GROUP BY
-    af.receipt_no,
-    sc.admission_number,
-    sc.student_name,
-    std.standard,
-    sh.section
-UNION ALL
-SELECT
-    taf.receipt_no,
-    sc.admission_number,
-    sc.student_name,
-    std.standard,
-    sh.section,
-    0 AS grp_fee_t1,
-    0 AS grp_fee_t2,
-    0 AS grp_fee_t3,
-    0 AS book_fees,
-    0 AS uniform_fees,
-0 AS admission_fees,
-0 AS extra_fees,
-SUM(CASE WHEN acp.particulars LIKE '%I%' AND acp.particulars NOT LIKE '%II%' AND acp.particulars NOT LIKE '%III%' THEN tafd.fee_received ELSE 0 END) AS transport_fee_t1,
-SUM(CASE WHEN acp.particulars LIKE '%II%' AND acp.particulars NOT LIKE '%III%' THEN tafd.fee_received ELSE 0 END) AS transport_fee_t2,
-SUM(CASE WHEN acp.particulars LIKE '%III%' THEN tafd.fee_received ELSE 0 END) AS transport_fee_t3,
-    0 AS lastyearFees,
-      SUM(
-        CASE 
-            WHEN tafd_deno.payment_mode = 'cash_payment' 
-            THEN tafd.fee_received
-            ELSE 0 
-        END
-    ) AS cash_balance,
-
-    -- Bank Balance
-    SUM(
-        CASE 
-            WHEN tafd_deno.payment_mode != 'cash_payment' 
-            THEN tafd.fee_received 
-            ELSE 0 
-        END
-    ) AS bank_balance
-FROM
-    transport_admission_fees taf
-JOIN transport_admission_fees_details tafd 
-    ON taf.id = tafd.admission_fees_ref_id
-    JOIN transport_admission_fees_denomination tafd_deno 
-    ON taf.id = tafd_deno.admission_fees_ref_id
-JOIN student_creation sc 
-    ON taf.admission_id = sc.student_id
-JOIN student_history sh 
-    ON sh.student_id = sc.student_id AND taf.academic_year = sh.academic_year
-JOIN standard_creation std 
-    ON sh.standard = std.standard_id
-JOIN area_creation ac 
-    ON sh.transportarearefid = ac.area_id
-JOIN area_creation_particulars acp 
-    ON tafd.area_creation_particulars_id = acp.particulars_id
-WHERE
-    taf.receipt_date = '$from_date' 
-    AND tafd.fee_received > 0 
-    AND sc.school_id = '$school_id' 
-    AND sc.status = 0
-GROUP BY
-    taf.receipt_no,
-    sc.admission_number,
-    sc.student_name,
-    std.standard,
-    sh.section
-
-UNION ALL
-SELECT
-    lyf.receipt_no,
-    sc.admission_number,
-    sc.student_name,
-    std.standard,
-    sh.section,
-    0 AS grp_fee_t1,
-    0 AS grp_fee_t2,
-    0 AS grp_fee_t3,
-    0 AS book_fees,
-    0 AS uniform_fees,
-0 AS admission_fees,
-0 AS extra_fees,
-    0 AS transport_fee_t1,
-    0 AS transport_fee_t2,
-    0 AS transport_fee_t3,
-    SUM(lyfd.fee_received) AS lastyearFees,
-      SUM(
-        CASE 
-            WHEN lyfd_deno.payment_mode = 'cash_payment' 
-            THEN lyfd.fee_received
-            ELSE 0 
-        END
-    ) AS cash_balance,
-
-    -- Bank Balance
-    SUM(
-        CASE 
-            WHEN lyfd_deno.payment_mode != 'cash_payment' 
-            THEN lyfd.fee_received
-            ELSE 0 
-        END
-    ) AS bank_balance
-FROM
-    last_year_fees lyf
-JOIN last_year_fees_details lyfd ON
-    lyf.id = lyfd.admission_fees_ref_id
-JOIN last_year_fees_denomination lyfd_deno ON
-    lyf.id = lyfd_deno.admission_fees_ref_id
-JOIN student_creation sc ON
-    lyf.admission_id = sc.student_id
-JOIN student_history sh ON
-    sh.student_id = sc.student_id AND lyf.academic_year = sh.academic_year
-JOIN standard_creation STD ON
-    sh.standard = std.standard_id
-WHERE
-    lyf.receipt_date = '$from_date' AND lyfd.fee_received > 0 AND sc.school_id = '$school_id' AND sc.status = 0
-GROUP BY
-        lyfd.id,
-    lyf.receipt_no,
-    sc.admission_number,
-    sc.student_name,
-    std.standard,
-    sh.section
-) AS combined_result
-ORDER BY
-    CAST(
-        SUBSTRING(
+            $getFeeCollectionQry = $connect->query("SELECT 
             receipt_no,
-            LOCATE('-', receipt_no) + 1
-        ) AS UNSIGNED
-    ); ");
+            admission_number,
+            student_name,
+            standard,
+            section,
+            SUM(grp_fee_t1) AS grp_fee_t1,
+            SUM(grp_fee_t2) AS grp_fee_t2,
+            SUM(grp_fee_t3) AS grp_fee_t3,
+            SUM(book_fees) AS book_fees,
+            SUM(uniform_fees) AS uniform_fees,
+            SUM(admission_fees) AS admission_fees,
+            SUM(extra_fees) AS extra_fees,
+            SUM(transport_fee_t1) AS transport_fee_t1,
+            SUM(transport_fee_t2) AS transport_fee_t2,
+            SUM(transport_fee_t3) AS transport_fee_t3,
+            SUM(lastyearFees) AS lastyearFees,
+            SUM(cash_balance) AS cash_balance,
+            SUM(bank_balance) AS bank_balance,
+            SUM(cash_balance + bank_balance) AS total_fee_received
+        FROM (
+            SELECT
+            *
+        FROM
+            (
+            SELECT
+            af.receipt_no,
+            sc.admission_number,
+            sc.student_name,
+            std.standard,
+            sh.section,
+            
+            -- Group Fee Terms
+            SUM(
+                CASE 
+                    WHEN afd.fees_table_name = 'grptable' 
+                     AND gcf.grp_particulars LIKE '%I%' 
+                     AND gcf.grp_particulars NOT LIKE '%II%' 
+                     AND gcf.grp_particulars NOT LIKE '%III%' 
+                    THEN afd.fee_received 
+                    ELSE 0 
+                END
+            ) AS grp_fee_t1,
+        
+            SUM(
+                CASE 
+                    WHEN afd.fees_table_name = 'grptable' 
+                     AND gcf.grp_particulars LIKE '%II%' 
+                     AND gcf.grp_particulars NOT LIKE '%III%' 
+                    THEN afd.fee_received 
+                    ELSE 0 
+                END
+            ) AS grp_fee_t2,
+        
+            SUM(
+                CASE 
+                    WHEN afd.fees_table_name = 'grptable' 
+                     AND gcf.grp_particulars LIKE '%III%' 
+                    THEN afd.fee_received 
+                    ELSE 0 
+                END
+            ) AS grp_fee_t3,
+        
+            -- Extra fee
+            SUM(
+                CASE 
+                    WHEN afd.fees_table_name = 'amenitytable' 
+                    THEN afd.fee_received 
+                    ELSE 0 
+                END
+            ) AS book_fees,
+        0 AS uniform_fees,
+        0 AS admission_fees,
+        0 AS extra_fees,
+            -- Transport fee placeholders
+            0 AS transport_fee_t1,
+            0 AS transport_fee_t2,
+            0 AS transport_fee_t3,
+        
+            -- Last year fee placeholder
+            0 AS lastyearFees,
+              SUM(
+                CASE 
+                    WHEN afd_deno.payment_mode = 'cash_payment' 
+                    THEN afd.fee_received 
+                    ELSE 0 
+                END
+            ) AS cash_balance,
+        
+            -- Bank Balance
+            SUM(
+                CASE 
+                    WHEN afd_deno.payment_mode != 'cash_payment' 
+                    THEN afd.fee_received 
+                    ELSE 0 
+                END
+            ) AS bank_balance
+        
+        FROM admission_fees af
+        JOIN admission_fees_details afd 
+            ON af.id = afd.admission_fees_ref_id
+        JOIN admission_fees_denomination afd_deno 
+            ON af.id = afd_deno.admission_fees_ref_id
+        JOIN student_creation sc 
+            ON af.admission_id = sc.student_id
+        JOIN student_history sh 
+            ON sh.student_id = sc.student_id 
+            AND af.academic_year = sh.academic_year
+        JOIN standard_creation std 
+            ON sh.standard = std.standard_id
+        JOIN group_course_fee gcf 
+            ON afd.fees_id = gcf.grp_course_id
+        WHERE af.receipt_date = '$from_date' AND afd.fees_table_name != 'extratable'
+            AND afd.fee_received > 0 
+            AND sc.school_id = '$school_id' 
+            AND sc.status = 0
+        
+        GROUP BY
+            af.receipt_no,
+            sc.admission_number,
+            sc.student_name,
+            std.standard,
+            sh.section
+        UNION ALL
+        SELECT
+            af.receipt_no,
+            sc.admission_number,
+            sc.student_name,
+            std.standard,
+            sh.section,
+              0 AS grp_fee_t1,
+            0 AS grp_fee_t2,
+            0 AS grp_fee_t3,
+            0 AS book_fees,
+              SUM(
+                CASE 
+                    WHEN afd.fees_table_name = 'extratable' 
+                     AND ecaf.extra_particulars LIKE '%uniform%'  
+                    THEN afd.fee_received 
+                    ELSE 0 
+                END
+            ) AS uniform_fees,
+                SUM(
+                CASE 
+                    WHEN afd.fees_table_name = 'extratable' 
+                     AND ecaf.extra_particulars LIKE '%admission%'  
+                    THEN afd.fee_received 
+                    ELSE 0 
+                END
+            ) AS admission_fees,
+                SUM(
+                CASE 
+                    WHEN afd.fees_table_name = 'extratable' 
+                     AND ecaf.extra_particulars LIKE '%eca%'  
+                    THEN afd.fee_received 
+                    ELSE 0 
+                END
+            ) AS extra_fees,
+            -- Transport fee placeholders
+            0 AS transport_fee_t1,
+            0 AS transport_fee_t2,
+            0 AS transport_fee_t3,
+        
+            -- Last year fee placeholder
+            0 AS lastyearFees,
+              SUM(
+                CASE 
+                    WHEN afd_deno.payment_mode = 'cash_payment' 
+                    THEN afd.fee_received 
+                    ELSE 0 
+                END
+            ) AS cash_balance,
+        
+            -- Bank Balance
+            SUM(
+                CASE 
+                    WHEN afd_deno.payment_mode != 'cash_payment' 
+                    THEN afd.fee_received 
+                    ELSE 0 
+                END
+            ) AS bank_balance
+        
+        FROM admission_fees af
+        JOIN admission_fees_details afd 
+            ON af.id = afd.admission_fees_ref_id
+        JOIN admission_fees_denomination afd_deno 
+            ON af.id = afd_deno.admission_fees_ref_id
+        JOIN student_creation sc 
+            ON af.admission_id = sc.student_id
+        JOIN student_history sh 
+            ON sh.student_id = sc.student_id 
+            AND af.academic_year = sh.academic_year
+        JOIN standard_creation std 
+            ON sh.standard = std.standard_id
+         JOIN extra_curricular_activities_fee ecaf ON afd.fees_id = ecaf.extra_fee_id 
+        
+        WHERE af.receipt_date = '$from_date' AND afd.fees_table_name = 'extratable'
+            AND afd.fee_received > 0 
+            AND sc.school_id = '$school_id' 
+            AND sc.status = 0
+        
+        GROUP BY
+            af.receipt_no,
+            sc.admission_number,
+            sc.student_name,
+            std.standard,
+            sh.section
+        UNION ALL
+        SELECT
+            taf.receipt_no,
+            sc.admission_number,
+            sc.student_name,
+            std.standard,
+            sh.section,
+            0 AS grp_fee_t1,
+            0 AS grp_fee_t2,
+            0 AS grp_fee_t3,
+            0 AS book_fees,
+            0 AS uniform_fees,
+        0 AS admission_fees,
+        0 AS extra_fees,
+        SUM(CASE WHEN acp.particulars LIKE '%I%' AND acp.particulars NOT LIKE '%II%' AND acp.particulars NOT LIKE '%III%' THEN tafd.fee_received ELSE 0 END) AS transport_fee_t1,
+        SUM(CASE WHEN acp.particulars LIKE '%II%' AND acp.particulars NOT LIKE '%III%' THEN tafd.fee_received ELSE 0 END) AS transport_fee_t2,
+        SUM(CASE WHEN acp.particulars LIKE '%III%' THEN tafd.fee_received ELSE 0 END) AS transport_fee_t3,
+            0 AS lastyearFees,
+              SUM(
+                CASE 
+                    WHEN tafd_deno.payment_mode = 'cash_payment' 
+                    THEN tafd.fee_received
+                    ELSE 0 
+                END
+            ) AS cash_balance,
+        
+            -- Bank Balance
+            SUM(
+                CASE 
+                    WHEN tafd_deno.payment_mode != 'cash_payment' 
+                    THEN tafd.fee_received 
+                    ELSE 0 
+                END
+            ) AS bank_balance
+        FROM
+            transport_admission_fees taf
+        JOIN transport_admission_fees_details tafd 
+            ON taf.id = tafd.admission_fees_ref_id
+            JOIN transport_admission_fees_denomination tafd_deno 
+            ON taf.id = tafd_deno.admission_fees_ref_id
+        JOIN student_creation sc 
+            ON taf.admission_id = sc.student_id
+        JOIN student_history sh 
+            ON sh.student_id = sc.student_id AND taf.academic_year = sh.academic_year
+        JOIN standard_creation std 
+            ON sh.standard = std.standard_id
+        JOIN area_creation ac 
+            ON sh.transportarearefid = ac.area_id
+        JOIN area_creation_particulars acp 
+            ON tafd.area_creation_particulars_id = acp.particulars_id
+        WHERE
+            taf.receipt_date = '$from_date' 
+            AND tafd.fee_received > 0 
+            AND sc.school_id = '$school_id' 
+            AND sc.status = 0
+        GROUP BY
+            taf.receipt_no,
+            sc.admission_number,
+            sc.student_name,
+            std.standard,
+            sh.section
+        
+        UNION ALL
+        SELECT
+            lyf.receipt_no,
+            sc.admission_number,
+            sc.student_name,
+            std.standard,
+            sh.section,
+            0 AS grp_fee_t1,
+            0 AS grp_fee_t2,
+            0 AS grp_fee_t3,
+            0 AS book_fees,
+            0 AS uniform_fees,
+        0 AS admission_fees,
+        0 AS extra_fees,
+            0 AS transport_fee_t1,
+            0 AS transport_fee_t2,
+            0 AS transport_fee_t3,
+            SUM(lyfd.fee_received) AS lastyearFees,
+              SUM(
+                CASE 
+                    WHEN lyfd_deno.payment_mode = 'cash_payment' 
+                    THEN lyfd.fee_received
+                    ELSE 0 
+                END
+            ) AS cash_balance,
+        
+            -- Bank Balance
+            SUM(
+                CASE 
+                    WHEN lyfd_deno.payment_mode != 'cash_payment' 
+                    THEN lyfd.fee_received
+                    ELSE 0 
+                END
+            ) AS bank_balance
+        FROM
+            last_year_fees lyf
+        JOIN last_year_fees_details lyfd ON
+            lyf.id = lyfd.admission_fees_ref_id
+        JOIN last_year_fees_denomination lyfd_deno ON
+            lyf.id = lyfd_deno.admission_fees_ref_id
+        JOIN student_creation sc ON
+            lyf.admission_id = sc.student_id
+        JOIN student_history sh ON
+            sh.student_id = sc.student_id AND lyf.academic_year = sh.academic_year
+        JOIN standard_creation STD ON
+            sh.standard = std.standard_id
+        WHERE
+            lyf.receipt_date = '$from_date' AND lyfd.fee_received > 0 AND sc.school_id = '$school_id' AND sc.status = 0
+        GROUP BY
+                lyfd.id,
+            lyf.receipt_no,
+            sc.admission_number,
+            sc.student_name,
+            std.standard,
+            sh.section
+        ) AS combined_result
+        ORDER BY
+            CAST(
+                SUBSTRING(
+                    receipt_no,
+                    LOCATE('-', receipt_no) + 1
+                ) AS UNSIGNED
+            )
+        ) AS combined_result
+        GROUP BY receipt_no, admission_number, student_name, standard, section
+        ORDER BY CAST( SUBSTRING( receipt_no, LOCATE('-', receipt_no) + 1 ) AS UNSIGNED ) ");
 
             while ($feeCollection = $getFeeCollectionQry->fetchObject()) {
         ?>
 
                 <tr>
-                    <td><?php echo $a++; ?></td>
-                    <td><?php echo date('d-m-Y', strtotime($from_date)); ?></td>
-                    <td><?php echo $feeCollection->receipt_no; ?></td>
-                    <td><?php echo $feeCollection->admission_number; ?></td>
-                    <td><?php echo $feeCollection->student_name; ?></td>
-                    <td><?php echo $feeCollection->standard . ' - ' . $feeCollection->section; ?></td>
-                    <td><?php echo $feeCollection->lastyearFees; ?></td>
-                    <td><?php echo $feeCollection->admission_fees; ?></td>
-                    <td><?php echo $feeCollection->uniform_fees; ?></td>
-                    <td><?php echo $feeCollection->book_fees; ?></td>
-                    <td><?php echo $feeCollection->grp_fee_t1; ?></td>
-                    <td><?php echo $feeCollection->grp_fee_t2; ?></td>
-                    <td><?php echo $feeCollection->grp_fee_t3; ?></td>
-                    <td><?php echo $feeCollection->transport_fee_t1; ?></td>
-                    <td><?php echo $feeCollection->transport_fee_t2; ?></td>
-                    <td><?php echo $feeCollection->transport_fee_t3; ?></td>
-                    <td><?php echo $feeCollection->extra_fees; ?></td>
-                    <td><?php echo $feeCollection->bank_balance; ?></td>
-                    <td><?php echo $feeCollection->cash_balance; ?></td>
+                    <td style="text-align: center;"><?php echo $a++; ?></td>
+                    <td style="text-align: right;"><?php echo date('d-m-Y', strtotime($from_date)); ?></td>
+                    <td style="text-align: left;"><?php echo $feeCollection->receipt_no; ?></td>
+                    <td style="text-align: left;"><?php echo $feeCollection->admission_number; ?></td>
+                    <td style="text-align: left;"><?php echo $feeCollection->student_name; ?></td>
+                    <td style="text-align: left;"><?php echo $feeCollection->standard . ' - ' . $feeCollection->section; ?></td>
+                    <td class="text-right"><?php echo $feeCollection->lastyearFees; ?></td>
+                    <td class="text-right"><?php echo $feeCollection->admission_fees; ?></td>
+                    <td class="text-right"><?php echo $feeCollection->uniform_fees; ?></td>
+                    <td class="text-right"><?php echo $feeCollection->book_fees; ?></td>
+                    <td class="text-right"><?php echo $feeCollection->grp_fee_t1; ?></td>
+                    <td class="text-right"><?php echo $feeCollection->grp_fee_t2; ?></td>
+                    <td class="text-right"><?php echo $feeCollection->grp_fee_t3; ?></td>
+                    <td class="text-right"><?php echo $feeCollection->transport_fee_t1; ?></td>
+                    <td class="text-right"><?php echo $feeCollection->transport_fee_t2; ?></td>
+                    <td class="text-right"><?php echo $feeCollection->transport_fee_t3; ?></td>
+                    <td class="text-right"><?php echo $feeCollection->extra_fees; ?></td>
+                    <td class="text-right"><?php echo $feeCollection->bank_balance; ?></td>
+                    <td class="text-right"><?php echo $feeCollection->cash_balance; ?></td>
 
 
-                    <td><?php echo $totalAmnt = $feeCollection->grp_fee_t1 + $feeCollection->grp_fee_t2  + $feeCollection->grp_fee_t3 + $feeCollection->book_fees + $feeCollection->admission_fees + $feeCollection->uniform_fees + $feeCollection->extra_fees + $feeCollection->transport_fee_t1 + $feeCollection->transport_fee_t2 + $feeCollection->transport_fee_t3 + $feeCollection->lastyearFees; ?></td>
+
+                    <td class="text-right"><?php echo $totalAmnt = $feeCollection->grp_fee_t1 + $feeCollection->grp_fee_t2  + $feeCollection->grp_fee_t3 + $feeCollection->book_fees + $feeCollection->admission_fees + $feeCollection->uniform_fees + $feeCollection->extra_fees + $feeCollection->transport_fee_t1 + $feeCollection->transport_fee_t2 + $feeCollection->transport_fee_t3 + $feeCollection->lastyearFees; ?></td>
                 </tr>
 
         <?php
@@ -474,20 +500,20 @@ ORDER BY
             <td></td>
             <td></td>
             <td>Grand Total</td>
-            <td><?php echo $lastyear_total; ?></td>
-            <td><?php echo $admissionfee_total; ?></td>
-            <td><?php echo $uniformfee_total; ?></td>
-            <td><?php echo $bookfee_total; ?></td>
-            <td><?php echo $schoolfee1_total; ?></td>
-            <td><?php echo $schoolfee2_total; ?></td>
-            <td><?php echo $schoolfee3_total; ?></td>
-            <td><?php echo $transportfee1_total; ?></td>
-            <td><?php echo $transportfee2_total; ?></td>
-            <td><?php echo $transportfee3_total; ?></td>
-            <td><?php echo $extra_total; ?></td>
-            <td><?php echo $bank_total; ?></td>
-            <td><?php echo $cash_total; ?></td>
-            <td><?php echo $total; ?></td>
+            <td class="text-right"><?php echo $lastyear_total; ?></td>
+            <td class="text-right"><?php echo $admissionfee_total; ?></td>
+            <td class="text-right"><?php echo $uniformfee_total; ?></td>
+            <td class="text-right"><?php echo $bookfee_total; ?></td>
+            <td class="text-right"><?php echo $schoolfee1_total; ?></td>
+            <td class="text-right"><?php echo $schoolfee2_total; ?></td>
+            <td class="text-right"><?php echo $schoolfee3_total; ?></td>
+            <td class="text-right"><?php echo $transportfee1_total; ?></td>
+            <td class="text-right"><?php echo $transportfee2_total; ?></td>
+            <td class="text-right"><?php echo $transportfee3_total; ?></td>
+            <td class="text-right"><?php echo $extra_total; ?></td>
+            <td class="text-right"><?php echo $bank_total; ?></td>
+            <td class="text-right"><?php echo $cash_total; ?></td>
+            <td class="text-right"><?php echo $total; ?></td>
         </tr>
     </tbody>
 </table>
@@ -506,7 +532,6 @@ ORDER BY
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ],
             paging: false, // Disable paging
-            scrollX: true, // Enable horizontal scrolling
         });
     });
 </script>

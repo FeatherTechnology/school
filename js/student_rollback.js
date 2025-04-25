@@ -312,6 +312,8 @@ function getAcademicTable() {
 $(document).on('click', '#academic_creation_table tbody tr', function () {
   var academicYear = $(this).find('.academic-period').text(); // Get the academic year from the clicked row
   $('#academic_yr').val(academicYear); // Set the academic year in the input field
+   $('#add_academic_modal').modal('hide'); // Close the modal
+
 });
 
 

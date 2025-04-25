@@ -76,7 +76,7 @@ if (isset($_POST['fees_id'])) {
         }
        
     }
-    $denomination = $connect->query("SELECT payment_mode FROM last_year_fees_denomination  WHERE `admission_fees_ref_id` ='$feesid'")->fetch(PDO::FETCH_ASSOC); 
+    $denomination = $connect->query("SELECT * FROM last_year_fees_denomination  WHERE `admission_fees_ref_id` ='$feesid'")->fetch(PDO::FETCH_ASSOC); 
     $payment_mode = $denomination['payment_mode'];
     $response = array(
         'group' => $groupFeesHtml,
@@ -88,7 +88,8 @@ if (isset($_POST['fees_id'])) {
         'receipt_date' => $editAdmissionFees['receipt_date'],
         'payment_mode' => $denomination['payment_mode'],
         'scholarship' => $editAdmissionFees['scholarship'],
-        'fees_collected' => $editAdmissionFees['fees_collected']
+        'fees_collected' => $editAdmissionFees['fees_collected'],
+        'denomination' => $denomination // Add entire denomination row
     );
     echo json_encode($response);
     exit;

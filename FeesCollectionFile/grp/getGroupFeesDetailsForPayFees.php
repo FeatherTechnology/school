@@ -24,6 +24,7 @@ if($studentType =="1" || $studentType =="2"){
     $student_type_cndtn = "(fm.student_type = '$studentType')";
 
 }
+
     $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, gcf.*, gcf.grp_amount AS ovrlAllGrpAmnt  FROM `fees_master` fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$standardId' && gcf.status ='1' ");
 $i=0;
 while($grpfeeDetailsInfo = $feeDetailsQry->fetch()){

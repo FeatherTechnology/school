@@ -38,10 +38,10 @@ if (isset($_POST['stdSection'])) {
             <th rowspan="2">Action</th>
         </tr>
         <tr>
-            <th>Term I</th>
+            <th>Term&nbsp;I</th>
             <th>Term II</th>
             <th>Term III</th>
-            <th>Term I</th>
+            <th>Term&nbsp;I</th>
             <th>Term II</th>
             <th>Term III</th>
         </tr>
@@ -53,18 +53,13 @@ if (isset($_POST['stdSection'])) {
 FROM `student_creation` sc 
 LEFT JOIN student_history sh ON sc.student_id = sh.student_id
 JOIN standard_creation std ON sh.standard = std.standard_id
-WHERE sh.academic_year  = '$academicyear' && sc.medium = '$stdMedium' && sh.standard = '$stdStandard' && sc.leaving_term !='1' && sc.leaving_term !='5' &&  sh.section = '$stdSection' && sc.school_id = '$school_id' ORDER BY 
-  CASE 
-    WHEN sc.student_name LIKE '%.%' THEN SUBSTRING_INDEX(sc.student_name, '.', -1)
-    WHEN sc.student_name LIKE '% %' THEN SUBSTRING_INDEX(sc.student_name, ' ', -1)
-    ELSE sc.student_name
-  END ASC  
+WHERE sh.academic_year  = '$academicyear' && sc.medium = '$stdMedium' && sh.standard = '$stdStandard' && sc.leaving_term !='1' && sc.leaving_term !='5' &&  sh.section = '$stdSection' && sc.school_id = '$school_id' ORDER BY sc.student_name ASC  
 ");
         $i = 1;
         $ls_pending = 0;
-        $grnd_admission_pending =0;
-        $grnd_uniform_pending =0;
-        $grnd_eca_pending=0;
+        $grnd_admission_pending = 0;
+        $grnd_uniform_pending = 0;
+        $grnd_eca_pending = 0;
         $grnd_term1_pending = 0;
         $grnd_term2_pending = 0;
         $grnd_term3_pending = 0;
@@ -202,7 +197,7 @@ FROM (
             } else {
                 $lastyr_grp_amount = '0';
             }
-      $lsPending =  $lastPending  - $lastyr_grp_amount;
+            $lsPending =  $lastPending  - $lastyr_grp_amount;
             $getTermPendingQry = $connect->query("SELECT 
     gcf.grp_particulars, 
     ABS(
@@ -328,7 +323,7 @@ ORDER BY
             $eca_pending = 0;
             $uniform_pending = 0;
             $admission_pending = 0;
-            
+
             // Get all relevant extra_curricular fee entries
             $getExtraPendingQry = $connect->query("
                 SELECT 
@@ -359,17 +354,17 @@ ORDER BY
                 FROM extra_curricular_activities_fee ecaf 
                 WHERE ecaf.extra_fee_id IN ($extra_id)
             ");
-            
+
             if ($getExtraPendingQry->rowCount() > 0) {
                 while ($extrapendingInfo = $getExtraPendingQry->fetch()) {
                     $extra_particulars = strtolower($extrapendingInfo['extra_particulars']);
                     $extraPending = $extrapendingInfo['extraPending'];
                     $extraAmnt = $extrapendingInfo['extra_amount'];
                     $currentExtraPending = is_null($extraPending) ? $extraAmnt : $extraPending;
-            
+
                     // Handle leaving term logic
                     $pending_amount = ($leavingTerm == 2 || $leavingTerm == 3) ? 0 : $currentExtraPending;
-            
+
                     if (strpos($extra_particulars, 'uniform') !== false) {
                         $uniform_pending += $pending_amount;
                     } elseif (strpos($extra_particulars, 'admission') !== false) {
@@ -383,7 +378,7 @@ ORDER BY
                 $admission_pending = 0;
                 $eca_pending = 0;
             }
-            
+
             $transport_id = ($studentList->transportarearefid) ? $studentList->transportarearefid : '0';
             $getTransportPendingQry = $connect->query("SELECT
     acp.particulars,
@@ -443,24 +438,25 @@ ORDER BY
 
         ?>
             <tr>
-                <td><?php echo $i++; ?></td>
-                <td><?php echo $studentList->admission_number; ?></td>
-                <td><?php echo $studentList->student_name; ?></td>
-                <td><?php echo $studentList->standard . ' - ' . $studentList->section; ?></td>
-                <td><?php echo $studentList->sms_sent_no; ?></td>
-                <td><?php echo ($lsPending > 0) ? $lsPending : '0'; ?></td>
-                <td><?php echo $admission_pending; ?></td>
-                <td><?php echo $uniform_pending; ?></td>
-                <td><?php echo $book_pending; ?></td>
-                <td><?php echo ($term_pending) ? $term_pending[0] : '0'; ?></td>
-                <td><?php echo ($term_pending) ? $term_pending[1] : '0'; ?></td>
-                <td><?php echo ($term_pending) ? $term_pending[2] : '0'; ?></td>
-                <td><?php echo ($transport_pending) ? $transport_pending[0] : '0'; ?></td>
-                <td><?php echo ($transport_pending) ? $transport_pending[1] : '0'; ?></td>
-                <td><?php echo ($transport_pending) ? $transport_pending[2] : '0'; ?></td>
-                <td><?php echo $eca_pending; ?></td>
+                <td style="text-align: center;"><?php echo $i++; ?></td>
+                <td style="text-align: right;"><?php echo $studentList->admission_number; ?></td>
+                <td style="text-align: left;"><?php echo $studentList->student_name; ?></td>
+                <td style="text-align: left;"><?php echo $studentList->standard . ' - ' . $studentList->section; ?></td>
+                <td style="text-align: left;"><?php echo $studentList->sms_sent_no; ?></td>
+                <td style="text-align: right;"><?php echo ($lsPending > 0) ? $lsPending : '0'; ?></td>
+                <td style="text-align: right;"><?php echo $admission_pending; ?></td>
+                <td style="text-align: right;"><?php echo $uniform_pending; ?></td>
+                <td style="text-align: right;"><?php echo $book_pending; ?></td>
+                <td style="text-align: right;"><?php echo ($term_pending) ? $term_pending[0] : '0'; ?></td>
+                <td style="text-align: right;"><?php echo ($term_pending) ? $term_pending[1] : '0'; ?></td>
+                <td style="text-align: right;"><?php echo ($term_pending) ? $term_pending[2] : '0'; ?></td>
+                <td style="text-align: right;"><?php echo ($transport_pending) ? $transport_pending[0] : '0'; ?></td>
+                <td style="text-align: right;"><?php echo ($transport_pending) ? $transport_pending[1] : '0'; ?></td>
+                <td style="text-align: right;"><?php echo ($transport_pending) ? $transport_pending[2] : '0'; ?></td>
+                <td style="text-align: right;"><?php echo $eca_pending; ?></td>
                 <td></td>
             </tr>
+
         <?php
             $ls_pending += ($lsPending > 0) ? $lsPending : '0';
             $grnd_admission_pending += $admission_pending;
@@ -480,18 +476,19 @@ ORDER BY
             <td></td>
             <td></td>
             <td>Grand Total</td>
-            <td><?php echo $ls_pending; ?></td>
-            <td><?php echo $grnd_admission_pending; ?></td>
-            <td><?php echo $grnd_uniform_pending; ?></td>
-            <td><?php echo $grnd_book_pending; ?></td>
-            <td><?php echo $grnd_term1_pending; ?></td>
-            <td><?php echo $grnd_term2_pending; ?></td>
-            <td><?php echo $grnd_term3_pending; ?></td>
-            <td><?php echo $grnd_trans1_pending; ?></td>
-            <td><?php echo $grnd_trans2_pending; ?></td>
-            <td><?php echo $grnd_trans3_pending; ?></td>
-            <td><?php echo $grnd_eca_pending; ?></td>
+            <td class="text-right"><?php echo $ls_pending; ?></td>
+            <td class="text-right"><?php echo $grnd_admission_pending; ?></td>
+            <td class="text-right"><?php echo $grnd_uniform_pending; ?></td>
+            <td class="text-right"><?php echo $grnd_book_pending; ?></td>
+            <td class="text-right"><?php echo $grnd_term1_pending; ?></td>
+            <td class="text-right"><?php echo $grnd_term2_pending; ?></td>
+            <td class="text-right"><?php echo $grnd_term3_pending; ?></td>
+            <td class="text-right"><?php echo $grnd_trans1_pending; ?></td>
+            <td class="text-right"><?php echo $grnd_trans2_pending; ?></td>
+            <td class="text-right"><?php echo $grnd_trans3_pending; ?></td>
+            <td class="text-right"><?php echo $grnd_eca_pending; ?></td>
             <td></td>
+
         </tr>
     </tbody>
     <!-- <tfoot>
@@ -521,19 +518,19 @@ ORDER BY
             // ],
             dom: 'Bfrtip',
             buttons: [
-            'copy', 'csv', 'excel', 'pdf',
-            {
-                extend: 'print',
-                text: 'Print',
-                customize: function (win) {
-                    $(win.document.body).css('width', '100%'); // Ensure full-width print
-                },
-                autoPrint: true
-            }
-        ],
-        paging: false,
-        sort: false,
-        scrollX: true, // Enable horizontal scrolling
+                'copy', 'csv', 'excel', 'pdf',
+                {
+                    extend: 'print',
+                    text: 'Print',
+                    customize: function(win) {
+                        $(win.document.body).css('width', '100%'); // Ensure full-width print
+                    },
+                    autoPrint: true
+                }
+            ],
+            paging: false,
+            sort: false,
+            scrollX: true, // Enable horizontal scrolling
         });
     });
 </script>
