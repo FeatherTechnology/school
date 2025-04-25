@@ -17,7 +17,7 @@ if (isset($_POST['stdMedium'])) {
 // }
 ?>
 
-<table class="table table-bordered" id="show_student_allPending_list"style="text-align: left;">
+<table class="table table-bordered" id="show_student_allPending_list" style="text-align: left;">
     <thead>
         <tr>
             <th rowspan="2">Class</th>
@@ -287,18 +287,18 @@ FROM (
         ?>
             <tr>
                 <td><?php echo $standardList->standard; ?></td>
-                <td><?php echo  $extra_pending['admission'] ?></td>
-                <td><?php echo $extra_pending['uniform'] ; ?></td>
-                <td><?php echo $book_pending; ?></td>
-                <td><?php echo $term1; ?></td>
-                <td><?php echo $term2; ?></td>
-                <td><?php echo $term3; ?></td>
-                <td><?php echo $transport_term1; ?></td>
-                <td><?php echo $transport_term2; ?></td>
-                <td><?php echo $transport_term3; ?></td>
-                <td><?php echo $extra_pending['eca'] ; ?></td>
+                <td class="text-right"><?php echo $extra_pending['admission']; ?></td>
+                <td class="text-right"><?php echo $extra_pending['uniform']; ?></td>
+                <td class="text-right"><?php echo $book_pending; ?></td>
+                <td class="text-right"><?php echo $term1; ?></td>
+                <td class="text-right"><?php echo $term2; ?></td>
+                <td class="text-right"><?php echo $term3; ?></td>
+                <td class="text-right"><?php echo $transport_term1; ?></td>
+                <td class="text-right"><?php echo $transport_term2; ?></td>
+                <td class="text-right"><?php echo $transport_term3; ?></td>
+                <td class="text-right"><?php echo $extra_pending['eca']; ?></td>
 
-                <td style="font-weight: bold;"><?php echo $grand_total = $extra_pending['admission'] +  $extra_pending['uniform'] + $extra_pending['eca'] + $term1 + $term2 + $term3 + $book_pending+ $transport_term1 + $transport_term2 + $transport_term3; ?></td>
+                <td class="text-right" style="font-weight: bold;"><?php echo $grand_total = $extra_pending['admission'] +  $extra_pending['uniform'] + $extra_pending['eca'] + $term1 + $term2 + $term3 + $book_pending + $transport_term1 + $transport_term2 + $transport_term3; ?></td>
             </tr>
         <?php
             $grand_term1 += $term1;
@@ -315,17 +315,17 @@ FROM (
         } ?>
         <tr style="font-weight: bold;">
             <td>Grand Total</td>
-            <td><?php echo $grand_admission; ?></td>
-            <td><?php echo $grand_uniform; ?></td>
-            <td><?php echo $grand_book; ?></td>
-            <td><?php echo $grand_term1; ?></td>
-            <td><?php echo $grand_term2; ?></td>
-            <td><?php echo $grand_term3; ?></td>
-            <td><?php echo $grand_transport_term1; ?></td>
-            <td><?php echo $grand_transport_term2; ?></td>
-            <td><?php echo $grand_transport_term3; ?></td>
-            <td><?php echo $grand_extra; ?></td>
-            <td><?php echo $grand_overall_total; ?></td>
+            <td class="text-right"><?php echo $grand_admission; ?></td>
+            <td class="text-right"><?php echo $grand_uniform; ?></td>
+            <td class="text-right"><?php echo $grand_book; ?></td>
+            <td class="text-right"><?php echo $grand_term1; ?></td>
+            <td class="text-right"><?php echo $grand_term2; ?></td>
+            <td class="text-right"><?php echo $grand_term3; ?></td>
+            <td class="text-right"><?php echo $grand_transport_term1; ?></td>
+            <td class="text-right"><?php echo $grand_transport_term2; ?></td>
+            <td class="text-right"><?php echo $grand_transport_term3; ?></td>
+            <td class="text-right"><?php echo $grand_extra; ?></td>
+            <td class="text-right"><?php echo $grand_overall_total; ?></td>
         </tr>
     </tbody>
 </table>

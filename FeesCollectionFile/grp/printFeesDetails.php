@@ -62,7 +62,7 @@ function AmountInWords($amount)
         $num = floor($num / $get_divider);
         $x += $get_divider == 10 ? 1 : 2;
         if ($amount) {
-            $add_plural = (($counter = count($string)) && $amount > 9) ? 's' : null;
+            $add_plural = (($counter = count($string)) && $amount > 9) ? '' : null;
             $amt_hundred = ($counter == 1 && $string[0]) ? ' and ' : null;
             $string[] = ($amount < 21) ? $change_words[$amount] . ' ' . $here_digits[$counter] . $add_plural . ' 
         ' . $amt_hundred : $change_words[floor($amount / 10) * 10] . ' ' . $change_words[$amount % 10] . ' 
@@ -113,7 +113,7 @@ $school_logo = $schoolInfo["school_logo"];
         }
 
         #dettable tr.last-row td {
-        line-height: 3.5;
+        line-height: 2.5;
         /* margin-top: 30px; */
     }
     </style>
@@ -135,7 +135,7 @@ $school_logo = $schoolInfo["school_logo"];
                     </td>
                     <td style="padding: 5px;">
                         Receipt Number: <?php echo $receipt_number; ?><br>
-                        Manual Rcpt.No:<br>
+                        Manual Rcpt.No:<br><br>
                         (<?php echo $copyLabel; ?>)
                     </td>
 
@@ -155,7 +155,7 @@ $school_logo = $schoolInfo["school_logo"];
                     <td style="text-align: right;">Date: <?php echo $receipt_date; ?></td>
                 </tr>
                 <tr>
-                    <td>Student Name: <?php echo $student_name; ?></td>
+                    <td>Student Name: <b><?php echo $student_name; ?></td></b>
                     <td style="text-align: right;">Standard / Section: <?php echo "$standard - $section"; ?></td>
                 </tr>
             </table>
@@ -208,7 +208,7 @@ $school_logo = $schoolInfo["school_logo"];
                 $pay_mode = '';
                 while ($row = $query->fetch_assoc()) {
                     echo "<tr>
-                    <td>{$a}</td>
+                    <td style='text-align: center;'>{$a}</td>
                     <td>{$row['particulars']}</td>
                     <td style='text-align:right;'> " . ($row['fee_received']) . "</td>
                 </tr>";
@@ -225,7 +225,7 @@ $school_logo = $schoolInfo["school_logo"];
                     }
                 }
                 ?>
-                <p style="width: 33%;">Payment Mode: <?php echo $pay_mode; ?></p>
+                <p style="width: 23%;  white-space: nowrap;">Payment Mode: <?php echo $pay_mode; ?></p>
                 <tr>
                     <td colspan="2" style="text-align:right;"><b>Total Amount:</b></td>
                     <td style="text-align:right;"><b> <?php echo ($totalamnt); ?></b></td>
@@ -235,7 +235,7 @@ $school_logo = $schoolInfo["school_logo"];
                 </tr>
                 <tr class="last-row">
                     <td colspan="2" style="text-align: justify;"> Seal </td>
-                    <td style="text-align: center;"> Signature </td>
+                    <td style="text-align: bottom;"> Signature </td>
                 </tr>
             </table>
 

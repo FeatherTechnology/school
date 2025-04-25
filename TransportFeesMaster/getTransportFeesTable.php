@@ -30,6 +30,7 @@ if(isset($_POST['standard'])){
 //    tafd.area_creation_particulars_id");
 
 // }else{
+
     $feeDetailsQry = $connect->query("SELECT ac.area_id as fees_id, acp.particulars_id as particulars_id, ac.area_name, acp.particulars, acp.due_amount, acp.due_amount AS ovrlAllAmnt  
     FROM student_creation sc
   JOIN student_history sh ON sh.student_id = sc.student_id AND sh.academic_year = '$academicYear'

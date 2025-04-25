@@ -163,7 +163,7 @@ if (isset($_FILES["file"]["type"])) {
                 $standard = "";
                 if (isset($Row[24])) {
                     $get_standard = mysqli_real_escape_string($mysqli, $Row[24]);
-                    // for hss
+                    // for hss local
                     $standards = [
                         "1" => "1",  // Pre.K.G
                         "2" => "2",  // L.K.G
@@ -187,8 +187,40 @@ if (isset($_FILES["file"]["type"])) {
                         "20" => "18", // XI_All
                         "21" => "23", // XII_All
                         "22" => "17", // XI_commerce_computerscience
-                        "23" => "22", // XII_commerce_computerscience  
+                        "23" => "22", // XII_commerce_computerscience    
+                        "24" => "24", // XI_Commerce_BusinessMathematics    
+                        "25" => "25", // XII_Commerce_BusinessMathematics    
+
                     ];
+                    // for hsslive
+                    // $standards = [
+                    //     "1" => "1",  // Pre.K.G
+                    //     "2" => "2",  // L.K.G
+                    //     "3" => "3",  // U.K.G
+                    //     "4" => "4",  // I
+                    //     "5" => "5",  // II
+                    //     "6" => "6",  // III
+                    //     "7" => "7",  // IV
+                    //     "8" => "8",  // V
+                    //     "9" => "9", // VI
+                    //     "10" => "10", // VII
+                    //     "11" => "11", // VIII
+                    //     "12" => "12", // IX
+                    //     "13" => "13", // X
+                    //     "14" => "14", // XI_maths_biology
+                    //     "15" => "15", // XI_maths_computerscience
+                    //     "20" => "16", // XI_biology_computerscience
+                    //     "21" => "19", // XII_maths_biology 
+                    //     "22" => "20", // XII_maths_computerscience
+                    //     "23" => "21", // XII_biology_computerscience  
+                    //     "24" => "18", // XI_All 
+                    //     "25" => "23", // XII_All
+                    //     "26" => "17", // XI_commerce_computerscience
+                    //     "27" => "22", // XII_commerce_computerscience  
+                    //     "28" => "24", // XI_Commerce_BusinessMathematics    
+                    //     "29" => "25", // XII_Commerce_BusinessMathematics   
+
+                    // ];
                 
                     //For CBSE
                     // $standards = [

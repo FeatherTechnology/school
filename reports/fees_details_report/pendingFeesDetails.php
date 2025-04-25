@@ -55,12 +55,7 @@ if ($feeType == '1') { //group
 FROM `student_creation` sc 
 LEFT JOIN student_history sh ON sc.student_id = sh.student_id
 JOIN standard_creation std ON sh.standard = std.standard_id
-WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' &&  sh.standard = '$stdStandard' && sh.section = '$stdSection' && sc.leaving_term !='1' && sc.leaving_term !='5'  && sc.school_id = '$school_id' ORDER BY 
-  CASE 
-    WHEN sc.student_name LIKE '%.%' THEN SUBSTRING_INDEX(sc.student_name, '.', -1)
-    WHEN sc.student_name LIKE '% %' THEN SUBSTRING_INDEX(sc.student_name, ' ', -1)
-    ELSE sc.student_name
-  END ASC");
+WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' &&  sh.standard = '$stdStandard' && sh.section = '$stdSection' && sc.leaving_term !='1' && sc.leaving_term !='5'  && sc.school_id = '$school_id' ORDER BY sc.student_name ASC ");
             $i = 1;
             $grnd_total_fee = 0;
             $grnd_paid_fee = 0;
@@ -189,12 +184,7 @@ WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' &&  sh.stan
 FROM `student_creation` sc 
 LEFT JOIN student_history sh ON sc.student_id = sh.student_id
 JOIN standard_creation std ON sh.standard = std.standard_id
-WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' &&  sh.standard = '$stdStandard' && sh.section = '$stdSection' && sc.leaving_term !='1' && sc.leaving_term !='5' && sc.school_id = '$school_id' && sh.extra_curricular !='' ORDER BY 
-  CASE 
-    WHEN sc.student_name LIKE '%.%' THEN SUBSTRING_INDEX(sc.student_name, '.', -1)
-    WHEN sc.student_name LIKE '% %' THEN SUBSTRING_INDEX(sc.student_name, ' ', -1)
-    ELSE sc.student_name
-  END ASC");
+WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' &&  sh.standard = '$stdStandard' && sh.section = '$stdSection' && sc.leaving_term !='1' && sc.leaving_term !='5' && sc.school_id = '$school_id' && sh.extra_curricular !='' ORDER BY sc.student_name ASC ");
             $i = 1;
             $grnd_total_fee = 0;
             $grnd_paid_fee = 0;
@@ -296,12 +286,7 @@ WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' &&  sh.stan
 FROM `student_creation` sc 
 LEFT JOIN student_history sh ON sc.student_id = sh.student_id
 JOIN standard_creation std ON sh.standard = std.standard_id
-WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' &&  sh.standard = '$stdStandard' && sh.section = '$stdSection' && sc.leaving_term !='1' && sc.leaving_term !='5'  && sc.school_id = '$school_id' ORDER BY 
-  CASE 
-    WHEN sc.student_name LIKE '%.%' THEN SUBSTRING_INDEX(sc.student_name, '.', -1)
-    WHEN sc.student_name LIKE '% %' THEN SUBSTRING_INDEX(sc.student_name, ' ', -1)
-    ELSE sc.student_name
-  END ASC");
+WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' &&  sh.standard = '$stdStandard' && sh.section = '$stdSection' && sc.leaving_term !='1' && sc.leaving_term !='5'  && sc.school_id = '$school_id' ORDER BY sc.student_name ASC ");
             $i = 1;
             $grnd_total_fee = 0;
             $grnd_paid_fee = 0;
@@ -394,12 +379,7 @@ WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' &&  sh.stan
 FROM `student_creation` sc 
 LEFT JOIN student_history sh ON sc.student_id = sh.student_id
 JOIN standard_creation std ON sc.standard = std.standard_id
-WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' &&  sh.standard = '$stdStandard' && sh.section = '$stdSection' && sc.leaving_term !='1' && sc.leaving_term !='5'  && sc.school_id = '$school_id' ORDER BY 
-  CASE 
-    WHEN sc.student_name LIKE '%.%' THEN SUBSTRING_INDEX(sc.student_name, '.', -1)
-    WHEN sc.student_name LIKE '% %' THEN SUBSTRING_INDEX(sc.student_name, ' ', -1)
-    ELSE sc.student_name
-  END ASC ");
+WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' &&  sh.standard = '$stdStandard' && sh.section = '$stdSection' && sc.leaving_term !='1' && sc.leaving_term !='5'  && sc.school_id = '$school_id' ORDER BY sc.student_name ASC ");
             $i = 1;
             $grnd_total_fee = 0;
             $grnd_paid_fee = 0;
@@ -517,12 +497,7 @@ WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' &&  sh.stan
 FROM `student_creation` sc 
 LEFT JOIN student_history sh ON sc.student_id = sh.student_id
 JOIN standard_creation std ON sh.standard = std.standard_id
-WHERE sh.academic_year  = '$academicyear' && sc.medium = '$stdMedium' &&  sh.standard = '$stdStandard' && sh.section = '$stdSection' && sc.leaving_term !='1' && sc.leaving_term !='5'  && sc.school_id = '$school_id' && sh.transportarearefid !='' ORDER BY 
-  CASE 
-    WHEN sc.student_name LIKE '%.%' THEN SUBSTRING_INDEX(sc.student_name, '.', -1)
-    WHEN sc.student_name LIKE '% %' THEN SUBSTRING_INDEX(sc.student_name, ' ', -1)
-    ELSE sc.student_name 
-  END ASC ");
+WHERE sh.academic_year  = '$academicyear' && sc.medium = '$stdMedium' &&  sh.standard = '$stdStandard' && sh.section = '$stdSection' && sc.leaving_term !='1' && sc.leaving_term !='5'  && sc.school_id = '$school_id' && sh.transportarearefid !='' ORDER BY sc.student_name ASC");
             $i = 1;
             $grnd_total_fee = 0;
             $grnd_paid_fee = 0;

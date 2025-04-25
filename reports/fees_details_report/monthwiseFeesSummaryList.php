@@ -81,7 +81,7 @@ if(isset($_POST['feesToDate'])){
     JOIN extra_curricular_activities_fee ecaf ON afd.fees_id = ecaf.extra_fee_id  
     WHERE  (MONTH(af.receipt_date) = MONTH('$from_date') AND YEAR(af.receipt_date) = YEAR('$from_date') )
     AND afd.fees_table_name = 'extratable' 
-    AND ecaf.extra_particulars LIKE 'Uniform%' 
+    AND ecaf.extra_particulars LIKE '%Uniform%' 
     AND af.school_id = '$school_id' GROUP BY 
         afd_deno.payment_mode
 ");
@@ -102,7 +102,7 @@ JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id
 JOIN extra_curricular_activities_fee ecaf ON afd.fees_id = ecaf.extra_fee_id  
 WHERE  (MONTH(af.receipt_date) = MONTH('$from_date') AND YEAR(af.receipt_date) = YEAR('$from_date') )
 AND afd.fees_table_name = 'extratable' 
-AND ecaf.extra_particulars LIKE 'Admission fees%' 
+AND ecaf.extra_particulars LIKE '%Admission%' 
 AND af.school_id = '$school_id' GROUP BY 
         afd_deno.payment_mode
 ");
@@ -122,7 +122,7 @@ $admission_fees =0;
     JOIN extra_curricular_activities_fee ecaf ON afd.fees_id = ecaf.extra_fee_id  
     WHERE (MONTH(af.receipt_date) = MONTH('$from_date') AND YEAR(af.receipt_date) = YEAR('$from_date') )
     AND afd.fees_table_name = 'extratable' 
-    AND ecaf.extra_particulars LIKE 'ECA Fee%' 
+    AND ecaf.extra_particulars LIKE '%ECA %' 
     AND af.school_id = '$school_id' GROUP BY 
         afd_deno.payment_mode
 ");

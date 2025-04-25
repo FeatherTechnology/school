@@ -1,12 +1,15 @@
 <style>
 #show_student_fees_summary_list th,
 #show_student_fees_summary_list td {
-    text-align: left !important;
     white-space: nowrap;
 }
 #show_student_fees_summary_list .report-title {
     text-align: center !important;
 }
+.text-right {
+    text-align: right !important;
+}
+
 </style>
 <!-- Page header start -->
 <div class="page-header">

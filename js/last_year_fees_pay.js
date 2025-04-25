@@ -452,6 +452,7 @@ function geteditFeesDetails(fees_id) {
       var payment_mode = res.payment_mode;
       var fees_collected = res.fees_collected;
       var scholarship = res.scholarship;
+      var denomination = res.denomination;
       // Use these values as needed
       $('#academic_year').val(academicYear);
       $('#receipt_number').val(receiptNo);
@@ -469,6 +470,38 @@ function geteditFeesDetails(fees_id) {
       $('#fees_collected').val(fees_collected);
 
       $('input[name="payment_mode"][value="' + payment_mode + '"]').prop('checked', true);
+      if (payment_mode == "cash_payment") {
+        $("#cash_payment").show();
+        $("#cheque_payment").hide();
+        $("#neft_payment").hide();
+    } else if (payment_mode == "cheque") {
+        $("#cash_payment").hide();
+        $("#cheque_payment").show();
+        $("#neft_payment").hide();
+    } else if (payment_mode == "neft") {
+        $("#cash_payment").hide();
+        $("#cheque_payment").hide();
+        $("#neft_payment").show();
+    }
+
+        $('#cheque_number').val(denomination.cheque_number);
+        $('#cheque_amount').val(denomination.cheque_amount);
+        $('#cheque_date').val(denomination.cheque_date);
+        $('#cheque_bank_name').val(denomination.cheque_bank_name);
+        $('#cheque_ledger_name').val(denomination.ledger_ref_id);
+        $('#neft_ledger_name').val(denomination.ledger_ref_id);
+        $('#neft_number').val(denomination.neft_ref_number);
+        $('#neft_amount').val(denomination.neft_amount);
+        $('#neft_date').val(denomination.neft_tran_date);
+        $('#neft_bank_name').val(denomination.neft_bank_name);
+        $('#receive_five_hundred').val(denomination.no_five_hundred).trigger('keyup');
+        $('#receive_two_hundred').val(denomination.no_two_hundred).trigger('keyup');
+        $('#receive_hundred').val(denomination.no_hundred).trigger('keyup');
+        $('#receive_fifty').val(denomination.no_fifty).trigger('keyup');
+        $('#receive_twenty').val(denomination.no_twenty).trigger('keyup');
+        $('#receive_ten').val(denomination.no_ten).trigger('keyup');
+        $('#receive_five').val(denomination.no_five).trigger('keyup');
+        $('#total_amount').val(denomination.total_amount);
 
     })
   }).then(function () {

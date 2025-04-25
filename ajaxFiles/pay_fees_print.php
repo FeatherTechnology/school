@@ -91,7 +91,7 @@ function AmountInWords($amount)
         $num = floor($num / $get_divider);
         $x += $get_divider == 10 ? 1 : 2;
         if ($amount) {
-            $add_plural = (($counter = count($string)) && $amount > 9) ? 's' : null;
+            $add_plural = (($counter = count($string)) && $amount > 9) ? '' : null;
             $amt_hundred = ($counter == 1 && $string[0]) ? ' and ' : null;
             $string[] = ($amount < 21) ? $change_words[$amount] . ' ' . $here_digits[$counter] . $add_plural . ' 
         ' . $amt_hundred : $change_words[floor($amount / 10) * 10] . ' ' . $change_words[$amount % 10] . ' 
@@ -156,9 +156,9 @@ foreach ($copyLabels as $copyLabel) {
                     <span style="margin-right: 5px;">&#x260E;</span> - <?php echo $contact_number; ?>
                     <span style="margin-right: 5px;">&#x1F4E7;</span>- <?php echo $email_id; ?>
                 </td>
-                <td class="first-row">
+                <td style=" white-space: nowrap;"  class="first-row">
                     Receipt No. <?php echo $payfeesDetails['receipt_no']; ?></br>
-                    Manual Rcpt.No </br>
+                    Manual Rcpt.No </br><br>
                     (<?php echo $copyLabel; ?>)
                 </td>
             </tr>
@@ -177,9 +177,9 @@ foreach ($copyLabels as $copyLabel) {
             </tr>
             <tr>
                 <td colspan='2' style="border-top: none; border-right: none; border-bottom: none;">
-                    Student Name: <?php echo $payfeesDetails['student_name']; ?>
+                    Student Name: <b><?php echo $payfeesDetails['student_name']; ?></b>
                 </td>
-                <td style="border-top: none; border-left: none; border-bottom: none;">
+                <td style="border-top: none; border-left: none; border-bottom: none;white-space: nowrap;">
                     Standard / Section : <?php echo $payfeesDetails['standard']; ?> - <?php echo $payfeesDetails['section']; ?>
                 </td>
             </tr>
@@ -226,15 +226,15 @@ foreach ($copyLabels as $copyLabel) {
                 $totalAmnt += $getpayFeesDetails['fee_received'];
             ?>
                 <tr>
-                    <td> <?php echo $i++; ?> </td>
+                    <td style="text-align: center;"> <?php echo $i++; ?> </td>
                     <td> <?php echo $getpayFeesDetails['particulars']; ?> </td>
-                    <td> <?php echo $getpayFeesDetails['fee_received']; ?> </td>
+                    <td style="text-align:right;" > <?php echo $getpayFeesDetails['fee_received']; ?> </td>
                 </tr>
             <?php } ?>
             <tr>
                 <td> </td>
                 <td> Total amount </td>
-                <td> <?php echo $totalAmnt; ?> </td>
+                <td style="text-align:right;"> <?php echo $totalAmnt; ?> </td>
             </tr>
             <tr>
                 <td colspan="3"> Amount in words: <?php echo AmountInWords($totalAmnt); ?> Only. </td>
