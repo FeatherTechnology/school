@@ -6,7 +6,7 @@ if (isset($_SESSION["userid"])) {
 }
 $academic_year = $_SESSION['academic_year'];
 //get school name by using session id.
-$getschoolDetailsQry = $mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, sc.school_logo, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id' ");
+$getschoolDetailsQry = $mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.web_url, sc.school_logo, stc.state FROM school_creation sc JOIN state_creation stc ON sc.state = stc.id WHERE sc.status = 0 AND school_id = '$school_id' ");
 while ($schoolInfo = $getschoolDetailsQry->fetch_assoc()) {
     $school_name     = $schoolInfo["school_name"];
     $address1  = $schoolInfo["address1"];
@@ -15,7 +15,7 @@ while ($schoolInfo = $getschoolDetailsQry->fetch_assoc()) {
     $state     = $schoolInfo["state"];
     $pincode  = $schoolInfo["pincode"];
     $contact_number  = $schoolInfo["contact_number"];
-    $email_id     = $schoolInfo["email_id"];
+    $web_url     = $schoolInfo["web_url"];
     $school_logo     = $schoolInfo["school_logo"];
 }
 
@@ -145,10 +145,10 @@ foreach ($copyLabels as $copyLabel) {
                 <td style="text-align: center;"> <b><?php echo $school_name; ?></b><br>
                     <?php if (isset($address1)) echo $address1, ', ';
                     if (isset($address2)) echo $address2, ', ';
-                    if (isset($district)) echo $district, ', </br>';
-                    if (isset($state)) echo $state, '-';
-                    if (isset($pincode)) echo $pincode; ?> </br>
-                    <span style="margin-right: 5px;">&#x260E;</span> - <?php if (isset($contact_number)) echo $contact_number; ?> <span style="margin-right: 5px;">&#x1F4E7;</span>- <?php if (isset($email_id)) echo $email_id; ?>
+                    if (isset($district)) echo $district . ' - ';
+                    if (isset($pincode)) echo $pincode . '</br>';                    
+                    ?> 
+                    <span style="margin-right: 5px;">&#x260E;</span> - <?php if (isset($contact_number)) echo $contact_number; ?> <span style="margin-right: 5px;">🌏︎</span>- <?php if (isset($web_url)) echo $web_url; ?>
                 </td>
                 <td style=" white-space: nowrap;" class="first-row"> Receipt No. <?php echo $payfeesDetails['receipt_no']; ?></br>
                     Manual Rcpt.No </br><br>

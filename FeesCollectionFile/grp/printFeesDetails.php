@@ -89,7 +89,7 @@ $standard = $row["standard"];
 $section = $row["section"];
 
 // Fetch school info
-$getbrc = $mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.email_id, sc.school_logo, stc.state 
+$getbrc = $mysqli->query("SELECT sc.school_name, sc.district, sc.address1, sc.address2, sc.pincode, sc.contact_number, sc.web_url, sc.school_logo, stc.state 
     FROM school_creation sc 
     JOIN state_creation stc ON sc.state = stc.id 
     WHERE sc.status = 0 AND school_id = '$school_id'");
@@ -101,7 +101,7 @@ $district = $schoolInfo["district"];
 $state = $schoolInfo["state"];
 $pincode = $schoolInfo["pincode"];
 $contact_number = $schoolInfo["contact_number"];
-$email_id = $schoolInfo["email_id"];
+$web_url = $schoolInfo["web_url"];
 $school_logo = $schoolInfo["school_logo"];
 ?>
 
@@ -130,8 +130,8 @@ $school_logo = $schoolInfo["school_logo"];
                     <td><img src="uploads/school_creation/<?php echo $school_logo; ?>" height="50px" width="50px" alt="LOGO" style="padding: 5px;"></td>
                     <td style="text-align: center;">
                         <b><?php echo $school_name; ?></b><br>
-                        <?php echo "$address1, $address2, $district,<br>$state - $pincode"; ?><br>
-                        ☎ - <?php echo $contact_number; ?> ✉ - <?php echo $email_id; ?>
+                        <?php echo "$address1, $address2, $district - $pincode<br>"; ?>
+                        ☎ - <?php echo $contact_number; ?> 🌏︎ - <?php echo $web_url; ?>
                     </td>
                     <td style="padding: 5px;">
                         Receipt Number: <?php echo $receipt_number; ?><br>
