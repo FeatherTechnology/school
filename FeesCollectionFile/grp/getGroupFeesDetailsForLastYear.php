@@ -15,25 +15,27 @@ $nextAcademicYear = ($acdmcyear[0] + 1) . '-' . ($acdmcyear[1] + 1);
 if(isset($_POST['medium'])){
     $medium = $_POST['medium'];
 }
-if(isset($_POST['studentType'])){
-    $studentType = $_POST['studentType'];
-}
+
 if(isset($_POST['standard'])){
     $standardId = $_POST['standard'];
     $prevstandardId = $standardId - 1;
 }
 
-if($studentType =="1" || $studentType =="2"){
-    $student_type_cndtn = "(fm.student_type = '$studentType' || fm.student_type = '4')";
-    
-}else{
-    $student_type_cndtn = "(fm.student_type = '$studentType')";
 
-}
+    $CheckReceiptQry1 = $connect->query("SELECT sc.id,sc.studentstype FROM `student_history` sc WHERE sc.academic_year = '$academicYear' AND sc.student_id = '$admissionFormId' ");
 
-    $CheckReceiptQry1 = $connect->query("SELECT sc.id FROM `student_history` sc WHERE sc.academic_year = '$academicYear' AND sc.student_id = '$admissionFormId' ");
 if($CheckReceiptQry1->rowCount() > 0)
     {
+        $studentData = $CheckReceiptQry1->fetch(PDO::FETCH_ASSOC);
+        $studentstype = $studentData['studentstype'];
+        
+if($studentstype =="1" || $studentstype =="2"){
+    $student_type_cndtn = "(fm.student_type = '$studentstype' || fm.student_type = '4')";
+    
+}else{
+    $student_type_cndtn = "(fm.student_type = '$studentstype')";
+
+}
   $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, gcf.*,gcf.grp_amount AS ovrlAllGrpAmnt  FROM `fees_master` fm JOIN group_course_fee gcf ON fm.fees_id = gcf.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$prevstandardId' && gcf.status ='1' ");
 }else{
     echo ''; // no data to return

@@ -240,7 +240,7 @@ foreach ($copyLabels as $copyLabel) {
             </tr>
             <tr class="last-row">
                 <td colspan="2" style="text-align: justify;"> Seal </td>
-                <td style="text-align: center;"> Signature </td>
+                <td style="text-align: bottom;"> Signature </td>
             </tr>
         </table>
     </div>

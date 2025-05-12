@@ -15,21 +15,13 @@ $nextAcademicYear = ($acdmcyear[0] + 1) . '-' . ($acdmcyear[1] + 1);
 if(isset($_POST['medium'])){
     $medium = $_POST['medium'];
 }
-if(isset($_POST['studentType'])){
-    $studentType = $_POST['studentType'];
-}
+
 if(isset($_POST['standard'])){
     $standardId = $_POST['standard'];
     $prevstandardId = $standardId - 1;
 }
 
-if($studentType =="1" || $studentType =="2"){
-    $student_type_cndtn = "(fm.student_type = '$studentType' || fm.student_type = '4')";
-    
-}else{
-    $student_type_cndtn = "(fm.student_type = '$studentType')";
 
-}
 
 // $CheckReceiptQry = $connect->query("SELECT afs.id FROM `admission_fees` afs JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id WHERE afs.admission_id = '$admissionFormId' && afs.academic_year = '$academicYear' && afd.fees_table_name = 'amenitytable' ORDER BY afs.id DESC LIMIT 1");
 // if($CheckReceiptQry->rowCount() > 0){
@@ -37,8 +29,18 @@ if($studentType =="1" || $studentType =="2"){
 //     $feeDetailsQry = $connect->query("SELECT afd.balance_tobe_paid as amenity_amount, afd.fees_master_id as fees_id, afd.fees_id as amenity_fee_id, af.amenity_particulars,af.amenity_amount AS ovrlAllAmenityAmnt FROM `admission_fees` afs JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id JOIN amenity_fee af ON afd.fees_id = af.amenity_fee_id WHERE afs.id = '$get_temp_fees_id' && afs.academic_year = '$academicYear' && afd.fees_table_name = 'amenitytable' && af.status ='1' ");
 
 // }else{
-    $CheckReceiptQry1 = $connect->query("SELECT sc.id FROM `student_history` sc WHERE sc.academic_year = '$academicYear' AND sc.student_id = '$admissionFormId' ");
+    $CheckReceiptQry1 = $connect->query("SELECT sc.id,sc.studentstype FROM `student_history` sc WHERE sc.academic_year = '$academicYear' AND sc.student_id = '$admissionFormId' ");
 if($CheckReceiptQry1->rowCount() > 0){
+    $studentData = $CheckReceiptQry1->fetch(PDO::FETCH_ASSOC);
+    $studentstype = $studentData['studentstype'];
+    
+if($studentstype =="1" || $studentstype =="2"){
+$student_type_cndtn = "(fm.student_type = '$studentstype' || fm.student_type = '4')";
+
+}else{
+$student_type_cndtn = "(fm.student_type = '$studentstype')";
+
+}
     $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, af.* ,af.amenity_amount AS ovrlAllAmenityAmnt FROM `fees_master` fm JOIN amenity_fee af ON fm.fees_id = af.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$prevstandardId' && af.status ='1' ");
 }else{
     echo ''; // no data to return

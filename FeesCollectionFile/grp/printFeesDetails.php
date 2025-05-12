@@ -133,7 +133,7 @@ $school_logo = $schoolInfo["school_logo"];
                         <?php echo "$address1, $address2, $district - $pincode<br>"; ?>
                         ☎ - <?php echo $contact_number; ?> 🌏︎ - <?php echo $web_url; ?>
                     </td>
-                    <td style="padding: 5px;">
+                    <td style="padding: 5px;white-space: nowrap;">
                         Receipt Number: <?php echo $receipt_number; ?><br>
                         Manual Rcpt.No:<br><br>
                         (<?php echo $copyLabel; ?>)
@@ -247,7 +247,7 @@ $school_logo = $schoolInfo["school_logo"];
     <?php } ?>
 </div>
 
-<button type="button" name="printpurchase" onclick="poprint()" id="printpurchase" class="btn btn-primary" style="display:none">Print</button>
+<!-- <button type="button" name="printpurchase" onclick="poprint()" id="printpurchase" class="btn btn-primary" style="display:none">Print</button>
 
 <script type="text/javascript">
     function poprint() {
@@ -259,4 +259,4 @@ $school_logo = $schoolInfo["school_logo"];
         printWindow.close();
     }
     document.getElementById("printpurchase").click()
-</script>
+</script> -->

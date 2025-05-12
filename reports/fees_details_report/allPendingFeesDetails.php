@@ -439,7 +439,7 @@ ORDER BY
         ?>
             <tr>
                 <td style="text-align: center;"><?php echo $i++; ?></td>
-                <td style="text-align: right;"><?php echo $studentList->admission_number; ?></td>
+                <td style="text-right;"><?php echo $studentList->admission_number; ?></td>
                 <td style="text-align: left;"><?php echo $studentList->student_name; ?></td>
                 <td style="text-align: left;"><?php echo $studentList->standard . ' - ' . $studentList->section; ?></td>
                 <td style="text-align: left;"><?php echo $studentList->sms_sent_no; ?></td>
@@ -508,29 +508,91 @@ ORDER BY
 </table>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#show_student_allPending_list').DataTable({
-            order: [
-                [0, "asc"]
-            ],
-            // columnDefs: [
-            //     { type: 'natural', targets: 0 }
-            // ],
+            order: [[0, "asc"]],
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'csv', 'excel', 'pdf',
                 {
                     extend: 'print',
                     text: 'Print',
-                    customize: function(win) {
-                        $(win.document.body).css('width', '100%'); // Ensure full-width print
+                    customize: function (win) {
+                        var thead = '<thead>' +
+                            '<tr>' +
+                            '<th rowspan="2">S.No</th>' +
+                            '<th rowspan="2">Admission Number</th>' +
+                            '<th rowspan="2">Student Name</th>' +
+                            '<th rowspan="2">Standard & Section</th>' +
+                            '<th rowspan="2">Mobile No</th>' +
+                            '<th rowspan="2">Last Year Pending</th>' +
+                            '<th rowspan="2">Admission</th>' +
+                            '<th rowspan="2">Uniform</th>' +
+                            '<th rowspan="2">Books</th>' +
+                            '<th colspan="3">Pending Fees</th>' +
+                            '<th colspan="3">Transport Fees</th>' +
+                            '<th rowspan="2">ECA</th>' +
+                            '<th rowspan="2">Action</th>' +
+                            '</tr>' +
+                            '<tr>' +
+                            '<th>Term I</th>' +
+                            '<th>Term II</th>' +
+                            '<th>Term III</th>' +
+                            '<th>Term I</th>' +
+                            '<th>Term II</th>' +
+                            '<th>Term III</th>' +
+                            '</tr>' +
+                            '</thead>';
+                        $(win.document.body).find('table').html(thead + $(win.document.body).find('table tbody').html());
+
+                        // Style fix
+                        $(win.document.body).find('table')
+                            .css('border-collapse', 'collapse')
+                            .css('width', '100%');
+                        $(win.document.body).find('table th, table td')
+                            .css('border', '1px solid black')
+                            .css('padding', '5px')
+                            .css('text-align', 'center');
+                        $(win.document.body).css('width', '100%');
+
+                        const css = `
+                            body {
+                                font-size: 20px !important;;
+                            }
+                            table {
+                                width: 100% !important;
+                                border-collapse: collapse !important;
+                            }
+                            table th, table td {
+                                font-size: 20pt !important;
+                                text-align: left !important;
+                                white-space: nowrap !important;
+                                padding: 15px !important;
+                            }
+                            .text-right {
+                                text-align: right !important;
+                            }
+                        `;
+                        const style = win.document.createElement('style');
+                        style.innerHTML = css;
+                        win.document.head.appendChild(style);
+                         // Apply right alignment to td/th in columns from 6 onward (zero-based index)
+                         $(win.document.body).find('table').find('tr').each(function() {
+                            $(this).find('th:gt(4), td:gt(4)').addClass('text-right'); // Columns 5 onwards (6th col and up)
+                        });
                     },
                     autoPrint: true
                 }
             ],
+            columnDefs: [
+            {
+                targets: [1], // Replace with the actual index of the Admission Number column (zero-based)
+                className: 'text-right'
+            }
+        ],
             paging: false,
-            sort: false,
-            scrollX: true, // Enable horizontal scrolling
+            ordering: false,
+            scrollX: true
         });
     });
 </script>
