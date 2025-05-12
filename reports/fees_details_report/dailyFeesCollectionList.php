@@ -524,14 +524,77 @@ if (isset($_POST['feesToDate'])) {
             order: [
                 [0, "asc"]
             ],
-            // columnDefs: [
-            //     { type: 'natural', targets: 0 }
-            // ],
             dom: 'Bfrtip',
             buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
+                'copy', 'csv', 'excel', 'pdf',
+                {
+                    extend: 'print',
+                    text: 'Print',
+                    customize: function(win) {
+                        var thead = '<thead>' +
+                            '<tr>' +
+                            '<th rowspan="2">S.No</th>' +
+                            '<th rowspan="2">Date</th>' +
+                            '<th rowspan="2">Receipt No</th>' +
+                            '<th rowspan="2">Admission No</th>' +
+                            '<th rowspan="2">Student Name</th>' +
+                            '<th rowspan="2">Standard - Section</th>' +
+                            '<th rowspan="2">Last Year Fee</th>' +
+                            '<th rowspan="2">Admission</th>' +
+                            '<th rowspan="2">Uniform</th>' +
+                            '<th rowspan="2">Books</th>' +
+                            '<th colspan="3">Group Fees</th>' +
+                            '<th colspan="3">Transport Fees</th>' +
+                            '<th rowspan="2">ECA</th>' +
+                            '<th rowspan="2">Bank</th>' +
+                            '<th rowspan="2">Cash</th>' +
+                            '<th rowspan="2">Total Amount</th>' +
+                            '</tr>' +
+                            '<tr>' +
+                            '<th>Term I</th>' +
+                            '<th>Term II</th>' +
+                            '<th>Term III</th>' +
+                            '<th>Term I</th>' +
+                            '<th>Term II</th>' +
+                            '<th>Term III</th>' +
+                            '</tr>' +
+                            '</thead>';
+                        $(win.document.body).find('table').html(thead + $(win.document.body).find('table tbody').html());
+
+                        $(win.document.body).css('width', '100%');
+
+                        const css = `
+                            body {
+                                font-size: 12px;
+                            }
+                            table {
+                                width: 100% !important;
+                                border-collapse: collapse !important;
+                            }
+                            table th, table td {
+                               font-size: 20pt !important;
+                                text-align: left !important;
+                                white-space: nowrap !important;
+                                padding: 10px !important;
+                            }
+                            .text-right {
+                                text-align: right !important;
+                            }
+                        `;
+                        const style = win.document.createElement('style');
+                        style.innerHTML = css;
+                        win.document.head.appendChild(style);
+
+                        // Apply right alignment to td/th in columns from 6 onward (zero-based index)
+                        $(win.document.body).find('table').find('tr').each(function() {
+                            $(this).find('th:gt(4), td:gt(4)').addClass('text-right'); // Columns 5 onwards (6th col and up)
+                        });
+                    },
+                    autoPrint: true
+                }
             ],
-            paging: false, // Disable paging
+            paging: false,
+            ordering: false,
         });
     });
 </script>
