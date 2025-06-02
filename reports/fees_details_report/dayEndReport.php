@@ -1,268 +1,454 @@
 <?php
 include "../../ajaxconfig.php";
 @session_start();
-if(isset($_SESSION['school_id'])){
+if (isset($_SESSION['school_id'])) {
     $school_id = $_SESSION['school_id'];
 }
 
-if(isset($_POST['feeType'])){
+if (isset($_POST['feeType'])) {
     $feeType = $_POST['feeType'];
 }
-if(isset($_POST['dateSelect'])){
+if (isset($_POST['dateSelect'])) {
     $dateSelect = $_POST['dateSelect'];
 }
-if(isset($_POST['singleDate'])){
+if (isset($_POST['singleDate'])) {
     $singleDate = $_POST['singleDate'];
 }
-if(isset($_POST['feesFromDate'])){
+if (isset($_POST['feesFromDate'])) {
     $feesFromDate = new DateTime($_POST['feesFromDate']);
     $startdate = clone $feesFromDate;
 }
-if(isset($_POST['feesToDate'])){
+if (isset($_POST['feesToDate'])) {
     $feesToDate = new DateTime($_POST['feesToDate']);
     $to_date = $feesToDate->format('Y-m-d');
 }
 
-if($dateSelect =='singledate'){
+if ($dateSelect == 'singledate') {
 
-    if($feeType =='grptable' || $feeType == 'extratable' || $feeType == 'amenitytable'){//school
-        $Qry = "SELECT af.receipt_no, sc.admission_number, sc.student_name, std.standard, sh.section, 
-        SUM(CASE WHEN afd.fees_table_name = 'grptable' THEN afd.fee_received ELSE 0 END) AS grp_fee,
-        SUM(CASE WHEN afd.fees_table_name = 'extratable' THEN afd.fee_received ELSE 0 END) AS extra_fee,
-        SUM(CASE WHEN afd.fees_table_name = 'amenitytable' THEN afd.fee_received ELSE 0 END) AS amenity_fee
-        FROM `admission_fees` af 
-        JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
-        JOIN student_creation sc ON af.admission_id = sc.student_id 
-          JOIN student_history sh ON sh.student_id = sc.student_id AND af.academic_year = sh.academic_year
-        JOIN standard_creation std ON sh.standard = std.standard_id 
-        WHERE af.receipt_date ='$singleDate' AND afd.fee_received > 0 AND afd.fees_table_name = '$feeType' AND sc.school_id = '$school_id' AND sc.status = 0
-        GROUP BY 
+    if ($feeType == 'grptable' || $feeType == 'extratable' || $feeType == 'amenitytable') {
+        // School fees: grouped by term
+        $Qry = "SELECT 
             af.receipt_no, 
             sc.admission_number, 
             sc.student_name, 
             std.standard, 
-            sh.section  ORDER BY CAST(SUBSTRING(receipt_no, LOCATE('-', receipt_no) + 1) AS UNSIGNED)" ;
-    
-    }else if($feeType =='lastyear'){//Last Year
-        $Qry = "SELECT lyf.receipt_no, sc.admission_number, sc.student_name, std.standard, sh.section, lyfd.fee_received AS lastyearFees
+            sh.section, 
+
+            SUM(CASE 
+                WHEN afd.fees_table_name = 'grptable' AND gcf.grp_particulars LIKE '%I%'     AND gcf.grp_particulars NOT LIKE '%II%' 
+                AND gcf.grp_particulars NOT LIKE '%III%' THEN afd.fee_received 
+                ELSE 0 
+            END) AS first_term_grp_fee,
+
+            SUM(CASE 
+                WHEN afd.fees_table_name = 'grptable' AND gcf.grp_particulars LIKE '%II%'   AND gcf.grp_particulars NOT LIKE '%III%'  THEN afd.fee_received 
+                ELSE 0 
+            END) AS second_term_grp_fee,
+
+            SUM(CASE 
+                WHEN afd.fees_table_name = 'grptable' AND gcf.grp_particulars LIKE '%III%' THEN afd.fee_received 
+                ELSE 0 
+            END) AS third_term_grp_fee,
+
+            SUM(CASE WHEN afd.fees_table_name = 'extratable' THEN afd.fee_received ELSE 0 END) AS extra_fee,
+            SUM(CASE WHEN afd.fees_table_name = 'amenitytable' THEN afd.fee_received ELSE 0 END) AS amenity_fee
+
+        FROM admission_fees af 
+        JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
+       LEFT  JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id
+        JOIN student_creation sc ON af.admission_id = sc.student_id 
+        JOIN student_history sh ON sh.student_id = sc.student_id AND af.academic_year = sh.academic_year
+        JOIN standard_creation std ON sh.standard = std.standard_id 
+
+        WHERE af.receipt_date = '$singleDate' AND afd.fees_table_name = '$feeType'
+            AND afd.fee_received > 0 
+            AND sc.school_id = '$school_id' 
+            AND sc.status = 0
+
+        GROUP BY af.id
+        ORDER BY CAST(SUBSTRING(af.receipt_no, LOCATE('-', af.receipt_no) + 1) AS UNSIGNED)";
+    } else if ($feeType == 'lastyear') {
+     $Qry = "SELECT lyf.receipt_no, sc.admission_number, sc.student_name, std.standard, sh.section, lyfd.fee_received AS lastyearFees
         FROM last_year_fees lyf 
         JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id 
         JOIN student_creation sc ON lyf.admission_id = sc.student_id 
              JOIN student_history sh ON sh.student_id = sc.student_id AND lyf.academic_year = sh.academic_year
         JOIN standard_creation std ON sh.standard = std.standard_id 
         WHERE lyf.receipt_date ='$singleDate' AND lyfd.fee_received > 0 AND sc.school_id = '$school_id' AND sc.status = 0 HAVING lastyearFees > 0 ORDER BY CAST(SUBSTRING(receipt_no, LOCATE('-', receipt_no) + 1) AS UNSIGNED)";
-    
-    }else if($feeType == 'transport'){//Transport
-        $Qry = "SELECT taf.receipt_no, sc.admission_number, sc.student_name, std.standard, sh.section, 0 AS grp_fee, 0 AS extra_fee, tafd.fee_received AS transportFees 
-        FROM `transport_admission_fees` taf 
-        JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id 
-        JOIN student_creation sc ON taf.admission_id = sc.student_id 
-              JOIN student_history sh ON sh.student_id = sc.student_id AND taf.academic_year = sh.academic_year 
-        JOIN standard_creation std ON sh.standard = std.standard_id 
-        WHERE taf.receipt_date ='$singleDate' AND tafd.fee_received > 0 AND sc.school_id = '$school_id' AND sc.status = 0 GROUP BY 
-             taf.receipt_no,
-            sc.admission_number, 
-            sc.student_name, 
-            std.standard ORDER BY CAST(SUBSTRING(receipt_no, LOCATE('-', receipt_no) + 1) AS UNSIGNED)";
-    
+    } else if ($feeType == 'transport') {
+        $Qry = "SELECT 
+        taf.receipt_no, 
+        sc.admission_number, 
+        sc.student_name, 
+        std.standard, 
+        sh.section, 
+
+        SUM(CASE 
+            WHEN acp.particulars LIKE '%I %' 
+            AND acp.particulars NOT LIKE '%II %' 
+            AND acp.particulars NOT LIKE '%III %' THEN tafd.fee_received 
+            ELSE 0 
+        END) AS transport_term1,
+
+        SUM(CASE 
+            WHEN acp.particulars LIKE '%II%' 
+            AND acp.particulars NOT LIKE '%III %' THEN tafd.fee_received 
+            ELSE 0 
+        END) AS transport_term2,
+
+        SUM(CASE 
+            WHEN acp.particulars LIKE '%III%' THEN tafd.fee_received 
+            ELSE 0 
+        END) AS transport_term3
+
+    FROM transport_admission_fees taf 
+    JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id 
+    JOIN area_creation_particulars acp ON tafd.area_creation_particulars_id = acp.particulars_id
+    JOIN student_creation sc ON taf.admission_id = sc.student_id 
+    JOIN student_history sh ON sh.student_id = sc.student_id AND taf.academic_year = sh.academic_year 
+    JOIN standard_creation std ON sh.standard = std.standard_id 
+
+    WHERE taf.receipt_date ='$singleDate' 
+        AND tafd.fee_received > 0 
+        AND sc.school_id = '$school_id' 
+        AND sc.status = 0 
+
+    GROUP BY taf.id
+    ORDER BY CAST(SUBSTRING(taf.receipt_no, LOCATE('-', taf.receipt_no) + 1) AS UNSIGNED)";
     }
+
+
+    // HTML Rendering
 ?>
-
-<table class="table table-bordered" id="show_dayend_report_list">
-    <thead>
-        <tr><th colspan='7'>Day End Report At <?php echo date('d-m-Y',strtotime($singleDate)); ?> </th></tr>
-        <tr>
-            <th>S.No</th>
-            <th>Date</th>
-            <th>Receipt No</th>
-            <th>Admission No</th>
-            <th>Student Name</th>
-            <th>Standard & Section</th>
-            <th>Collected Fee</th>
-        </tr>
-    </thead>
-    <tbody>
-    <?php 
-    $single_total = 0;
-    $a=1;
-    $getFeeCollectionQry = $connect->query("$Qry");   
-    while($feeCollection = $getFeeCollectionQry->fetchObject()){
-
-    if($feeType =='grptable'){ 
-        $schoolfee_total = $feeCollection->grp_fee;
-
-    }else if($feeType == 'extratable'){ 
-        $schoolfee_total = $feeCollection->extra_fee;
-
-    }else if($feeType == 'amenitytable'){ 
-        $schoolfee_total = $feeCollection->amenity_fee;
-
-    }else if($feeType =='lastyear'){ 
-        $schoolfee_total = $feeCollection->lastyearFees; 
-
-    }else if($feeType =='transport'){ 
-        $schoolfee_total = $feeCollection->transportFees;
-        
-    }else{ 
-        $schoolfee_total = '0';
-    } 
-?>
-
-    <tr>
-        <td><?php echo $a++;?></td>
-        <td><?php echo date('d-m-Y',strtotime($singleDate));?></td>
-        <td><?php echo $feeCollection->receipt_no;?></td>
-        <td><?php echo $feeCollection->admission_number;?></td>
-        <td><?php echo $feeCollection->student_name;?></td>
-        <td><?php echo $feeCollection->standard.'-'.$feeCollection->section;?></td>
-        <td><?php echo $schoolfee_total; ?></td>
-    </tr>
-
-<?php 
-$single_total += $schoolfee_total;
-} ?>
-    <tr style="font-weight: bold;">
-        <td><?php echo $a;?></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Grand Total</td>
-        <td><?php echo $single_total;?></td>
-    </tr>
-    </tbody>
-    </table>
-
-<?php }else if($dateSelect =='multipledate'){ ?>
 
     <table class="table table-bordered" id="show_dayend_report_list">
-    <thead>
-        <tr><th colspan='7'>Day End Report From <?php echo $feesFromDate->format('d-m-Y'); ?>  To  <?php echo $feesToDate->format('d-m-Y'); ?> </th></tr>
-        <tr>
-            <th>S.No</th>
-            <th>Date</th>
-            <th>Receipt No</th>
-            <th>Admission No</th>
-            <th>Student Name</th>
-            <th>Standard & Section</th>
-            <th>Collected Fee</th>
-        </tr>
-    </thead>
-    <tbody>
-    <?php 
-    $multiple_total = 0;
-    $a=1;
-    while($startdate <= $feesToDate){
-    $from_date = $startdate->format('Y-m-d');
+        <thead>
+            <tr>
+                <th colspan='<?php echo ($feeType == "extratable" || $feeType == "amenitytable") ? "7" : "9"; ?>'>
+                    Day End Report At <?php echo date('d-m-Y', strtotime($singleDate)); ?>
+                </th>
+            </tr>
+            <tr>
+                <th>S.No</th>
+                <th>Date</th>
+                <th>Receipt No</th>
+                <th>Admission No</th>
+                <th>Student Name</th>
+                <th>Standard & Section</th>
+                <?php if ($feeType == 'grptable' || $feeType == 'transport') { ?>
+                    <th>Term I</th>
+                    <th>Term II</th>
+                    <th>Term III</th>
+                <?php } else { ?>
+                    <th>Collected Fee</th>
+                <?php } ?>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $a = 1;
+            $single_total = 0;
+            $term1_total = 0;
+            $term2_total = 0;
+            $term3_total = 0;
 
-    if($feeType =='grptable' || $feeType == 'extratable' || $feeType == 'amenitytable'){//school
-        $Qry = "SELECT af.receipt_no, sc.admission_number, sc.student_name, std.standard, sh.section, af.receipt_date,
-        SUM(CASE WHEN afd.fees_table_name = 'grptable' THEN afd.fee_received ELSE 0 END) AS grp_fee,
-        SUM(CASE WHEN afd.fees_table_name = 'extratable' THEN afd.fee_received ELSE 0 END) AS extra_fee,
-        SUM(CASE WHEN afd.fees_table_name = 'amenitytable' THEN afd.fee_received ELSE 0 END) AS amenity_fee
-        FROM `admission_fees` af 
+            $getFeeCollectionQry = $connect->query($Qry);
+            while ($feeCollection = $getFeeCollectionQry->fetchObject()) {
+            ?>
+                <tr>
+                    <td><?php echo $a++; ?></td>
+                    <td><?php echo date('d-m-Y', strtotime($singleDate)); ?></td>
+                    <td><?php echo $feeCollection->receipt_no; ?></td>
+                    <td><?php echo $feeCollection->admission_number; ?></td>
+                    <td><?php echo $feeCollection->student_name; ?></td>
+                    <td><?php echo $feeCollection->standard . '-' . $feeCollection->section; ?></td>
+
+                    <?php
+                    if ($feeType == 'lastyear') {
+                         echo "<td class='text-right'>{$feeCollection->lastyearFees}</td>";
+                    $single_total += $feeCollection->lastyearFees; 
+                    } else if ($feeType == 'grptable') {
+                        echo "<td class='text-right'>{$feeCollection->first_term_grp_fee}</td>";
+                        echo "<td class='text-right'>{$feeCollection->second_term_grp_fee}</td>";
+                        echo "<td class='text-right'>{$feeCollection->third_term_grp_fee}</td>";
+ 
+                        $term1_total += $feeCollection->first_term_grp_fee;
+                        $term2_total += $feeCollection->second_term_grp_fee;
+                        $term3_total += $feeCollection->third_term_grp_fee;
+
+                        $single_total += $feeCollection->first_term_grp_fee + $feeCollection->second_term_grp_fee + $feeCollection->third_term_grp_fee;
+                    } else if ($feeType == 'transport') {
+                        echo "<td class='text-right'>{$feeCollection->transport_term1}</td>";
+                        echo "<td class='text-right'>{$feeCollection->transport_term2}</td>";
+                        echo "<td class='text-right'>{$feeCollection->transport_term3}</td>";
+
+                        $term1_total += $feeCollection->transport_term1;
+                        $term2_total += $feeCollection->transport_term2;
+                        $term3_total += $feeCollection->transport_term3;
+                    } else if ($feeType == 'extratable') {
+                        echo "<td class='text-right'>{$feeCollection->extra_fee}</td>";
+                        $single_total += $feeCollection->extra_fee;
+                    } else if ($feeType == 'amenitytable') {
+                        echo "<td class='text-right'>{$feeCollection->amenity_fee}</td>";
+                        $single_total += $feeCollection->amenity_fee;
+                    } else {
+                        // If feeType is unknown, pad with empty cell to avoid mismatch
+                        echo "<td></td>";
+                    }
+                    ?>
+                </tr>
+
+            <?php } ?>
+
+
+            <tr style="font-weight: bold;">
+                <td><?php echo $a; ?></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Grand Total</td>
+                <?php
+                if ($feeType == 'lastyear') {
+                    echo "<td class='text-right'>{$single_total}</td>";
+                } else if ($feeType == 'grptable' || $feeType == 'transport') {
+                    echo "<td class='text-right'>{$term1_total}</td>";
+                    echo "<td class='text-right'>{$term2_total}</td>";
+                    echo "<td class='text-right'>{$term3_total}</td>";
+                } else {
+                    echo "<td class='text-right'>{$single_total}</td>";
+                }
+                ?>
+            </tr>
+
+        </tbody>
+    </table>
+
+
+<?php } else if ($dateSelect == 'multipledate') { ?>
+
+    <table class="table table-bordered" id="show_dayend_report_list">
+        <thead>
+            <tr>
+                    <th colspan='<?php echo ($feeType == "extratable" || $feeType == "amenitytable") ? "7" : "9"; ?>'>
+                        Day End Report From <?php echo $feesFromDate->format('d-m-Y'); ?> To <?php echo $feesToDate->format('d-m-Y'); ?>
+                    </th>
+                </tr>
+            <tr>
+                <th>S.No</th>
+                <th>Date</th>
+                <th>Receipt No</th>
+                <th>Admission No</th>
+                <th>Student Name</th>
+                <th>Standard & Section</th>
+                <?php  if ($feeType == 'grptable' || $feeType == 'transport') { ?>
+                    <th>Term I</th>
+                    <th>Term II</th>
+                    <th>Term III</th>
+                <?php } else { ?>
+                    <th>Collected Fee</th>
+                <?php } ?>
+            </tr>
+
+        </thead>
+        <tbody>
+            <?php
+            $multiple_total = 0;
+            $multiple_total2 = 0;
+            $multiple_total3 = 0;
+            $term1_total = 0;
+            $term2_total = 0;
+            $term3_total = 0;
+            $a = 1;
+            while ($startdate <= $feesToDate) {
+                $from_date = $startdate->format('Y-m-d');
+
+                if ($feeType == 'grptable' || $feeType == 'extratable' || $feeType == 'amenitytable') { //school
+                    $Qry = "SELECT 
+            af.receipt_no, 
+            sc.admission_number, 
+            sc.student_name, 
+            std.standard, 
+            sh.section, 
+
+            SUM(CASE 
+                WHEN afd.fees_table_name = 'grptable' AND gcf.grp_particulars LIKE '%I%'     AND gcf.grp_particulars NOT LIKE '%II%' 
+                AND gcf.grp_particulars NOT LIKE '%III%' THEN afd.fee_received 
+                ELSE 0 
+            END) AS first_term_grp_fee,
+
+            SUM(CASE 
+                WHEN afd.fees_table_name = 'grptable' AND gcf.grp_particulars LIKE '%II%'   AND gcf.grp_particulars NOT LIKE '%III%'  THEN afd.fee_received 
+                ELSE 0 
+            END) AS second_term_grp_fee,
+
+            SUM(CASE 
+                WHEN afd.fees_table_name = 'grptable' AND gcf.grp_particulars LIKE '%III%' THEN afd.fee_received 
+                ELSE 0 
+            END) AS third_term_grp_fee,
+
+            SUM(CASE WHEN afd.fees_table_name = 'extratable' THEN afd.fee_received ELSE 0 END) AS extra_fee,
+            SUM(CASE WHEN afd.fees_table_name = 'amenitytable' THEN afd.fee_received ELSE 0 END) AS amenity_fee
+
+        FROM admission_fees af 
         JOIN admission_fees_details afd ON af.id = afd.admission_fees_ref_id 
+        JOIN group_course_fee gcf ON afd.fees_id = gcf.grp_course_id
         JOIN student_creation sc ON af.admission_id = sc.student_id 
         JOIN student_history sh ON sh.student_id = sc.student_id AND af.academic_year = sh.academic_year
         JOIN standard_creation std ON sh.standard = std.standard_id 
         WHERE af.receipt_date ='$from_date' AND afd.fee_received > 0 AND afd.fees_table_name = '$feeType' AND sc.school_id = '$school_id' AND sc.status = 0
         GROUP BY 
-            af.receipt_no, 
-            sc.admission_number, 
-            sc.student_name, 
-            std.standard, 
-            sh.section ORDER BY CAST(SUBSTRING(receipt_no, LOCATE('-', receipt_no) + 1) AS UNSIGNED)" ;
-    
-    }else if($feeType =='lastyear'){//Last Year
-        $Qry = "SELECT lyf.receipt_no, sc.admission_number, sc.student_name, std.standard, sh.section, lyfd.fee_received AS lastyearFees, lyf.receipt_date
+            af.id ORDER BY CAST(SUBSTRING(receipt_no, LOCATE('-', receipt_no) + 1) AS UNSIGNED)";
+                } else if ($feeType == 'lastyear') { //Last Year
+              $Qry = "SELECT lyf.receipt_no, sc.admission_number, sc.student_name, std.standard, sh.section, lyfd.fee_received AS lastyearFees, lyf.receipt_date
         FROM last_year_fees lyf 
         JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id 
         JOIN student_creation sc ON lyf.admission_id = sc.student_id
         JOIN student_history sh ON sh.student_id = sc.student_id AND lyf.academic_year = sh.academic_year 
         JOIN standard_creation std ON sh.standard = std.standard_id 
         WHERE lyf.receipt_date ='$from_date' AND lyfd.fee_received > 0 AND sc.school_id = '$school_id' AND sc.status = 0 HAVING lastyearFees > 0 ORDER BY CAST(SUBSTRING(receipt_no, LOCATE('-', receipt_no) + 1) AS UNSIGNED)";
-    
-    }else if($feeType == 'transport'){//Transport
-        $Qry = "SELECT taf.receipt_no, sc.admission_number, sc.student_name, std.standard, sh.section, 0 AS grp_fee, 0 AS extra_fee, tafd.fee_received AS transportFees, taf.receipt_date 
-        FROM `transport_admission_fees` taf 
-        JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id 
-        JOIN student_creation sc ON taf.admission_id = sc.student_id 
-        JOIN student_history sh ON sh.student_id = sc.student_id AND taf.academic_year = sh.academic_year 
-        JOIN standard_creation std ON sh.standard = std.standard_id 
+                } else if ($feeType == 'transport') { //Transport
+                    $Qry = "SELECT 
+        taf.receipt_no, 
+        sc.admission_number, 
+        sc.student_name, 
+        std.standard, 
+        sh.section, 
+
+        SUM(CASE 
+            WHEN acp.particulars LIKE '%I%' 
+            AND acp.particulars NOT LIKE '%II %' 
+            AND acp.particulars NOT LIKE '%III %' THEN tafd.fee_received 
+            ELSE 0 
+        END) AS transport_term1,
+
+        SUM(CASE 
+            WHEN acp.particulars LIKE '%II%' 
+            AND acp.particulars NOT LIKE '%III%' THEN tafd.fee_received 
+            ELSE 0 
+        END) AS transport_term2,
+
+        SUM(CASE 
+            WHEN acp.particulars LIKE '%III%' THEN tafd.fee_received 
+            ELSE 0 
+        END) AS transport_term3
+
+    FROM transport_admission_fees taf 
+    JOIN transport_admission_fees_details tafd ON taf.id = tafd.admission_fees_ref_id 
+    JOIN area_creation_particulars acp ON tafd.area_creation_particulars_id = acp.particulars_id
+    JOIN student_creation sc ON taf.admission_id = sc.student_id 
+    JOIN student_history sh ON sh.student_id = sc.student_id AND taf.academic_year = sh.academic_year 
+    JOIN standard_creation std ON sh.standard = std.standard_id 
         WHERE taf.receipt_date ='$from_date' AND tafd.fee_received > 0 AND sc.school_id = '$school_id' AND sc.status = 0 GROUP BY 
-             taf.receipt_no,
-            sc.admission_number, 
-            sc.student_name, 
-            std.standard ORDER BY CAST(SUBSTRING(receipt_no, LOCATE('-', receipt_no) + 1) AS UNSIGNED)";
-    
-    }
-    
-    $getFeeCollectionQry = $connect->query("$Qry");  
-    while($feeCollection = $getFeeCollectionQry->fetchObject()){
+        taf.id ORDER BY CAST(SUBSTRING(receipt_no, LOCATE('-', receipt_no) + 1) AS UNSIGNED)";
+                }
 
-    if($feeType =='grptable'){ 
-        $grand_fee_total = $feeCollection->grp_fee;
+                $getFeeCollectionQry = $connect->query("$Qry");
+                while ($feeCollection = $getFeeCollectionQry->fetchObject()) {
+            ?>
+                    <tr>
+                        <td><?php echo $a++; ?></td>
+                        <td><?php echo date('d-m-Y', strtotime($from_date)); ?></td>
+                        <td><?php echo $feeCollection->receipt_no; ?></td>
+                        <td><?php echo $feeCollection->admission_number; ?></td>
+                        <td><?php echo $feeCollection->student_name; ?></td>
+                        <td><?php echo $feeCollection->standard . '-' . $feeCollection->section; ?></td>
+                        <?php
+                        if ($feeType == 'lastyear') {
+                             echo "<td class='text-right'>{$feeCollection->lastyearFees}</td>";
+                              $multiple_total +=  $feeCollection->lastyearFees; 
 
-    }else if($feeType == 'extratable'){ 
-        $grand_fee_total = $feeCollection->extra_fee;
+                            $multiple_total += $feeCollection->group_fees;
+                            $multiple_total2 += $feeCollection->amenity_fees;
+                            $multiple_total3 += $feeCollection->transport_fees;
+                        } else if ($feeType == 'grptable') {
+                            echo "<td class='text-right'>{$feeCollection->first_term_grp_fee}</td>";
+                            echo "<td class='text-right'>{$feeCollection->second_term_grp_fee}</td>";
+                            echo "<td class='text-right'>{$feeCollection->third_term_grp_fee}</td>";
 
-    }else if($feeType == 'amenitytable'){ 
-        $grand_fee_total = $feeCollection->amenity_fee;
+                            $term1_total += $feeCollection->first_term_grp_fee;
+                            $term2_total += $feeCollection->second_term_grp_fee;
+                            $term3_total += $feeCollection->third_term_grp_fee;
+                        } else if ($feeType == 'transport') {
+                            echo "<td class='text-right'>{$feeCollection->transport_term1}</td>";
+                            echo "<td class='text-right'>{$feeCollection->transport_term2}</td>";
+                            echo "<td class='text-right'>{$feeCollection->transport_term3}</td>";
 
-    }else if($feeType =='lastyear'){ 
-        $grand_fee_total = $feeCollection->lastyearFees; 
+                            $term1_total += $feeCollection->transport_term1;
+                            $term2_total += $feeCollection->transport_term2;
+                            $term3_total += $feeCollection->transport_term3;
+                        } else if ($feeType == 'extratable') {
+                            echo "<td class='text-right'>{$feeCollection->extra_fee}</td>";
+                            $multiple_total += $feeCollection->extra_fee;
+                        } else if ($feeType == 'amenitytable') {
+                            echo "<td class='text-right'>{$feeCollection->amenity_fee}</td>";
+                            $multiple_total += $feeCollection->amenity_fee;
+                        } else {
+                            echo "<td></td>";
+                        }
+                        ?>
+                    </tr>
+            <?php
+                }
 
-    }else if($feeType =='transport'){ 
-        $grand_fee_total = $feeCollection->transportFees;
-        
-    }else{ 
-        $grand_fee_total = '0';
-    } 
-?>
-
-    <tr>
-        <td><?php echo $a++;?></td>
-        <td><?php echo date('d-m-Y',strtotime($feeCollection->receipt_date));?></td>
-        <td><?php echo $feeCollection->receipt_no;?></td>
-        <td><?php echo $feeCollection->admission_number;?></td>
-        <td><?php echo $feeCollection->student_name;?></td>
-        <td><?php echo $feeCollection->standard.'-'.$feeCollection->section;?></td>
-        <td><?php echo $grand_fee_total; ?></td>
-    </tr>
-
-<?php 
-    $multiple_total += $grand_fee_total;
-    }
-
-    $startdate->modify('+1 day');
-}//End of While loop for getting dates from start to end date. ?>
-    <tr style="font-weight: bold;">
-        <td><?php echo $a;?></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Grand Total</td>
-        <td><?php echo $multiple_total;?></td>
-    </tr>
-    </tbody>
+                $startdate->modify('+1 day');
+            }
+            ?>
+            <tr style="font-weight: bold;">
+                <td><?php echo $a; ?></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Grand Total</td>
+                <?php
+                if ($feeType == 'lastyear') {
+                    echo "<td class='text-right'>{$multiple_total}</td>";
+                } else if ($feeType == 'grptable' || $feeType == 'transport') {
+                    echo "<td class='text-right'>{$term1_total}</td>";
+                    echo "<td class='text-right'>{$term2_total}</td>";
+                    echo "<td class='text-right'>{$term3_total}</td>";
+                } else {
+                    echo "<td class='text-right'>{$multiple_total}</td>";
+                }
+                ?>
+            </tr>
+        </tbody>
     </table>
 
 <?php
 } ?>
 
 <script>
-    $(document).ready(function(){
-        $('#show_dayend_report_list').DataTable({
-            order: [[0, "asc"]],
-            // columnDefs: [
-            //     { type: 'natural', targets: 0 }
-            // ],
+    $(document).ready(function() {
+    
+        var table = $('#show_dayend_report_list').DataTable({
+            order: [
+                [0, "asc"]
+            ],
             dom: 'Bfrtip',
             buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
+                'copy', 'csv', 'excel', 'pdf',
+                {
+                    extend: 'print',
+                    text: 'Print',
+                    title: '',
+                    customize: function(win) {
+                    const css = `
+                             table td {
+                                text-align: right !important;
+                            }
+                        `;
+                        const style = win.document.createElement('style');
+                        style.innerHTML = css;
+                        win.document.head.appendChild(style);
+                        var originalThead = $('#show_dayend_report_list thead').clone();
+                        $(win.document.body).find('table thead').replaceWith(originalThead);
+
+                    }
+                }
             ],
-            paging: false, // Disable paging
+            paging: false
         });
     });
 </script>

@@ -35,7 +35,7 @@ if (isset($_POST['stdSection'])) {
             <th colspan="3">Pending Fees</th>
             <th colspan="3">Transport Fees</th>
             <th rowspan="2">ECA</th>
-            <th rowspan="2">Action</th>
+            <th rowspan="2">Concession</th>
         </tr>
         <tr>
             <th>Term&nbsp;I</th>
@@ -60,6 +60,7 @@ WHERE sh.academic_year  = '$academicyear' && sc.medium = '$stdMedium' && sh.stan
         $grnd_admission_pending = 0;
         $grnd_uniform_pending = 0;
         $grnd_eca_pending = 0;
+        $grnd_con_pending = 0;
         $grnd_term1_pending = 0;
         $grnd_term2_pending = 0;
         $grnd_term3_pending = 0;
@@ -435,6 +436,41 @@ ORDER BY
                     $transport_pending[] = $currentTransPending;
                 }
             }
+           /// concession 
+            $getScholarshipTotalQry = $connect->query("
+    SELECT 
+        (
+            -- Total from fees_concession table
+            COALESCE((
+                SELECT SUM(scholarship_amount)
+                FROM fees_concession
+                WHERE student_id = '$studentList->student_id' AND academic_year = '$academicyear'
+            ), 0)
+            +
+            -- Total from admission_fees_details table
+            COALESCE((
+                SELECT SUM(afd.scholarship)
+                FROM admission_fees_details afd
+                JOIN admission_fees af 
+                    ON afd.admission_fees_ref_id = af.id
+                WHERE af.admission_id = '$studentList->student_id' AND af.academic_year = '$academicyear'
+            ), 0)
+            +
+            -- Total from transport_admission_fees_details table
+            COALESCE((
+                SELECT SUM(tafd.scholarship)
+                FROM transport_admission_fees_details tafd
+                JOIN transport_admission_fees taf 
+                    ON tafd.admission_fees_ref_id = taf.id
+                WHERE taf.admission_id = '$studentList->student_id' AND taf.academic_year = '$academicyear'
+            ), 0)
+        ) AS totalScholarship
+        ");
+
+            $totalScholarship = 0;
+            if ($row = $getScholarshipTotalQry->fetch()) {
+                $totalScholarship = $row['totalScholarship'];
+            }
 
         ?>
             <tr>
@@ -454,7 +490,7 @@ ORDER BY
                 <td style="text-align: right;"><?php echo ($transport_pending) ? $transport_pending[1] : '0'; ?></td>
                 <td style="text-align: right;"><?php echo ($transport_pending) ? $transport_pending[2] : '0'; ?></td>
                 <td style="text-align: right;"><?php echo $eca_pending; ?></td>
-                <td></td>
+                <td style="text-align: right;"><?php echo $totalScholarship; ?></td>
             </tr>
 
         <?php
@@ -469,6 +505,7 @@ ORDER BY
             $grnd_trans2_pending += ($transport_pending) ? $transport_pending[1] : '0';
             $grnd_trans3_pending += ($transport_pending) ? $transport_pending[2] : '0';
             $grnd_eca_pending += $eca_pending;
+            $grnd_con_pending += $totalScholarship;
         } ?>
         <tr style="font-weight: bold;">
             <td><?php echo $i; ?></td>
@@ -487,7 +524,7 @@ ORDER BY
             <td class="text-right"><?php echo $grnd_trans2_pending; ?></td>
             <td class="text-right"><?php echo $grnd_trans3_pending; ?></td>
             <td class="text-right"><?php echo $grnd_eca_pending; ?></td>
-            <td></td>
+            <td class="text-right"><?php echo $grnd_con_pending; ?></td>
 
         </tr>
     </tbody>
@@ -532,7 +569,7 @@ ORDER BY
                             '<th colspan="3">Pending Fees</th>' +
                             '<th colspan="3">Transport Fees</th>' +
                             '<th rowspan="2">ECA</th>' +
-                            '<th rowspan="2">Action</th>' +
+                            '<th rowspan="2">Concession</th>' +
                             '</tr>' +
                             '<tr>' +
                             '<th>Term I</th>' +
@@ -591,8 +628,7 @@ ORDER BY
             }
         ],
             paging: false,
-            ordering: false,
-            scrollX: true
+            ordering: false
         });
     });
 </script>
