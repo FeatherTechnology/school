@@ -68,7 +68,8 @@ while($studentList = $getStudentListQry->fetchObject()){
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
+            ],
+              ordering: false
         });
     });
 </script>

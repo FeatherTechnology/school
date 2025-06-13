@@ -757,6 +757,10 @@ if($current_page == 'class_wise_list') { ?>
 <script src="js/class_wise_list.js"></script>
 <?php }
 
+if($current_page == 'new_admission_list') { ?>
+<script src="js/new_admission_list.js"></script>
+<?php }
+
 if($current_page == 'register_of_admission') { ?>
 <script src="js/register_of_admission.js"></script>
 <?php }

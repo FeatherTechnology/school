@@ -509,7 +509,7 @@ if (isset($_FILES["file"]["type"])) {
 
                     $insresult = $mysqli->query($StudentInsert) or die("Error " . $mysqli->error);
                     $stdLastInsertId = $mysqli->insert_id;
-                    $StudentHistoryInsert = "INSERT INTO student_history (`student_id`, `standard`, `section`,`studentstype` ,`extra_curricular`, `transportarearefid`, `academic_year`,`insert_login_id`,`created_on`)VALUES('$stdLastInsertId','" . strip_tags($standard) . "','" . strip_tags($section) . "','" . strip_tags($studentstype) . "','" . strip_tags($extra_curricular) . "','" . strip_tags($transportarearefid) . "','" . strip_tags($year_id) . "','$userid',now())";
+                    $StudentHistoryInsert = "INSERT INTO student_history (`student_id`, `standard`, `section`,`studentstype` ,`extra_curricular`, `transportarearefid`, `academic_year`,`insert_login_id`,`created_on`)VALUES('$stdLastInsertId','" . strip_tags($standard) . "','" . strip_tags($section) . "','" . strip_tags($getStudentType) . "','" . strip_tags($extra_curricular) . "','" . strip_tags($transport_area_ref_id) . "','" . strip_tags($academic_year) . "','$userid',now())";
                     $result = $mysqli->query($StudentHistoryInsert) or die("Error " . $mysqli->error);
                 }
             } //foreach
