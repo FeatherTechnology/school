@@ -74,6 +74,7 @@ if($idupd>0)
         $student_report_sub_module                  = $getmanageuserdetails['student_report_sub_module']; 
         $student_caste_report                  = $getmanageuserdetails['student_caste_report']; 
         $class_wise_list                  = $getmanageuserdetails['class_wise_list']; 
+        $new_admission_list                  = $getmanageuserdetails['new_admission_list']; 
         $register_of_admission                  = $getmanageuserdetails['register_of_admission']; 
         $student_transport_list                  = $getmanageuserdetails['student_transport_list']; 
         $fee_details_sub_module                  = $getmanageuserdetails['fee_details_sub_module']; 
@@ -483,6 +484,10 @@ if($del>0)
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" value="Yes" <?php if(isset($class_wise_list) && $class_wise_list==0){ echo'checked'; } ?> tabindex="39" class="custom-control-input studentreport-sub-checkbox" id="class_wise_list" name="class_wise_list" >
                         <label class="custom-control-label" for="class_wise_list">Class wise List</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" value="Yes" <?php if(isset($new_admission_list) && $new_admission_list==0){ echo'checked'; } ?> tabindex="39" class="custom-control-input studentreport-sub-checkbox" id="new_admission_list" name="new_admission_list" >
+                        <label class="custom-control-label" for="new_admission_list">New Admission List</label>
                     </div>
 
                     <div class="custom-control custom-checkbox">

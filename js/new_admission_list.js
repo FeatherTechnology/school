@@ -13,7 +13,7 @@ $(document).ready(function () {
             success: function(response){
                 $('#section').empty();
                 $('#section').append("<option value='0'>Select section</option>");
-                 $('#section').append("<option value='all'>All</option>"); // Append "All" option here
+                  $('#section').append("<option value='all'>All</option>"); // Append "All" option here
                 for (var i = 0; i < response.length; i++) {
                 $('#section').append("<option value='" + response[i] + "'>" + response[i] + "</option>");
                 }
@@ -31,7 +31,7 @@ $(document).ready(function () {
             $.ajax({
                 type: 'POST',
                 data: {"academicyear": academicyear, "stdMedium": stdMedium, "stdStandard": stdStandard, "stdSection": stdSection},
-                url: 'reports/class_wise_report/getClassListReport.php',
+                url: 'reports/new_admission_report/new_student_list.php',
                 success: function(response){
                     $('#listCard').show();
                     $('#showStudentClassList').empty();
@@ -53,21 +53,21 @@ $(function () {
   getAcademicYearList(); //Get  Academic Year List.
 });
 
-function getStandardList() { //Getting standard list from database.
+function getStandardList() { // Getting standard list from database.
     $.ajax({
-    type: 'POST',
-    data: {},
-    url: 'ajaxFiles/getStandardList.php',
-    dataType: 'json',
-    success: function (response) {
-        $('#standard').empty();
-        $('#standard').append("<option value='0'>Select Standard</option>");
-          $('#standard').append("<option value='all'>All</option>"); // Append "All" option here
-        for (var i = 0; i < response.length; i++) {
-        $('#standard').append("<option value='" + response[i]['std_id'] + "'>" + response[i]['std'] + "</option>");
+        type: 'POST',
+        data: {},
+        url: 'ajaxFiles/getStandardList.php',
+        dataType: 'json',
+        success: function (response) {
+            $('#standard').empty();
+            $('#standard').append("<option value='0'>Select Standard</option>");
+            $('#standard').append("<option value='all'>All</option>"); // Append "All" option here
+            for (var i = 0; i < response.length; i++) {
+                $('#standard').append("<option value='" + response[i]['std_id'] + "'>" + response[i]['std'] + "</option>");
+            }
         }
-    }
-    })
+    });
 }
 
 function getAcademicYearList(){ //Getting academic_year list from database.

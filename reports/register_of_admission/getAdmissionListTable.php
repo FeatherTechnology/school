@@ -16,9 +16,11 @@ if(isset($_POST['stdStandard'])){
 ?>
 
 <style>
-    .table thead th {
-        vertical-align: top !important;
-    }
+   .table thead th {
+    vertical-align: top !important;
+    white-space: nowrap;
+}
+
 </style>
 <table class="table table-bordered table-responsive">
     <thead>

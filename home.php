@@ -365,6 +365,10 @@ if($current_page == 'vendorcreation' || $current_page == 'auction_details') {
 			if($current_page == 'class_wise_list') { 
 				include "reports/class_wise_report/class_wise_list.php";
 			}
+			// new admission  List.
+			if($current_page == 'new_admission_list') { 
+				include "reports/new_admission_report/new_admission_list.php";
+			}
 			//Register of Admission.
 			if($current_page == 'register_of_admission') { 
 				include "reports/register_of_admission/register_of_admission.php";
