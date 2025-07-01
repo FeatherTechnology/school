@@ -33,7 +33,7 @@ if (!empty($conditions)) {
 }
 // Dynamic ORDER BY clause
 if ($stdStandard == 'all') {
-    $orderBy = " ORDER BY std.standard ASC";
+    $orderBy = " ORDER BY sh.standard ASC";
 } else {
     $orderBy = " ORDER BY sc.student_name ASC";
 }

@@ -45,6 +45,7 @@ if (sizeof($getmanageuserdetails) > 0) {
 	$fee_details_sub_module                  = $getmanageuserdetails['fee_details_sub_module'];
 	$daily_fees_collection                  = $getmanageuserdetails['daily_fees_collection'];
 	$day_end_report                  = $getmanageuserdetails['day_end_report'];
+	$student_profile_report                  = $getmanageuserdetails['student_profile_report'];
 	$overall_scholarship_fee_details                  = $getmanageuserdetails['overall_scholarship_fee_details'];
 	$pending_fee_details                  = $getmanageuserdetails['pending_fee_details'];
 	$all_type_pending_fee_details                  = $getmanageuserdetails['all_type_pending_fee_details'];
@@ -463,6 +464,11 @@ if (sizeof($getmanageuserdetails) > 0) {
 												if (isset($day_end_report) && $day_end_report == 0) { ?>
 													<li>
 														<a href="day_end_report"><i class="icon-sunset"></i>Day End Report</a>
+													</li>
+												<?php }
+												if (isset($student_profile_report) && $student_profile_report == 0) { ?>
+													<li>
+														<a href="student_profile_report"><i class="icon-sunset"></i>Student Profile Report</a>
 													</li>
 												<?php }
 												if (isset($overall_scholarship_fee_details) && $overall_scholarship_fee_details == 0) { ?>

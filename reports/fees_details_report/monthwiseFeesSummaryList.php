@@ -17,7 +17,7 @@ if(isset($_POST['feesToDate'])){
 
 <table class="table table-bordered" id="show_monthwise_fees_summary"  style="text-align: left;">
     <thead>
-        <tr><th colspan='12' class="report-title">Fees Summary Report From <?php echo $feesFromDate->format('M-Y'); ?>  To  <?php echo $feesToDate->format('M-Y'); ?> </th></tr>
+        <tr><th colspan='13' class="report-title">Fees Summary Report From <?php echo $feesFromDate->format('M-Y'); ?>  To  <?php echo $feesToDate->format('M-Y'); ?> </th></tr>
         <tr>
         <th>S.No</th>
             <th>Date</th>
@@ -30,6 +30,7 @@ if(isset($_POST['feesToDate'])){
             <th>ECA Fee</th>
             <th>Bank</th>
             <th>Cash</th>
+            <th>Scholarship</th>
             <th>Total Amount</th>
         </tr>
     </thead>
@@ -40,6 +41,7 @@ if(isset($_POST['feesToDate'])){
         $schoolfee_total = 0;
         $bookfee_total = 0;
         $eca_total = 0;
+        $scholar_total = 0;
         $uniformfee_total = 0;
         $transportfee_total = 0;
         $lastyear_total = 0;
@@ -158,6 +160,49 @@ $eca_fees =0;
                     $lastYearFeeSplit[$mode] = $row['lastyearFees'];
                     $lastyearFees += $row['lastyearFees'];
                 }
+                /// scholorship 
+                 $getScholarshipTotalQry = $connect->query("
+    SELECT 
+        (
+            -- Total from fees_concession table
+            COALESCE((
+                SELECT SUM(scholarship_amount)
+                FROM fees_concession
+                  WHERE (MONTH(created_date) = MONTH('$from_date') AND YEAR(created_date) = YEAR('$from_date') )
+            ), 0)
+            +
+            -- Total from admission_fees_details table
+            COALESCE((
+                SELECT SUM(afd.scholarship)
+                FROM admission_fees_details afd
+                JOIN admission_fees af 
+                    ON afd.admission_fees_ref_id = af.id
+                WHERE (MONTH(af.receipt_date) = MONTH('$from_date') AND YEAR(af.receipt_date) = YEAR('$from_date') )
+            ), 0)
+            +
+            -- Total from transport_admission_fees_details table
+            COALESCE((
+                SELECT SUM(tafd.scholarship)
+                FROM transport_admission_fees_details tafd
+                JOIN transport_admission_fees taf 
+                    ON tafd.admission_fees_ref_id = taf.id
+               WHERE (MONTH(taf.receipt_date) = MONTH('$from_date') AND YEAR(taf.receipt_date) = YEAR('$from_date') )
+            ), 0)  +
+              -- Total from last year table
+            COALESCE((
+            SELECT SUM(lfd.scholarship)
+            FROM last_year_fees lf
+            JOIN last_year_fees_details lfd ON lfd.admission_fees_ref_id = lf.id
+            JOIN student_creation s ON lf.admission_id = s.student_id
+            WHERE (MONTH(lf.receipt_date) = MONTH('$from_date') AND YEAR(lf.receipt_date) = YEAR('$from_date') )
+        ), 0)
+        ) AS totalScholarship
+        ");
+
+            $totalScholarship = 0;
+            if ($row = $getScholarshipTotalQry->fetch()) {
+                $totalScholarship = $row['totalScholarship'];
+            }
                 ?>
     <tr>
         <td><?php echo $i++;?></td>
@@ -193,6 +238,7 @@ $eca_fees =0;
                     echo $cashTotal;
                     ?>
                 </td>
+                  <td><?php echo $totalScholarship; ?></td>
                 <td>
                     <?php
                     $totalAmnt = $admission_fees +
@@ -200,8 +246,7 @@ $eca_fees =0;
                     $book_fees +
                         $collected_fees +
                         $transportFees +
-                        $lastyearFees +
-                        $eca_fees;
+                        $lastyearFees ;
                     echo $totalAmnt;
                     ?>
                 </td>
@@ -215,6 +260,7 @@ $eca_fees =0;
    $transportfee_total += $transportFees;
    $lastyear_total += $lastyearFees;
    $eca_total += $eca_fees;
+   $scholar_total += $totalScholarship;
    $bank_total += $bankTotal;
    $cash_total += $cashTotal;
    $total += $totalAmnt;
@@ -232,6 +278,7 @@ $startdate->modify('+1 month');
             <td><?php echo $eca_total; ?></td>
             <td><?php echo $bank_total; ?></td>
             <td><?php echo $cash_total; ?></td>
+             <td><?php echo $scholar_total; ?></td>
             <td><?php echo $total; ?></td>
     </tr>
     </tbody>

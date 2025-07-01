@@ -385,7 +385,9 @@ if($current_page == 'vendorcreation' || $current_page == 'auction_details') {
 			if($current_page == 'day_end_report') { 
 				include "reports/fees_details_report/day_end_report.php";
 			}
-
+			if($current_page == 'student_profile_report') { 
+				include "reports/fees_details_report/student_profile_report.php";
+			}
 			if($current_page == 'overall_scholarship_fee_details') { 
 				include "reports/fees_details_report/overall_scholarship_fee_details.php";
 			}

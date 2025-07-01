@@ -188,7 +188,7 @@ FROM (
 ");
             $lastyearpending = $getLastYearPending->fetchObject();
             $lastPending = $lastyearpending->total_balance_tobe_paid;
-            $lastyr_grpfeeQry = $connect->query("SELECT (SUM(lyfd.fee_received)) as paid_grp_amount 
+            $lastyr_grpfeeQry = $connect->query("SELECT (SUM(lyfd.fee_received) + SUM(lyfd.scholarship)) as paid_grp_amount 
             FROM `last_year_fees` lyf 
             JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id 
             JOIN group_course_fee gcf ON lyfd.fees_id = gcf.grp_course_id 
@@ -437,6 +437,7 @@ ORDER BY
                 }
             }
            /// concession 
+          
             $getScholarshipTotalQry = $connect->query("
     SELECT 
         (
@@ -463,7 +464,15 @@ ORDER BY
                 JOIN transport_admission_fees taf 
                     ON tafd.admission_fees_ref_id = taf.id
                 WHERE taf.admission_id = '$studentList->student_id' AND taf.academic_year = '$academicyear'
-            ), 0)
+            ), 0)  +
+              -- Total from last year table
+            COALESCE((
+            SELECT SUM(lfd.scholarship)
+            FROM last_year_fees lf
+            JOIN last_year_fees_details lfd ON lfd.admission_fees_ref_id = lf.id
+            JOIN student_creation s ON lf.admission_id = s.student_id
+            WHERE lf.admission_id = '$studentList->student_id' AND lf.academic_year = '$academicyear'
+        ), 0)
         ) AS totalScholarship
         ");
 

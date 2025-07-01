@@ -91,6 +91,7 @@ $StudentList = $userObj->getStudentList($mysqli, $school_id, $year_id);
                     </div>
                     <div class="card-body">
                         <div class="row">
+
                             <div class="col-md-8"> 
                                 <div class="row">
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -215,6 +216,7 @@ $StudentList = $userObj->getStudentList($mysqli, $school_id, $year_id);
                                                 }
                                                 ?>
                                             </select>
+                                            
                                             <!-- <span id="studentstypeCheck" class="text-danger">Please Select Student Type</span>  if (isset($_GET['st'])) {  $dynamic_id = $_GET['st']; }  -->
 
                                         </div>
