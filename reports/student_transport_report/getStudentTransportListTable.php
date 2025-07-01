@@ -17,6 +17,11 @@ if(isset($_POST['stdStandard'])){
 if(isset($_POST['stdSection'])){
     $stdSection = $_POST['stdSection'];
 }
+if ($stdStandard == '0') {
+    $orderBy = " ORDER BY sh.standard ASC";
+} else {
+    $orderBy = " ORDER BY sc.student_name ASC";
+}
 ?>
 
 <table class="table table-bordered" id="show_student_transport_list">
@@ -34,12 +39,13 @@ if(isset($_POST['stdSection'])){
     <tbody>
 
 <?php
+
 $getStudentListQry = $connect->query("SELECT sc.student_name, std.standard, sh.section, sc.sms_sent_no, ac.area_name, sc.transportstopping, sc.busno, ac.transport_amount 
 FROM `student_creation` sc 
 JOIN student_history sh  ON sh.student_id = sc.student_id
 JOIN standard_creation std ON sh.standard = std.standard_id 
 JOIN area_creation ac ON sh.transportarearefid = ac.area_id 
-WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' && ('$stdStandard' = '0' || sh.standard = '$stdStandard') && ('$stdSection' = '0' || sh.section = '$stdSection') && sc.status = '0' && sc.school_id = '$school_id' ");
+WHERE sh.academic_year = '$academicyear' && sc.medium = '$stdMedium' && ('$stdStandard' = '0' || sh.standard = '$stdStandard') && ('$stdSection' = '0' || sh.section = '$stdSection') && sc.status = '0' && sc.school_id = '$school_id' $orderBy ");
 $i=1;
 while($studentList = $getStudentListQry->fetchObject()){
 ?>

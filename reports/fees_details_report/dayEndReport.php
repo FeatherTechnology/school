@@ -101,7 +101,8 @@ if ($dateSelect == 'singledate') {
             lyf.receipt_date,
             (CASE WHEN lyfd.fees_table_name = 'grptable' THEN lyfd.fee_received ELSE 0 END) AS group_fees,
             (CASE WHEN lyfd.fees_table_name = 'transport' THEN lyfd.fee_received ELSE 0 END) AS transport_fees,
-            (CASE WHEN lyfd.fees_table_name = 'amenitytable' THEN lyfd.fee_received ELSE 0 END) AS amenity_fees
+            (CASE WHEN lyfd.fees_table_name = 'amenitytable' THEN lyfd.fee_received ELSE 0 END) AS amenity_fees,
+            (CASE WHEN lyfd.fees_table_name = 'extratable' THEN lyfd.fee_received ELSE 0 END) AS extra_fee
 
         FROM last_year_fees lyf 
         JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id 
@@ -161,8 +162,8 @@ if ($dateSelect == 'singledate') {
     <table class="table table-bordered" id="show_dayend_report_list">
         <thead>
             <tr>
-                <th colspan='<?php echo ($feeType == "amenitytable") ? "7" : "9"; ?>'>
-                    Day End Report At <?php echo date('d-m-Y', strtotime($singleDate)); ?>
+                <th colspan='<?php echo ($feeType == "amenitytable") ? "7" : (($feeType == "lastyear") ? "10" : "9"); ?>'>
+                    Day End Report From <?php echo $feesFromDate->format('d-m-Y'); ?> To <?php echo $feesToDate->format('d-m-Y'); ?>
                 </th>
             </tr>
             <tr>
@@ -177,6 +178,7 @@ if ($dateSelect == 'singledate') {
                     <th>Group Fee</th>
                     <th>Amenity Fee</th>
                     <th>Transport Fee</th>
+                     <th>Extra Fee</th>
 
                 <?php } elseif ($feeType == 'grptable' || $feeType == 'transport') { ?>
                     <th>Term I</th>
@@ -200,6 +202,7 @@ if ($dateSelect == 'singledate') {
             $single_total = 0;
             $single_total2 = 0;
             $single_total3 = 0;
+            $single_total4 = 0;
             $term1_total = 0;
             $term2_total = 0;
             $term3_total = 0;
@@ -220,10 +223,12 @@ if ($dateSelect == 'singledate') {
                         echo "<td class='text-right'>{$feeCollection->group_fees}</td>";
                         echo "<td class='text-right'>{$feeCollection->amenity_fees}</td>";
                         echo "<td class='text-right'>{$feeCollection->transport_fees}</td>";
+                        echo "<td class='text-right'>{$feeCollection->extra_fee}</td>";
 
                         $single_total += $feeCollection->group_fees;
                         $single_total2 += $feeCollection->amenity_fees;
                         $single_total3 += $feeCollection->transport_fees;
+                        $single_total4 += $feeCollection->extra_fee;
                     } else if ($feeType == 'grptable') {
                         echo "<td class='text-right'>{$feeCollection->first_term_grp_fee}</td>";
                         echo "<td class='text-right'>{$feeCollection->second_term_grp_fee}</td>";
@@ -269,11 +274,16 @@ if ($dateSelect == 'singledate') {
                 <td></td>
                 <td>Grand Total</td>
                 <?php
-                if ($feeType == 'lastyear' || $feeType == 'extratable') {
+                if ($feeType == 'lastyear') {
                     echo "<td class='text-right'>{$single_total}</td>";
                     echo "<td class='text-right'>{$single_total2}</td>";
                     echo "<td class='text-right'>{$single_total3}</td>";
-                } else if ($feeType == 'grptable' || $feeType == 'transport') {
+                    echo "<td class='text-right'>{$single_total4}</td>";
+                } else if ($feeType == 'extratable') {
+                    echo "<td class='text-right'>{$multiple_total}</td>";
+                    echo "<td class='text-right'>{$multiple_total2}</td>";
+                    echo "<td class='text-right'>{$multiple_total3}</td>";
+                }else if ($feeType == 'grptable' || $feeType == 'transport') {
                     echo "<td class='text-right'>{$term1_total}</td>";
                     echo "<td class='text-right'>{$term2_total}</td>";
                     echo "<td class='text-right'>{$term3_total}</td>";
@@ -292,7 +302,7 @@ if ($dateSelect == 'singledate') {
     <table class="table table-bordered" id="show_dayend_report_list">
         <thead>
             <tr>
-                <th colspan='<?php echo ($feeType == "amenitytable") ? "7" : "9"; ?>'>
+                <th colspan='<?php echo ($feeType == "amenitytable") ? "7" : (($feeType == "lastyear") ? "10" : "9"); ?>'>
                     Day End Report From <?php echo $feesFromDate->format('d-m-Y'); ?> To <?php echo $feesToDate->format('d-m-Y'); ?>
                 </th>
             </tr>
@@ -308,6 +318,7 @@ if ($dateSelect == 'singledate') {
                     <th>Group Fee</th>
                     <th>Amenity Fee</th>
                     <th>Transport Fee</th>
+                    <th>Extra Fee</th>
 
                 <?php } elseif ($feeType == 'grptable' || $feeType == 'transport') { ?>
                     <th>Term I</th>
@@ -331,6 +342,7 @@ if ($dateSelect == 'singledate') {
             $multiple_total = 0;
             $multiple_total2 = 0;
             $multiple_total3 = 0;
+            $multiple_total4 = 0;
             $term1_total = 0;
             $term2_total = 0;
             $term3_total = 0;
@@ -408,7 +420,8 @@ if ($dateSelect == 'singledate') {
     lyf.receipt_date,
     (CASE WHEN lyfd.fees_table_name = 'grptable' THEN lyfd.fee_received ELSE 0 END) AS group_fees,
     (CASE WHEN lyfd.fees_table_name = 'transport' THEN lyfd.fee_received ELSE 0 END) AS transport_fees,
-    (CASE WHEN lyfd.fees_table_name = 'amenitytable' THEN lyfd.fee_received ELSE 0 END) AS amenity_fees
+    (CASE WHEN lyfd.fees_table_name = 'amenitytable' THEN lyfd.fee_received ELSE 0 END) AS amenity_fees,
+    (CASE WHEN lyfd.fees_table_name = 'extratable' THEN lyfd.fee_received ELSE 0 END) AS extra_fee
 FROM last_year_fees lyf 
 JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id 
 JOIN student_creation sc ON lyf.admission_id = sc.student_id
@@ -473,10 +486,12 @@ ORDER BY
                             echo "<td class='text-right'>{$feeCollection->group_fees}</td>";
                             echo "<td class='text-right'>{$feeCollection->amenity_fees}</td>";
                             echo "<td class='text-right'>{$feeCollection->transport_fees}</td>";
+                            echo "<td class='text-right'>{$feeCollection->extra_fee}</td>";
 
                             $multiple_total += $feeCollection->group_fees;
                             $multiple_total2 += $feeCollection->amenity_fees;
                             $multiple_total3 += $feeCollection->transport_fees;
+                            $multiple_total4 += $feeCollection->extra_fee;
                         } else if ($feeType == 'grptable') {
                             echo "<td class='text-right' >{$feeCollection->first_term_grp_fee}</td>";
                             echo "<td class='text-right'>{$feeCollection->second_term_grp_fee}</td>";
@@ -522,7 +537,12 @@ ORDER BY
                 <td></td>
                 <td>Grand Total</td>
                 <?php
-                if ($feeType == 'lastyear' || $feeType == 'extratable') {
+                if ($feeType == 'lastyear') {
+                    echo "<td class='text-right'>{$multiple_total}</td>";
+                    echo "<td class='text-right'>{$multiple_total2}</td>";
+                    echo "<td class='text-right'>{$multiple_total3}</td>";
+                    echo "<td class='text-right'>{$multiple_total4}</td>";
+                } else if ($feeType == 'extratable') {
                     echo "<td class='text-right'>{$multiple_total}</td>";
                     echo "<td class='text-right'>{$multiple_total2}</td>";
                     echo "<td class='text-right'>{$multiple_total3}</td>";

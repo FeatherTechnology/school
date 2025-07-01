@@ -80,6 +80,7 @@ if($idupd>0)
         $fee_details_sub_module                  = $getmanageuserdetails['fee_details_sub_module']; 
         $daily_fees_collection                  = $getmanageuserdetails['daily_fees_collection']; 
         $day_end_report                  = $getmanageuserdetails['day_end_report']; 
+        $student_profile_report                  = $getmanageuserdetails['student_profile_report']; 
         $overall_scholarship_fee_details                  = $getmanageuserdetails['overall_scholarship_fee_details']; 
         $pending_fee_details                  = $getmanageuserdetails['pending_fee_details']; 
         $all_type_pending_fee_details                  = $getmanageuserdetails['all_type_pending_fee_details']; 
@@ -515,6 +516,10 @@ if($del>0)
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" value="Yes" <?php if(isset($day_end_report) && $day_end_report==0){ echo'checked'; } ?> tabindex="44" class="custom-control-input feedetailsreport-sub-checkbox" id="day_end_report" name="day_end_report" >
                         <label class="custom-control-label" for="day_end_report">Day End Report</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" value="Yes" <?php if(isset($student_profile_report) && $student_profile_report==0){ echo'checked'; } ?> tabindex="44" class="custom-control-input feedetailsreport-sub-checkbox" id="student_profile_report" name="student_profile_report" >
+                        <label class="custom-control-label" for="student_profile_report">Student Profile Report</label>
                     </div>
 
                     <div class="custom-control custom-checkbox">

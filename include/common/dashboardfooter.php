@@ -777,6 +777,10 @@ if($current_page == 'day_end_report') { ?>
 <script src="js/day_end_report.js"></script>
 <?php }
 
+if($current_page == 'student_profile_report') { ?>
+<script src="js/student_profile_report.js"></script>
+<?php }
+
 if($current_page == 'overall_scholarship_fee_details') { ?>
 <script src="js/overall_scholarship_fee_details.js"></script>
 <?php }
