@@ -64,7 +64,23 @@ $(document).ready(function () {
       $(this).val('')
     }
   });//Denomination NEFT Calc 
+$("#submitpaylastyearfees").click(function (event) {
+    var totalCollected = getCollectedAmount(); // Total from cashreceive rows
+    var chequeAmount = parseFloat($('#cheque_amount').val()) || 0;
+    var neftAmount = parseFloat($('#neft_amount').val()) || 0;
 
+    var totalEntered = totalCollected + chequeAmount + neftAmount;
+    var feesCollected = parseFloat($('#fees_collected').val()) || 0;
+
+    if (totalEntered != feesCollected) {
+        alert('Total amount must be equal to Fees Collected!');
+        
+        event.preventDefault(); // Prevent form submission
+        return false;
+    }
+
+    // You can optionally allow form submission by returning true
+});
 }); //Document END///
 
 $(function () {

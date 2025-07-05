@@ -56,6 +56,20 @@ $(document).ready(function () {
       $(this).val('')
     }
   });//Denomination NEFT Calc 
+  $("#submittransportpay").click(function (event) {
+    var totalCollected = getCollectedAmount(); // Total from cashreceive rows
+    var chequeAmount = parseFloat($('#cheque_amount').val()) || 0;
+    var neftAmount = parseFloat($('#neft_amount').val()) || 0;
+
+    var totalEntered = totalCollected + chequeAmount + neftAmount;
+    var feesCollected = parseFloat($('#fees_collected').val()) || 0;
+
+    if (totalEntered != feesCollected) {
+      alert('Total amount must be equal to Fees Collected!');
+      event.preventDefault(); // Prevent form submission
+      return false;
+    }
+  });
 
 }); //Document END///
 
@@ -255,34 +269,34 @@ function geteditFeesDetails(fees_id) {
         $("#cash_payment").show();
         $("#cheque_payment").hide();
         $("#neft_payment").hide();
-    } else if (payment_mode == "cheque") {
+      } else if (payment_mode == "cheque") {
         $("#cash_payment").hide();
         $("#cheque_payment").show();
         $("#neft_payment").hide();
-    } else if (payment_mode == "neft") {
+      } else if (payment_mode == "neft") {
         $("#cash_payment").hide();
         $("#cheque_payment").hide();
         $("#neft_payment").show();
-    }
+      }
 
-        $('#cheque_number').val(denomination.cheque_number);
-        $('#cheque_amount').val(denomination.cheque_amount);
-        $('#cheque_date').val(denomination.cheque_date);
-        $('#cheque_bank_name').val(denomination.cheque_bank_name);
-        $('#cheque_ledger_name').val(denomination.ledger_ref_id);
-        $('#neft_ledger_name').val(denomination.ledger_ref_id);
-        $('#neft_number').val(denomination.neft_ref_number);
-        $('#neft_amount').val(denomination.neft_amount);
-        $('#neft_date').val(denomination.neft_tran_date);
-        $('#neft_bank_name').val(denomination.neft_bank_name);
-        $('#receive_five_hundred').val(denomination.no_five_hundred).trigger('keyup');
-        $('#receive_two_hundred').val(denomination.no_two_hundred).trigger('keyup');
-        $('#receive_hundred').val(denomination.no_hundred).trigger('keyup');
-        $('#receive_fifty').val(denomination.no_fifty).trigger('keyup');
-        $('#receive_twenty').val(denomination.no_twenty).trigger('keyup');
-        $('#receive_ten').val(denomination.no_ten).trigger('keyup');
-        $('#receive_five').val(denomination.no_five).trigger('keyup');
-        $('#total_amount').val(denomination.total_amount);
+      $('#cheque_number').val(denomination.cheque_number);
+      $('#cheque_amount').val(denomination.cheque_amount);
+      $('#cheque_date').val(denomination.cheque_date);
+      $('#cheque_bank_name').val(denomination.cheque_bank_name);
+      $('#cheque_ledger_name').val(denomination.ledger_ref_id);
+      $('#neft_ledger_name').val(denomination.ledger_ref_id);
+      $('#neft_number').val(denomination.neft_ref_number);
+      $('#neft_amount').val(denomination.neft_amount);
+      $('#neft_date').val(denomination.neft_tran_date);
+      $('#neft_bank_name').val(denomination.neft_bank_name);
+      $('#receive_five_hundred').val(denomination.no_five_hundred).trigger('keyup');
+      $('#receive_two_hundred').val(denomination.no_two_hundred).trigger('keyup');
+      $('#receive_hundred').val(denomination.no_hundred).trigger('keyup');
+      $('#receive_fifty').val(denomination.no_fifty).trigger('keyup');
+      $('#receive_twenty').val(denomination.no_twenty).trigger('keyup');
+      $('#receive_ten').val(denomination.no_ten).trigger('keyup');
+      $('#receive_five').val(denomination.no_five).trigger('keyup');
+      $('#total_amount').val(denomination.total_amount);
 
 
     })
