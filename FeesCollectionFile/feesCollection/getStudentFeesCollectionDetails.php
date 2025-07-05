@@ -95,23 +95,10 @@ $getAreaMasterDetailsQry->closeCursor();
 //Fee Details /// Gross Payable/// Last year fees//////////////////////
 $split_academic_year = explode('-', $academic_year);
 $last_year = (($split_academic_year[0] - 1) . '-' . ($split_academic_year[1] - 1));
-$particular_std_id = array('14', '15', '16', '17', '18', '19', '20', '21', '22', '23');
-if (!in_array($standard, $particular_std_id)) { //these under 9 std. so jst add 1 to the id and update.
-    $lastyr_std_id = intval($standard) - 1;
-} else { //these are 11th std so  no need to check next standard id.
-    $lastyr_std_id = '0';
-
-    if ($standard == '19') { //Maths_biology
-        $lastyr_std_id = '14';
-    } else if ($standard == '20') { //maths_computerscience
-        $lastyr_std_id = '15';
-    } else if ($standard == '21') { //biology_computerscience
-        $lastyr_std_id = '16';
-    } else if ($standard == '22') { //commerce_computerscience
-        $lastyr_std_id = '17';
-    } else if ($standard == '23') { //all
-        $lastyr_std_id = '18';
-    }
+$getOldStudCntQry = $connect->query(" SELECT standard as last_yr_std FROM `student_history` WHERE student_id = '$student_id' AND academic_year ='$last_year' ");
+$lastyr_std_id = null;
+if ($getOldStudCntQry->rowCount() > 0) {
+    $lastyr_std_id = $getOldStudCntQry->fetchColumn(); // fetches last_yr_std
 }
 //Group fees
 // $getOldStudCntQry = $connect->query(" SELECT * FROM `student_creation` WHERE studentstype ='2' AND YEAR(created_date) <= YEAR(CURDATE()) AND student_id = '$student_id' ");

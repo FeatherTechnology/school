@@ -230,6 +230,7 @@ $getManualConcessionQry = $connect->query("
       AND fc.academic_year = '$academic_year'
       AND fc.school_id = '$school_id'
 ");
+
 while ($row = $getManualConcessionQry->fetch()) {
     $table = $row['fees_table_name'];
     $feesId = $row['fees_id'];
@@ -238,20 +239,16 @@ while ($row = $getManualConcessionQry->fetch()) {
 
     if ($table == 'amenitytable') {
         $particularQry = $connect->query("SELECT amenity_particulars FROM amenity_fee WHERE amenity_fee_id = '$feesId'");
-        $particularRow = $particularQry->fetch();
-        $particular = $particularRow['amenity_particulars'] ?? '';
+        $particular = $particularQry->fetch()['amenity_particulars'] ?? '';
     } elseif ($table == 'extratable') {
         $particularQry = $connect->query("SELECT extra_particulars FROM extra_curricular_activities_fee WHERE extra_fee_id = '$feesId'");
-        $particularRow = $particularQry->fetch();
-        $particular = $particularRow['extra_particulars'] ?? '';
+        $particular = $particularQry->fetch()['extra_particulars'] ?? '';
     } elseif ($table == 'grptable') {
         $particularQry = $connect->query("SELECT grp_particulars FROM group_course_fee WHERE grp_course_id = '$feesId'");
-        $particularRow = $particularQry->fetch();
-        $particular = $particularRow['grp_particulars'] ?? '';
+        $particular = $particularQry->fetch()['grp_particulars'] ?? '';
     } elseif ($table == 'transport') {
         $particularQry = $connect->query("SELECT particulars FROM area_creation_particulars WHERE particulars_id = '$feesId'");
-        $particularRow = $particularQry->fetch();
-        $particular = $particularRow['particulars'] ?? '';
+        $particular = $particularQry->fetch()['particulars'] ?? '';
     }
 
     if (!empty($particular)) {
@@ -260,10 +257,9 @@ while ($row = $getManualConcessionQry->fetch()) {
             'receipt_no' => 'Manual Concession',
             'fee_paid' => 0,
             'concession' => $concessionAmount,
-            'balance' => ''
+            'balance' => 0 // Will update below
         ];
 
-        // Insert into feeData or transportFeeData accordingly
         if ($table == 'transport') {
             if (!isset($transportFeeData[$particular])) {
                 $transportFeeData[$particular] = [
@@ -271,6 +267,18 @@ while ($row = $getManualConcessionQry->fetch()) {
                     'receipts' => []
                 ];
             }
+
+            $totalPaid = 0;
+            $totalConcession = $concessionAmount;
+
+            foreach ($transportFeeData[$particular]['receipts'] as $r) {
+                $totalPaid += $r['fee_paid'];
+                $totalConcession += $r['concession'] ?? 0;
+            }
+
+            $feeCollection = $transportFeeData[$particular]['fee_collection'];
+            $manualRow['balance'] = $feeCollection - ($totalPaid + $concessionAmount);
+
             $transportFeeData[$particular]['receipts'][] = $manualRow;
         } else {
             if (!isset($feeData[$particular])) {
@@ -279,15 +287,26 @@ while ($row = $getManualConcessionQry->fetch()) {
                     'receipts' => []
                 ];
             }
+
+            $totalPaid = 0;
+            $totalConcession = $concessionAmount;
+
+            foreach ($feeData[$particular]['receipts'] as $r) {
+                $totalPaid += $r['fee_paid'];
+                $totalConcession += $r['concession'] ?? 0;
+            }
+
+            $feeCollection = $feeData[$particular]['fee_collection'];
+            $manualRow['balance'] = $feeCollection - ($totalPaid + $concessionAmount);
+
             $feeData[$particular]['receipts'][] = $manualRow;
         }
     }
 }
+
 $lastYearPendingData = [];
 
-$lastYearPendingQry = $connect->query("
-   -- 1. grptable
-SELECT 
+$lastYearPendingQry = $connect->query("SELECT 
     'grptable' AS fees_table_name,
     gcf.grp_particulars AS particular,
     gcf.grp_amount AS fee_collection,
@@ -392,28 +411,42 @@ SELECT
     acp.due_amount AS fee_collection,
     COALESCE(SUM(tafd.fee_received), 0) AS fee_paid,
     COALESCE(SUM(tafd.scholarship), 0) AS concession,
-    (
-        acp.due_amount
-        - COALESCE(SUM(tafd.fee_received), 0)
-        - COALESCE(SUM(tafd.scholarship), 0)
-        - COALESCE((
-            SELECT SUM(fc.scholarship_amount)
-            FROM fees_concession fc
-            WHERE fc.student_id = taf.admission_id
-              AND fc.fees_table_name = 'transport'
-              AND fc.fees_master_id = tafd.area_creation_id
-        ), 0)
+    ( 
+        acp.due_amount - 
+        COALESCE(SUM(tafd.fee_received), 0) - 
+        COALESCE(SUM(tafd.scholarship), 0) - 
+        COALESCE(
+            (
+                SELECT SUM(fc.scholarship_amount) 
+                FROM fees_concession fc 
+                WHERE fc.student_id = '$student_id' 
+                AND fc.fees_table_name = 'transport' 
+                AND fc.fees_master_id = acp.area_creation_id
+            ), 
+            0
+        ) 
     ) AS balance
-FROM area_creation_particulars acp
-JOIN transport_admission_fees_details tafd 
-    ON acp.particulars_id = tafd.area_creation_particulars_id
-JOIN transport_admission_fees taf 
-    ON tafd.admission_fees_ref_id = taf.id
-WHERE 
-    taf.admission_id = '$student_id'
+FROM 
+    area_creation_particulars acp
+LEFT JOIN 
+    transport_admission_fees_details tafd ON acp.particulars_id = tafd.area_creation_particulars_id
+    AND tafd.admission_fees_ref_id IN (
+        SELECT id FROM transport_admission_fees 
+        WHERE admission_id = '$student_id' 
+        AND academic_year = '$last_year'
+    )
+LEFT JOIN 
+    transport_admission_fees taf ON tafd.admission_fees_ref_id = taf.id
+    AND taf.admission_id = '$student_id' 
     AND taf.academic_year = '$last_year'
-    AND acp.area_creation_id = tafd.area_creation_id
-GROUP BY acp.particulars_id
+WHERE 
+    acp.area_creation_id IN (
+        SELECT transportarearefid FROM student_history 
+        WHERE student_id = '$student_id' 
+        AND academic_year = '$last_year'
+    )
+GROUP BY 
+    acp.particulars_id
 
 ");
 
@@ -458,55 +491,96 @@ while ($row = $lastYearPendingQry->fetch()) {
     <tbody>
         <?php
         foreach ($feeData as $particular => $details) {
-            // First row for the total fee amount
             echo "<tr>
-                <td></td>
-                <td></td>
-             <td><b>" . $particular . "</b></td>
-                <td style='text-align: right;'>" . $details['fee_collection'] . "</td>
-                <td></td>
-                <td></td>
-                 <td style='text-align: right;'>" . $details['fee_collection'] . "</td>
-            </tr>";
-
-            // Each payment row
-            foreach ($details['receipts'] as $receipt) {
-                echo "<tr>
-                   <td>" . (!empty($receipt['receipt_date']) ? date('d/m/Y', strtotime($receipt['receipt_date'])) : '') . "</td>
-                    <td>" . $receipt['receipt_no'] . "</td>
-                    <td>" . $particular . "</td>
-                    <td></td>
-                    <td style='text-align: right;'>" . $receipt['fee_paid'] . "</td>
-                    <td style='text-align: right;'>" . ($receipt['concession'] ?? '') . "</td>
-                    <td style='text-align: right;'>" . ($receipt['balance'] ?? '') . "</td>
-                </tr>";
-            }
-        }
-
-
-        foreach ($transportFeeData as $particular => $details) {
-            echo "<tr> 
-        <td></td> 
-        <td></td> 
-      <td><b>" . $particular . "</b></td>
-        <td style='text-align: right;'>" . $details['fee_collection'] . "</td> 
-        <td></td> 
-        <td></td> 
-         <td style='text-align: right;'>" . $details['fee_collection'] . "</td>
+        <td></td>
+        <td></td>
+        <td><b>" . $particular . "</b></td>
+        <td style='text-align: right;'>" . $details['fee_collection'] . "</td>
+        <td></td>
+        <td></td>
+    <td style='text-align: right; font-weight: bold !important;'>" . $details['fee_collection'] . "</td>
     </tr>";
 
+            // Sort receipts: manual concession comes first (empty date)
+            usort($details['receipts'], function ($a, $b) {
+                $dateA = empty($a['receipt_date']) ? '0000-00-00' : $a['receipt_date'];
+                $dateB = empty($b['receipt_date']) ? '0000-00-00' : $b['receipt_date'];
+                return strcmp($dateA, $dateB);
+            });
+
+            $totalPaid = 0;
+            $totalConcession = 0;
+            $feeCollection = $details['fee_collection'];
+
             foreach ($details['receipts'] as $receipt) {
-                echo "<tr> 
-           <td>" . (!empty($receipt['receipt_date']) ? date('d/m/Y', strtotime($receipt['receipt_date'])) : '') . "</td>
-            <td>" . $receipt['receipt_no'] . "</td> 
-            <td>" . $particular . "</td> 
-            <td></td> 
-            <td style='text-align: right;'>" . $receipt['fee_paid'] . "</td> 
-            <td style='text-align: right;'>" . ($receipt['concession'] ?? '') . "</td> 
-            <td style='text-align: right;'>" . ($receipt['balance'] ?? '') . "</td> 
+                $paid = $receipt['fee_paid'];
+                $concession = $receipt['concession'] ?? 0;
+
+                $totalPaid += $paid;
+                $totalConcession += $concession;
+                $balance = $feeCollection - ($totalPaid + $totalConcession);
+
+                echo "<tr>
+            <td>" . (!empty($receipt['receipt_date']) ? date('d/m/Y', strtotime($receipt['receipt_date'])) : '') . "</td>
+            <td>" . $receipt['receipt_no'] . "</td>
+            <td>" . $particular . "</td>
+            <td></td>
+            <td style='text-align: right;'>" . $paid . "</td>
+            <td style='text-align: right;'>" . $concession . "</td>
+         <td style='text-align: right; font-weight: bold !important;'>" . $balance . "</td>
+
+
         </tr>";
             }
         }
+
+
+
+        foreach ($transportFeeData as $particular => $details) {
+            echo "<tr>
+        <td></td>
+        <td></td>
+        <td><b>" . $particular . "</b></td>
+        <td style='text-align: right;'>" . $details['fee_collection'] . "</td>
+        <td></td>
+        <td></td>
+       <td style='text-align: right; font-weight: bold !important;'>" . $details['fee_collection'] . "</td>
+    </tr>";
+
+            // Sort receipts: manual concession comes first
+            usort($details['receipts'], function ($a, $b) {
+                $dateA = empty($a['receipt_date']) ? '0000-00-00' : $a['receipt_date'];
+                $dateB = empty($b['receipt_date']) ? '0000-00-00' : $b['receipt_date'];
+                return strcmp($dateA, $dateB);
+            });
+
+            $totalPaid = 0;
+            $totalConcession = 0;
+            $feeCollection = $details['fee_collection'];
+
+            foreach ($details['receipts'] as $receipt) {
+                $paid = $receipt['fee_paid'];
+                $concession = $receipt['concession'] ?? 0;
+
+                $totalPaid += $paid;
+                $totalConcession += $concession;
+                $balance = $feeCollection - ($totalPaid + $totalConcession);
+
+                echo "<tr>
+            <td>" . (!empty($receipt['receipt_date']) ? date('d/m/Y', strtotime($receipt['receipt_date'])) : '') . "</td>
+            <td>" . $receipt['receipt_no'] . "</td>
+            <td>" . $particular . "</td>
+            <td></td>
+            <td style='text-align: right;'>" . $paid . "</td>
+            <td style='text-align: right;'>" . $concession . "</td>
+              <td style='text-align: right; font-weight: bold !important;'>" . $balance . "</td>
+
+
+
+        </tr>";
+            }
+        }
+
 
         // Display Last Year Total Row First
         $totalLastYearCollection = 0;
@@ -539,16 +613,18 @@ while ($row = $lastYearPendingQry->fetch()) {
     JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id
     WHERE lyf.admission_id = '$student_id' AND lyf.academic_year = '$year_id' AND (lyfd.fee_received != 0 OR lyfd.scholarship != 0)
 ");
-$totalLastYearCurrentYearPaid = 0;
-$totalLastYearCurrentYearConcession = 0;
+        $runningBalance = $lastYearBalance;
+        $totalLastYearCurrentYearPaid = 0;
+        $totalLastYearCurrentYearConcession = 0;
         while ($ly_row = $lastyr_paidQry->fetch()) {
             $paid = $ly_row['fee_received'];
             $concession = $ly_row['scholarship'];
             $total = $paid + $concession;
-            $balance = $ly_row['balance_tobe_paid'];; // Since this is current year payment for last year dues
+            $runningBalance -= $total; // ✅ Subtract cumulatively
+            $balance = $runningBalance;
 
-    $totalLastYearCurrentYearPaid += $paid;
-    $totalLastYearCurrentYearConcession += $concession;
+            $totalLastYearCurrentYearPaid += $paid;
+            $totalLastYearCurrentYearConcession += $concession;
 
             echo "<tr>
         <td>" . date('d/m/Y', strtotime($ly_row['receipt_date'])) . "</td>
@@ -557,10 +633,11 @@ $totalLastYearCurrentYearConcession = 0;
         <td></td>
         <td style='text-align: right;'>{$paid}</td>
         <td style='text-align: right;'>{$concession}</td>
-        <td style='text-align: right;'>{$balance}</td>
+     <td style='text-align: right;'><b>{$balance}</b></td>
+
     </tr>";
         }
-$last_bl = $lastYearBalance - ($totalLastYearCurrentYearPaid + $totalLastYearCurrentYearConcession);
+        $last_bl = $lastYearBalance - ($totalLastYearCurrentYearPaid + $totalLastYearCurrentYearConcession);
         $grandTotalFeeCollection = 0;
         $grandTotalFeePaid = 0;
         $grandTotalFeeConcession = 0;
@@ -580,7 +657,7 @@ $last_bl = $lastYearBalance - ($totalLastYearCurrentYearPaid + $totalLastYearCur
                 $grandTotalFeeConcession += $receipt['concession'];
             }
         }
-      $grandTotalBalance = ($grandTotalFeeCollection - $grandTotalFeePaid - $grandTotalFeeConcession) + $last_bl;
+        $grandTotalBalance = ($grandTotalFeeCollection - $grandTotalFeePaid - $grandTotalFeeConcession) + $last_bl;
 
         ?>
 
@@ -588,7 +665,7 @@ $last_bl = $lastYearBalance - ($totalLastYearCurrentYearPaid + $totalLastYearCur
     <tfoot>
         <tr>
             <td colspan="6" style="text-align: right;"><b>Grand Total Balance:</b></td>
-            <td style="text-align: right;"><?= $grandTotalBalance ?></td>
+           <td style="text-align: right; font-weight: bold !important;"><?= $grandTotalBalance ?></td>
         </tr>
     </tfoot>
 
