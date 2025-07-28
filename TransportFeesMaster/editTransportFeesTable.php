@@ -26,6 +26,7 @@ if (isset($_POST['fees_id'])) {
                 <td><input type="number" class="form-control transportfeesreceived" name="transportFeeReceived[]" value="' . $feeDetail['fee_received'] . '"></td>
                 <td><input type="number" class="form-control transportfeesscholarship" name="transportFeeScholarship[]" value="' . $feeDetail['scholarship'] . '"></td>
                 <td><input type="number" class="form-control transportfeesbalance" name="transportFeeBalance[]" value="' . $feeDetail['balance_tobe_paid']  . '" readonly></td>
+                <td><input type="text" class="form-control transportfeesRemark" name="transportfeesRemark[]" value="' . $feeDetail['remarks']  . '" ></td>
             </tr>';
         
     }

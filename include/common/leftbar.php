@@ -468,7 +468,7 @@ if (sizeof($getmanageuserdetails) > 0) {
 												<?php }
 												if (isset($student_profile_report) && $student_profile_report == 0) { ?>
 													<li>
-														<a href="student_profile_report"><i class="icon-sunset"></i>Student Profile Report</a>
+														<a href="student_profile_report"><i class="icon-person_pin"></i>Student Profile Report</a>
 													</li>
 												<?php }
 												if (isset($overall_scholarship_fee_details) && $overall_scholarship_fee_details == 0) { ?>

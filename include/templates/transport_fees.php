@@ -195,6 +195,7 @@ if (isset($_GET['upd'])) {
                                             <th>Fees Received</th>
                                             <th>Scholarship/Concession</th>
                                             <th>Balance to be Paid</th>
+                                            <th>Remarks</th>
                                         </tr>
                                     </thead>
                                     <tbody id="transport_fees_table_body"> </tbody>

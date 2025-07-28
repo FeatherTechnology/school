@@ -87,7 +87,7 @@ SELECT DISTINCT
     sc.sms_sent_no,
     gcf.grp_particulars AS concession_fee_name, 
     (COALESCE(afd.scholarship, 0)) AS total_scholarship_amount,
-    '' AS remark 
+     afd.remarks AS remark 
 FROM
     `student_creation` sc
 JOIN student_history sh ON
@@ -192,7 +192,7 @@ WHERE
             WHEN(afd.fees_table_name='amenitytable') THEN af.amenity_particulars 
         ELSE ''
         END AS concession_fee_name,
-         '' AS remark 
+          afd.remarks AS remark 
         FROM `student_creation` sc 
         JOIN student_history sh ON
             sc.student_id = sh.student_id AND sh.academic_year = '$academicyear'
@@ -265,59 +265,35 @@ WHERE
     <?php
     // Query for the previous academic year
     // Ensure the columns and data types are consistent in both queries
-$query1 = "SELECT DISTINCT sc.admission_number, sc.student_name, std.standard, sh.section, sc.sms_sent_no,  
-(COALESCE(fc.scholarship_amount, 0)) AS total_scholarship_amount,
-CASE 
-    WHEN(fc.fees_table_name='grptable') THEN gcf.grp_particulars
-    WHEN(fc.fees_table_name='extratable') THEN ecaf.extra_particulars 
-    WHEN(fc.fees_table_name='amenitytable') THEN af.amenity_particulars 
-    WHEN(fc.fees_table_name='transport') THEN acp.particulars
-    ELSE ''
-END AS concession_fee_name, fc.remark
-FROM student_creation sc
-JOIN student_history sh ON sc.student_id = sh.student_id AND sh.academic_year = '$lastyear'
-JOIN standard_creation std ON sh.standard = std.standard_id
-JOIN fees_concession fc ON sh.student_id = fc.student_id
-LEFT JOIN group_course_fee gcf ON gcf.grp_course_id = fc.fees_id AND fc.fees_table_name='grptable'
-LEFT JOIN extra_curricular_activities_fee ecaf ON ecaf.extra_fee_id = fc.fees_id AND fc.fees_table_name = 'extratable'
-LEFT JOIN amenity_fee af ON af.amenity_fee_id = fc.fees_id AND fc.fees_table_name = 'amenitytable'
-LEFT JOIN area_creation_particulars acp ON acp.particulars_id = fc.fees_id AND fc.fees_table_name = 'transport'
-WHERE fc.academic_year = '$lastyear' 
-AND sc.medium = '$stdMedium' 
-AND sh.standard = '$stdStandard'
-AND ($stdSection = '0' OR sc.section = '$stdSection') 
-AND sc.status = '0' 
-AND sc.school_id = '$school_id' 
-AND COALESCE(fc.scholarship_amount, 0) > 0";
-
+  
 $query2 = "SELECT DISTINCT sc.admission_number, sc.student_name, std.standard, sh.section, sc.sms_sent_no,  
-(COALESCE(afd.scholarship, 0)) AS total_scholarship_amount,
+(COALESCE(lfd.scholarship, 0)) AS total_scholarship_amount,
 CASE 
-    WHEN(afd.fees_table_name='grptable') THEN gcf.grp_particulars
-    WHEN(afd.fees_table_name='extratable') THEN ecaf.extra_particulars 
-    WHEN(afd.fees_table_name='amenitytable') THEN af.amenity_particulars 
-    WHEN(afd.fees_table_name='transport') THEN acp.particulars
+    WHEN(lfd.fees_table_name='grptable') THEN gcf.grp_particulars
+    WHEN(lfd.fees_table_name='extratable') THEN ecaf.extra_particulars 
+    WHEN(lfd.fees_table_name='amenitytable') THEN af.amenity_particulars 
+    WHEN(lfd.fees_table_name='transport') THEN acp.particulars
     ELSE ''
-END AS concession_fee_name, '' AS remark 
+END AS concession_fee_name, lfd.remarks AS remark 
 FROM student_creation sc
-JOIN student_history sh ON sc.student_id = sh.student_id AND sh.academic_year = '$lastyear'
+JOIN student_history sh ON sc.student_id = sh.student_id AND sh.academic_year = '$academicyear'
 JOIN standard_creation std ON sh.standard = std.standard_id
-JOIN admission_fees afs ON sc.student_id = afs.admission_id
-LEFT JOIN admission_fees_details afd ON afd.admission_fees_ref_id = afs.id
-LEFT JOIN group_course_fee gcf ON gcf.grp_course_id = afd.fees_id AND afd.fees_table_name='grptable'
-LEFT JOIN extra_curricular_activities_fee ecaf ON ecaf.extra_fee_id = afd.fees_id AND afd.fees_table_name = 'extratable'
-LEFT JOIN amenity_fee af ON af.amenity_fee_id = afd.fees_id AND afd.fees_table_name = 'amenitytable'
-LEFT JOIN area_creation_particulars acp ON acp.particulars_id = afd.fees_id AND afd.fees_table_name = 'transport'
-WHERE afs.academic_year = '$lastyear' 
+JOIN last_year_fees lfs ON sc.student_id = lfs.admission_id
+LEFT JOIN  last_year_fees_details lfd ON lfd.admission_fees_ref_id = lfs.id
+LEFT JOIN group_course_fee gcf ON gcf.grp_course_id = lfd.fees_id AND lfd.fees_table_name='grptable'
+LEFT JOIN extra_curricular_activities_fee ecaf ON ecaf.extra_fee_id = lfd.fees_id AND lfd.fees_table_name = 'extratable'
+LEFT JOIN amenity_fee af ON af.amenity_fee_id = lfd.fees_id AND lfd.fees_table_name = 'amenitytable'
+LEFT JOIN area_creation_particulars acp ON acp.particulars_id = lfd.fees_id AND lfd.fees_table_name = 'transport'
+WHERE lfs.academic_year = '$academicyear' 
 AND sc.medium = '$stdMedium' 
 AND sh.standard = '$stdStandard'
 AND ($stdSection = '0' OR sc.section = '$stdSection') 
 AND sc.status = '0' 
 AND sc.school_id = '$school_id' 
-AND COALESCE(afd.scholarship, 0) > 0";
+AND COALESCE(lfd.scholarship, 0) > 0";
 
 // Combine the two queries using UNION ALL
-$combinedQuery = "$query1 UNION ALL $query2";
+$combinedQuery = " $query2";
 // Execute the combined query
 $getStudentListLastYearQry = $connect->query($combinedQuery);
 $grnd_lastyr_total_fee = 0;
@@ -419,7 +395,7 @@ SELECT DISTINCT
     sc.sms_sent_no, 
     (COALESCE(afd.scholarship, 0)) AS total_scholarship_amount, 
     acp.particulars AS concession_fee_name, 
-    '' AS remark -- Placeholder for the missing remark in second query
+     afd.remarks AS remark
 FROM 
     `student_creation` sc 
 JOIN student_history sh ON

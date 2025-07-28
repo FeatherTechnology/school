@@ -60,5 +60,6 @@ while ($grpfeeDetailsInfo = $feeQueryToUse->fetch()) {
         <td><input type="number" class="form-control grpfeesreceived" name="grpFeeReceived[]" value="0"> </td>
         <td><input type="number" class="form-control grpfeesscholarship" name="grpFeeScholarship[]" value="0"> </td>
         <td><input type="number" class="form-control grpfeesbalance" name="grpFeeBalance[]" value="<?php echo $grpAmount; ?>" readonly> </td>
+        <td><input type="text" class="form-control grpFeeRemark" name="grpFeeRemark[]"> </td>
     </tr>
 <?php } ?>

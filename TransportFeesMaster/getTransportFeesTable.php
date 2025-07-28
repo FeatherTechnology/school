@@ -58,5 +58,6 @@ while($transportFeeDetailsInfo = $feeDetailsQry->fetch()){
     <td><input type="number" class="form-control transportfeesreceived" name="transportFeeReceived[]" value="0"> </td>
     <td><input type="number" class="form-control transportfeesscholarship" name="transportFeeScholarship[]" value="0"> </td>
     <td><input type="number" class="form-control transportfeesbalance" name="transportFeeBalance[]" value="<?php echo $transportAmount; ?>" readonly> </td>
+     <td><input type="text" class="form-control transportfeesRemark" name="transportfeesRemark[]" > </td>
 </tr>
 <?php } ?>

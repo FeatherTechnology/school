@@ -26,6 +26,7 @@ if (isset($_POST['fees_id'])) {
                 <td><input type="number" class="form-control grpfeesreceived" name="grpFeeReceived[]" value="' . $feeDetail['fee_received'] . '"></td>
                 <td><input type="number" class="form-control grpfeesscholarship" name="grpFeeScholarship[]" value="' . $feeDetail['scholarship'] . '"></td>
                 <td><input type="number" class="form-control grpfeesbalance" name="grpFeeBalance[]" value="' . $feeDetail['balance_tobe_paid'] . '" readonly></td>
+                <td><input type="text" class="form-control grpFeeRemark" name="grpFeeRemark[]" value="' . $feeDetail['remarks'] . '" ></td>
             </tr>';
         } elseif ($feesTable == 'extratable') {
             $extraFee = $connect->query("SELECT * FROM extra_curricular_activities_fee WHERE extra_fee_id = '" . $feeDetail['fees_id'] . "'")->fetch(PDO::FETCH_ASSOC);
@@ -40,6 +41,7 @@ if (isset($_POST['fees_id'])) {
                 <td><input type="number" class="form-control extrafeesreceived" name="extraAmntReceived[]" value="' . $feeDetail['fee_received'] . '"></td>
                 <td><input type="number" class="form-control extrafeesscholar" name="extraAmntScholarship[]" value="' . $feeDetail['scholarship'] . '"></td>
                 <td><input type="number" class="form-control extrafeesbalance" name="extraAmntBalance[]" value="' . $feeDetail['balance_tobe_paid'] . '" readonly></td>
+                <td><input type="text" class="form-control extrafeesremarks" name="extrafeesremarks[]" value="' . $feeDetail['remarks'] . '" ></td>
             </tr>';
         } elseif ($feesTable == 'amenitytable') {
             $amenityFee = $connect->query("SELECT * FROM amenity_fee WHERE amenity_fee_id = '" . $feeDetail['fees_id'] . "'")->fetch(PDO::FETCH_ASSOC);
@@ -55,6 +57,7 @@ if (isset($_POST['fees_id'])) {
 <td><input type="number" class="form-control amenityfeesreceived" name="amenityAmntReceived[]" value="' . $feeDetail['fee_received'] . '"></td>
 <td><input type="number" class="form-control amenityfeesscholar" name="amenityAmntScholarship[]" value="' . $feeDetail['scholarship'] . '"></td>
 <td><input type="number" class="form-control amenityfeesbalance" name="amenityAmntBalance[]" value="' . $feeDetail['balance_tobe_paid'] . '" readonly></td>
+<td><input type="text" class="form-control amenityAmtremarks" name="amenityAmtremarks[]" value="' . $feeDetail['remarks'] . '" ></td>
 </tr>';
         }
     }
