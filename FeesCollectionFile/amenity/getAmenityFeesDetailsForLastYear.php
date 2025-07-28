@@ -35,7 +35,7 @@ if ($CheckReceiptQry1->rowCount() > 0) {
     }
     $feeDetailsQry = $connect->query("SELECT fm.fees_id, fm.academic_year, af.* ,af.amenity_amount AS ovrlAllAmenityAmnt FROM `fees_master` fm JOIN amenity_fee af ON fm.fees_id = af.fee_master_id where fm.academic_year = '$academicYear' && fm.medium = '$medium' && $student_type_cndtn && fm.standard = '$prevstandardId' && af.status ='1' ");
 } else {
-    echo '';// no data to return
+    echo ''; // no data to return
     exit;
 }
 // }
@@ -69,5 +69,6 @@ while ($amenityFeeDetailsInfo = $feeQueryToUse->fetch()) {
         <td><input type="number" class="form-control amenityfeesreceived" name="amenityAmntReceived[]" value="0"> </td>
         <td><input type="number" class="form-control amenityfeesscholar" name="amenityAmntScholarship[]" value="0"> </td>
         <td><input type="number" class="form-control amenityfeesbalance" name="amenityAmntBalance[]" value="<?php echo $amenityAmount; ?>" readonly> </td>
+        <td><input type="text" class="form-control amenityAmtremarks" name="amenityAmtremarks[]"> </td>
     </tr>
 <?php } ?>

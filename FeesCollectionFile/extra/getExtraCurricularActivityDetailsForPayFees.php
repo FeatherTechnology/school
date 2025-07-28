@@ -55,5 +55,6 @@ while($extraFeeDetailsInfo = $feeDetailsQry->fetch()){
     <td><input type="number" class="form-control extrafeesreceived" name="extraAmntReceived[]" value="0"> </td>
     <td><input type="number" class="form-control extrafeesscholar" name="extraAmntScholarship[]" value="0"> </td>
     <td><input type="number" class="form-control extrafeesbalance" name="extraAmntBalance[]" value="<?php echo $extraAmount; ?>" readonly> </td>
+     <td><input type="text" class="form-control extrafeesremarks" name="extrafeesremarks[]"> </td>
 </tr>
 <?php } ?>

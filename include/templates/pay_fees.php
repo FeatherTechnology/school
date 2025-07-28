@@ -205,6 +205,7 @@ if (isset($_GET['upd'])) {
                                             <th>Fees Received</th>
                                             <th>Scholarship/Concession</th>
                                             <th>Balance to be Paid</th>
+                                            <th>Remarks</th>
                                         </tr>
                                     </thead>
                                     <tbody id="temp_group_fees"> </tbody>
@@ -218,6 +219,7 @@ if (isset($_GET['upd'])) {
                                             <th>Fees Received</th>
                                             <th>Scholarship/Concession</th>
                                             <th>Balance to be Paid</th>
+                                            <th>Remarks</th>
                                         </tr>
                                     </thead>
                                     <tbody id="temp_extra_curricular_fees"> </tbody>
@@ -231,6 +233,7 @@ if (isset($_GET['upd'])) {
                                             <th>Fees Received</th>
                                             <th>Scholarship/Concession</th>
                                             <th>Balance to be Paid</th>
+                                            <th>Remarks</th>
                                         </tr>
                                     </thead>
                                     <tbody id="temp_amenity_fees"> </tbody>
