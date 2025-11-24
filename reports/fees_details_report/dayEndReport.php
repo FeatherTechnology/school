@@ -87,8 +87,6 @@ if ($dateSelect == 'singledate') {
         WHERE af.receipt_date = '$singleDate' AND afd.fees_table_name = '$feeType'
             AND afd.fee_received > 0 
             AND sc.school_id = '$school_id' 
-            AND sc.status = 0
-
         GROUP BY af.id
         ORDER BY CAST(SUBSTRING(af.receipt_no, LOCATE('-', af.receipt_no) + 1) AS UNSIGNED)";
     } else if ($feeType == 'lastyear') {
@@ -113,8 +111,6 @@ if ($dateSelect == 'singledate') {
         WHERE lyf.receipt_date = '$singleDate' 
             AND lyfd.fee_received > 0 
             AND sc.school_id = '$school_id' 
-            AND sc.status = 0 
-
         ORDER BY CAST(SUBSTRING(lyf.receipt_no, LOCATE('-', lyf.receipt_no) + 1) AS UNSIGNED)";
     } else if ($feeType == 'transport') {
         $Qry = "SELECT 
@@ -151,8 +147,6 @@ if ($dateSelect == 'singledate') {
     WHERE taf.receipt_date ='$singleDate' 
         AND tafd.fee_received > 0 
         AND sc.school_id = '$school_id' 
-        AND sc.status = 0 
-
     GROUP BY taf.id
     ORDER BY CAST(SUBSTRING(taf.receipt_no, LOCATE('-', taf.receipt_no) + 1) AS UNSIGNED)";
     }
@@ -407,7 +401,7 @@ if ($dateSelect == 'singledate') {
         JOIN student_creation sc ON af.admission_id = sc.student_id 
         JOIN student_history sh ON sh.student_id = sc.student_id AND af.academic_year = sh.academic_year
         JOIN standard_creation std ON sh.standard = std.standard_id 
-        WHERE af.receipt_date ='$from_date' AND afd.fee_received > 0 AND afd.fees_table_name = '$feeType' AND sc.school_id = '$school_id' AND sc.status = 0
+        WHERE af.receipt_date ='$from_date' AND afd.fee_received > 0 AND afd.fees_table_name = '$feeType' AND sc.school_id = '$school_id'
         GROUP BY 
             af.id ORDER BY CAST(SUBSTRING(receipt_no, LOCATE('-', receipt_no) + 1) AS UNSIGNED)";
                 } else if ($feeType == 'lastyear') { //Last Year
@@ -432,7 +426,6 @@ WHERE
     lyf.receipt_date = '$from_date' 
     AND lyfd.fee_received > 0 
     AND sc.school_id = '$school_id' 
-    AND sc.status = 0 
 ORDER BY 
     CAST(SUBSTRING(lyf.receipt_no, LOCATE('-', lyf.receipt_no) + 1) AS UNSIGNED)";
                 } else if ($feeType == 'transport') { //Transport
@@ -467,7 +460,7 @@ ORDER BY
     JOIN student_creation sc ON taf.admission_id = sc.student_id 
     JOIN student_history sh ON sh.student_id = sc.student_id AND taf.academic_year = sh.academic_year 
     JOIN standard_creation std ON sh.standard = std.standard_id 
-        WHERE taf.receipt_date ='$from_date' AND tafd.fee_received > 0 AND sc.school_id = '$school_id' AND sc.status = 0 GROUP BY 
+        WHERE taf.receipt_date ='$from_date' AND tafd.fee_received > 0 AND sc.school_id = '$school_id' GROUP BY 
         taf.id ORDER BY CAST(SUBSTRING(receipt_no, LOCATE('-', receipt_no) + 1) AS UNSIGNED)";
                 }
 

@@ -25,3 +25,5 @@ $('#student_profile_view_btn').click(function () {
 
 
 }); //Document END//
+
+

@@ -72,7 +72,7 @@ while ($row = $totalFeesQry->fetch()) {
 // 4. Get fee paid details for each particular
 $paidDetailsQry = $connect->query("
     SELECT af.amenity_particulars AS particular, afs.receipt_date, afs.receipt_no, 
-           afd.fee_received AS fee_paid, afd.scholarship AS concession, afd.balance_tobe_paid AS balance
+           afd.fee_received AS fee_paid, afd.scholarship AS concession, afd.balance_tobe_paid AS balance,afd.remarks
     FROM admission_fees afs
     JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id
     JOIN amenity_fee af ON af.amenity_fee_id = afd.fees_id
@@ -113,7 +113,8 @@ $getExtraPaidQry = $connect->query("
         ecaf.extra_particulars AS particular,
         afd.fee_received AS fee_paid,
         afd.scholarship AS concession,
-        afd.balance_tobe_paid AS balance
+        afd.balance_tobe_paid AS balance,
+        afd.remarks
     FROM admission_fees afs
     JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id
     JOIN extra_curricular_activities_fee ecaf ON ecaf.extra_fee_id = afd.fees_id
@@ -156,7 +157,8 @@ $getTermPaidQry = $connect->query("
            gcf.grp_particulars AS particular,
            afd.fee_received AS fee_paid,
            afd.scholarship AS concession,
-           afd.balance_tobe_paid AS balance
+           afd.balance_tobe_paid AS balance,
+           afd.remarks
     FROM admission_fees afs
     JOIN admission_fees_details afd ON afs.id = afd.admission_fees_ref_id
     JOIN group_course_fee gcf ON gcf.grp_course_id = afd.fees_id
@@ -204,7 +206,8 @@ $getTransportPaidQry = $connect->query("
         acp.particulars AS particular, 
         tafd.fee_received AS fee_paid, 
         tafd.scholarship AS concession, 
-        tafd.balance_tobe_paid AS balance 
+        tafd.balance_tobe_paid AS balance,
+        tafd.remarks
     FROM 
         transport_admission_fees taf 
     JOIN 
@@ -224,7 +227,7 @@ while ($row = $getTransportPaidQry->fetch()) {
     }
 }
 $getManualConcessionQry = $connect->query("
-    SELECT fc.fees_table_name, fc.fees_id, fc.scholarship_amount, fc.scholarship_header
+    SELECT fc.fees_table_name, fc.fees_id, fc.scholarship_amount, fc.scholarship_header,fc.remark
     FROM fees_concession fc
     WHERE fc.student_id = '$student_id'
       AND fc.academic_year = '$academic_year'
@@ -234,6 +237,7 @@ $getManualConcessionQry = $connect->query("
 while ($row = $getManualConcessionQry->fetch()) {
     $table = $row['fees_table_name'];
     $feesId = $row['fees_id'];
+    $remarks = $row['remark'];
     $concessionAmount = $row['scholarship_amount'];
     $particular = '';
 
@@ -257,7 +261,8 @@ while ($row = $getManualConcessionQry->fetch()) {
             'receipt_no' => 'Manual Concession',
             'fee_paid' => 0,
             'concession' => $concessionAmount,
-            'balance' => 0 // Will update below
+            'balance' => 0 ,// Will update below
+            'remarks' => $remarks 
         ];
 
         if ($table == 'transport') {
@@ -465,10 +470,10 @@ while ($row = $lastYearPendingQry->fetch()) {
 <table class="table table-bordered" id="show_student_profile">
     <thead>
         <tr>
-            <th colspan="7" style="text-align:center;">AKV VIDYALAYA</th>
+            <th colspan="8" style="text-align:center;">AKV VIDYALAYA</th>
         </tr>
         <tr>
-            <td colspan="7">
+            <td colspan="8">
                 <table style="width: 100%;">
                     <tr>
                         <td style="text-align: left;"><b>Student Name:</b> <?= strtoupper($student_name) ?></td>
@@ -486,6 +491,7 @@ while ($row = $lastYearPendingQry->fetch()) {
             <th>Fees Collected</th>
             <th>Concession</th>
             <th>Balance</th>
+            <th>Remarks</th>
         </tr>
     </thead>
     <tbody>
@@ -498,8 +504,9 @@ while ($row = $lastYearPendingQry->fetch()) {
         <td style='text-align: right;'>" . $details['fee_collection'] . "</td>
         <td></td>
         <td></td>
-    <td style='text-align: right; font-weight: bold !important;'>" . $details['fee_collection'] . "</td>
-    </tr>";
+         <td style='text-align: right; font-weight: bold !important;'>" . $details['fee_collection'] . "</td>
+         <td></td>
+        </tr>";
 
             // Sort receipts: manual concession comes first (empty date)
             usort($details['receipts'], function ($a, $b) {
@@ -519,6 +526,7 @@ while ($row = $lastYearPendingQry->fetch()) {
                 $totalPaid += $paid;
                 $totalConcession += $concession;
                 $balance = $feeCollection - ($totalPaid + $totalConcession);
+                $remarks = $receipt['remarks'];
 
                 echo "<tr>
             <td>" . (!empty($receipt['receipt_date']) ? date('d/m/Y', strtotime($receipt['receipt_date'])) : '') . "</td>
@@ -527,14 +535,13 @@ while ($row = $lastYearPendingQry->fetch()) {
             <td></td>
             <td style='text-align: right;'>" . $paid . "</td>
             <td style='text-align: right;'>" . $concession . "</td>
-         <td style='text-align: right; font-weight: bold !important;'>" . $balance . "</td>
+             <td style='text-align: right; font-weight: bold !important;'>" . $balance . "</td>
+             <td>" . $remarks . "</td>
 
 
         </tr>";
             }
         }
-
-
 
         foreach ($transportFeeData as $particular => $details) {
             echo "<tr>
@@ -545,6 +552,7 @@ while ($row = $lastYearPendingQry->fetch()) {
         <td></td>
         <td></td>
        <td style='text-align: right; font-weight: bold !important;'>" . $details['fee_collection'] . "</td>
+        <td></td>
     </tr>";
 
             // Sort receipts: manual concession comes first
@@ -561,6 +569,7 @@ while ($row = $lastYearPendingQry->fetch()) {
             foreach ($details['receipts'] as $receipt) {
                 $paid = $receipt['fee_paid'];
                 $concession = $receipt['concession'] ?? 0;
+                $remarks = $receipt['remarks'];
 
                 $totalPaid += $paid;
                 $totalConcession += $concession;
@@ -573,10 +582,8 @@ while ($row = $lastYearPendingQry->fetch()) {
             <td></td>
             <td style='text-align: right;'>" . $paid . "</td>
             <td style='text-align: right;'>" . $concession . "</td>
-              <td style='text-align: right; font-weight: bold !important;'>" . $balance . "</td>
-
-
-
+            <td style='text-align: right; font-weight: bold !important;'>" . $balance . "</td>
+            <td>" . $remarks . "</td>
         </tr>";
             }
         }
@@ -604,11 +611,12 @@ while ($row = $lastYearPendingQry->fetch()) {
     <td style='text-align: right;'><b>{$totalLastYearPaid}</b></td>
     <td style='text-align: right;'><b>{$totalLastYearConcession}</b></td>
     <td style='text-align: right;'><b>{$lastYearBalance}</b></td>
+    <td></td>
 </tr>";
 
         // 2. Current Academic Year Paid for Last Year
         $lastyr_paidQry = $connect->query("
-    SELECT lyf.receipt_date, lyf.receipt_no, lyfd.fee_received, lyfd.scholarship, lyfd.balance_tobe_paid 
+    SELECT lyf.receipt_date, lyf.receipt_no, lyfd.fee_received, lyfd.scholarship, lyfd.balance_tobe_paid ,lyfd.remarks
     FROM last_year_fees lyf
     JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id
     WHERE lyf.admission_id = '$student_id' AND lyf.academic_year = '$year_id' AND (lyfd.fee_received != 0 OR lyfd.scholarship != 0)
@@ -619,6 +627,7 @@ while ($row = $lastYearPendingQry->fetch()) {
         while ($ly_row = $lastyr_paidQry->fetch()) {
             $paid = $ly_row['fee_received'];
             $concession = $ly_row['scholarship'];
+            $remarks = $ly_row['remarks'];
             $total = $paid + $concession;
             $runningBalance -= $total; // ✅ Subtract cumulatively
             $balance = $runningBalance;
@@ -634,6 +643,7 @@ while ($row = $lastYearPendingQry->fetch()) {
         <td style='text-align: right;'>{$paid}</td>
         <td style='text-align: right;'>{$concession}</td>
      <td style='text-align: right;'><b>{$balance}</b></td>
+     <td>{$remarks}</td>
 
     </tr>";
         }
@@ -660,14 +670,18 @@ while ($row = $lastYearPendingQry->fetch()) {
         $grandTotalBalance = ($grandTotalFeeCollection - $grandTotalFeePaid - $grandTotalFeeConcession) + $last_bl;
 
         ?>
+        <tr>
+            <td style="border: none;"></td>
+            <td style="border: none;"></td>
+            <td style="border: none;"></td>
+            <td style="border: none;"></td>
+            <td style="border: none;"></td>
+            <td style="text-align: right; "><b>Grand Total Balance:</b></td>
+            <td style="text-align: right; font-weight: bold !important;"><?= $grandTotalBalance ?></td>
+            <td></td>
+        </tr>
 
     </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="6" style="text-align: right;"><b>Grand Total Balance:</b></td>
-           <td style="text-align: right; font-weight: bold !important;"><?= $grandTotalBalance ?></td>
-        </tr>
-    </tfoot>
 
 </table>
 <script>
@@ -684,25 +698,19 @@ while ($row = $lastYearPendingQry->fetch()) {
                     text: 'Print',
                     title: '',
                     customize: function(win) {
-                        const css = `
-                        table {
-                            border-collapse: collapse !important;
-                            width: 100%;
-                        }
-                        table, th, td {
-                            border: 1px solid #000 !important;
-                        }
-                        table th, table td {
-                            padding: 5px;
-                            text-align: center;
-                        }
-                    `;
-                        const style = win.document.createElement('style');
-                        style.innerHTML = css;
-                        win.document.head.appendChild(style);
-
-                        var originalThead = $('#show_student_profile thead').clone();
+                        // 1. Replace header with original to preserve styles
+                        const originalThead = $('#show_student_profile thead').clone();
                         $(win.document.body).find('table thead').replaceWith(originalThead);
+                        // Only style table headers (th), not table data (td)
+                        $(win.document.head).append('<style>' +
+                            'table th { color: black !important; font-weight: bold !important; }' +
+                            'table { border-collapse: collapse !important; width: 100%; }' +
+                            'table th, td { border: 1px solid #000; padding: 4px; }' +
+                            'table tbody td b, table tbody td strong { font-weight: bold !important; color: black !important; }' +
+                            'table tr td:nth-child(2):empty + td:nth-child(3) { font-weight: bold !important; }' +
+                            'table td:nth-child(7) { font-weight: bold !important; }' +
+                            'table  tr:last-child td:nth-child(6)  { font-weight: bold !important; }' +
+                            '</style>');
                     }
                 }
             ]

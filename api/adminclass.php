@@ -2462,11 +2462,26 @@ class admin
 
 		$updateAreaCreation = "UPDATE area_creation SET area_name = '" . strip_tags($area_name) . "', no_of_terms = '" . strip_tags($no_of_terms) . "', transport_amount = '" . strip_tags($transport_amount) . "', status = '0', school_id='" . strip_tags($school_id) . "', year_id='" . strip_tags($log_year) . "', update_login_id='" . strip_tags($userid) . "', updated_date = '$current_date' WHERE area_id= '" . strip_tags($id) . "' ";
 		$updresult = $mysqli->query($updateAreaCreation) or die("Error in in update Query!." . $mysqli->error);
+		// ✅ get existing particulars_id for this area_id
+		$existing = [];
+		$res = $mysqli->query("SELECT particulars_id FROM area_creation_particulars 
+                       WHERE area_creation_id = '$id' ORDER BY particulars_id ASC");
 
-		$deleteacp = $mysqli->query("DELETE FROM `area_creation_particulars` WHERE `area_creation_id` = '$id' ");
+		while ($row = $res->fetch_assoc()) {
+			$existing[] = $row['particulars_id'];
+		}
 
+		// ✅ loop through terms and update
 		for ($i = 0; $i < $no_of_terms; $i++) {
-			$insertacp = $mysqli->query("INSERT INTO `area_creation_particulars`( `area_creation_id`, `particulars`, `due_amount`, `due_date`) VALUES ('$id','$item_detailsstr[$i]','$due_amountstr[$i]','$due_datestr[$i]')");
+			if (isset($existing[$i])) {
+				// update existing row
+				$particulars_id = $existing[$i];
+				$mysqli->query("UPDATE area_creation_particulars 
+            SET particulars = '{$item_detailsstr[$i]}', 
+                due_amount = '{$due_amountstr[$i]}', 
+                due_date = '{$due_datestr[$i]}' 
+            WHERE particulars_id = '$particulars_id' ");
+			} 
 		}
 	}
 
@@ -6705,7 +6720,7 @@ class admin
 		if (isset($_POST['extrafeesremarks'])) {
 			$extrafeesremarks = $_POST['extrafeesremarks'];
 		}
-		
+
 		//Extra Curricular Activity Table data END//
 
 		//Amenity Table data//
@@ -6726,7 +6741,7 @@ class admin
 		if (isset($_POST['amenityAmntScholarship'])) {
 			$amenityAmntScholarship = $_POST['amenityAmntScholarship'];
 		}
-		
+
 		if (isset($_POST['amenityAmtremarks'])) {
 			$amenityAmtremarks = $_POST['amenityAmtremarks'];
 		}
