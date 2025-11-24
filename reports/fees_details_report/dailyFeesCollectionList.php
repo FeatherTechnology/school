@@ -223,7 +223,6 @@ if (isset($_POST['feesToDate'])) {
         WHERE af.receipt_date = '$from_date' AND afd.fees_table_name != 'extratable'
             AND afd.fee_received > 0 
             AND sc.school_id = '$school_id' 
-            AND sc.status = 0
         
         GROUP BY
             af.receipt_no,
@@ -307,8 +306,6 @@ if (isset($_POST['feesToDate'])) {
         WHERE af.receipt_date = '$from_date' AND afd.fees_table_name = 'extratable'
             AND afd.fee_received > 0 
             AND sc.school_id = '$school_id' 
-            AND sc.status = 0
-        
         GROUP BY
             af.receipt_no,
             sc.admission_number,
@@ -369,7 +366,6 @@ if (isset($_POST['feesToDate'])) {
             taf.receipt_date = '$from_date' 
             AND tafd.fee_received > 0 
             AND sc.school_id = '$school_id' 
-            AND sc.status = 0
         GROUP BY
             taf.receipt_no,
             sc.admission_number,
@@ -424,7 +420,7 @@ if (isset($_POST['feesToDate'])) {
         JOIN standard_creation STD ON
             sh.standard = std.standard_id
         WHERE
-            lyf.receipt_date = '$from_date' AND lyfd.fee_received > 0 AND sc.school_id = '$school_id' AND sc.status = 0
+            lyf.receipt_date = '$from_date' AND lyfd.fee_received > 0 AND sc.school_id = '$school_id' 
         GROUP BY
                 lyfd.id,
             lyf.receipt_no,

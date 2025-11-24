@@ -132,7 +132,6 @@ if ($getLastYearGrpFeesQry->rowCount() > 0) {
 
 //Close DB connection
 $getLastYearGrpFeesQry->closeCursor();
-
 //Extra curricular activities
 $getLastYearExtraCurFeesQry = $connect->query("SELECT SUM(ecaf.extra_amount) as OverallExtraCurAmount 
     FROM fees_master fm 
@@ -144,7 +143,6 @@ if ($getLastYearExtraCurFeesQry->rowCount() > 0) {
 } else {
     $overallLastYearExtraCurAmount = '0';
 }
-
 //Close DB connection
 $getLastYearExtraCurFeesQry->closeCursor();
 
@@ -176,6 +174,7 @@ if ($getLastAreaMasterDetailsQry->rowCount() > 0) {
 } else {
     $overallLastTransportAmount = '0';
 }
+
 //Close DB connection
 $getLastAreaMasterDetailsQry->closeCursor();
 $overallLastYearFees = intval($overallLastYearGrpAmount + $overallLastYearExtraCurAmount + $overallLastYearAmenityAmount + $overallLastTransportAmount);
