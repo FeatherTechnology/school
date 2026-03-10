@@ -68,7 +68,7 @@ if($current_page == 'vendorcreation' || $current_page == 'auction_details') {
 				<h3 class="sec" style="color:#1b6aaa; text-align: center;">
 					<span class="text-wrapper">
 					<span class="line line1"></span>
-					<span class="letters"><?php echo $_SESSION['school_name']."-"."(".$_SESSION['academic_year'].")";  ?></span>
+					<span class="letters"><?php echo $_SESSION['school_name']." - "."(".$_SESSION['academic_year'].")";  ?></span>
 					</span>
 				</h3>
 				

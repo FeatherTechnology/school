@@ -12,64 +12,65 @@
         text-align: right !important;
     }
 
-  #printArea {
-    display: block;
-    padding: 10px;
-    font-size: 25px !important;
-}
-
-.reminder-card {
-    width: 100%;
-    padding: 10px 0;
-    box-sizing: border-box;
-    font-size: 25px !important;
-    line-height: 1.6;
-    page-break-inside: avoid;
-    break-inside: avoid;
-    border: none;
-}
-
-.reminder-card hr {
-    border: 1px solid #000;
-    margin-top: 20px;
-}
-
-@media print {
-    body.reminder-print * {
-        visibility: hidden;
-    }
-
-    body.reminder-print #printArea,
-    body.reminder-print #printArea * {
-        visibility: visible;
-    }
-
-    body.reminder-print #printArea {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
+    #printArea {
         display: block;
-        font-size: 30px !important;
+        padding: 10px;
+        font-size: 25px !important;
     }
 
-    body.reminder-print .reminder-card {
+    .reminder-card {
         width: 100%;
-        padding: 0 0 20px 0;
-        margin: 0 0 20px 0;
+        padding: 10px 0;
+        box-sizing: border-box;
+        font-size: 25px !important;
+        line-height: 1.6;
+        page-break-inside: avoid;
+        break-inside: avoid;
         border: none;
-        page-break-after: auto; /* allow continuous page */
     }
 
-    body.reminder-print .reminder-card h4 {
-        font-size: 30px !important;
-        font-weight: bold;
-        margin-bottom: 10px;
+    .reminder-card hr {
+        border: 1px solid #000;
+        margin-top: 20px;
     }
 
-}
+    @media print {
+        body.reminder-print * {
+            visibility: hidden;
+        }
 
+        body.reminder-print #printArea,
+        body.reminder-print #printArea * {
+            visibility: visible;
+        }
+
+        body.reminder-print #printArea {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: block;
+            font-size: 30px !important;
+        }
+
+        body.reminder-print .reminder-card {
+            width: 100%;
+            padding: 0 0 20px 0;
+            margin: 0 0 20px 0;
+            border: none;
+            page-break-after: auto;
+            /* allow continuous page */
+        }
+
+        body.reminder-print .reminder-card h4 {
+            font-size: 30px !important;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+    }
 </style>
+$StudentList = $userObj->getClassWiseStudentList($mysqli, $school_id, $year_id);
 <!-- Page header start -->
 <div class="page-header">
     <ol class="breadcrumb">
@@ -127,6 +128,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <br><br><br><br><br><br>
 
                             <div class="col-xl-9 col-lg-8 col-md-6 col-sm-6 col-12"></div>
@@ -149,17 +151,18 @@
                             <label>Fee Reminder Type</label>
                             <select class="form-control" id="fee_type" name="fee_type" tabindex="4">
                                 <option value="0">Select Fee Reminder Type</option>
-                                <option value="1">Last Year</option>
-                                <option value="2">Admission Fees</option>
-                                <option value="3">Uniform Fees</option>
-                                <option value="4">Book Fees</option>
-                                <option value="5">Group Fees - I Term</option>
-                                <option value="6">Group Fees - II Term</option>
-                                <option value="7">Group Fees - III Term</option>
-                                <option value="8">Transport - I Term</option>
-                                <option value="9">Transport - II Term</option>
-                                <option value="10">Transport - III Term</option>
-                                <option value="11">ECA</option>
+                                <option value="1"> I Term</option>
+                                <option value="2">II Term</option>
+                                <option value="3">III Term</option>
+                              
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 rem_type" style="display:none;">
+                        <div class="form-group">
+                            <label>Student Name</label>
+                            <select class="form-control" id="student_name1" name="student_name1">
+                                <option value="0">Select Student Name</option>
                             </select>
                         </div>
                     </div>

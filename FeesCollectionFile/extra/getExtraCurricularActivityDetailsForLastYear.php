@@ -29,6 +29,7 @@ if($studentType =="1" || $studentType =="2"){
     $student_type_cndtn = "(fm.student_type = '$studentType')";
 
 }
+$studentExtraCurricular = 0; // default value
 
 $CheckReceiptQry1 = $connect->query("SELECT sc.id,sc.extra_curricular FROM `student_history` sc WHERE sc.academic_year = '$academicYear' AND sc.student_id = '$admissionFormId' ");
 

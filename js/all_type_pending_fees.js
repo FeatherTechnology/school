@@ -19,73 +19,182 @@ $(document).ready(function () {
 
     // Handle Print Button Click
     $('#printButton').click(function (e) {
-        e.preventDefault(); // Prevent form submit if button is inside a form
-        const selectedType = $('#fee_type').val();
-        const table = $('#show_student_allPending_list');
-        let reminderTitle = '';
-        let columnIndex = 0;
+        e.preventDefault();
 
-        switch (selectedType) {
-            case "1": reminderTitle = "Last Year Fees Payment"; columnIndex = 5; break;
-            case "2": reminderTitle = "Admission Fees Payment"; columnIndex = 6; break;
-            case "3": reminderTitle = "Uniform Fees Payment"; columnIndex = 7; break;
-            case "4": reminderTitle = "Book Fees Payment"; columnIndex = 8; break;
-            case "5": reminderTitle = "Group - First Term Fees Payment"; columnIndex = 9; break;
-            case "6": reminderTitle = "Group - Second Term Fees Payment"; columnIndex = 10; break;
-            case "7": reminderTitle = "Group - Third Term Fees Payment"; columnIndex = 11; break;
-            case "8": reminderTitle = "Transport - First Term Payment"; columnIndex = 12; break;
-            case "9": reminderTitle = "Transport - Second Term Payment"; columnIndex = 13; break;
-            case "10": reminderTitle = "Transport - Third Term Payment"; columnIndex = 14; break;
-            case "11": reminderTitle = "ECA Fees Payment"; columnIndex = 15; break;
-            default: alert("Invalid fee type selected."); return;
+        const selectedTerm = $('#fee_type').val();
+        const selectedStudent = $('#student_name1').val(); // student dropdown
+        const table = $('#show_student_allPending_list');
+        const academicYear = $('#academic_year').val();
+
+        if (selectedTerm == "0") {
+            alert("Please select Term");
+            return;
         }
 
         $('#printArea').empty();
 
         table.find("tbody tr").each(function () {
+
             const cells = $(this).find("td");
             if (cells.length === 0) return;
 
-            const amount = parseFloat(cells.eq(columnIndex).text()) || 0;
+            // ❌ Skip Grand Total row
+            if ($(this).text().toLowerCase().includes("grand total")) {
+                return;
+            }
+
             const studentName = cells.eq(2).text().trim();
             const stdSection = cells.eq(3).text().trim();
 
-            // ✅ Skip rows with no student name
-            if (amount > 0 && studentName !== "") {
-                const message = `
-                <div class="reminder-card">
-                    <h4>Reminder: ${reminderTitle}</h4>
-                    <p>Dear Parents/Guardians,</p>
-                    <p>This is a gentle reminder to pay the ${reminderTitle.toLowerCase()} for 2025-26 ‐ <strong>${studentName} (${stdSection})</strong> -[<strong>₹${amount}</strong> ]</p>
-                    <p>Please ensure timely payment to avoid any inconvenience.</p>
-                    <p>Thank you for your co-operation.</p>
-                    <hr>
-                </div>
-            `;
-                $('#printArea').append(message);
+            // ✅ STUDENT FILTER
+            if (selectedStudent != "0" && studentName !== selectedStudent) {
+                return;
             }
+
+            function getAmount(index) {
+                return parseFloat(cells.eq(index).text().replace(/,/g, '')) || 0;
+            }
+
+            // Common Fees
+            let lastYear = getAmount(5);
+            let admission = getAmount(6);
+            let uniform = getAmount(7);
+            let books = getAmount(8);
+            let eca = getAmount(15);
+
+            // Tuition
+            let t1 = getAmount(9);
+            let t2 = getAmount(10);
+            let t3 = getAmount(11);
+
+            // Transport
+            let tr1 = getAmount(12);
+            let tr2 = getAmount(13);
+            let tr3 = getAmount(14);
+
+            let total = 0;
+            let tuitionTotal = 0;
+            let transportTotal = 0;
+
+            if (selectedTerm == "1") {
+                tuitionTotal = t1;
+                transportTotal = tr1;
+            }
+            if (selectedTerm == "2") {
+                tuitionTotal = t1 + t2;
+                transportTotal = tr1 + tr2;
+            }
+            if (selectedTerm == "3") {
+                tuitionTotal = t1 + t2 + t3;
+                transportTotal = tr1 + tr2 + tr3;
+            }
+
+            total = lastYear + admission + uniform + books + eca + tuitionTotal + transportTotal;
+
+            if (total <= 0) return;
+            let tuitionColumns = "";
+            let transportColumns = "";
+            let tuitionValues = "";
+            let transportValues = "";
+
+            // Term I
+            if (selectedTerm == "1" || selectedTerm == "2" || selectedTerm == "3") {
+                tuitionColumns += "<th>Term I</th>";
+                transportColumns += "<th>Term I</th>";
+                tuitionValues += `<td>${t1}</td>`;
+                transportValues += `<td>${tr1}</td>`;
+            }
+
+            // Term II
+            if (selectedTerm == "2" || selectedTerm == "3") {
+                tuitionColumns += "<th>Term II</th>";
+                transportColumns += "<th>Term II</th>";
+                tuitionValues += `<td>${t2}</td>`;
+                transportValues += `<td>${tr2}</td>`;
+            }
+
+            // Term III
+            if (selectedTerm == "3") {
+                tuitionColumns += "<th>Term III</th>";
+                transportColumns += "<th>Term III</th>";
+                tuitionValues += `<td>${t3}</td>`;
+                transportValues += `<td>${tr3}</td>`;
+            }
+            const today = new Date();
+            const formattedDate = today.toLocaleDateString('en-GB');
+            const message = `
+        <div style="margin-bottom:30px; font-family:Arial;">
+
+            <div style="display:flex; justify-content:space-between;">
+                <strong>Reminder:</strong>
+                <strong>Date:${formattedDate}</strong>
+            </div>
+
+            <p>Dear Parents/Guardians,</p>
+
+            <p>
+                This is a gentle reminder to pay the 
+                <strong>Pending Fees
+                for the academic year ${academicYear} </strong> 
+                for <strong>${studentName} (${stdSection})</strong>.
+            </p>
+
+           <table border="1" width="100%" cellpadding="6" cellspacing="0"
+    style="border-collapse:collapse; text-align:center;">
+
+    <tr>
+        <th rowspan="2">Last Year</th>
+        <th rowspan="2">Admission</th>
+        <th rowspan="2">Books</th>
+        <th rowspan="2">Uniform</th>
+        <th colspan="${(selectedTerm)}">Tuition</th>
+        <th colspan="${(selectedTerm)}">Transport</th>
+        <th rowspan="2">ECA</th>
+        <th rowspan="2">Total Amount Payable</th>
+    </tr>
+
+    <tr>
+        ${tuitionColumns}
+        ${transportColumns}
+    </tr>
+
+    <tr>
+        <td>${lastYear}</td>
+        <td>${admission}</td>
+        <td>${books}</td>
+        <td>${uniform}</td>
+        ${tuitionValues}
+        ${transportValues}
+        <td>${eca}</td>
+        <td><strong>${total}</strong></td>
+    </tr>
+
+</table>
+
+            <br>
+            <p>Please ensure timely payment to avoid any inconvenience.</p>
+            <p>Thank you for your cooperation.</p>
+
+            <hr>
+        </div>
+        `;
+
+            $('#printArea').append(message);
+
         });
 
         if ($('#printArea').children().length === 0) {
-            alert("No pending reminders for the selected type.");
-            $('#fee_type').val('0'); // or $('#fee_type').prop('selectedIndex', 0);
-
-            $('#reminderPrint').hide();
+            alert("No pending fees found.");
             return;
         }
         $('body').addClass('reminder-print');
         $('#printArea').show();
         window.print();
-
         setTimeout(() => {
             $('#printArea').hide();
             $('body').removeClass('reminder-print');
-           $('#fee_type').val('0'); // or $('#fee_type').prop('selectedIndex', 0);
-
-            $('#reminderPrint').hide();
         }, 1000);
     });
-
 
     $('#standard').change(function () {
         let standardID = $(this).val();
@@ -121,8 +230,50 @@ $(document).ready(function () {
                 success: function (response) {
                     $('#listCard').show();
                     $('.rem_type').show();
+                    $('#fee_type').val('0').trigger('change'); // reset fee type dropdown
                     $('#showStudentFeesPendingList').empty();
                     $('#showStudentFeesPendingList').html(response);
+                    // 🔥 Initialize DataTable AFTER loading table
+                    let table = $('#show_student_allPending_list').DataTable();
+
+                    // 🔥 Populate student dropdown AFTER table is ready
+                    let studentSet = new Set();
+
+                    $('#student_name1').empty()
+                        .append('<option value="0">Select Student Name</option>');
+
+                    $('#show_student_allPending_list tbody tr').each(function () {
+
+                        let cells = $(this).find('td');
+                        if (cells.length === 0) return;
+
+                        let studentName = cells.eq(2).text().trim();
+
+                        let hasPending = false;
+
+                        // Fee column indexes
+                        let feeIndexes = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
+                        feeIndexes.forEach(function (index) {
+                            let amount = parseFloat(cells.eq(index).text()) || 0;
+                            if (amount > 0) {
+                                hasPending = true;
+                            }
+                        });
+
+                        if (studentName !== '' && hasPending) {
+                            studentSet.add(studentName);
+                        }
+
+                    });
+
+                    studentSet.forEach(name => {
+                        $('#student_name1').append(
+                            `<option value="${name}">${name}</option>`
+                        );
+                    });
+
+                    $('#student_name1').trigger('change'); // refresh select2
                 }
             })
         } else {
