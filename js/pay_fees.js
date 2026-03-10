@@ -13,11 +13,13 @@ $(document).ready(function () {
       $("#cash_payment").hide();
       $("#cheque_payment").show();
       $("#neft_payment").hide();
+       getAcademicYearList('#cheque_ledger_name');
     }
     else if (value == "neft") {
       $("#cash_payment").hide();
       $("#cheque_payment").hide();
       $("#neft_payment").show();
+       getAcademicYearList('#neft_ledger_name');
     }
   });
 
@@ -25,6 +27,7 @@ $(document).ready(function () {
     getTotalFeeToBeCollected();
     getScholarshipTotal();
     getCollectedFeesTotal();
+    
   });
 
   $('.cashreceive').keyup(function () {
@@ -89,7 +92,7 @@ $(document).ready(function () {
 
 $(function () {
   getFeesTableFunc();
-  getAcademicYearList(); //Get  Academic Year List.
+  getAcademicYearList('#academic_year'); //Get  Academic Year List.
 });
 
 function getFeesTableFunc() {
@@ -187,38 +190,42 @@ function functionAfterAjax() {
     }
   })
 
-  $(document).on('keyup', '.grpfeesreceived, .grpfeesscholarship', function () {
+ $(document).on('keyup', '.grpfeesreceived, .grpfeesscholarship', function () {
+
     var fees_id = $('#fees_id').val();
     var $row = $(this).closest('tr');
     var $thisField = $(this);
 
     if (fees_id != '') {
-      validateGroupFeesAjax(fees_id, $thisField, $row);
+        validateGroupFeesAjax(fees_id, $thisField, $row);
+    } 
+    else {
 
-    } else {
-      var feeamnt = parseInt($row.find('.grpfeesreceived').val()) || 0;
-      var scholaramnt = parseInt($row.find('.grpfeesscholarship').val()) || 0;
-      var grpfeeamnt = parseInt($row.find('.grpfeesamnt').val()) || 0;
-      var totalCollectgrpFees = feeamnt + scholaramnt;
-      var balanceFees = grpfeeamnt - totalCollectgrpFees;
+        var feeamnt = Math.round(parseFloat($row.find('.grpfeesreceived').val()) || 0);
+        var scholaramnt = Math.round(parseFloat($row.find('.grpfeesscholarship').val()) || 0);
+        var grpfeeamnt = Math.round(parseFloat($row.find('.grpfeesamnt').val()) || 0);
 
-      if (totalCollectgrpFees > grpfeeamnt) {
-        alert('Kindly Enter Less than or equal to Fees Amount');
-        $thisField.val("0");
+        var totalCollectgrpFees = feeamnt + scholaramnt;
+        var balanceFees = Math.round(grpfeeamnt - totalCollectgrpFees);
 
-        // Recalculate balance
-        feeamnt = parseInt($row.find('.grpfeesreceived').val()) || 0;
-        scholaramnt = parseInt($row.find('.grpfeesscholarship').val()) || 0;
-        grpfeeamnt = parseInt($row.find('.grpfeesamnt').val()) || 0;
-        balanceFees = grpfeeamnt - (feeamnt + scholaramnt);
-        $row.find('.grpfeesbalance').val(balanceFees);
-      } else {
-        $row.find('.grpfeesbalance').val(balanceFees);
-        getScholarshipTotal();
-        getCollectedFeesTotal();
-      }
+        if (totalCollectgrpFees > grpfeeamnt) {
+
+            alert('Kindly Enter Less than or equal to Fees Amount');
+            $thisField.val("0");
+
+            feeamnt = Math.round(parseFloat($row.find('.grpfeesreceived').val()) || 0);
+            scholaramnt = Math.round(parseFloat($row.find('.grpfeesscholarship').val()) || 0);
+            balanceFees = Math.round(grpfeeamnt - (feeamnt + scholaramnt));
+
+            $row.find('.grpfeesbalance').val(balanceFees);
+        } 
+        else {
+            $row.find('.grpfeesbalance').val(balanceFees);
+            getScholarshipTotal();
+            getCollectedFeesTotal();
+        }
     }
-  });
+});
   //Group fee calculation END.
 
   $(document).on('keyup', '.extrafeesreceived, .extrafeesscholar', function () {
@@ -377,15 +384,16 @@ function getCollectedAmount() {
   return totalAmount;
 }
 
-function getAcademicYearList() { //Getting academic_year list from database.
+
+function getAcademicYearList(selector) { //Getting academic_year list from database.
   $.ajax({
     type: 'POST',
     data: {},
     url: 'ajaxFiles/getAcademicYearList.php',
     dataType: 'json',
     success: function (response) {
-      $('#academic_year').empty();
-      $('#academic_year').append("<option value=''>Select Academic Year</option>");
+      $('selector').empty();
+      $('selector').append("<option value=''>Select Academic Year</option>");
       var user_academic_year = $('#user_academic_year').val();
       for (var i = 0; i < response.length; i++) {
         var selected = '';
@@ -393,7 +401,7 @@ function getAcademicYearList() { //Getting academic_year list from database.
           selected = 'selected';
         }
 
-        $('#academic_year').append("<option value='" + response[i]['academicyear'] + "' " + selected + ">" + response[i]['academicyear'] + "</option>");
+        $(selector).append("<option value='" + response[i]['academicyear'] + "' " + selected + ">" + response[i]['academicyear'] + "</option>");
       }
     }
   })

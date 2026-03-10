@@ -13,11 +13,13 @@ $(document).ready(function () {
       $("#cash_payment").hide();
       $("#cheque_payment").show();
       $("#neft_payment").hide();
+       getAcademicYearList('#cheque_ledger_name');
     }
     else if (value == "neft") {
       $("#cash_payment").hide();
       $("#cheque_payment").hide();
       $("#neft_payment").show();
+       getAcademicYearList('#neft_ledger_name');
     }
   });
 
@@ -76,7 +78,7 @@ $(document).ready(function () {
 $(function () {
 
   getFeesTableFunc();
-  getAcademicYearList(); //Get  Academic Year List.
+  getAcademicYearList('#academic_year'); //Get  Academic Year List.
 });
 
 function getFeesTableFunc() {
@@ -219,15 +221,16 @@ function getCollectedAmount() {
   return totalAmount;
 }
 
-function getAcademicYearList() { //Getting academic_year list from database.
+
+function getAcademicYearList(selector) { //Getting academic_year list from database.
   $.ajax({
     type: 'POST',
     data: {},
     url: 'ajaxFiles/getAcademicYearList.php',
     dataType: 'json',
     success: function (response) {
-      $('#academic_year').empty();
-      $('#academic_year').append("<option value=''>Select Academic Year</option>");
+      $('selector').empty();
+      $('selector').append("<option value=''>Select Academic Year</option>");
       var user_academic_year = $('#user_academic_year').val();
       for (var i = 0; i < response.length; i++) {
         var selected = '';
@@ -235,7 +238,7 @@ function getAcademicYearList() { //Getting academic_year list from database.
           selected = 'selected';
         }
 
-        $('#academic_year').append("<option value='" + response[i]['academicyear'] + "' " + selected + ">" + response[i]['academicyear'] + "</option>");
+        $(selector).append("<option value='" + response[i]['academicyear'] + "' " + selected + ">" + response[i]['academicyear'] + "</option>");
       }
     }
   })
