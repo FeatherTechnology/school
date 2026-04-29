@@ -129,7 +129,6 @@ if ($getLastYearGrpFeesQry->rowCount() > 0) {
 } else {
     $overallLastYearGrpAmount = '0';
 }
-
 //Close DB connection
 $getLastYearGrpFeesQry->closeCursor();
 //Extra curricular activities
@@ -137,7 +136,8 @@ $getLastYearExtraCurFeesQry = $connect->query("SELECT SUM(ecaf.extra_amount) as 
     FROM fees_master fm 
     JOIN extra_curricular_activities_fee ecaf ON fm.fees_id = ecaf.fee_master_id
 JOIN student_history sh ON FIND_IN_SET(ecaf.extra_fee_id, sh.extra_curricular) AND sh.academic_year = '$last_year'
-    WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND $studentlast_type_cndtn AND fm.standard = '$lastyr_std_id' AND ecaf.status = '1' AND fm.school_id ='$school_id' AND sh.student_id = '$student_id' ");
+    WHERE fm.academic_year = '$last_year' AND fm.medium = '$medium' AND ecaf.status = '1' AND fm.school_id ='$school_id' AND sh.student_id = '$student_id' ");
+  
 if ($getLastYearExtraCurFeesQry->rowCount() > 0) {
     $overallLastYearExtraCurAmount = $getLastYearExtraCurFeesQry->fetch()['OverallExtraCurAmount'];
 } else {
@@ -158,7 +158,6 @@ if ($getLastYearAmenityFeesQry->rowCount() > 0) {
 } else {
     $overallLastYearAmenityAmount = '0';
 }
-
 //Close DB connection
 $getLastYearAmenityFeesQry->closeCursor();
 

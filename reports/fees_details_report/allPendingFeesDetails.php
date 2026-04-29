@@ -140,7 +140,7 @@ FROM (
             (
                 SELECT SUM(af.amenity_amount)
                 FROM amenity_fee af
-                WHERE af.fee_master_id = afd.fees_master_id
+                WHERE af.fee_master_id = afd.fees_master_id and af.status = 1
             ) - (SUM(afd.fee_received) + SUM(afd.scholarship))
         ) - COALESCE(
             (

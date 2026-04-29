@@ -15,7 +15,12 @@ if(isset($_FILES["file"]["type"])){
 $allowedFileType = ['application/vnd.ms-excel','text/xls','text/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
 if(in_array($_FILES["file"]["type"],$allowedFileType)){
         //set the directory path name
-        $new_directory = ("../uploads/bulkimport/". $school_name);
+        $school_name = trim($school_name);
+        $school_name = preg_replace('/[^A-Za-z0-9_-]/', '_', $school_name);
+
+        // ✅ SET DIRECTORY
+        $basePath = realpath(__DIR__ . "/../uploads/bulkimport");
+        $new_directory = $basePath . "/" . $school_name;
         //make the directory
         if(file_exists($new_directory) == false){
             mkdir($new_directory, 0777);

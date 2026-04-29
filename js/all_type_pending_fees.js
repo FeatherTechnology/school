@@ -60,7 +60,7 @@ $(document).ready(function () {
             let admission = getAmount(6);
             let uniform = getAmount(7);
             let books = getAmount(8);
-            let eca = getAmount(15);
+            // let eca = getAmount(15);
 
             // Tuition
             let t1 = getAmount(9);
@@ -89,7 +89,7 @@ $(document).ready(function () {
                 transportTotal = tr1 + tr2 + tr3;
             }
 
-            total = lastYear + admission + uniform + books + eca + tuitionTotal + transportTotal;
+            total = lastYear + admission + uniform + books  + tuitionTotal + transportTotal;
 
             if (total <= 0) return;
             let tuitionColumns = "";
@@ -149,7 +149,6 @@ $(document).ready(function () {
         <th rowspan="2">Uniform</th>
         <th colspan="${(selectedTerm)}">Tuition</th>
         <th colspan="${(selectedTerm)}">Transport</th>
-        <th rowspan="2">ECA</th>
         <th rowspan="2">Total Amount Payable</th>
     </tr>
 
@@ -165,7 +164,6 @@ $(document).ready(function () {
         <td>${uniform}</td>
         ${tuitionValues}
         ${transportValues}
-        <td>${eca}</td>
         <td><strong>${total}</strong></td>
     </tr>
 

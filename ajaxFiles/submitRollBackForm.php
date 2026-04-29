@@ -107,8 +107,8 @@ if (isset($_POST['student_id']) && isset($_POST['standard_id'])) {
 
             // Insert into `student_history`
             $history_query = "
-                INSERT INTO `student_history` (student_id, standard, section,studentstype, extra_curricular, transportarearefid, academic_year,insert_login_id, created_on)
-                SELECT student_id, '$next_std_id', section,'2',extra_curricular, transportarearefid, '$nextAcademicYear','$userid', NOW()
+                INSERT INTO `student_history` (student_id, standard, section,studentstype, transportarearefid, academic_year,insert_login_id, created_on)
+                SELECT student_id, '$next_std_id', section,'2', transportarearefid, '$nextAcademicYear','$userid', NOW()
                 FROM student_creation
                 WHERE student_id = '$student_id[$i]'
             ";

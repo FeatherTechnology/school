@@ -1,6 +1,6 @@
 <?php
 include '../ajaxconfig.php';
-
+@session_start();
 if(isset($_POST['studentid'])){
     $studentid = $_POST['studentid'];
 }
@@ -8,13 +8,18 @@ if(isset($_POST['concessionType'])){
     $concessionType = $_POST['concessionType'];
 }
 
-$getStudentDetailsQry = $connect->query("SELECT stdc.student_name, stdc.`admission_number`, stdc.studentrollno, stdc.medium, stdc.studentstype, stdc.standard, sc.standard as standard_name, stdc.section, stdc.year_id, stdc.school_id, stdc.facility, stdc.extra_curricular 
+if (isset($_SESSION['academic_year'])) {
+    $academic_year = $_SESSION['academic_year'];
+}
+
+$getStudentDetailsQry = $connect->query("SELECT stdc.student_name, stdc.`admission_number`,sh.academic_year, stdc.studentrollno, stdc.medium, stdc.studentstype, stdc.standard, sc.standard as standard_name, stdc.section, stdc.year_id, stdc.school_id, stdc.facility, stdc.extra_curricular 
 FROM `student_creation` stdc 
-JOIN standard_creation sc ON stdc.standard = sc.standard_id 
+JOIN student_history sh ON stdc.student_id = sh.student_id and sh.academic_year = '$academic_year'
+JOIN standard_creation sc ON sc.standard_id = sh.standard 
 WHERE stdc.student_id = '$studentid'");
 $studentInfo = $getStudentDetailsQry ->fetch();
 
-$academicYear = $studentInfo['year_id'];
+$academicYear = $studentInfo['academic_year'];
 $medium = $studentInfo['medium'];
 $studentType = $studentInfo['studentstype'];
 $standardId = $studentInfo['standard'];

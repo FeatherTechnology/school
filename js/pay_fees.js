@@ -13,13 +13,13 @@ $(document).ready(function () {
       $("#cash_payment").hide();
       $("#cheque_payment").show();
       $("#neft_payment").hide();
-       getAcademicYearList('#cheque_ledger_name');
+      getAcademicYearList('#cheque_ledger_name');
     }
     else if (value == "neft") {
       $("#cash_payment").hide();
       $("#cheque_payment").hide();
       $("#neft_payment").show();
-       getAcademicYearList('#neft_ledger_name');
+      getAcademicYearList('#neft_ledger_name');
     }
   });
 
@@ -27,7 +27,7 @@ $(document).ready(function () {
     getTotalFeeToBeCollected();
     getScholarshipTotal();
     getCollectedFeesTotal();
-    
+
   });
 
   $('.cashreceive').keyup(function () {
