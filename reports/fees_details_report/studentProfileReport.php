@@ -311,12 +311,20 @@ while ($row = $getManualConcessionQry->fetch()) {
 
 $lastYearPendingData = [];
 
-$lastYearPendingQry = $connect->query("SELECT 
+$lastYearPendingQry = $connect->query("
+SELECT 
     'grptable' AS fees_table_name,
     gcf.grp_particulars AS particular,
     gcf.grp_amount AS fee_collection,
     COALESCE(SUM(afd.fee_received), 0) AS fee_paid,
-    COALESCE(SUM(afd.scholarship), 0) AS concession,
+    COALESCE(SUM(afd.scholarship), 0) + COALESCE((
+        SELECT SUM(fc.scholarship_amount)
+        FROM fees_concession fc
+        WHERE fc.student_id = af.admission_id
+          AND fc.fees_table_name = 'grptable'
+          AND fc.fees_master_id = afd.fees_master_id
+          AND fc.fees_id = gcf.grp_course_id
+    ), 0) AS concession,
     (
         gcf.grp_amount 
         - COALESCE(SUM(afd.fee_received), 0)
@@ -327,6 +335,7 @@ $lastYearPendingQry = $connect->query("SELECT
             WHERE fc.student_id = af.admission_id
               AND fc.fees_table_name = 'grptable'
               AND fc.fees_master_id = afd.fees_master_id
+              AND fc.fees_id = gcf.grp_course_id
         ), 0)
     ) AS balance
 FROM group_course_fee gcf
@@ -349,7 +358,14 @@ SELECT
     ecaf.extra_particulars AS particular,
     ecaf.extra_amount AS fee_collection,
     COALESCE(SUM(afd.fee_received), 0) AS fee_paid,
-    COALESCE(SUM(afd.scholarship), 0) AS concession,
+    COALESCE(SUM(afd.scholarship), 0) + COALESCE((
+        SELECT SUM(fc.scholarship_amount)
+        FROM fees_concession fc
+        WHERE fc.student_id = af.admission_id
+          AND fc.fees_table_name = 'extratable'
+          AND fc.fees_master_id = afd.fees_master_id
+          AND fc.fees_id = ecaf.extra_fee_id
+    ), 0) AS concession,
     (
         ecaf.extra_amount
         - COALESCE(SUM(afd.fee_received), 0)
@@ -360,6 +376,7 @@ SELECT
             WHERE fc.student_id = af.admission_id
               AND fc.fees_table_name = 'extratable'
               AND fc.fees_master_id = afd.fees_master_id
+              AND fc.fees_id = ecaf.extra_fee_id
         ), 0)
     ) AS balance
 FROM extra_curricular_activities_fee ecaf
@@ -382,7 +399,14 @@ SELECT
     afee.amenity_particulars AS particular,
     afee.amenity_amount AS fee_collection,
     COALESCE(SUM(afd.fee_received), 0) AS fee_paid,
-    COALESCE(SUM(afd.scholarship), 0) AS concession,
+    COALESCE(SUM(afd.scholarship), 0) + COALESCE((
+        SELECT SUM(fc.scholarship_amount)
+        FROM fees_concession fc
+        WHERE fc.student_id = af.admission_id
+          AND fc.fees_table_name = 'amenitytable'
+          AND fc.fees_master_id = afd.fees_master_id
+          AND fc.fees_id = afee.amenity_fee_id
+    ), 0) AS concession,
     (
         afee.amenity_amount
         - COALESCE(SUM(afd.fee_received), 0)
@@ -390,20 +414,21 @@ SELECT
         - COALESCE((
             SELECT SUM(fc.scholarship_amount)
             FROM fees_concession fc
-            WHERE fc.student_id = afs.admission_id
+            WHERE fc.student_id = af.admission_id
               AND fc.fees_table_name = 'amenitytable'
               AND fc.fees_master_id = afd.fees_master_id
+              AND fc.fees_id = afee.amenity_fee_id
         ), 0)
     ) AS balance
 FROM amenity_fee afee
 JOIN admission_fees_details afd 
     ON afee.amenity_fee_id = afd.fees_id 
     AND afd.fees_table_name = 'amenitytable'
-JOIN admission_fees afs 
-    ON afd.admission_fees_ref_id = afs.id
+JOIN admission_fees af 
+    ON afd.admission_fees_ref_id = af.id
 WHERE 
-    afs.admission_id = '$student_id'
-    AND afs.academic_year = '$last_year'
+    af.admission_id = '$student_id'
+    AND af.academic_year = '$last_year'
     AND afee.fee_master_id = afd.fees_master_id
 GROUP BY afee.amenity_fee_id
 
@@ -415,21 +440,26 @@ SELECT
     acp.particulars AS particular,
     acp.due_amount AS fee_collection,
     COALESCE(SUM(tafd.fee_received), 0) AS fee_paid,
-    COALESCE(SUM(tafd.scholarship), 0) AS concession,
+    COALESCE(SUM(tafd.scholarship), 0) + COALESCE((
+        SELECT SUM(fc.scholarship_amount) 
+        FROM fees_concession fc 
+        WHERE fc.student_id = '$student_id' 
+          AND fc.fees_table_name = 'transport' 
+          AND fc.fees_master_id = acp.area_creation_id
+          AND fc.fees_id = acp.particulars_id
+    ), 0) AS concession,
     ( 
         acp.due_amount - 
         COALESCE(SUM(tafd.fee_received), 0) - 
         COALESCE(SUM(tafd.scholarship), 0) - 
-        COALESCE(
-            (
-                SELECT SUM(fc.scholarship_amount) 
-                FROM fees_concession fc 
-                WHERE fc.student_id = '$student_id' 
-                AND fc.fees_table_name = 'transport' 
-                AND fc.fees_master_id = acp.area_creation_id
-            ), 
-            0
-        ) 
+        COALESCE((
+            SELECT SUM(fc.scholarship_amount) 
+            FROM fees_concession fc 
+            WHERE fc.student_id = '$student_id' 
+              AND fc.fees_table_name = 'transport' 
+              AND fc.fees_master_id = acp.area_creation_id
+              AND fc.fees_id = acp.particulars_id
+        ), 0)
     ) AS balance
 FROM 
     area_creation_particulars acp
@@ -452,7 +482,6 @@ WHERE
     )
 GROUP BY 
     acp.particulars_id
-
 ");
 
 while ($row = $lastYearPendingQry->fetch()) {
