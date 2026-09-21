@@ -30,6 +30,7 @@
                                             <th>Section</th>
                                             <th>Gender</th>
                                             <th>Admission Number</th>
+                                            <th>Mobile no</th>
                                             <th>Address</th>
                                             <th>Reason</th>
                                             <th>Action</th>
@@ -55,7 +56,7 @@
                                             $school_id = $_SESSION['school_id'];
                                         }
 
-                                        $ctselect = "SELECT * FROM student_creation WHERE status = 1 AND deleted_student = 1 AND school_id = '$school_id'";
+                                        $ctselect = "SELECT sc.student_id, sc.student_name, std.standard, sc.section, sc.gender, sc.admission_number, sc.sms_sent_no, sc.flat_no, sc.street, sc.area_locatlity, sc.district, sc.pincode, sc.reason FROM student_creation sc JOIN standard_creation std ON sc.standard = std.standard_id WHERE sc.status = 1 AND sc.deleted_student = 1 AND sc.school_id = '$school_id'";
                                         $ctresult = $mysqli->query($ctselect);
                                         if ($ctresult->num_rows > 0) {
                                             $i = 1;
@@ -63,7 +64,7 @@
                                                 $sid = $ct["student_id"];
                                         ?>
                                                 <tr>
-                                                    <td><?php echo $i; ?></td>
+                                                    <td><?php echo $i++; ?></td>
                                                     <td><?php if (isset($ct["student_name"])) { echo $ct["student_name"];
                                                         } ?></td>
                                                     <td><?php if (isset($ct["standard"])) { echo $ct["standard"];
@@ -74,14 +75,15 @@
                                                         } ?></td>
                                                     <td><?php if (isset($ct["admission_number"])) { echo $ct["admission_number"];
                                                         } ?></td>
+                                                    <td><?php if (isset($ct["sms_sent_no"])) { echo $ct["sms_sent_no"];
+                                                        } ?></td>
                                                     <td><?php if (isset($ct["flat_no"])) { echo $ct["flat_no"], $ct["street"], $ct["area_locatlity"], $ct["district"], $ct["pincode"];
                                                         } ?></td>
                                                     <td><?php if (isset($ct["reason"])) { echo $ct["reason"];
                                                         } ?></td>
                                                     <td><button type='button' class='btn btn-primary' title='student Restore' onclick="restoreStudent(<?php echo $sid; ?>)">Restore</button></td>
                                                 </tr>
-                                        <?php $i = $i + 1;
-                                            }
+                                        <?php }
                                         } ?>
 
                                     </tbody>

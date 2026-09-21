@@ -2481,7 +2481,7 @@ class admin
                 due_amount = '{$due_amountstr[$i]}', 
                 due_date = '{$due_datestr[$i]}' 
             WHERE particulars_id = '$particulars_id' ");
-			} 
+			}
 		}
 	}
 
@@ -3133,21 +3133,39 @@ class admin
 	//  get TempStudentList
 	public function getStudentList($mysqli, $school_id, $year_id)
 	{
-		$qry = "SELECT sc.* FROM student_creation sc LEFT JOIN student_history sh ON sc.student_id =sh.student_id WHERE sc.school_id='$school_id' AND sh.academic_year='$year_id' AND status=0 ORDER BY sc.student_id DESC";
-		// SELECT * FROM student_creation WHERE 1 AND status=0 ORDER BY student_id DESC
-		$res = $mysqli->query($qry) or die("Error in Get All Records" . $mysqli->error);
+		$qry = "
+        SELECT sc.*, sh.standard, sh.section
+        FROM student_creation sc
+        LEFT JOIN student_history sh 
+            ON sc.student_id = sh.student_id
+        WHERE sc.school_id = '$school_id'
+            AND sh.academic_year = '$year_id'
+            AND (
+                sc.status = 0
+                OR sc.year_id != '$year_id'
+            )
+        ORDER BY sc.student_id DESC
+    ";
+
+		$res = $mysqli->query($qry) or die("Error in Get All Records " . $mysqli->error);
+
 		$detailrecords = array();
 		$i = 0;
-		if ($mysqli->affected_rows > 0) {
+
+		if ($res->num_rows > 0) {
+
 			while ($row = $res->fetch_object()) {
-				$detailrecords[$i]['student_id']            = $row->student_id;
-				$detailrecords[$i]['student_name']       	= strip_tags($row->student_name);
-				$detailrecords[$i]['admission_number']      = strip_tags($row->admission_number);
-				$detailrecords[$i]['section']       	= strip_tags($row->section);
-				$detailrecords[$i]['standard']       	= strip_tags($row->standard);
+
+				$detailrecords[$i]['student_id'] = $row->student_id;
+				$detailrecords[$i]['student_name'] = strip_tags($row->student_name);
+				$detailrecords[$i]['admission_number'] = strip_tags($row->admission_number);
+				$detailrecords[$i]['section'] = strip_tags($row->section);
+				$detailrecords[$i]['standard'] = strip_tags($row->standard);
+
 				$i++;
 			}
 		}
+
 		return $detailrecords;
 	}
 
