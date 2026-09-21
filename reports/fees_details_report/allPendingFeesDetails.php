@@ -53,7 +53,8 @@ if (isset($_POST['stdSection'])) {
 FROM `student_creation` sc 
 LEFT JOIN student_history sh ON sc.student_id = sh.student_id
 JOIN standard_creation std ON sh.standard = std.standard_id
-WHERE sh.academic_year  = '$academicyear' && sc.medium = '$stdMedium' && sh.standard = '$stdStandard' && sc.leaving_term !='1' && sc.leaving_term !='5' &&  sh.section = '$stdSection' && sc.school_id = '$school_id' ORDER BY sc.student_name ASC  
+WHERE sh.academic_year  = '$academicyear' && sc.medium = '$stdMedium' && sh.standard = '$stdStandard' && ( ( sc.leaving_term != '1' AND sc.leaving_term != '5' )OR sc.year_id != '$academicyear'
+        ) &&  sh.section = '$stdSection' && sc.school_id = '$school_id' ORDER BY sc.student_name ASC  
 ");
         $i = 1;
         $ls_pending = 0;
@@ -191,7 +192,6 @@ FROM (
             $lastyr_grpfeeQry = $connect->query("SELECT (SUM(lyfd.fee_received) + SUM(lyfd.scholarship)) as paid_grp_amount 
             FROM `last_year_fees` lyf 
             JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id 
-            JOIN group_course_fee gcf ON lyfd.fees_id = gcf.grp_course_id 
             WHERE lyf.admission_id = '$studentList->student_id' AND lyf.academic_year = '$academicyear' ");
             if ($lastyr_grpfeeQry->rowCount() > 0) {
                 $lastyr_grp_amount = $lastyr_grpfeeQry->fetch()['paid_grp_amount'];

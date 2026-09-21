@@ -71,7 +71,10 @@ $getStudentListQry = $connect->query("
     WHERE 
         sh.academic_year = '$academicyear' 
         AND sc.medium = '$stdMedium' 
-        AND sc.status = '0' 
+       AND (
+                sc.status = 0
+                OR sc.year_id != '$academicyear'
+            )
         AND sc.school_id = '$school_id' 
         $whereClause
    $orderBy

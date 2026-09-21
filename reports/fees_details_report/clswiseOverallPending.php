@@ -216,7 +216,6 @@ FROM (
     SELECT COALESCE(SUM(lyfd.fee_received + lyfd.scholarship), 0)AS paid_grp_amount 
     FROM last_year_fees lyf 
     JOIN last_year_fees_details lyfd ON lyf.id = lyfd.admission_fees_ref_id 
-    JOIN group_course_fee gcf ON lyfd.fees_id = gcf.grp_course_id 
     JOIN student_creation sc ON lyf.admission_id = sc.student_id
     JOIN student_history sh ON sc.student_id = sh.student_id
     WHERE sc.student_id IN ($studentid) AND lyf.academic_year = '$academicyear' 
