@@ -142,6 +142,7 @@ $getTermFeeQry = $connect->query("
       AND $student_type_cndtn
       AND fm.standard = '$standard'
       AND fm.school_id = '$school_id'
+      AND gcf.status=1
 ");
 
 while ($row = $getTermFeeQry->fetch()) {
@@ -165,7 +166,7 @@ $getTermPaidQry = $connect->query("
     WHERE afs.admission_id = '$student_id'
       AND afs.academic_year = '$academic_year'
       AND afd.fees_table_name = 'grptable'
-    AND (afd.fee_received != 0 OR afd.scholarship != 0)
+    AND (afd.fee_received != 0 OR afd.scholarship != 0) AND gcf.status=1
 
 ");
 
@@ -347,7 +348,7 @@ JOIN admission_fees af
 WHERE 
     af.admission_id = '$student_id'
     AND af.academic_year = '$last_year'
-    AND gcf.fee_master_id = afd.fees_master_id
+    AND gcf.fee_master_id = afd.fees_master_id AND gcf.status=1
 GROUP BY gcf.grp_course_id
 
 UNION ALL
@@ -429,7 +430,7 @@ JOIN admission_fees af
 WHERE 
     af.admission_id = '$student_id'
     AND af.academic_year = '$last_year'
-    AND afee.fee_master_id = afd.fees_master_id
+    AND afee.fee_master_id = afd.fees_master_id and afee.status =1
 GROUP BY afee.amenity_fee_id
 
 UNION ALL

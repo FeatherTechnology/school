@@ -89,7 +89,7 @@ FROM (
             (
                 SELECT SUM(gcf.grp_amount)
                 FROM group_course_fee gcf
-                WHERE gcf.fee_master_id = afd.fees_master_id
+                WHERE gcf.fee_master_id = afd.fees_master_id AND gcf.status=1
             ) - (SUM(afd.fee_received) + SUM(afd.scholarship))
         ) - COALESCE(
             (
@@ -116,7 +116,7 @@ FROM (
                 FROM extra_curricular_activities_fee ecaf
                 JOIN student_history sh ON sh.student_id = '$studentList->student_id'
                 WHERE FIND_IN_SET(ecaf.extra_fee_id, sh.extra_curricular)
-                AND sh.academic_year = '$lastyear'
+                AND sh.academic_year = '$lastyear' AND ecaf.status=1
             ) - (COALESCE(SUM(afd.fee_received), 0) + COALESCE(SUM(afd.scholarship), 0))
         ) - COALESCE(
             (
@@ -239,7 +239,7 @@ WHERE
     AND fm.medium = '$stdMedium' 
     AND $student_type_cndtn 
     AND fm.standard = '$stdStandard' 
-    AND fm.school_id = '$school_id' 
+    AND fm.school_id = '$school_id' AND gcf.status=1
 ORDER BY 
     gcf.grp_date ASC;
 ");
@@ -299,6 +299,7 @@ WHERE
     AND $student_type_cndtn 
     AND fm.standard = '$stdStandard' 
     AND fm.school_id = '$school_id' 
+    AND af.status=1
 ORDER BY 
     af.amenity_date ASC;
 ");
@@ -353,7 +354,7 @@ ORDER BY
                             AND fees_id = ecaf.extra_fee_id
                     ),0) AS extraPending
                 FROM extra_curricular_activities_fee ecaf 
-                WHERE ecaf.extra_fee_id IN ($extra_id)
+                WHERE ecaf.extra_fee_id IN ($extra_id) AND ecaf.status = 1
             ");
 
             if ($getExtraPendingQry->rowCount() > 0) {

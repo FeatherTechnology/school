@@ -95,7 +95,7 @@ FROM (
         AND fm.school_id = '$school_id'
         AND ((sh.studentstype IN (1, 2) AND fm.student_type IN (1, 4))
              OR (sh.studentstype NOT IN (1, 2) AND fm.student_type = sh.studentstype))
-    JOIN group_course_fee gcf ON gcf.fee_master_id = fm.fees_id
+    JOIN group_course_fee gcf ON gcf.fee_master_id = fm.fees_id and gcf.status = 1
     LEFT JOIN (
         -- PRE-AGGREGATE concessions to avoid duplicates
         SELECT student_id, fees_id, SUM(scholarship_amount) AS scholarship_total
@@ -328,6 +328,7 @@ FROM (
         AND fm.medium = '$stdMedium'
         AND fm.standard = '$standardList->standard_id'
         AND fm.school_id = '$school_id'
+        AND gcf.status = 1
 ) t
 GROUP BY grp_course_id
 ORDER BY grp_course_id; ");
@@ -335,7 +336,6 @@ ORDER BY grp_course_id; ");
             while ($termPendingInfo = $getTermPendingQry->fetch()) {
                 $term_pending[] = $termPendingInfo['termPending_for_standard'];
             }
-
 
             $getBookPendingQry = $connect->query("SELECT
     (
@@ -398,10 +398,10 @@ WHERE
     AND fm.medium = '$stdMedium'
     AND fm.standard = '$standardList->standard_id'
     AND fm.school_id = '$school_id';");
-            if ($getBookPendingQry->rowCount() > 0) {
-                $book_pending = $getBookPendingQry->fetch()['bookpending_for_standard'];
-            } else {
-                $book_pending = '0';
+      
+            $book_pending = '0';
+             while ($row = $getBookPendingQry->fetch(PDO::FETCH_ASSOC)) {
+                $book_pending += (float) ($row['bookpending_for_standard'] ?? 0);
             }
             $extra_pending = [
                 'uniform' => 0,
